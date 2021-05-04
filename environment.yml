@@ -1,0 +1,9 @@
+name: echemdb
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - mkdocs
+  - pip
+  - pip:
+    - mkdocs-material
