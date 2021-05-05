@@ -5,5 +5,12 @@ channels:
 dependencies:
   - mkdocs
   - pip
+  - pandas
+  - matplotlib
   - pip:
     - mkdocs-material
+    - markdown-include
+    - mdutils
+    - mkdocs-section-index
+    - mkdocs-macros-plugin
+
