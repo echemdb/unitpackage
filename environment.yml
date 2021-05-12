@@ -17,5 +17,5 @@ dependencies:
     - python-frontmatter
     - tabulate
     - datapackage
-    - frontmatter
+    - python-frontmatter
 
