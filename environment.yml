@@ -7,10 +7,15 @@ dependencies:
   - pip
   - pandas
   - matplotlib
+  - plotly
   - pip:
     - mkdocs-material
     - markdown-include
     - mdutils
     - mkdocs-section-index
     - mkdocs-macros-plugin
+    - python-frontmatter
+    - tabulate
+    - datapackage
+    - frontmatter
 
