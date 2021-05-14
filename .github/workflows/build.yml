@@ -19,6 +19,7 @@ jobs:
       - name: build
         shell: bash -l {0}
         run: |
+          python -c 'import code; code.create_pages()'
           mkdocs build
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
