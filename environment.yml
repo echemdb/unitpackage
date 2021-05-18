@@ -10,6 +10,7 @@ dependencies:
   - plotly
   - pip:
     - mkdocs-material
+    - mkdocs-gen-pages
     - markdown-include
     - mdutils
     - mkdocs-section-index

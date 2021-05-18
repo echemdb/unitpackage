@@ -16,6 +16,5 @@ Build the website and follow the link to preview the pages:
 
 ```
 conda activate echemdb
-python -c 'import code; code.create_pages()'
 mkdocs serve
 ```
