@@ -12,6 +12,8 @@ conda config --set channel_priority strict
 conda env create --force -f environment.yml
 ```
 
+Alternatively, if you want to install the required packages into an existing, environment use:
+
 Build the website and follow the link to preview the pages:
 
 ```

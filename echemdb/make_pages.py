@@ -78,7 +78,7 @@ def get_page_links( property_propertyvals_dict ):
             filename = get_echemdb_id_file(echemdb_id)
             ln = f'{echemdb_id}'
 
-    return f'[{ln}](../../../{filename})'
+    return f'[{ln}](../../{filename}/)'
 
 
 
