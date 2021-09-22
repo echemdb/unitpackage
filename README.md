@@ -14,6 +14,13 @@ conda env create --force -f environment.yml
 
 Alternatively, if you want to install the required packages into an existing, environment use:
 
+
+```
+conda env update --name <your_env_name> --file environment.yml
+```
+
+
+
 Build the website and follow the link to preview the pages:
 
 ```
