@@ -21,7 +21,7 @@ TEMPLATE_FOLDERS = {'elements': "./templates/element.md",
 
 TARGET_FOLDERS = {'path': "./docs/",
                  'elements': "cv/elements/tobesubstituted.md",
-                'element_surface': "cv/elements/tobesubstituted.md",
+                'element_surface': "elements/tobesubstituted.md",
                  'echemdb_id': "cv/echemdb_pages/tobesubstituted.md",
                   'systems': "cv/systems.md",
                   'surfaces': "cv/surfaces/tobesubstituted.md"}
