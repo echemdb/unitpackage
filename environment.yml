@@ -4,11 +4,12 @@ channels:
   - defaults
 dependencies:
   - mkdocs
-  - pip
   - pandas
   - matplotlib
   - plotly
+  - pip
   - pip:
+    - linkchecker
     - mkdocs-material
     - mkdocs-gen-files
     - markdown-include
@@ -19,4 +20,3 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
-

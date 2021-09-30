@@ -16,14 +16,27 @@ jobs:
         run: |
           mamba env update --quiet -n test -f environment.yml
           conda list
+      - name: fix permissions
+        shell: bash -l {0}
+        run: |
+          # Strangely, the linkchecker modules are installed writable and linkchecker then refuses to load them.
+          chmod -R a-w `python -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())"`
       - name: build
         shell: bash -l {0}
         run: |
           mkdocs build
+          mkdir generated
+          mv site generated/website
+      - name: detect broken links
+        shell: bash -l {0}
+        run: |
+          python -m http.server 8880 --directory generated &
+          sleep 1
+          linkchecker --check-extern http://localhost:8880/website/
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: site
+          FOLDER: generated/website
           TARGET_FOLDER: ""
         if: ${{ github.event_name == 'push' }}
