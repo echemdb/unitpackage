@@ -9,6 +9,7 @@ import markdown
 import pandas as pd
 import numpy as np
 import copy
+import mkdocs_gen_files
 from .data import collect_datapackages, make_cvs_dataframe
 
 cv_data = make_cvs_dataframe(collect_datapackages())
@@ -99,11 +100,8 @@ def create_element_pages(elementname):
     templatemd['data']['element'] = elementname
     templatemd['title'] = 'echemdb - {} CV data'.format(elementname)
 
-    target = copy.deepcopy(TARGET_FOLDERS['elements']).replace('tobesubstituted', elementname)
-    targetfile = TARGET_FOLDERS['path'] + target
-    os.makedirs(os.path.dirname(targetfile), exist_ok=True)
-    with open(targetfile, 'w') as f:
-        frontmatter.dump(templatemd, targetfile)
+    with mkdocs_gen_files.open(TARGET_FOLDERS['elements'].replace('tobesubstituted', elementname), 'wb') as f:
+        frontmatter.dump(templatemd, f) 
 
 #### Systems Page creation ####
 def create_systems_pages():
@@ -111,11 +109,8 @@ def create_systems_pages():
     with open(TEMPLATE_FOLDERS['systems']) as f:
         templatemd = frontmatter.load(f)
 
-    target = copy.deepcopy(TARGET_FOLDERS['systems'])
-    targetfile = TARGET_FOLDERS['path'] + target
-    os.makedirs(os.path.dirname(targetfile), exist_ok=True)
-    with open(targetfile, 'w') as f:
-        frontmatter.dump(templatemd, targetfile)
+    with mkdocs_gen_files.open(TARGET_FOLDERS['systems'], 'wb') as f:
+        frontmatter.dump(templatemd, f)
 
 #### Element Surface Page creation ####
 def create_element_surface_pages(elementname, surfacename):
@@ -126,11 +121,8 @@ def create_element_surface_pages(elementname, surfacename):
     templatemd['data']['surface'] = surfacename
     templatemd['title'] = f'echemdb - {elementname} {surfacename} surfaces CV data'
 
-    target = copy.deepcopy(TARGET_FOLDERS['elements']).replace('tobesubstituted', f'{elementname}-{surfacename}')
-    targetfile = TARGET_FOLDERS['path'] + target
-    os.makedirs(os.path.dirname(targetfile), exist_ok=True)
-    with open(targetfile, 'w') as f:
-        frontmatter.dump(templatemd, targetfile)
+    with mkdocs_gen_files.open(TARGET_FOLDERS['elements'].replace('tobesubstituted', f'{elementname}-{surfacename}'), 'wb') as f:
+        frontmatter.dump(templatemd, f)
 
 #### Content Creation ####
 

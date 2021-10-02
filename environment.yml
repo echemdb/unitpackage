@@ -16,7 +16,6 @@ dependencies:
     - mdutils
     - mkdocs-section-index
     - mkdocs-macros-plugin
-    - python-frontmatter
     - tabulate
     - datapackage
     - python-frontmatter
