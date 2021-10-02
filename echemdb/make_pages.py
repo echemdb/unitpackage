@@ -84,17 +84,10 @@ def get_page_links( property_propertyvals_dict ):
 
 
 def create_nice_table_overview(df):
-    '''
-    return a nicer dataframe for direct table creation
-    ### AHHH, links need to be relative to current location what a fuck up
-    :param df:
-    :return:
-    '''
-
     dfc = df.copy()
-    dfc['link'] = dfc['path'].apply(lambda path: f'[:material-file-download:]({path})')
-    ### AHHH, links need to be relative to current location what a fuck up
-    dfc['echemdb-id'] = dfc['echemdb-id'].apply(lambda echemdb_id: f'[{echemdb_id}](../../../{get_echemdb_id_file(echemdb_id)})')
+    # TODO: These links are broken, see #4.
+    dfc['link'] = "." # dfc['path'].apply(lambda path: f'[:material-file-download:]({path})')
+    dfc['echemdb-id'] = "." # dfc['echemdb-id'].apply(lambda echemdb_id: f'[{echemdb_id}](../../../{get_echemdb_id_file(echemdb_id)})')
     # reference????
     return dfc
 

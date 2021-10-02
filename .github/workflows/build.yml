@@ -25,14 +25,14 @@ jobs:
         shell: bash -l {0}
         run: |
           mkdocs build
-          mkdir generated
-          mv site generated/website
       - name: detect broken links
         shell: bash -l {0}
         run: |
           python -m http.server 8880 --directory generated &
           sleep 1
-          linkchecker --check-extern http://localhost:8880/website/
+          # We check for broken links:
+          # * ignore fonts.gstatic.com which is mentioned by a link preconnect tag that linkchecker does not parse correctly.
+          linkchecker --check-extern --no-robots --ignore fonts.gstatic.com http://localhost:8880/website/
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
