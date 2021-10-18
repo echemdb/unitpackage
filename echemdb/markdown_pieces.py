@@ -4,13 +4,6 @@ from matplotlib.cm import jet_r
 from matplotlib import colors
 from .make_pages import get_page_links, cv_data
 
-# mdFile = MdUtils(file_name='Example_Markdown',title='Markdown File Example')
-# mtext = mdFile.new_inline_image(text='snow trees', path='./doc/source/images/photo-of-snow-covered-trees.jpg'))
-# mdtext = mdFile.new_table(columns, rows, text, text_align='center', marker='') # text is flattened array
-
-mdFile = MdUtils(file_name='Example_Markdown',title='Markdown File Example')
-
-
 def sometest(s):
     ns = '| A | B ' \
          '| \n | ------- | ----------- ' \
@@ -18,7 +11,6 @@ def sometest(s):
          '| \n | P  | T       |'
 
     return ns
-
 
 
 def restructure_array(listarray):
@@ -32,6 +24,7 @@ def restructure_array(listarray):
 def get_table(filename):
     if filename.split(".")[-1] == 'csv':
         columns, rows, text =  shapedlistfrom_csv(filename)
+        mdFile = MdUtils(file_name='Example_Markdown',title='Markdown File Example')
         return mdFile.new_table(columns, rows, text, text_align='center', marker='')  # text is flattened array
 
 def shapedlistfrom_csv(filename):
