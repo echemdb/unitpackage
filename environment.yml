@@ -8,6 +8,7 @@ dependencies:
   - pandas
   - matplotlib
   - plotly
+  - parallel
   - pip:
     - mkdocs-material
     - mkdocs-gen-files
@@ -19,4 +20,6 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
-
+    # We should use a released version of svgdigitizer instead once
+    # https://github.com/echemdb/svgdigitizer/issues/55 has been resolved.
+    - git+git://github.com/echemdb/svgdigitizer.git
