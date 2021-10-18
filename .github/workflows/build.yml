@@ -25,6 +25,7 @@ jobs:
       - name: mkdocs
         shell: bash -l {0}
         run: |
+          pip install -e .
           mkdocs build
           mv data site
       - uses: JamesIves/github-pages-deploy-action@3.7.1
