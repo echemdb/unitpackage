@@ -54,7 +54,7 @@ def make_element_linkbutton(elementname):
 
 
 def get_periodic_table():
-    edata = './elements.csv'
+    edata = './data/elements.csv'
     df = pd.read_csv(edata)
     columns = 18
     rows = 7
@@ -102,7 +102,7 @@ def get_normed_colormap(inarray):
 
 
 def get_periodic_table_span():
-    edata = './elements.csv'
+    edata = './data/elements.csv'
     df = pd.read_csv(edata)
     columns = 18
     rows = 6

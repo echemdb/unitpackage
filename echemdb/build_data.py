@@ -28,7 +28,7 @@ TARGET_FOLDERS = {'path': "./pages/",
 
 
 ELEMENTS_DATA = {
-    "elements_data": "./elements.csv"
+    "elements_data": "./data/elements.csv"
 }
 
 DISPLAYED_INFOS = ['electrode material', 'surface', 'electrolyte', 'reference', 'link', 'echemdb-id']
