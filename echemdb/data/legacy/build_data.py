@@ -19,7 +19,7 @@ TEMPLATE_FOLDERS = {'elements': "./templates/element.md",
                     'element_surface': "./templates/element_surface.md"
                     }
 
-TARGET_FOLDERS = {'path': "./docs/",
+TARGET_FOLDERS = {'path': "./pages/",
                  'elements': "cv/elements/tobesubstituted.md",
                 'element_surface': "elements/tobesubstituted.md",
                  'echemdb_id': "cv/echemdb_pages/tobesubstituted.md",
@@ -28,7 +28,7 @@ TARGET_FOLDERS = {'path': "./docs/",
 
 
 ELEMENTS_DATA = {
-    "elements_data": "./elements.csv"
+    "elements_data": "./data/elements.csv"
 }
 
 DISPLAYED_INFOS = ['electrode material', 'surface', 'electrolyte', 'reference', 'link', 'echemdb-id']
@@ -147,11 +147,3 @@ def make_plotly_figure_from_dataframes(alldfs):
 
 
     return figstring
-
-
-
-
-
-
-
-#def build_datapackages_from_yamlandcsv(listofyaml)

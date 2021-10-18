@@ -2,14 +2,14 @@ import os
 import os.path
 
 from mdutils.mdutils import MdUtils
-from .build_data import TEMPLATE_FOLDERS, ELEMENTS_DATA, TARGET_FOLDERS, DISPLAYED_INFOS, get_plotly_plot
+from echemdb.data.legacy.build_data import TEMPLATE_FOLDERS, ELEMENTS_DATA, TARGET_FOLDERS, DISPLAYED_INFOS, get_plotly_plot
 
 import frontmatter
 import markdown
 import pandas as pd
 import numpy as np
 import copy
-from .data import collect_datapackages, make_cvs_dataframe
+from echemdb.data.legacy.data import collect_datapackages, make_cvs_dataframe
 
 cv_data = make_cvs_dataframe(collect_datapackages())
 grouped_cv_data = cv_data.groupby(by=['electrode material', 'surface'])
