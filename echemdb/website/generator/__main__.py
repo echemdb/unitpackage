@@ -1,7 +1,7 @@
 import os.path
 import mkdocs_gen_files
-from echemdb.data import make_cvs_dataframe, collect_datapackages
-from echemdb.make_pages import create_element_pages, create_element_surface_pages, create_systems_pages, render
+from echemdb.data.legacy.data import make_cvs_dataframe, collect_datapackages
+from echemdb.website.legacy.make_pages import create_element_pages, create_element_surface_pages, create_systems_pages, render
 
 data = make_cvs_dataframe(collect_datapackages())
 

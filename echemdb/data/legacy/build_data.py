@@ -147,11 +147,3 @@ def make_plotly_figure_from_dataframes(alldfs):
 
 
     return figstring
-
-
-
-
-
-
-
-#def build_datapackages_from_yamlandcsv(listofyaml)
