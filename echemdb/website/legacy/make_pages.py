@@ -9,19 +9,20 @@ import markdown
 import pandas as pd
 import numpy as np
 import copy
-from echemdb.data.legacy.data import collect_datapackages, make_cvs_dataframe
+from echemdb.data.legacy.data import datadir, make_cvs_dataframe
+from echemdb.data.local import collect_datapackages
 
-cv_data = make_cvs_dataframe(collect_datapackages())
+cv_data = make_cvs_dataframe(collect_datapackages(datadir))
 grouped_cv_data = cv_data.groupby(by=['electrode material', 'surface'])
 
 def render(template, **kwargs):
     r"""
     Render `template` as a jinja template.
     """
-    from jinja2 import Environment, FileSystemLoader, select_autoescape
+    from jinja2 import Environment, FileSystemLoader, select_autoescape, ChainableUndefined
     env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "templates")),
-        autoescape=select_autoescape()
+        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")),
+        autoescape=select_autoescape(),
     )
 
     # Load macros like mkdocs-macros does, see
@@ -29,7 +30,7 @@ def render(template, **kwargs):
     def macro(f, name=''):
         env.globals[name or f.__name__] = f
     env.macro = macro
-    from .macros import define_env
+    from echemdb.website.macros.legacy import define_env
     define_env(env)
     del env.macro
 

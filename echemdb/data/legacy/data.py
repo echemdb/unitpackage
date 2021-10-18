@@ -2,19 +2,6 @@ import os.path
 
 datadir = os.path.normpath(os.path.join(os.path.dirname(__file__), '..', 'data'))
 
-def collect_datapackages(data = datadir):
-    # Collect all datapackage descriptors, see
-    # https://specs.frictionlessdata.io/data-package/#metadata
-    import os.path
-    from glob import glob
-    descriptors = glob(os.path.join(data, '**', 'datapackage.json'), recursive=True)
-
-    # Read the package descriptors (does not read the actual data CSVs)
-    from datapackage import Package
-    packages = [Package(descriptor) for descriptor in descriptors]
-
-    return packages
-
 def make_cvs_dataframe(packages, data = datadir):
     import pandas as pd
 

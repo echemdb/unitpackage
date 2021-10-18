@@ -12,6 +12,7 @@ dependencies:
   - pip:
     - mkdocs-material
     - mkdocs-gen-files
+    - mkdocs-literate-nav
     - markdown-include
     - mdutils
     - mkdocs-section-index
