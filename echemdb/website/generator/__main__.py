@@ -28,7 +28,7 @@ from echemdb.website.legacy.make_pages import create_element_pages, create_eleme
 
 import echemdb.website.generator.database
 
-if __name__ in ["__main__", "<run_path>"]:
+def main():
     for entry in echemdb.website.generator.database.cv:
         with mkdocs_gen_files.open(os.path.join("cv", "entries", f"{entry.identifier}.md"), "w") as md:
             md.write(render("cv_entry.md", database=echemdb.website.generator.database.cv, entry=entry))
@@ -46,3 +46,6 @@ if __name__ in ["__main__", "<run_path>"]:
 
     for tupled in data.groupby(by = ['electrode material', 'surface']).groups:
         create_element_surface_pages(tupled[0], tupled[1])
+
+if __name__ in ["__main__", "<run_path>"]:
+    main()

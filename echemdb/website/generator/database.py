@@ -34,4 +34,3 @@ packages = echemdb.data.local.collect_datapackages(
 )
 
 cv = echemdb.data.cv.database.Database(packages)
-

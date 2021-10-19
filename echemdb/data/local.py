@@ -30,5 +30,3 @@ def collect_datapackages(data):
     # Read the package descriptors (does not read the actual data CSVs)
     from datapackage import Package
     return [Package(descriptor) for descriptor in descriptors]
-
-
