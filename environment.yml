@@ -3,15 +3,18 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - mkdocs
-  - pip
-  - pandas
+  - inflect
   - matplotlib
-  - plotly
+  - mkdocs
+  - pandas
   - parallel
+  - pip
+  - plotly
+  - pytest
   - pip:
     - mkdocs-material
     - mkdocs-gen-files
+    - mkdocs-literate-nav
     - markdown-include
     - mdutils
     - mkdocs-section-index

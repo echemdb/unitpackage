@@ -1,3 +1,25 @@
+# ********************************************************************
+#  This file is part of echemdb.
+#
+#        Copyright (C) 2021 Albert Engstfeld
+#        Copyright (C) 2021 Johannes Hermann
+#        Copyright (C) 2021 Julian Rüth
+#        Copyright (C) 2021 Nicolas Hörmann
+#
+#  echemdb is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  echemdb is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+# ********************************************************************
+
 import os
 import os.path
 
@@ -5,23 +27,23 @@ from mdutils.mdutils import MdUtils
 from echemdb.data.legacy.build_data import TEMPLATE_FOLDERS, ELEMENTS_DATA, TARGET_FOLDERS, DISPLAYED_INFOS, get_plotly_plot
 
 import frontmatter
-import markdown
 import pandas as pd
 import numpy as np
 import copy
-from echemdb.data.legacy.data import collect_datapackages, make_cvs_dataframe
+from echemdb.data.legacy.data import datadir, make_cvs_dataframe
+from echemdb.data.local import collect_datapackages
 
-cv_data = make_cvs_dataframe(collect_datapackages())
+cv_data = make_cvs_dataframe(collect_datapackages(datadir))
 grouped_cv_data = cv_data.groupby(by=['electrode material', 'surface'])
 
 def render(template, **kwargs):
     r"""
     Render `template` as a jinja template.
     """
-    from jinja2 import Environment, FileSystemLoader, select_autoescape
+    from jinja2 import Environment, FileSystemLoader, select_autoescape, ChainableUndefined
     env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "templates")),
-        autoescape=select_autoescape()
+        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")),
+        autoescape=select_autoescape(),
     )
 
     # Load macros like mkdocs-macros does, see
@@ -29,7 +51,7 @@ def render(template, **kwargs):
     def macro(f, name=''):
         env.globals[name or f.__name__] = f
     env.macro = macro
-    from .macros import define_env
+    from echemdb.website.macros.legacy import define_env
     define_env(env)
     del env.macro
 
