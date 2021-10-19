@@ -19,6 +19,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 #*********************************************************************
+
 import os
 from distutils.core import setup
 
