@@ -10,6 +10,7 @@ dependencies:
   - parallel
   - pip
   - plotly
+  - pytest
   - pip:
     - mkdocs-material
     - mkdocs-gen-files
