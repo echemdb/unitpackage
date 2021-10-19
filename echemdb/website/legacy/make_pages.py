@@ -27,7 +27,6 @@ from mdutils.mdutils import MdUtils
 from echemdb.data.legacy.build_data import TEMPLATE_FOLDERS, ELEMENTS_DATA, TARGET_FOLDERS, DISPLAYED_INFOS, get_plotly_plot
 
 import frontmatter
-import markdown
 import pandas as pd
 import numpy as np
 import copy
