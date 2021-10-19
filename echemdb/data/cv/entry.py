@@ -25,6 +25,21 @@ class Entry:
         import pandas
         return pandas.read_csv(self.package.resources[0].raw_iter(stream=False))
 
+    @property
+    def df_original(self): #, reference, xunit, yunit
+        from astropy import units as u
+        df = self.df
+        current = u.Unit(self.figure_description.current.unit)
+    
+        if 'j' in df.columns:
+            factor = (u.A / u.m**2).to(current)
+            df['j'] *= factor
+        if 'I' in df.columns:
+            factor = (u.A).to(current)
+            df['I'] *= factor
+        # same for Voltage axis
+        return df
+
     def plot(self):
         from echemdb.data.cv.plot import Plot
         return Plot(self)
