@@ -53,7 +53,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.identifier
-            'Engstfeld_2018_polycrystalline_17743_4b_1'
+            'engstfeld_2018_polycrystalline_17743_4b_1'
 
         """
         return self.package.resources[0].name
@@ -81,7 +81,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'Engstfeld_2018_Polycrystalline_17747', 'figure': '4b', 'curve': 1}
+            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'engstfeld_2018_polycrystalline_17743', 'figure': '4b', 'curve': 1}
 
         """
         return getattr(Descriptor(self.package.descriptor), name)
@@ -94,7 +94,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'Engstfeld_2018_Polycrystalline_17747', 'figure': '4b', 'curve': 1}
+            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'engstfeld_2018_polycrystalline_17743', 'figure': '4b', 'curve': 1}
         """
         return Descriptor(self.package.descriptor)[name]
 
@@ -143,7 +143,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry
-            Entry('Engstfeld_2018_polycrystalline_17743_4b_1')
+            Entry('engstfeld_2018_polycrystalline_17743_4b_1')
 
         """
         return f"Entry({repr(self.identifier)})"
@@ -169,7 +169,7 @@ class Entry:
         return fig
 
     @classmethod
-    def create_examples(cls, name="Engstfeld_2018_polycristalline_17743"):
+    def create_examples(cls, name="engstfeld_2018_polycrystalline_17743"):
         r"""
         Return some example entries for use in doctesting.
 
@@ -178,7 +178,7 @@ class Entry:
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+            [Entry('engstfeld_2018_polycrystalline_17743_4b_1')]
 
         """
         import os.path

@@ -58,11 +58,11 @@ class Database:
         EXAMPLES::
 
             >>> Database.create_example()
-            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1'), Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
+            [Entry('engstfeld_2018_polycrystalline_17743_4b_1'), Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         """
         from echemdb.data.cv.entry import Entry
-        entries = Entry.create_examples("Engstfeld_2018_polycristalline_17743") + \
+        entries = Entry.create_examples("engstfeld_2018_polycrystalline_17743") + \
             Entry.create_examples("alves_2011_electrochemistry_6010")
 
         return Database([entry.package for entry in entries])
@@ -75,7 +75,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> next(iter(database))
-            Entry('Engstfeld_2018_polycrystalline_17743_4b_1')
+            Entry('engstfeld_2018_polycrystalline_17743_4b_1')
 
         """
         from echemdb.data.cv.entry import Entry
