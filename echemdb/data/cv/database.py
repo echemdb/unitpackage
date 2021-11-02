@@ -3,10 +3,19 @@ A Database of Cyclic Voltammograms.
 
 EXAMPLES:
 
-Create a database from local datapackages in the `data/` directory::
+Create a database from local data packages in the `data/` directory::
 
     >>> from echemdb.data.local import collect_datapackages
     >>> database = Database(collect_datapackages('data/'))
+
+Create a database from the data packages published in the echemdb::
+
+    >>> database = Database()
+
+Search the database for a single publication::
+
+    >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1002/chem.201803418')
+    [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
 
 """
 # ********************************************************************
@@ -47,7 +56,11 @@ class Database:
         0
 
     """
-    def __init__(self, data_packages):
+    def __init__(self, data_packages=None):
+        if data_packages is None:
+            import os.path
+            import echemdb.data.remote
+            data_packages = echemdb.data.remote.collect_datapackages(os.path.join('website-gh-pages', 'data', 'generated', 'svgdigitizer'))
         self._packages = data_packages
 
     @classmethod
@@ -66,6 +79,19 @@ class Database:
             Entry.create_examples("alves_2011_electrochemistry_6010")
 
         return Database([entry.package for entry in entries])
+
+    def filter(self, predicate):
+        r"""
+        Return the subset of the database that satisfies predicate.
+
+        EXAMPLES::
+
+            >>> database = Database.create_example()
+            >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1002/chem.201803418')
+            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+
+        """
+        return Database([entry.package for entry in self if predicate(entry)])
 
     def __iter__(self):
         r"""
