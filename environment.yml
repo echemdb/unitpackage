@@ -25,4 +25,4 @@ dependencies:
     - python-frontmatter
     # We should use a released version of svgdigitizer instead once
     # https://github.com/echemdb/svgdigitizer/issues/55 has been resolved.
-    - https://github.com/echemdb/svgdigitizer.git
+    - git+https://github.com/echemdb/svgdigitizer.git
