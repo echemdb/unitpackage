@@ -81,7 +81,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'engstfeld_2018_polycrystalline_17743', 'figure': '4b', 'curve': 1}
+            {'version': 1, 'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'engstfeld_2018_polycrystalline_17743', 'figure': '4b', 'curve': 1}
 
         """
         return getattr(Descriptor(self.package.descriptor), name)
@@ -94,7 +94,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'engstfeld_2018_polycrystalline_17743', 'figure': '4b', 'curve': 1}
+            {'version': 1, 'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'engstfeld_2018_polycrystalline_17743', 'figure': '4b', 'curve': 1}
         """
         return Descriptor(self.package.descriptor)[name]
 
