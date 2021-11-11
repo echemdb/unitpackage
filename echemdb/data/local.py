@@ -1,3 +1,6 @@
+r"""
+Utilities to work with local data packages.
+"""
 # ********************************************************************
 #  This file is part of echemdb.
 #
@@ -21,6 +24,15 @@
 # ********************************************************************
 
 def collect_datapackages(data):
+    r"""
+    Return a list of data packages defined in the directory `data` and its
+    subdirectories.
+
+    EXAMPLES::
+
+        >>> packages = collect_datapackages(".")
+
+    """
     # Collect all datapackage descriptors, see
     # https://specs.frictionlessdata.io/data-package/#metadata
     import os.path
