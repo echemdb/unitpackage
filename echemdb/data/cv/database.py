@@ -15,7 +15,7 @@ Create a database from the data packages published in the echemdb::
 Search the database for a single publication::
 
     >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1002/chem.201803418')
-    [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+    [Entry('engstfeld_2018_polycrystalline_17743_4b_1')]
 
 """
 # ********************************************************************
@@ -88,7 +88,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1002/chem.201803418')
-            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+            [Entry('engstfeld_2018_polycrystalline_17743_4b_1')]
 
         """
         return Database([entry.package for entry in self if predicate(entry)])
