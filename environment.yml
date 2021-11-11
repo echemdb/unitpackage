@@ -11,6 +11,7 @@ dependencies:
   - pip
   - plotly
   - pytest
+  - pyyaml
   - pip:
     - mkdocs-material
     - mkdocs-gen-files
