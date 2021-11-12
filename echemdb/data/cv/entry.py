@@ -309,3 +309,7 @@ class Descriptor:
 
         """
         return repr(self._descriptor)
+
+    def create_yaml(self):
+        import yaml
+        return yaml.dump(self._descriptor)
