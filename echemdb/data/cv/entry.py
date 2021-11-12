@@ -68,7 +68,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'create_examples', 'create_yaml', 'curator', 'df', 'electrochemical_system', 'electrochemical_system_metadata', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'version']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'create_examples', 'create_yaml', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'version']
 
         """
         return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
@@ -221,19 +221,6 @@ class Entry:
 
         return [Entry(package) for package in packages]
 
-    def electrochemical_system_metadata(self):
-        r'''Return the electrochemical metadata as string
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.electrochemical_system_metadata()
-            'electrodes:\n  configuration: three\n  counter electrode:\n    crystallographic orientation: poly\n    material: Au\n    shape: mesh\n  reference electrode:\n    source:\n      supplier: homemade\n    type: RHE\n  working electrode:\n    crystallographic orientation: 100\n    geometric electrolyte contact area:\n      unit: cm-2\n      value: null\n    material: Cu\n    preparation procedure: sputter and heating under UHV conditions\n    shape:\n      diameter:\n        unit: mm\n        value: 4.4\n      height:\n        unit: mm\n        value: 2\n      type: head shaped\n    source:\n      LOT: null\n      supplier: Mateck\nelectrolyte:\n  components:\n  - name: water\n    proportion:\n      unit: volume percent\n      value: 100\n    source:\n      quality: ultrapure water\n      refinement: Millipore MilliQ\n      total organic carbon:\n        unit: none\n        value: none\n    sum formula: H2O\n    type: solvent\n  - concentration:\n      unit: M\n      value: 0.1\n    name: potassium hydroxide\n    source:\n      LOT: null\n      supplier: Merck Suprapur\n    sum formula: KOH\n    type: alkaline\n  ph:\n    uncertainty: none\n    value: 13\n  temperature:\n    unit: K\n    value: 298.15\n  type: aq\n'
-
-        '''
-        import yaml
-        meta = self.package.to_dict() # `to_dict` is apparently deprecated. Find another way to turn the package into a dict.
-        return yaml.dump(meta['electrochemical system'])
 
 class Descriptor:
     r"""
