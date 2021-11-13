@@ -3,15 +3,20 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - inflect
+  - matplotlib
   - mkdocs
   - pandas
-  - matplotlib
+  - parallel
+  - pip
   - plotly
   - pip
+  - pytest
   - pip:
     - linkchecker
     - mkdocs-material
     - mkdocs-gen-files
+    - mkdocs-literate-nav
     - markdown-include
     - mdutils
     - mkdocs-section-index
@@ -20,3 +25,6 @@ dependencies:
     - datapackage
     - python-frontmatter
     - mkdocs-literate-nav
+    # We should use a released version of svgdigitizer instead once
+    # https://github.com/echemdb/svgdigitizer/issues/55 has been resolved.
+    - git+https://github.com/echemdb/svgdigitizer.git

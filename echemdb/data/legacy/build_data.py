@@ -1,3 +1,25 @@
+# ********************************************************************
+#  This file is part of echemdb.
+#
+#        Copyright (C) 2021 Albert Engstfeld
+#        Copyright (C) 2021 Johannes Hermann
+#        Copyright (C) 2021 Julian Rüth
+#        Copyright (C) 2021 Nicolas Hörmann
+#
+#  echemdb is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  echemdb is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+# ********************************************************************
+
 import hashlib
 import csv
 import numpy as np
@@ -19,7 +41,7 @@ TEMPLATE_FOLDERS = {'elements': "./templates/element.md",
                     'element_surface': "./templates/element_surface.md"
                     }
 
-TARGET_FOLDERS = {'path': "./docs/",
+TARGET_FOLDERS = {'path': "./pages/",
                  'elements': "cv/elements/tobesubstituted.md",
                 'element_surface': "elements/tobesubstituted.md",
                  'echemdb_id': "cv/echemdb_pages/tobesubstituted.md",
@@ -28,7 +50,7 @@ TARGET_FOLDERS = {'path': "./docs/",
 
 
 ELEMENTS_DATA = {
-    "elements_data": "./elements.csv"
+    "elements_data": "./data/elements.csv"
 }
 
 DISPLAYED_INFOS = ['electrode material', 'surface', 'electrolyte', 'reference', 'link', 'echemdb-id']
@@ -147,11 +169,3 @@ def make_plotly_figure_from_dataframes(alldfs):
 
 
     return figstring
-
-
-
-
-
-
-
-#def build_datapackages_from_yamlandcsv(listofyaml)
