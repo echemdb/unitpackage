@@ -14,8 +14,8 @@ Create a database from the data packages published in the echemdb::
 
 Search the database for a single publication::
 
-    >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1002/chem.201803418')
-    [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+    >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1039/C0CP01001D')
+    [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
 """
 # ********************************************************************
@@ -71,12 +71,12 @@ class Database:
         EXAMPLES::
 
             >>> Database.create_example()
-            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1'), Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_p2_2a_solid'), Entry('engstfeld_2018_polycrystalline_17743_4b_1')]
 
         """
         from echemdb.data.cv.entry import Entry
-        entries = Entry.create_examples("Engstfeld_2018_polycristalline_17743") + \
-            Entry.create_examples("alves_2011_electrochemistry_6010")
+        entries = Entry.create_examples("alves_2011_electrochemistry_6010") + \
+                        Entry.create_examples("engstfeld_2018_polycrystalline_17743")
 
         return Database([entry.package for entry in entries])
 
@@ -87,8 +87,8 @@ class Database:
         EXAMPLES::
 
             >>> database = Database.create_example()
-            >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1002/chem.201803418')
-            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+            >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1039/C0CP01001D')
+            [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         """
         return Database([entry.package for entry in self if predicate(entry)])
@@ -101,7 +101,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> next(iter(database))
-            Entry('Engstfeld_2018_polycrystalline_17743_4b_1')
+            Entry('alves_2011_electrochemistry_6010_p2_2a_solid')
 
         """
         from echemdb.data.cv.entry import Entry
