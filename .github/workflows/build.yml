@@ -16,10 +16,21 @@ jobs:
         run: |
           mamba env update --quiet -n test -f environment.yml
           conda list
-      - name: build
+      - name: digitize
         shell: bash -l {0}
         run: |
+          pushd literature
+          ls ./**/*.yaml | parallel --bar --halt now,fail=1 'svgdigitizer cv --sampling_interval .005 --package --metadata {} {.}.svg --outdir=../data/generated/svgdigitizer/{//}'
+          popd
+      - name: mkdocs
+        shell: bash -l {0}
+        run: |
+          pip install -e .
+          # Since no browser is installed during this CI run, plotly fails to
+          # produce HTML output, see https://github.com/plotly/plotly.py/blob/2c2dd6ab2eeff73c782457f33c590c1d09a97625/packages/python/plotly/plotly/io/_renderers.py#L532
+          export PLOTLY_RENDERER=browser
           mkdocs build
+          mv data site
           # Disable further processing by GitHub
           touch site/.nojekyll
       - uses: JamesIves/github-pages-deploy-action@3.7.1
