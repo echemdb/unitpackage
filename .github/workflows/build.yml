@@ -35,7 +35,7 @@ jobs:
           # produce HTML output, see https://github.com/plotly/plotly.py/blob/2c2dd6ab2eeff73c782457f33c590c1d09a97625/packages/python/plotly/plotly/io/_renderers.py#L532
           export PLOTLY_RENDERER=browser
           mkdocs build
-          mv data site
+          mv data generated/website/
       - name: detect broken links
         shell: bash -l {0}
         run: |
