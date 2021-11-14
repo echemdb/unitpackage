@@ -297,7 +297,8 @@ class Descriptor:
         """
         return repr(self._descriptor)
 
-    def create_yaml(self):
+    @property
+    def yaml(self):
         r'''Return a printable representation of this descriptor in yaml format.
 
         EXAMPLES::
