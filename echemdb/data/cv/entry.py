@@ -53,7 +53,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.identifier
-            'Engstfeld_2018_polycrystalline_17743_4b_1'
+            'alves_2011_electrochemistry_6010_p2_2a_solid'
 
         """
         return self.package.resources[0].name
@@ -68,7 +68,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'create_examples', 'create_yaml', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'version']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'create_examples', 'yaml', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'version']
 
         """
         return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
@@ -81,7 +81,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'Engstfeld_2018_Polycrystalline_17747', 'figure': '4b', 'curve': 1}
+            {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
         return getattr(Descriptor(self.package.descriptor), name)
@@ -94,7 +94,8 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'doi': 'https://doi.org/10.1002/chem.201803418', 'bib': 'Engstfeld_2018_Polycrystalline_17747', 'figure': '4b', 'curve': 1}
+            {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+
         """
         return Descriptor(self.package.descriptor)[name]
 
@@ -107,15 +108,15 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> entry.df()
                          t         U         j
-            0     0.000000 -0.196962  4.300884
-            1     0.011368 -0.196393  5.140820
+            0     0.000000 -0.103158 -0.099828
+            1     0.100000 -0.098158 -0.091664
             ...
 
             >>> from astropy import units as u
             >>> entry.df(yunit=u.A / u.m**2)
                          t         U         j
-            0     0.000000 -0.196962  0.043009
-            1     0.011368 -0.196393  0.051408
+            0     0.000000 -0.103158 -0.998277
+            1     0.100000 -0.098158 -0.916644
             ...
 
         """
@@ -143,7 +144,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry
-            Entry('Engstfeld_2018_polycrystalline_17743_4b_1')
+            Entry('alves_2011_electrochemistry_6010_p2_2a_solid')
 
         """
         return f"Entry({repr(self.identifier)})"
@@ -169,7 +170,7 @@ class Entry:
         return fig
 
     @classmethod
-    def create_examples(cls, name="Engstfeld_2018_polycristalline_17743"):
+    def create_examples(cls, name="alves_2011_electrochemistry_6010"):
         r"""
         Return some example entries for use in doctesting.
 
@@ -178,7 +179,7 @@ class Entry:
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('Engstfeld_2018_polycrystalline_17743_4b_1')]
+            [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         """
         import os.path
