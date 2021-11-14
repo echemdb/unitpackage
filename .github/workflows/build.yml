@@ -36,6 +36,8 @@ jobs:
           export PLOTLY_RENDERER=browser
           mkdocs build
           mv data generated/website/
+          # Disable further processing by GitHub
+          touch generated/website/.nojekyll
       - name: detect broken links
         shell: bash -l {0}
         run: |
