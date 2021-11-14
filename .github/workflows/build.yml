@@ -37,7 +37,7 @@ jobs:
           mkdocs build
           mv data generated/website/
           # Disable further processing by GitHub
-          touch site/.nojekyll
+          touch generated/website/.nojekyll
       - name: detect broken links
         shell: bash -l {0}
         run: |
