@@ -10,8 +10,10 @@ dependencies:
   - parallel
   - pip
   - plotly
+  - pip
   - pytest
   - pip:
+    - linkchecker
     - mkdocs-material
     - mkdocs-gen-files
     - mkdocs-literate-nav
@@ -19,10 +21,10 @@ dependencies:
     - mdutils
     - mkdocs-section-index
     - mkdocs-macros-plugin
-    - python-frontmatter
     - tabulate
     - datapackage
     - python-frontmatter
+    - mkdocs-literate-nav
     # We should use a released version of svgdigitizer instead once
     # https://github.com/echemdb/svgdigitizer/issues/55 has been resolved.
     - git+https://github.com/echemdb/svgdigitizer.git
