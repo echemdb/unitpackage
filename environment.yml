@@ -12,6 +12,7 @@ dependencies:
   - plotly
   - pip
   - pytest
+  - pyyaml
   - pip:
     - linkchecker
     - mkdocs-material
