@@ -55,12 +55,7 @@ def collect_datapackages(data=".", url="https://github.com/echemdb/website/archi
         outdir = tempfile.mkdtemp()
         atexit.register(lambda dirname: shutil.rmtree(dirname), outdir)
 
-    from urllib.request import urlopen
-    response = urlopen(url)
-
-    from zipfile import ZipFile
-    from io import BytesIO
-    compressed = ZipFile(BytesIO(response.read()))
+    compressed = collect_zipfile_from_url(url)
 
     compressed.extractall(outdir, members=[name for name in compressed.namelist() if name.endswith('.json') or name.endswith('.csv')])
 
@@ -91,7 +86,7 @@ def collect_bibliography(data=".", url="https://github.com/echemdb/website/archi
 
     compressed = collect_zipfile_from_url(url)
 
-    compressed.extractall(outdir, members=[name for name in compressed.namelist() if name.endswith('.json') or name.endswith('.csv')])
+    compressed.extractall(outdir, members=[name for name in compressed.namelist() if name.endswith('.bib')])
 
     import os.path
     import echemdb.data.local
