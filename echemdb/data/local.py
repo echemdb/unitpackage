@@ -43,9 +43,9 @@ def collect_datapackages(data):
     from datapackage import Package
     return [Package(descriptor) for descriptor in descriptors]
 
-def collect_bibliography(bibliography):
+def collect_bibliography(bibfiles):
     r"""
-    Return a list of bibliography files (bibtex) defined in the directory `bibliography` and its
+    Return a list of bibliography files (bibtex) defined in the directory `bibfiles` and its
     subdirectories.
 
     EXAMPLES::
@@ -55,4 +55,4 @@ def collect_bibliography(bibliography):
     """
     import os.path
     from glob import glob
-    return glob(os.path.join(data, '**', '*.bib'), recursive=True)
+    return glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True)
