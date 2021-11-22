@@ -222,6 +222,10 @@ class Entry:
 
         return [Entry(package) for package in packages]
 
+    @property
+    def bibliography(name):
+        return self._database._bibliography[name]
+
 
 class Descriptor:
     r"""
