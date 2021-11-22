@@ -56,12 +56,18 @@ class Database:
         0
 
     """
-    def __init__(self, data_packages=None):
+    def __init__(self, data_packages=None, bibliography=None):
         if data_packages is None:
             import os.path
             import echemdb.data.remote
             data_packages = echemdb.data.remote.collect_datapackages(os.path.join('website-gh-pages', 'data', 'generated', 'svgdigitizer'))
+        if bibliography is None:
+            import os.path
+            import echemdb.data.remote
+            bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'Literature'))
+
         self._packages = data_packages
+        self._bibliography = bibliography
 
     @classmethod
     def create_example(self):

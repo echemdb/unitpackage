@@ -42,4 +42,4 @@ bibliography = echemdb.data.local.collect_bibliography(
         'literature'))
 )
 
-cv = echemdb.data.cv.database.Database(packages)
+cv = echemdb.data.cv.database.Database(packages, bibliography)
