@@ -86,6 +86,41 @@ class Database:
 
         return Database([entry.package for entry in entries])
 
+    @property
+    def bibliography(self):
+        r"""
+        Return a pybtex database of all bibtex bibliography files.
+        
+        EXAMPLES::
+
+            >>> database = Database()
+            >>> database.bibliography
+            BibliographyData(
+              entries=OrderedCaseInsensitiveDict([]),
+            <BLANKLINE>
+              preamble=[])
+
+        """
+        from pybtex.database import parse_file
+        from pybtex.database import BibliographyData, Entry # Entry possibly obsolete
+        from pathlib import Path
+
+        bib_data = BibliographyData()
+        # TODO: Check for duplicates
+
+        for file in self._bibliography:
+            bib_entry = parse_file(file, bib_format='bibtex')
+            
+            if not file.stem == list(bib_entry.entries.keys())[0]: 
+                raise Exception(f"Entry label {bib_entry.entries.keys()[0]} does not match file named {file.stem}.")
+            
+            if len(list(bib_entry.entries.keys())) > 1:
+                raise Exception(f"More than one entry in {file}.")
+                
+            bib_data.entries[file.stem] = bib_entry.entries[file.stem]
+        return bib_data
+
+
     def filter(self, predicate):
         r"""
         Return the subset of the database that satisfies predicate.
@@ -97,7 +132,7 @@ class Database:
             [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         """
-        return Database([entry.package for entry in self if predicate(entry)])
+        return Database(data_packages=[entry.package for entry in self if predicate(entry)], bibliography=self._bibliography)
 
     def __iter__(self):
         r"""
