@@ -42,3 +42,17 @@ def collect_datapackages(data):
     # Read the package descriptors (does not read the actual data CSVs)
     from datapackage import Package
     return [Package(descriptor) for descriptor in descriptors]
+
+def collect_bibliography(bibliography):
+    r"""
+    Return a list of bibliography files (bibtex) defined in the directory `bibliography` and its
+    subdirectories.
+
+    EXAMPLES::
+
+        >>> bibfiles = collect_bibliography(".")
+
+    """
+    import os.path
+    from glob import glob
+    return glob(os.path.join(data, '**', '*.bib'), recursive=True)
