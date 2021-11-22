@@ -26,6 +26,15 @@ Utilities to work with remote data packages.
 from functools import cache
 
 @cache
+def collect_zipfile_from_url(url):
+    from urllib.request import urlopen
+    response = urlopen(url)
+
+    from zipfile import ZipFile
+    from io import BytesIO
+    return ZipFile(BytesIO(response.read()))
+
+@cache
 def collect_datapackages(data=".", url="https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip", outdir=None):
     r"""
     Return a list of data packages defined in a remote location.
@@ -58,3 +67,32 @@ def collect_datapackages(data=".", url="https://github.com/echemdb/website/archi
     import os.path
     import echemdb.data.local
     return echemdb.data.local.collect_datapackages(os.path.join(outdir, data))
+
+@cache
+def collect_bibliography(data=".", url="https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip", outdir=None):
+    r"""
+    Return a list of bibliography files (bibtex) in a remote location.
+
+    The default is to download the bibliography currently available on echemdb and
+    extract them to a temporary directory.
+
+    EXAMPLES::
+
+        >>> packages = collect_bibliography()
+
+    """
+    if outdir is None:
+        import tempfile
+        import atexit
+        import shutil
+
+        outdir = tempfile.mkdtemp()
+        atexit.register(lambda dirname: shutil.rmtree(dirname), outdir)
+
+    compressed = collect_zipfile_from_url(url)
+
+    compressed.extractall(outdir, members=[name for name in compressed.namelist() if name.endswith('.json') or name.endswith('.csv')])
+
+    import os.path
+    import echemdb.data.local
+    return echemdb.data.local.collect_bibliography(os.path.join(outdir, data))
