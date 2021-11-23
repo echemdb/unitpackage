@@ -105,8 +105,11 @@ class Database:
         from pybtex.database import BibliographyData, Entry # Entry possibly obsolete
         from pathlib import Path
 
-        bib_data = BibliographyData()
+        bibliography = BibliographyData()
         # TODO: Check for duplicates
+
+        #for bib_entry in self._bibliography:
+        #    bib_data.entries[file.stem] = bib_entry.entries[file.stem]
 
         for file in self._bibliography:
             bib_entry = parse_file(file, bib_format='bibtex')
@@ -117,8 +120,8 @@ class Database:
             if len(list(bib_entry.entries.keys())) > 1:
                 raise Exception(f"More than one entry in {file}.")
                 
-            bib_data.entries[file.stem] = bib_entry.entries[file.stem]
-        return bib_data
+            bibliography.entries[file.stem] = bib_entry.entries[file.stem]
+        return bibliography
 
 
     def filter(self, predicate):

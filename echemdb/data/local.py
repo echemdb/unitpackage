@@ -58,18 +58,4 @@ def collect_bibliography(bibfiles):
     from pathlib import Path
     from pybtex.database import parse_file
 
-    files = [Path(file) for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True)]
-    print(files)
-    bib_entries = []
-
-    for file in files:
-        bib_entry = parse_file(file, bib_format='bibtex')
-        if not file.stem == list(bib_entry.entries.keys()): 
-            raise Exception(f"Entry label {bib_entry.entries.keys()} does not match file named {file.stem}.")
-        
-        if len(list(bib_entry.entries.keys())) > 1:
-            raise Exception(f"The bib file {file} contains more than one key, but only one is allowed.")
-
-        bib_entries.append(bib_entry)
-
-    return bib_entries
+    return [Path(file) for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True)]
