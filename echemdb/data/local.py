@@ -56,6 +56,5 @@ def collect_bibliography(bibfiles):
     import os.path
     from glob import glob
     from pathlib import Path
-    from pybtex.database import parse_file
 
     return [Path(file) for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True)]

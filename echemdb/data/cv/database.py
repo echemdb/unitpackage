@@ -102,14 +102,11 @@ class Database:
 
         """
         from pybtex.database import parse_file
-        from pybtex.database import BibliographyData, Entry # Entry possibly obsolete
+        from pybtex.database import BibliographyData
         from pathlib import Path
 
         bibliography = BibliographyData()
         # TODO: Check for duplicates
-
-        #for bib_entry in self._bibliography:
-        #    bib_data.entries[file.stem] = bib_entry.entries[file.stem]
 
         for file in self._bibliography:
             bib_entry = parse_file(file, bib_format='bibtex')
