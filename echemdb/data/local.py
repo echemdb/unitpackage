@@ -45,8 +45,8 @@ def collect_datapackages(data):
 
 def collect_bibliography(bibfiles):
     r"""
-    Return a list of bibliography files (bibtex) defined in the directory `bibfiles` and its
-    subdirectories.
+    Return a list of bibliography data (pybtex) parsed from the bibtex files
+    in the directory `bibfiles` and its subdirectories.
 
     EXAMPLES::
 
@@ -55,6 +55,6 @@ def collect_bibliography(bibfiles):
     """
     import os.path
     from glob import glob
-    from pathlib import Path
+    from pybtex.database import parse_file
 
-    return [Path(file) for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True)]
+    return [entry for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True) for entry in parse_file(file, bib_format="bibtex").entries.values()]

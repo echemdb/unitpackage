@@ -41,8 +41,9 @@ class Entry:
         >>> entry = next(iter(database))
 
     """
-    def __init__(self, package):
+    def __init__(self, package, bibliography):
         self.package = package
+        self.bibliography = bibliography
 
     @property
     def identifier(self):
@@ -214,18 +215,16 @@ class Entry:
                 from svgdigitizer.__main__ import cv
                 invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
-        from echemdb.data.local import collect_datapackages
+        from echemdb.data.local import collect_datapackages, collect_bibliography
         packages = collect_datapackages(outdir)
+        bibliography = collect_bibliography(source)
+        assert len(bibliography) == 1, f"No bibliography found for {name}."
+        bibliography = next(iter(bibliography))
 
         if len(packages) == 0:
             raise ValueError(f"No literature data found for {name}. There is probably some outdated data in {outdir}.")
 
-        return [Entry(package) for package in packages]
-
-    @property
-    def bibliography(self):
-        x = self._database._bibliography
-        #return bibliography.entries[database.entry.source.bib] #self._database._bibliography[name]
+        return [Entry(package=package, bibliography=bibliography) for package in packages]
 
 
 class Descriptor:

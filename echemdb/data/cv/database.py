@@ -61,10 +61,21 @@ class Database:
             import os.path
             import echemdb.data.remote
             data_packages = echemdb.data.remote.collect_datapackages(os.path.join('website-gh-pages', 'data', 'generated', 'svgdigitizer'))
+
+            if bibliography is None:
+                import os.path
+                import echemdb.data.remote
+                bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'Literature'))
+
         if bibliography is None:
-            import os.path
-            import echemdb.data.remote
-            bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'Literature'))
+            bibliography = []
+
+        from collections.abc import Iterable
+        if isinstance(bibliography, Iterable):
+            from pybtex.database import BibliographyData
+            bibliography = BibliographyData(entries={
+                entry.key: entry for entry in bibliography
+            })
 
         self._packages = data_packages
         self._bibliography = bibliography
@@ -84,7 +95,7 @@ class Database:
         entries = Entry.create_examples("alves_2011_electrochemistry_6010") + \
                         Entry.create_examples("engstfeld_2018_polycrystalline_17743")
 
-        return Database([entry.package for entry in entries])
+        return Database([entry.package for entry in entries], [entry.bibliography for entry in entries])
 
     @property
     def bibliography(self):
@@ -93,32 +104,21 @@ class Database:
         
         EXAMPLES::
 
-            >>> database = Database()
+            >>> database = Database.create_example()
             >>> database.bibliography
             BibliographyData(
-              entries=OrderedCaseInsensitiveDict([]),
-            <BLANKLINE>
-              preamble=[])
+              entries=OrderedCaseInsensitiveDict([
+                ('alves_2011_electrochemistry_6010', Entry('article',
+                ...
+                ('engstfeld_2018_polycrystalline_17743', Entry('article',
+                ...
 
         """
-        from pybtex.database import parse_file
         from pybtex.database import BibliographyData
-        from pathlib import Path
 
-        bibliography = BibliographyData()
-        # TODO: Check for duplicates
-
-        for file in self._bibliography:
-            bib_entry = parse_file(file, bib_format='bibtex')
-            
-            if not file.stem == list(bib_entry.entries.keys())[0]: 
-                raise Exception(f"Entry label {bib_entry.entries.keys()[0]} does not match file named {file.stem}.")
-            
-            if len(list(bib_entry.entries.keys())) > 1:
-                raise Exception(f"More than one entry in {file}.")
-                
-            bibliography.entries[file.stem] = bib_entry.entries[file.stem]
-        return bibliography
+        return BibliographyData({
+            entry.bibliography.key: entry.bibliography for entry in self if entry.bibliography
+        })
 
 
     def filter(self, predicate):
@@ -146,7 +146,12 @@ class Database:
 
         """
         from echemdb.data.cv.entry import Entry
-        return iter([Entry(package) for package in self._packages])
+
+        def get_bibliography(package):
+            bib = Entry(package, bibliography=None).source.bib
+            return self._bibliography.entries.get(bib, None)
+
+        return iter([Entry(package, bibliography=get_bibliography(package)) for package in self._packages])
 
     def __len__(self):
         r"""
