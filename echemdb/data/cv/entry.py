@@ -112,14 +112,20 @@ class Entry:
             >>> entry.citation()
             'Electrochemistry at Ru (0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'
         """
+        from pybtex.textutils import abbreviate
+
         def latex_to_text(latex_text):
             from pylatexenc.latex2text import LatexNodes2Text
-            #latex_text = 'Gl{\\"o}ckner'
             return LatexNodes2Text().latex_to_text(latex_text)
 
-        # author = self.bibliography.
+        firstname = latex_to_text(abbreviate(self.bibliography.persons['author'][0].first_names[0]))
+        lastname = latex_to_text(self.bibliography.persons['author'][0].last_names[0])
+        volume = latex_to_text(self.bibliography.fields['volume'])
+        year = latex_to_text(self.bibliography.fields['year'])
+        pages = latex_to_text(self.bibliography.fields['pages'])
         title = latex_to_text(self.bibliography.fields['title'])
-        return title
+        citation = f"{firstname}{lastname}, {volume} ({year}) {pages} '{title}'"
+        return citation
 
     def df(self, yunit=None):
         r"""
