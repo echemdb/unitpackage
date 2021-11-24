@@ -41,8 +41,9 @@ class Entry:
         >>> entry = next(iter(database))
 
     """
-    def __init__(self, package):
+    def __init__(self, package, bibliography):
         self.package = package
+        self.bibliography = bibliography
 
     @property
     def identifier(self):
@@ -68,7 +69,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
 
         """
         return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
@@ -214,13 +215,16 @@ class Entry:
                 from svgdigitizer.__main__ import cv
                 invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
-        from echemdb.data.local import collect_datapackages
+        from echemdb.data.local import collect_datapackages, collect_bibliography
         packages = collect_datapackages(outdir)
+        bibliography = collect_bibliography(source)
+        assert len(bibliography) == 1, f"No bibliography found for {name}."
+        bibliography = next(iter(bibliography))
 
         if len(packages) == 0:
             raise ValueError(f"No literature data found for {name}. There is probably some outdated data in {outdir}.")
 
-        return [Entry(package) for package in packages]
+        return [Entry(package=package, bibliography=bibliography) for package in packages]
 
 
 class Descriptor:

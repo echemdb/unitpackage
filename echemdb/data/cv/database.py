@@ -56,12 +56,27 @@ class Database:
         0
 
     """
-    def __init__(self, data_packages=None):
+    def __init__(self, data_packages=None, bibliography=None):
         if data_packages is None:
             import os.path
             import echemdb.data.remote
             data_packages = echemdb.data.remote.collect_datapackages(os.path.join('website-gh-pages', 'data', 'generated', 'svgdigitizer'))
+
+            if bibliography is None:
+                bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'Literature'))
+
+        if bibliography is None:
+            bibliography = []
+
+        from collections.abc import Iterable
+        if isinstance(bibliography, Iterable):
+            from pybtex.database import BibliographyData
+            bibliography = BibliographyData(entries={
+                entry.key: entry for entry in bibliography
+            })
+
         self._packages = data_packages
+        self._bibliography = bibliography
 
     @classmethod
     def create_example(self):
@@ -78,7 +93,31 @@ class Database:
         entries = Entry.create_examples("alves_2011_electrochemistry_6010") + \
                         Entry.create_examples("engstfeld_2018_polycrystalline_17743")
 
-        return Database([entry.package for entry in entries])
+        return Database([entry.package for entry in entries], [entry.bibliography for entry in entries])
+
+    @property
+    def bibliography(self):
+        r"""
+        Return a pybtex database of all bibtex bibliography files.
+        
+        EXAMPLES::
+
+            >>> database = Database.create_example()
+            >>> database.bibliography
+            BibliographyData(
+              entries=OrderedCaseInsensitiveDict([
+                ('alves_2011_electrochemistry_6010', Entry('article',
+                ...
+                ('engstfeld_2018_polycrystalline_17743', Entry('article',
+                ...
+
+        """
+        from pybtex.database import BibliographyData
+
+        return BibliographyData({
+            entry.bibliography.key: entry.bibliography for entry in self if entry.bibliography
+        })
+
 
     def filter(self, predicate):
         r"""
@@ -91,7 +130,7 @@ class Database:
             [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         """
-        return Database([entry.package for entry in self if predicate(entry)])
+        return Database(data_packages=[entry.package for entry in self if predicate(entry)], bibliography=self._bibliography)
 
     def __iter__(self):
         r"""
@@ -105,7 +144,12 @@ class Database:
 
         """
         from echemdb.data.cv.entry import Entry
-        return iter([Entry(package) for package in self._packages])
+
+        def get_bibliography(package):
+            bib = Entry(package, bibliography=None).source.bib
+            return self._bibliography.entries.get(bib, None)
+
+        return iter([Entry(package, bibliography=get_bibliography(package)) for package in self._packages])
 
     def __len__(self):
         r"""
