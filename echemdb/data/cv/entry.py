@@ -69,7 +69,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
 
         """
         return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
@@ -106,9 +106,20 @@ class Entry:
     
         J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
 
-        
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.citation()
+            'Electrochemistry at Ru (0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'
         """
-        pass
+        def latex_to_text(latex_text):
+            from pylatexenc.latex2text import LatexNodes2Text
+            #latex_text = 'Gl{\\"o}ckner'
+            return LatexNodes2Text().latex_to_text(latex_text)
+
+        # author = self.bibliography.
+        title = latex_to_text(self.bibliography.fields['title'])
+        return title
 
     def df(self, yunit=None):
         r"""
