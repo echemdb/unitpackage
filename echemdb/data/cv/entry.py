@@ -110,7 +110,8 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.citation()
-            'Electrochemistry at Ru (0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'
+            "O.Alves *et al.*, **13** (2011) 6010–6021 '*Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases*'"
+
         """
         from pybtex.textutils import abbreviate
 
@@ -121,7 +122,6 @@ class Entry:
         firstname_inititial = latex_to_text(abbreviate(self.bibliography.persons['author'][0].first_names[0]))
         lastname = latex_to_text(self.bibliography.persons['author'][0].last_names[0])
         etal = ' *et al.*' if len(self.bibliography.persons['author']) > 1 else ''
-        print('etal = ', etal)
         volume = latex_to_text(self.bibliography.fields['volume'])
         year = latex_to_text(self.bibliography.fields['year'])
         pages = latex_to_text(self.bibliography.fields['pages'])
