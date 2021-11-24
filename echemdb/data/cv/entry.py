@@ -110,7 +110,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.citation()
-            "O.Alves *et al.*, **13** (2011) 6010–6021 '*Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases*'"
+            "O. Alves *et al.*, **13** (2011) 6010–6021 '*Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases*'"
 
         """
         from pybtex.textutils import abbreviate
@@ -126,7 +126,7 @@ class Entry:
         year = latex_to_text(self.bibliography.fields['year'])
         pages = latex_to_text(self.bibliography.fields['pages'])
         title = latex_to_text(self.bibliography.fields['title'])
-        citation = f"{firstname_inititial}{lastname}{etal}, **{volume}** ({year}) {pages} '*{title}*'"
+        citation = f"{firstname_inititial} {lastname}{etal}, **{volume}** ({year}) {pages} '*{title}*'"
         return citation
 
     def df(self, yunit=None):
