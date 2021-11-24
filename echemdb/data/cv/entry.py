@@ -110,7 +110,7 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.citation()
+            >>> entry.citation
             "O. Alves *et al.*, **13** (2011) 6010–6021 '*Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases*'"
 
         """
