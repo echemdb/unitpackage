@@ -100,7 +100,8 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
-    def citation(self):
+    @property
+    def citation:
         r"""
         Returns a formatted reference for the entry's bibliography such as:
     
