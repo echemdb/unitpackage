@@ -100,6 +100,16 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
+    def citation(self):
+        r"""
+        Returns a formated reference from the entrie's bibliography of style:
+    
+        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+
+        
+        """
+        pass
+
     def df(self, yunit=None):
         r"""
         Return the CSV resource attached to this entry as a data frame.
