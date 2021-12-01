@@ -25,6 +25,9 @@ These are the individual elements of a :class:`Database`.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+
+from echemdb.data.cv.descriptor import Descriptor
+
 class Entry:
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
@@ -72,7 +75,7 @@ class Entry:
             ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
 
         """
-        return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
+        return list(set(dir(self._descriptor) + object.__dir__(self)))
 
     def __getattr__(self, name):
         r"""
@@ -85,7 +88,7 @@ class Entry:
             {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
-        return getattr(Descriptor(self.package.descriptor), name)
+        return getattr(self._descriptor, name)
 
     def __getitem__(self, name):
         r"""
@@ -98,7 +101,11 @@ class Entry:
             {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
-        return Descriptor(self.package.descriptor)[name]
+        return self._descriptor[name]
+
+    @property
+    def _descriptor(self):
+        return Descriptor(self.package.descriptor)
 
     def df(self, yunit=None):
         r"""
@@ -225,93 +232,3 @@ class Entry:
             raise ValueError(f"No literature data found for {name}. There is probably some outdated data in {outdir}.")
 
         return [Entry(package=package, bibliography=bibliography) for package in packages]
-
-
-class Descriptor:
-    r"""
-    Wrapper for a data package's descriptor to make searching in metadata easier.
-
-    EXAMPLES::
-
-        >>> Descriptor({'a': 0})
-        {'a': 0}
-
-    """
-    def __init__(self, descriptor):
-        self._descriptor = descriptor
-
-    def __dir__(self):
-        r"""
-        Return the attributes of this descriptor.
-
-        Implemented to allow tab-completion in a package's descriptor.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> 'a' in dir(descriptor)
-            True
-
-        """
-        return list(key.replace(' ', '_') for key in self._descriptor.keys()) + object.__dir__(self)
-
-    def __getattr__(self, name):
-        r"""
-        Return the attribute `name` of the descriptor.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> descriptor.a
-            0
-
-        """
-        name = name.replace('_', ' ')
-        if name in self._descriptor:
-            value = self._descriptor[name]
-            return Descriptor(value) if isinstance(value, dict) else value
-
-        raise AttributeError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
-
-    def __getitem__(self, name):
-        r"""
-        Return the attribute `name` of the descriptor.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> descriptor["a"]
-            0
-
-        """
-        if name in self._descriptor:
-            value = self._descriptor[name]
-            return Descriptor(value) if isinstance(value, dict) else value
-
-        raise KeyError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
-
-    def __repr__(self):
-        r"""
-        Return a printable representation of this descriptor.
-
-        EXAMPLES::
-
-            >>> Descriptor({})
-            {}
-
-        """
-        return repr(self._descriptor)
-
-    @property
-    def yaml(self):
-        r'''Return a printable representation of this descriptor in yaml format.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> descriptor.yaml
-            'a: 0\n'
-
-        '''
-        import yaml
-        return yaml.dump(self._descriptor)
