@@ -13,7 +13,6 @@ dependencies:
   - plotly
   - pip
   - pybtex
-  - pylatexenc
   - pytest
   - pyyaml
   - pip:

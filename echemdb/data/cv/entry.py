@@ -120,12 +120,8 @@ class Entry:
         from pybtex.style.template import field, optional, tag, words, join
         from pybtex.style.formatting.unsrt import Style
 
-        def latex_to_text(latex_text):
-            from pylatexenc.latex2text import LatexNodes2Text
-            return LatexNodes2Text().latex_to_text(latex_text)
-
-        firstname_inititial = latex_to_text(abbreviate(self.bibliography.persons['author'][0].first_names[0]))
-        lastname = latex_to_text(self.bibliography.persons['author'][0].last_names[0])
+        firstname_inititial = abbreviate(self.bibliography.persons['author'][0].first_names[0])
+        lastname = self.bibliography.persons['author'][0].last_names[0]
         etal = ' et al.' if len(self.bibliography.persons['author']) > 1 else ''
         
         text = self.bibliography
