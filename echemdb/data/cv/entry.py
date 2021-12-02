@@ -100,8 +100,7 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
-    @property
-    def citation(self):
+    def citation(self, render='text'):
         r"""
         Returns a formatted reference for the entry's bibliography such as:
     
@@ -110,8 +109,8 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.citation
-            "O. Alves *et al.*, **13** (2011) 6010–6021 '*Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases*'"
+            >>> entry.citation(render='text')
+            'O.Alves et al., Physical Chemistry Chemical Physics, 13 (2011) 6010–6021, "Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases"'
 
         """
         from pybtex.textutils import abbreviate
@@ -129,10 +128,13 @@ class Entry:
         text = self.bibliography
         
         book_format = words(sep='')[words(sep='')[firstname_inititial, lastname], tag('i')[etal], ', ', tag("i")[field('journal')], ', ',
-            tag("b")[field("volume")], ' ', join(sep='')['(',field('year'),')'], ' ', field('pages'), optional [tag("i")[' "',field('title'),'"']]
+            tag("b")[field("volume")], ' ', join(sep='')['(',field('year'),')'], ' ', field('pages'), optional [tag("i")[', "',field('title'),'"']]
         ]
 
-        return book_format.format_data({'entry': text, 'style': Style()}).render_as('md')
+        if render == 'md':
+            return book_format.format_data({'entry': text, 'style': Style()}).render_as('md')
+        if render == 'text':
+            return book_format.format_data({'entry': text, 'style': Style()}).render_as('text')
 
     def df(self, yunit=None):
         r"""
