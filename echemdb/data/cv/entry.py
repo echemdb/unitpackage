@@ -115,6 +115,8 @@ class Entry:
 
         """
         from pybtex.textutils import abbreviate
+        from pybtex.style.template import field, optional, tag, words, join
+        from pybtex.style.formatting.unsrt import Style
 
         def latex_to_text(latex_text):
             from pylatexenc.latex2text import LatexNodes2Text
@@ -123,27 +125,11 @@ class Entry:
         firstname_inititial = latex_to_text(abbreviate(self.bibliography.persons['author'][0].first_names[0]))
         lastname = latex_to_text(self.bibliography.persons['author'][0].last_names[0])
         etal = ' et al.' if len(self.bibliography.persons['author']) > 1 else ''
-        volume = latex_to_text(self.bibliography.fields['volume'])
-        year = latex_to_text(self.bibliography.fields['year'])
-        pages = latex_to_text(self.bibliography.fields['pages'])
-        title = latex_to_text(self.bibliography.fields['title'])
-        citation = f"{firstname_inititial} {lastname}{etal}, **{volume}** ({year}) {pages} '*{title}*'"
-        ##return citation
-        # New code
-        from pybtex.style.template import sentence, names, field, optional, tag, words, join #*
-        from pybtex.style.formatting.unsrt import Style
-
+        
         text = self.bibliography
-        book_format = sentence(capfirst=True, sep=', ', add_period=False) [names('author', sep=', ', sep2 = ' and ', last_sep=', and '), tag("i")[field('journal')],
-            tag("b")[field("volume")], words(sep='')['(',field('year'),')'] , field('pages'), optional [tag("i")['"',field('title'),'"']]
-        ]
-
-        book_format = sentence(sep=',')[join[firstname_inititial, lastname, etal], tag("i")[field('journal')],
-            tag("b")[field("volume")], join(sep="")['(',field('year'),')'] , field('pages'), optional [tag("i")['"',field('title'),'"']]
-        ]
         
         book_format = words(sep='')[words(sep='')[firstname_inititial, lastname], tag('i')[etal], ', ', tag("i")[field('journal')], ', ',
-            tag("b")[field("volume")], ' ', join(sep="")['(',field('year'),')'], ' ', field('pages'), optional [tag("i")[' "',field('title'),'"']]
+            tag("b")[field("volume")], ' ', join(sep='')['(',field('year'),')'], ' ', field('pages'), optional [tag("i")[' "',field('title'),'"']]
         ]
 
         return book_format.format_data({'entry': text, 'style': Style()}).render_as('md')
