@@ -100,40 +100,72 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
-    def df(self, yunit=None):
+    def df(self, xunit=None, yunit=None):
         r"""
         Return the CSV resource attached to this entry as a data frame.
 
-        EXAMPLES::
+        If the x and yunits are not specified the values in the respective 
+        columns are given in SI units. The data frame can also be returned 
+        with the original figure units or with custom units as shown in the following examples.
+
+        EXAMPLES:
+        
+        The first example provides a data frame in SI units.::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df()
+                         t         U         j
+            0     0.000000 -0.103158 -0.000100
+            1     0.100000 -0.098158 -0.000092
+            ...
+
+        The second example provides a dataframe in the original units of the figure.::
+
+            >>> entry.df(xunit='original', yunit='original')
                          t         U         j
             0     0.000000 -0.103158 -0.099828
             1     0.100000 -0.098158 -0.091664
             ...
 
+        The third example provides a dataframe with custom units.::
+
             >>> from astropy import units as u
-            >>> entry.df(yunit=u.A / u.m**2)
-                         t         U         j
-            0     0.000000 -0.103158 -0.998277
-            1     0.100000 -0.098158 -0.916644
+            >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
+                         t           U          j
+            0     0.000000 -103.158422 -99.827664
+            1     0.100000  -98.158422 -91.664367
             ...
 
         """
+        import pandas as pd
         from astropy import units as u
+
+        df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
+        
         if yunit is None:
+            if 'j' in df.columns:
+                yunit = u.A / u.cm**2
+            if 'I' in df.columns:
+                yunit = u.A
+        if yunit == 'original':
             yunit = self.figure_description.current.unit
         if isinstance(yunit, str):
             yunit = u.Unit(yunit)
 
-        import pandas
-        df = pandas.read_csv(self.package.resources[0].raw_iter(stream=False))
+        if xunit is None:
+            xunit = u.V
+        if xunit == 'original':
+            xunit = self.figure_description.potential_scale.unit
+        if isinstance(xunit, str):
+            xunit = u.Unit(xunit)
+
 
         if 'j' in df.columns:
             df['j'] *= (u.A / u.m**2).to(yunit)
         if 'I' in df.columns:
             df['I'] *= (u.A).to(yunit)
+        
+        df['U'] *= (u.V).to(xunit)
 
         return df
 
