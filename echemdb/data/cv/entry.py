@@ -102,9 +102,12 @@ class Entry:
 
     def citation(self, render='text'):
         r"""
-        Returns a formatted reference for the entry's bibliography such as:
+        Returns a formatted reference for the entry's bibliography either as:
     
         J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+
+        Rendering default is plain text 'text', but can be changed to any format 
+        supported by pybtex, such as markdown 'md', 'latex' or 'html'. 
 
         EXAMPLES::
 
@@ -131,10 +134,7 @@ class Entry:
             tag("b")[field("volume")], ' ', join(sep='')['(',field('year'),')'], ' ', field('pages'), optional [tag("i")[', "',field('title'),'"']]
         ]
 
-        if render == 'md':
-            return book_format.format_data({'entry': text, 'style': Style()}).render_as('md')
-        if render == 'text':
-            return book_format.format_data({'entry': text, 'style': Style()}).render_as('text')
+        return book_format.format_data({'entry': text, 'style': Style()}).render_as(render)
 
     def df(self, yunit=None):
         r"""
