@@ -31,7 +31,7 @@ import echemdb.website.generator.database
 def main():
     for entry in echemdb.website.generator.database.cv:
         with mkdocs_gen_files.open(os.path.join("cv", "entries", f"{entry.identifier}.md"), "w") as md:
-            md.write(render("cv_entry.md", database=echemdb.website.generator.database.cv, entry=entry))
+            md.write(render("pages/cv_entry.md", database=echemdb.website.generator.database.cv, entry=entry))
 
     data = make_cvs_dataframe(collect_datapackages(datadir))
 
