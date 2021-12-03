@@ -10,7 +10,7 @@ Create a database from local data packages in the `data/` directory::
 
 Create a database from the data packages published in the echemdb::
 
-    >>> database = Database()
+    >>> database = Database()  # doctest: +REMOTE_DATA
 
 Search the database for a single publication::
 
