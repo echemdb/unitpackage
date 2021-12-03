@@ -87,6 +87,11 @@ class Entry:
             >>> entry.source
             {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
+        The returned descriptor can again be accessed in the same way::
+
+            >>> entry.electrochemical_system.electrolyte.components[0].name
+            'H2O'
+
         """
         return getattr(self._descriptor, name)
 

@@ -39,10 +39,9 @@ class GenericDescriptor:
         """
         name = name.replace('_', ' ')
         if name in self._descriptor:
-            value = self._descriptor[name]
-            return Descriptor(value) if isinstance(value, dict) else value
+            return Descriptor(self._descriptor[name])
 
-        raise AttributeError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
+        raise AttributeError(f"Descriptor has no entry {name}. Did you mean one of {[key.replace(' ', '_') for key in self._descriptor.keys()]}?")
 
     def __getitem__(self, name):
         r"""
@@ -56,8 +55,7 @@ class GenericDescriptor:
 
         """
         if name in self._descriptor:
-            value = self._descriptor[name]
-            return Descriptor(value) if isinstance(value, dict) else value
+            return Descriptor(self._descriptor[name])
 
         raise KeyError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
 
@@ -116,7 +114,15 @@ class UnitValueDescriptor(GenericDescriptor):
         return str(self.quantity)
 
 def Descriptor(descriptor):
-    if set(descriptor.keys()) == {"unit", "value"}:
-        return UnitValueDescriptor(descriptor)
+    # TODO: Docstring
 
-    return GenericDescriptor(descriptor)
+    if isinstance(descriptor, dict):
+        if set(descriptor.keys()) == {"unit", "value"}:
+            return UnitValueDescriptor(descriptor)
+
+        return GenericDescriptor(descriptor)
+
+    if isinstance(descriptor, list):
+        return [Descriptor(item) for item in descriptor]
+
+    return descriptor
