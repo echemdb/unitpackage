@@ -69,7 +69,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'xy_units', 'yaml']
 
         """
         return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
@@ -101,7 +101,30 @@ class Entry:
         return Descriptor(self.package.descriptor)[name]
 
     def xy_units(self, xunit=None, yunit=None):
-        r"""Returns a set of x and y units
+        r"""Returns a set of x and y units as astropy units, where the resulting xunit has the magnitude of 
+        volt (V) and the resulting yunit has the magnitude of a current (I) or a current density (j).
+
+        Whether or not the yunit is in I or j, is determined from the column names of the data frame.
+
+        Examples:
+
+        When the parameters for `xunit` and `yunit` parameters are `None`, SI units are returned.::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.xy_units()
+            (Unit("V"), Unit("A / m2"))
+
+        When the parameter is set to 'original', the original values of the publisged figure are returned.::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.xy_units(xunit='original', yunit='original')
+            (Unit("V"), Unit("mA / cm2"))
+
+        The resulting units can also be set separately.::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.xy_units(xunit='original', yunit='uA / cm2')
+            (Unit("V"), Unit("uA / cm2"))
 
         """
         import pandas as pd
@@ -111,7 +134,7 @@ class Entry:
         
         if yunit is None:
             if 'j' in column_names:
-                yunit = u.A / u.cm**2
+                yunit = u.A / u.m**2
             if 'I' in column_names:
                 yunit = u.A
         if yunit == 'original':
@@ -143,8 +166,8 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> entry.df()
                          t         U         j
-            0     0.000000 -0.103158 -0.000100
-            1     0.100000 -0.098158 -0.000092
+            0     0.000000 -0.103158 -0.998277
+            1     0.100000 -0.098158 -0.916644
             ...
 
         The second example provides a dataframe in the original units of the figure.::
@@ -239,7 +262,9 @@ class Entry:
         fig.update_layout(template="simple_white", showlegend=False, autosize=True, width=600, height=400, 
                             margin=dict(l=70, r=70, b=70, t=70, pad=7),
                             xaxis_title=f"U [{xunit}]",
-                            yaxis_title=ylabel,)
+                            yaxis_title=ylabel)
+        fig.update_xaxes(showline=True, mirror=True)
+        fig.update_yaxes(showline=True, mirror=True)
 
         return fig
 
