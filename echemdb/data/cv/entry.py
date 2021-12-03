@@ -100,6 +100,34 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
+    def xy_units(self, xunit=None, yunit=None):
+        r"""Returns a set of x and y units
+
+        """
+        import pandas as pd
+        from astropy import units as u
+
+        column_names = pd.read_csv(self.package.resources[0].raw_iter(stream=False)).columns
+        
+        if yunit is None:
+            if 'j' in column_names:
+                yunit = u.A / u.cm**2
+            if 'I' in column_names:
+                yunit = u.A
+        if yunit == 'original':
+            yunit = self.figure_description.current.unit
+        if isinstance(yunit, str):
+            yunit = u.Unit(yunit)
+
+        if xunit is None:
+            xunit = u.V
+        if xunit == 'original':
+            xunit = self.figure_description.potential_scale.unit
+        if isinstance(xunit, str):
+            xunit = u.Unit(xunit)
+
+        return xunit, yunit
+
     def df(self, xunit=None, yunit=None):
         r"""
         Return the CSV resource attached to this entry as a data frame.
@@ -142,23 +170,23 @@ class Entry:
 
         df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
         
-        if yunit is None:
-            if 'j' in df.columns:
-                yunit = u.A / u.cm**2
-            if 'I' in df.columns:
-                yunit = u.A
-        if yunit == 'original':
-            yunit = self.figure_description.current.unit
-        if isinstance(yunit, str):
-            yunit = u.Unit(yunit)
+        # if yunit is None:
+        #     if 'j' in df.columns:
+        #         yunit = u.A / u.cm**2
+        #     if 'I' in df.columns:
+        #         yunit = u.A
+        # if yunit == 'original':
+        #     yunit = self.figure_description.current.unit
+        # if isinstance(yunit, str):
+        #     yunit = u.Unit(yunit)
 
-        if xunit is None:
-            xunit = u.V
-        if xunit == 'original':
-            xunit = self.figure_description.potential_scale.unit
-        if isinstance(xunit, str):
-            xunit = u.Unit(xunit)
-
+        # if xunit is None:
+        #     xunit = u.V
+        # if xunit == 'original':
+        #     xunit = self.figure_description.potential_scale.unit
+        # if isinstance(xunit, str):
+        #     xunit = u.Unit(xunit)
+        xunit, yunit = self.xy_units(xunit, yunit)
 
         if 'j' in df.columns:
             df['j'] *= (u.A / u.m**2).to(yunit)
@@ -182,7 +210,7 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def plot(self, yunit=None):
+    def plot(self, xunit=None, yunit=None):
         r"""
         Return a plot of the database in this data package.
 
@@ -195,10 +223,23 @@ class Entry:
         """
         import plotly.graph_objects
 
+        xunit, yunit = self.xy_units(xunit, yunit)
+
+        df = self.df(xunit=xunit, yunit=yunit)
+
         fig = plotly.graph_objects.Figure()
-        df = self.df(yunit=yunit)
-        fig.add_trace(plotly.graph_objects.Scatter(x=df['U'], y=df['j'], mode='lines'))
-        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=450, height=350, margin=dict(l=70, r=70, b=70, t=70, pad=7))
+
+        if 'j' in df.columns:
+            fig.add_trace(plotly.graph_objects.Scatter(x=df['U'], y=df['j'], mode='lines'))
+            ylabel = f'j [{str(yunit)}]'
+        if 'I' in df.columns:
+            fig.add_trace(plotly.graph_objects.Scatter(x=df['U'], y=df['I'], mode='lines'))
+            ylabel = f'I [{str(yunit)}]'
+
+        fig.update_layout(template="simple_white", showlegend=False, autosize=True, width=600, height=400, 
+                            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+                            xaxis_title=f"U [{xunit}]",
+                            yaxis_title=ylabel,)
 
         return fig
 
