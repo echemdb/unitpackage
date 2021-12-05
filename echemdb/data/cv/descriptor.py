@@ -152,7 +152,7 @@ class GenericDescriptor:
         return yaml.dump(self._descriptor)
 
 
-class UnitValueDescriptor(GenericDescriptor):
+class QuantityDescriptor(GenericDescriptor):
     r"""
     Extends a descriptor with convenience methods when it is encoding a
     quantity, i.e., unit and value.
@@ -166,7 +166,7 @@ class UnitValueDescriptor(GenericDescriptor):
         298.15 K
 
     """
-    markdown_template = "components/unit_value.md"
+    markdown_template = "components/quantity.md"
 
     @property
     def quantity(self):
@@ -239,7 +239,7 @@ def Descriptor(descriptor):
 
     if isinstance(descriptor, dict):
         if set(descriptor.keys()) == {"unit", "value"}:
-            return UnitValueDescriptor(descriptor)
+            return QuantityDescriptor(descriptor)
 
         return GenericDescriptor(descriptor)
 
