@@ -46,8 +46,9 @@ def main():
         with mkdocs_gen_files.open(os.path.join("cv", "echemdb_pages", f"{echemdb_id}.md"), 'w') as out:
             out.write(render("echemdb_id.md", echemdb_id=echemdb_id, cvs=data))
 
-    for tupled in data.groupby(by = ['electrode material', 'surface']).groups:
+    for tupled in data.groupby(by=['electrode material', 'surface']).groups:
         create_element_surface_pages(tupled[0], tupled[1])
+
 
 if __name__ in ["__main__", "<run_path>"]:
     main()
