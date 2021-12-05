@@ -23,12 +23,10 @@
 import os
 import os.path
 
-from mdutils.mdutils import MdUtils
 from echemdb.data.legacy.build_data import TEMPLATE_FOLDERS, ELEMENTS_DATA, TARGET_FOLDERS, DISPLAYED_INFOS, get_plotly_plot
 
 import frontmatter
 import pandas as pd
-import numpy as np
 import copy
 import mkdocs_gen_files
 from echemdb.data.legacy.data import datadir, make_cvs_dataframe
@@ -41,7 +39,7 @@ def render(template, **kwargs):
     r"""
     Render `template` as a jinja template.
     """
-    from jinja2 import Environment, FileSystemLoader, select_autoescape, ChainableUndefined
+    from jinja2 import Environment, FileSystemLoader, select_autoescape
     env = Environment(
         loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")),
         autoescape=select_autoescape(),
