@@ -22,7 +22,7 @@ present::
     ...     @property
     ...     def markdown(self): return "MarkDown"
 
-    >>> render(snippet, value=ValueWithMarkDown())
+    >>> render(snippet, value=Value())
     'MarkDown'
 
 When no template is given, the filter renders the value with the
@@ -33,7 +33,7 @@ When no template is given, the filter renders the value with the
     >>> class Value(dict):
     ...     markdown_template = 'components/quantity.md'
 
-    >>> render(snippet, value=ValueWithTemplate({ 'quantity': 1 * Unit("mol / l") }))
+    >>> render(snippet, value=Value({ 'quantity': 1 * Unit("mol / l") }))
     '1.0 M'
 
 """

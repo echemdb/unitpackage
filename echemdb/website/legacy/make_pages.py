@@ -35,26 +35,6 @@ from echemdb.data.local import collect_datapackages
 cv_data = make_cvs_dataframe(collect_datapackages(datadir))
 grouped_cv_data = cv_data.groupby(by=['electrode material', 'surface'])
 
-def render(template, **kwargs):
-    r"""
-    Render `template` as a jinja template.
-    """
-    from jinja2 import Environment, FileSystemLoader, select_autoescape
-    env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")),
-        autoescape=select_autoescape(),
-    )
-
-    # Load macros like mkdocs-macros does, see
-    # https://github.com/fralau/mkdocs_macros_plugin/blob/master/mkdocs_macros/plugin.py#L157
-    def macro(f, name=''):
-        env.globals[name or f.__name__] = f
-    env.macro = macro
-    from echemdb.website.macros.legacy import define_env
-    define_env(env)
-    del env.macro
-
-    return env.get_template(template).render(**kwargs)
 
 def get_filtered_tables(elementname, surface=None):
 
