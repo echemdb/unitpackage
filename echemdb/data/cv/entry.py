@@ -178,7 +178,7 @@ class Entry:
             1     0.100000 -0.098158 -0.091664
             ...
 
-        The third example provides a dataframe with custom units.::
+        A data frame with custom units::
 
             >>> from astropy import units as u
             >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
