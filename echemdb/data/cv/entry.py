@@ -193,22 +193,6 @@ class Entry:
 
         df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
         
-        # if yunit is None:
-        #     if 'j' in df.columns:
-        #         yunit = u.A / u.cm**2
-        #     if 'I' in df.columns:
-        #         yunit = u.A
-        # if yunit == 'original':
-        #     yunit = self.figure_description.current.unit
-        # if isinstance(yunit, str):
-        #     yunit = u.Unit(yunit)
-
-        # if xunit is None:
-        #     xunit = u.V
-        # if xunit == 'original':
-        #     xunit = self.figure_description.potential_scale.unit
-        # if isinstance(xunit, str):
-        #     xunit = u.Unit(xunit)
         xunit, yunit = self.xy_units(xunit, yunit)
 
         if 'j' in df.columns:
