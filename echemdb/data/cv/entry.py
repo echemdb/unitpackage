@@ -170,7 +170,7 @@ class Entry:
             1     0.100000 -0.098158 -0.916644
             ...
 
-        The second example provides a dataframe in the original units of the figure.::
+        A data frame in the original units of the figure::
 
             >>> entry.df(xunit='original', yunit='original')
                          t         U         j
