@@ -155,8 +155,8 @@ class Entry:
         r"""
         Return the CSV resource attached to this entry as a data frame.
 
-        If the x and yunits are not specified the values in the respective 
-        columns are given in SI units. The data frame can also be returned 
+        If the x and y-units are not specified, all values
+        are in SI units. The data frame can also be returned 
         with the original figure units or with custom units as shown in the following examples.
 
         EXAMPLES:
