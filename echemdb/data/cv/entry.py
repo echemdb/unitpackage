@@ -120,7 +120,7 @@ class Entry:
             >>> entry.xy_units(xunit='original', yunit='original')
             (Unit("V"), Unit("mA / cm2"))
 
-        The resulting units can also be set separately.::
+        Units can be specified explicitly::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.xy_units(xunit='original', yunit='uA / cm2')
