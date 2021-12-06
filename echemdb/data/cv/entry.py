@@ -108,7 +108,7 @@ class Entry:
 
         EXAMPLES:
 
-        When the parameters for `xunit` and `yunit` parameters are `None`, SI units are returned.::
+        Without parameters, SI units are returned::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.xy_units()
