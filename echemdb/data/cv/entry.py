@@ -106,7 +106,7 @@ class Entry:
 
         Whether or not the yunit is in I or j, is determined from the column names of the data frame.
 
-        Examples:
+        EXAMPLES:
 
         When the parameters for `xunit` and `yunit` parameters are `None`, SI units are returned.::
 
