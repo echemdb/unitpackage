@@ -161,7 +161,7 @@ class Entry:
 
         EXAMPLES:
         
-        The first example provides a data frame in SI units.::
+        A data frame in SI units::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df()
