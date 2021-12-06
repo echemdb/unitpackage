@@ -219,7 +219,7 @@ class Entry:
 
     def plot(self, xunit=None, yunit=None):
         r"""
-        Return a plot of the database in this data package.
+        Return a plot of the data in this data package.
 
         EXAMPLES::
 
