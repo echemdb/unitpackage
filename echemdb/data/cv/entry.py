@@ -227,6 +227,8 @@ class Entry:
                 from svgdigitizer.__main__ import cv
                 invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
+        assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
+
         from echemdb.data.local import collect_datapackages, collect_bibliography
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
