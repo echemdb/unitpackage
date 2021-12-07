@@ -218,17 +218,25 @@ class Entry:
             'svgdigitizer',
             name)
 
-        from glob import glob
-        if not os.path.exists(outdir):
-            for yaml in glob(os.path.join(source, "*.yaml")):
-                svg = os.path.splitext(yaml)[0] + ".svg"
+        # We now might have to digitize some files on demand. When running
+        # tests in parallel, this introduces a race condition that we avoid
+        # with a global lock in the file system.
+        lockfile = f"{outdir}.lock"
+        os.makedirs(os.path.dirname(lockfile), exist_ok=True)
 
-                from svgdigitizer.test.cli import invoke
-                from svgdigitizer.__main__ import cv
-                invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+        from filelock import FileLock
+        with FileLock(lockfile):
+            if not os.path.exists(outdir):
+                from glob import glob
+                for yaml in glob(os.path.join(source, "*.yaml")):
+                    svg = os.path.splitext(yaml)[0] + ".svg"
 
-            assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
-            assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+                    from svgdigitizer.test.cli import invoke
+                    from svgdigitizer.__main__ import cv
+                    invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+
+                assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
+                assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
         packages = collect_datapackages(outdir)
@@ -237,6 +245,7 @@ class Entry:
         bibliography = next(iter(bibliography))
 
         if len(packages) == 0:
+            from glob import glob
             raise ValueError(f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }")
 
         return [Entry(package=package, bibliography=bibliography) for package in packages]

@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - astropy
+  - filelock
   - inflect
   - matplotlib
   - mkdocs
