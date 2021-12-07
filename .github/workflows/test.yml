@@ -32,3 +32,8 @@ jobs:
         shell: bash -l {0}
         run: |
           pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ always() }}
