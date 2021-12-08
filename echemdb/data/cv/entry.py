@@ -100,37 +100,65 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
-    def citation(self, render='text'):
+    def citation(self, backend='text'):
         r"""
         Returns a formatted reference for the entry's bibliography either as:
-    
+
         J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
 
-        Rendering default is plain text 'text', but can be changed to any format 
-        supported by pybtex, such as markdown 'md', 'latex' or 'html'. 
+        Rendering default is plain text 'text', but can be changed to any format
+        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.citation(render='text')
-            'O.Alves et al., Physical Chemistry Chemical Physics, 13 (2011) 6010–6021, "Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases"'
+            >>> entry.citation(backend='text')
+            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
+            >>> print(entry.citation(backend='md'))
+            O\. B\. Alves *et al\.*
+            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
+            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
+
+            >>> entry = Entry.create_examples(name="gomez-marin_2012_surface_558")[0]
+            >>> entry.citation(backend='text')
+            'A. M. Gómez-Marín et al. Pt(111) surface disorder kinetics in perchloric acid solutions and the influence of specific anion adsorption. Electrochimica acta, 82:558–569, 2012.'
+
+            >>> print(entry.citation(backend='md'))
+            A\. M\. Gómez\-Marín *et al\.*
+            *Pt\(111\) surface disorder kinetics in perchloric acid solutions and the influence of specific anion adsorption*\.
+            *Electrochimica acta*, 82:558–569, 2012\.
 
         """
-        from pybtex.textutils import abbreviate
-        from pybtex.style.template import field, optional, tag, words, join
         from pybtex.style.formatting.unsrt import Style
 
-        firstname_inititial = abbreviate(self.bibliography.persons['author'][0].first_names[0])
-        lastname = self.bibliography.persons['author'][0].last_names[0]
-        etal = ' et al.' if len(self.bibliography.persons['author']) > 1 else ''
-        
-        text = self.bibliography
-        
-        book_format = words(sep='')[words(sep='')[firstname_inititial, lastname], tag('i')[etal], ', ', tag("i")[field('journal')], ', ',
-            tag("b")[field("volume")], ' ', join(sep='')['(',field('year'),')'], ' ', field('pages'), optional [tag("i")[', "',field('title'),'"']]
-        ]
+        class EchemdbStyle(Style):
+            def format_names(self, role, as_sentence=True):
+                from pybtex.style.template import node
 
-        return book_format.format_data({'entry': text, 'style': Style()}).render_as(render)
+                @node
+                def names(_, context, role, **kwargs):
+                    persons = context["entry"].persons[role]
+                    style = context["style"]
+
+                    names = [style.format_name(person, style.abbreviate_names) for person in persons]
+
+                    if len(names) == 1:
+                        return names[0].format_data(context)
+                    else:
+                        from pybtex.style.template import words, tag
+                        return words(sep=' ')[names[0], tag('i')['et al.']].format_data(context)
+
+                names = names(role, sep=', ', sep2=' and ', last_sep=', and ')
+
+                from pybtex.style.template import sentence
+                return sentence[names] if as_sentence else names
+
+            def format_title(self, e, which_field, as_sentence=True):
+                from pybtex.style.template import field, tag, sentence
+                title = tag('i')[field(which_field)]
+                return sentence[title] if as_sentence else title
+
+        return EchemdbStyle(abbreviate_names=True).format_entry("unused", self.bibliography).text.render_as(backend)
 
     def df(self, yunit=None):
         r"""
