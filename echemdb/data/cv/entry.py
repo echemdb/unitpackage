@@ -136,7 +136,7 @@ class Entry:
                 from pybtex.style.template import node
 
                 @node
-                def names(_, context, role, **kwargs):
+                def names(_, context, role):
                     persons = context["entry"].persons[role]
                     style = context["style"]
 
@@ -148,7 +148,7 @@ class Entry:
                         from pybtex.style.template import words, tag
                         return words(sep=' ')[names[0], tag('i')['et al.']].format_data(context)
 
-                names = names(role, sep=', ', sep2=' and ', last_sep=', and ')
+                names = names(role)
 
                 from pybtex.style.template import sentence
                 return sentence[names] if as_sentence else names
