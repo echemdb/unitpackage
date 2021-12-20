@@ -103,6 +103,8 @@ class Entry:
     def x(self):
         r"""Return the x-axis name.
 
+        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
+
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
@@ -115,7 +117,19 @@ class Entry:
             return 'U'
 
     def y(self):
+        r"""Return the y-axis name.
+
+        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.y()
+            'j'
+
+        """
         from astropy import units as u
+        
         if u.Unit(self.figure_description.current.unit).is_equivalent('A / m2'):
             return 'j' 
         if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
