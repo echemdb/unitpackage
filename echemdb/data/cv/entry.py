@@ -289,11 +289,11 @@ class Entry:
 
         fig = plotly.graph_objects.Figure()
 
-        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines'))
+        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
 
         reference = f' vs {self.figure_description.potential_scale.reference}' if self.figure_description.potential_scale.reference else ''
 
-        fig.update_layout(template="simple_white", showlegend=False, autosize=True, width=600, height=400, 
+        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
                             margin=dict(l=70, r=70, b=70, t=70, pad=7),
                             xaxis_title=f"{self.x()} [{xunit}{reference}]",
                             yaxis_title=f"{self.y()} [{yunit}]")
