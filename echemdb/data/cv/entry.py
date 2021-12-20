@@ -115,7 +115,6 @@ class Entry:
 
         When set to `"original"`, the original units of the published figure are returned::
 
-            >>> entry = Entry.create_examples()[0]
             >>> entry.xy_units(xunit='original', yunit='original')
             (Unit("V"), Unit("mA / cm2"))
 
