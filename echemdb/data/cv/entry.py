@@ -101,10 +101,9 @@ class Entry:
         return Descriptor(self.package.descriptor)[name]
 
     def xy_units(self, xunit=None, yunit=None):
-        r"""Returns a set of x and y units as astropy units, where the resulting xunit has the magnitude of 
-        volt (V) and the resulting yunit has the magnitude of a current (I) or a current density (j).
+        r"""Return a tuple `(xunit, yunit)` of astropy units, where `xunit` is a voltage and `yunit` is a current or current density.
 
-        Whether or not the yunit is in I or j, is determined from the column names of the data frame.
+        Whether the `yunit` is a current or current density, is determined from the column names of the data frame (`I` or `j`.)
 
         EXAMPLES:
 
