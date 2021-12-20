@@ -129,35 +129,33 @@ class Entry:
 
         """
         from astropy import units as u
-        
+
         if u.Unit(self.figure_description.current.unit).is_equivalent('A / m2'):
             return 'j' 
         if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
             return 'I'
 
     def x_unit(self, xunit=None):
-        r"""Return an astropy unit, where `xunit` is a voltage and `yunit` is a current or current density.
+        r"""Return an astropy unit, where `xunit` is a voltage.
 
-        # Whether the `yunit` is a current or current density, is determined from the column names of the data frame (`I` or `j`.)
+        EXAMPLES:
 
-        # EXAMPLES:
+        Without parameters, SI units are returned::
 
-        # Without parameters, SI units are returned::
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.x_unit()
+            Unit("V")
 
-        #     >>> entry = Entry.create_examples()[0]
-        #     >>> entry.xy_units()
-        #     (Unit("V"), Unit("A / m2"))
+        When set to `"original"`, the original units of the published figure are returned::
 
-        # When set to `"original"`, the original units of the published figure are returned::
+            >>> entry.x_unit(xunit='original')
+            Unit("V")
 
-        #     >>> entry.xy_units(xunit='original', yunit='original')
-        #     (Unit("V"), Unit("mA / cm2"))
+        Units can be specified explicitly::
 
-        # Units can be specified explicitly::
-
-        #     >>> entry = Entry.create_examples()[0]
-        #     >>> entry.xy_units(xunit='original', yunit='uA / cm2')
-        #     (Unit("V"), Unit("uA / cm2"))
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.x_unit(xunit='mV')
+            Unit("mV")
 
         """
         from astropy import units as u
@@ -174,26 +172,24 @@ class Entry:
     def y_unit(self, yunit=None):
         r"""Return an astropy unit, where `yunit` is a current (I) or current density (j).
 
-        # Whether the `yunit` is a current or current density, is determined from the column names of the data frame (`I` or `j`.)
+        EXAMPLES:
 
-        # EXAMPLES:
+        Without parameters, SI units are returned::
 
-        # Without parameters, SI units are returned::
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.y_unit()
+            Unit("A / m2")
 
-        #     >>> entry = Entry.create_examples()[0]
-        #     >>> entry.xy_units()
-        #     (Unit("V"), Unit("A / m2"))
+        When set to `"original"`, the original units of the published figure are returned::
 
-        # When set to `"original"`, the original units of the published figure are returned::
+            >>> entry.y_unit(yunit='original')
+            Unit("mA / cm2")
 
-        #     >>> entry.xy_units(xunit='original', yunit='original')
-        #     (Unit("V"), Unit("mA / cm2"))
+        Units can be specified explicitly::
 
-        # Units can be specified explicitly::
-
-        #     >>> entry = Entry.create_examples()[0]
-        #     >>> entry.xy_units(xunit='original', yunit='uA / cm2')
-        #     (Unit("V"), Unit("uA / cm2"))
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.y_unit(yunit='uA / cm2')
+            Unit("uA / cm2")
 
         """
         from astropy import units as u
