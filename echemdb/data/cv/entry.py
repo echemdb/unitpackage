@@ -102,7 +102,7 @@ class Entry:
 
     def citation(self, backend='text'):
         r"""
-        Returns a formatted reference for the entry's bibliography either as:
+        Return a formatted reference for the entry's bibliography such as:
 
         J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
 
