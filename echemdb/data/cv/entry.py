@@ -69,7 +69,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'xy_units', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
@@ -100,45 +100,53 @@ class Entry:
         """
         return Descriptor(self.package.descriptor)[name]
 
-    def xy_units(self, xunit=None, yunit=None):
-        r"""Return a tuple `(xunit, yunit)` of astropy units, where `xunit` is a voltage and `yunit` is a current or current density.
+    def x(self):
+        r"""Return the x-axis name.
 
-        Whether the `yunit` is a current or current density, is determined from the column names of the data frame (`I` or `j`.)
-
-        EXAMPLES:
-
-        Without parameters, SI units are returned::
+        EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.xy_units()
-            (Unit("V"), Unit("A / m2"))
-
-        When set to `"original"`, the original units of the published figure are returned::
-
-            >>> entry.xy_units(xunit='original', yunit='original')
-            (Unit("V"), Unit("mA / cm2"))
-
-        Units can be specified explicitly::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.xy_units(xunit='original', yunit='uA / cm2')
-            (Unit("V"), Unit("uA / cm2"))
+            >>> entry.x()
+            'U'
 
         """
-        import pandas as pd
         from astropy import units as u
+        if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
+            return 'U'
 
-        column_names = pd.read_csv(self.package.resources[0].raw_iter(stream=False)).columns
-        
-        if yunit is None:
-            if 'j' in column_names:
-                yunit = u.A / u.m**2
-            if 'I' in column_names:
-                yunit = u.A
-        if yunit == 'original':
-            yunit = self.figure_description.current.unit
-        if isinstance(yunit, str):
-            yunit = u.Unit(yunit)
+    def y(self):
+        from astropy import units as u
+        if u.Unit(self.figure_description.current.unit).is_equivalent('A / m2'):
+            return 'j' 
+        if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
+            return 'I'
+
+    def x_unit(self, xunit=None):
+        r"""Return an astropy unit, where `xunit` is a voltage and `yunit` is a current or current density.
+
+        # Whether the `yunit` is a current or current density, is determined from the column names of the data frame (`I` or `j`.)
+
+        # EXAMPLES:
+
+        # Without parameters, SI units are returned::
+
+        #     >>> entry = Entry.create_examples()[0]
+        #     >>> entry.xy_units()
+        #     (Unit("V"), Unit("A / m2"))
+
+        # When set to `"original"`, the original units of the published figure are returned::
+
+        #     >>> entry.xy_units(xunit='original', yunit='original')
+        #     (Unit("V"), Unit("mA / cm2"))
+
+        # Units can be specified explicitly::
+
+        #     >>> entry = Entry.create_examples()[0]
+        #     >>> entry.xy_units(xunit='original', yunit='uA / cm2')
+        #     (Unit("V"), Unit("uA / cm2"))
+
+        """
+        from astropy import units as u
 
         if xunit is None:
             xunit = u.V
@@ -147,7 +155,50 @@ class Entry:
         if isinstance(xunit, str):
             xunit = u.Unit(xunit)
 
-        return xunit, yunit
+        return xunit
+
+    def y_unit(self, yunit=None):
+        r"""Return an astropy unit, where `yunit` is a current (I) or current density (j).
+
+        # Whether the `yunit` is a current or current density, is determined from the column names of the data frame (`I` or `j`.)
+
+        # EXAMPLES:
+
+        # Without parameters, SI units are returned::
+
+        #     >>> entry = Entry.create_examples()[0]
+        #     >>> entry.xy_units()
+        #     (Unit("V"), Unit("A / m2"))
+
+        # When set to `"original"`, the original units of the published figure are returned::
+
+        #     >>> entry.xy_units(xunit='original', yunit='original')
+        #     (Unit("V"), Unit("mA / cm2"))
+
+        # Units can be specified explicitly::
+
+        #     >>> entry = Entry.create_examples()[0]
+        #     >>> entry.xy_units(xunit='original', yunit='uA / cm2')
+        #     (Unit("V"), Unit("uA / cm2"))
+
+        """
+        from astropy import units as u
+
+        if yunit is None:
+            if self.y() == 'j':
+                yunit = u.A / u.m**2
+            elif self.y() == 'I':
+                yunit = u.A
+            else:
+                raise NotImplementedError("Unexpected naming of y axis.")
+
+        if yunit == 'original':
+            yunit = self.figure_description.current.unit
+
+        if isinstance(yunit, str):
+            yunit = u.Unit(yunit)
+
+        return yunit
 
     def df(self, xunit=None, yunit=None):
         r"""
@@ -187,19 +238,13 @@ class Entry:
 
         """
         import pandas as pd
-        from astropy import units as u
 
         df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
-        
-        xunit, yunit = self.xy_units(xunit, yunit)
 
-        if 'j' in df.columns:
-            df['j'] *= (u.A / u.m**2).to(yunit)
-        if 'I' in df.columns:
-            df['I'] *= (u.A).to(yunit)
+        if xunit or yunit:
+            df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
+            df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
         
-        df['U'] *= (u.V).to(xunit)
-
         return df
 
     def __repr__(self):
@@ -228,23 +273,19 @@ class Entry:
         """
         import plotly.graph_objects
 
-        xunit, yunit = self.xy_units(xunit, yunit)
+        xunit, yunit = self.x_unit(xunit), self.y_unit(yunit)
 
         df = self.df(xunit=xunit, yunit=yunit)
 
         fig = plotly.graph_objects.Figure()
 
-        if 'j' in df.columns:
-            fig.add_trace(plotly.graph_objects.Scatter(x=df['U'], y=df['j'], mode='lines'))
-            ylabel = f'j [{str(yunit)}]'
-        if 'I' in df.columns:
-            fig.add_trace(plotly.graph_objects.Scatter(x=df['U'], y=df['I'], mode='lines'))
-            ylabel = f'I [{str(yunit)}]'
-
+        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines'))
+	
         fig.update_layout(template="simple_white", showlegend=False, autosize=True, width=600, height=400, 
                             margin=dict(l=70, r=70, b=70, t=70, pad=7),
-                            xaxis_title=f"U [{xunit}]",
-                            yaxis_title=ylabel)
+                            xaxis_title=f"{self.x()} [{xunit}]",
+                            yaxis_title=f"{self.y()} [{yunit}]")
+
         fig.update_xaxes(showline=True, mirror=True)
         fig.update_yaxes(showline=True, mirror=True)
 
