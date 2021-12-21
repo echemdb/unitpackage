@@ -31,4 +31,4 @@ jobs:
       - name: doctest
         shell: bash -l {0}
         run: |
-          pytest --doctest-modules echemdb
+          pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb

@@ -34,11 +34,11 @@ import datapackage.package
 import plotly.express as px
 import plotly.graph_objects as go
 import plotly.io
-TEMPLATE_FOLDERS = {'elements': "./templates/element.md",
-                    'echemdb_id': "./templates/echemdb_id.md",
-                    'systems': "./templates/systems.md",
-                    'surfaces': "./templates/surface.md",
-                    'element_surface': "./templates/element_surface.md"
+TEMPLATE_FOLDERS = {'elements': "./templates/pages/legacy/element.md",
+                    'echemdb_id': "./templates/pages/legacy/echemdb_id.md",
+                    'systems': "./templates/pages/legacy/systems.md",
+                    'surfaces': "./templates/pages/legacy/surface.md",
+                    'element_surface': "./templates/pages/legacy/element_surface.md"
                     }
 
 TARGET_FOLDERS = {'path': "./pages/",
