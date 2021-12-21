@@ -208,7 +208,7 @@ def Descriptor(descriptor):
 
     EXAMPLES:
 
-    Primitive types are returned unchanged:
+    Primitive types are returned unchanged::
 
         >>> Descriptor("string")
         'string'
