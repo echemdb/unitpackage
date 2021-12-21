@@ -57,3 +57,8 @@ jobs:
           FOLDER: generated/website
           TARGET_FOLDER: ""
         if: ${{ github.event_name == 'push' }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        with:
+          limit-access-to-actor: true
+        if: ${{ failure() }}
