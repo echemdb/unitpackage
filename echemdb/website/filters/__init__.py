@@ -1,5 +1,5 @@
 r"""
-Provides custom Jinja macros for rendering the echemdb websites.
+Provides custom Jinja filters for rendering the echemdb websites.
 """
 # ********************************************************************
 #  This file is part of echemdb.
@@ -23,10 +23,8 @@ Provides custom Jinja macros for rendering the echemdb websites.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+from echemdb.website.filters.render import render
 
-def enable_macros(env):
-    from echemdb.website.macros.legacy import define_env
-    define_env(env)
 
-    from echemdb.website.macros.render import render
-    env.macro(render)
+def enable_filters(env):
+    env.filters["render"] = render
