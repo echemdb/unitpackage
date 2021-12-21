@@ -23,12 +23,10 @@
 import os
 import os.path
 
-from mdutils.mdutils import MdUtils
 from echemdb.data.legacy.build_data import TEMPLATE_FOLDERS, ELEMENTS_DATA, TARGET_FOLDERS, DISPLAYED_INFOS, get_plotly_plot
 
 import frontmatter
 import pandas as pd
-import numpy as np
 import copy
 import mkdocs_gen_files
 from echemdb.data.legacy.data import datadir, make_cvs_dataframe
@@ -37,26 +35,6 @@ from echemdb.data.local import collect_datapackages
 cv_data = make_cvs_dataframe(collect_datapackages(datadir))
 grouped_cv_data = cv_data.groupby(by=['electrode material', 'surface'])
 
-def render(template, **kwargs):
-    r"""
-    Render `template` as a jinja template.
-    """
-    from jinja2 import Environment, FileSystemLoader, select_autoescape, ChainableUndefined
-    env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")),
-        autoescape=select_autoescape(),
-    )
-
-    # Load macros like mkdocs-macros does, see
-    # https://github.com/fralau/mkdocs_macros_plugin/blob/master/mkdocs_macros/plugin.py#L157
-    def macro(f, name=''):
-        env.globals[name or f.__name__] = f
-    env.macro = macro
-    from echemdb.website.macros.legacy import define_env
-    define_env(env)
-    del env.macro
-
-    return env.get_template(template).render(**kwargs)
 
 def get_filtered_tables(elementname, surface=None):
 

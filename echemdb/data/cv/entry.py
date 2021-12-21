@@ -25,6 +25,9 @@ These are the individual elements of a :class:`Database`.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+
+from echemdb.data.cv.descriptor import Descriptor
+
 class Entry:
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
@@ -72,7 +75,7 @@ class Entry:
             ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
-        return list(set(dir(Descriptor(self.package.descriptor)) + object.__dir__(self)))
+        return list(set(dir(self._descriptor) + object.__dir__(self)))
 
     def __getattr__(self, name):
         r"""
@@ -84,8 +87,13 @@ class Entry:
             >>> entry.source
             {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
+        The returned descriptor can again be accessed in the same way::
+
+            >>> entry.electrochemical_system.electrolyte.components[0].name
+            'H2O'
+
         """
-        return getattr(Descriptor(self.package.descriptor), name)
+        return getattr(self._descriptor, name)
 
     def __getitem__(self, name):
         r"""
@@ -98,7 +106,11 @@ class Entry:
             {'version': 1, 'doi': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
-        return Descriptor(self.package.descriptor)[name]
+        return self._descriptor[name]
+
+    @property
+    def _descriptor(self):
+        return Descriptor(self.package.descriptor)
 
     def x(self):
         r"""Return the x-axis name.
@@ -339,14 +351,25 @@ class Entry:
             'svgdigitizer',
             name)
 
-        if not os.path.exists(outdir):
-            from glob import glob
-            for yaml in glob(os.path.join(source, "*.yaml")):
-                svg = os.path.splitext(yaml)[0] + ".svg"
+        # We now might have to digitize some files on demand. When running
+        # tests in parallel, this introduces a race condition that we avoid
+        # with a global lock in the file system.
+        lockfile = f"{outdir}.lock"
+        os.makedirs(os.path.dirname(lockfile), exist_ok=True)
 
-                from svgdigitizer.test.cli import invoke
-                from svgdigitizer.__main__ import cv
-                invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+        from filelock import FileLock
+        with FileLock(lockfile):
+            if not os.path.exists(outdir):
+                from glob import glob
+                for yaml in glob(os.path.join(source, "*.yaml")):
+                    svg = os.path.splitext(yaml)[0] + ".svg"
+
+                    from svgdigitizer.test.cli import invoke
+                    from svgdigitizer.__main__ import digitize_cv
+                    invoke(digitize_cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+
+                assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
+                assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
         packages = collect_datapackages(outdir)
@@ -355,96 +378,7 @@ class Entry:
         bibliography = next(iter(bibliography))
 
         if len(packages) == 0:
-            raise ValueError(f"No literature data found for {name}. There is probably some outdated data in {outdir}.")
+            from glob import glob
+            raise ValueError(f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }")
 
         return [Entry(package=package, bibliography=bibliography) for package in packages]
-
-
-class Descriptor:
-    r"""
-    Wrapper for a data package's descriptor to make searching in metadata easier.
-
-    EXAMPLES::
-
-        >>> Descriptor({'a': 0})
-        {'a': 0}
-
-    """
-    def __init__(self, descriptor):
-        self._descriptor = descriptor
-
-    def __dir__(self):
-        r"""
-        Return the attributes of this descriptor.
-
-        Implemented to allow tab-completion in a package's descriptor.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> 'a' in dir(descriptor)
-            True
-
-        """
-        return list(key.replace(' ', '_') for key in self._descriptor.keys()) + object.__dir__(self)
-
-    def __getattr__(self, name):
-        r"""
-        Return the attribute `name` of the descriptor.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> descriptor.a
-            0
-
-        """
-        name = name.replace('_', ' ')
-        if name in self._descriptor:
-            value = self._descriptor[name]
-            return Descriptor(value) if isinstance(value, dict) else value
-
-        raise AttributeError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
-
-    def __getitem__(self, name):
-        r"""
-        Return the attribute `name` of the descriptor.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> descriptor["a"]
-            0
-
-        """
-        if name in self._descriptor:
-            value = self._descriptor[name]
-            return Descriptor(value) if isinstance(value, dict) else value
-
-        raise KeyError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
-
-    def __repr__(self):
-        r"""
-        Return a printable representation of this descriptor.
-
-        EXAMPLES::
-
-            >>> Descriptor({})
-            {}
-
-        """
-        return repr(self._descriptor)
-
-    @property
-    def yaml(self):
-        r'''Return a printable representation of this descriptor in yaml format.
-
-        EXAMPLES::
-
-            >>> descriptor = Descriptor({'a': 0})
-            >>> descriptor.yaml
-            'a: 0\n'
-
-        '''
-        import yaml
-        return yaml.dump(self._descriptor)

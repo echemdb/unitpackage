@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - astropy
+  - filelock
   - inflect
   - matplotlib
   - mkdocs
@@ -14,6 +15,9 @@ dependencies:
   - pip
   - pybtex
   - pytest
+  - pytest-doctestplus
+  - pytest-xdist
+  - pytest-remotedata
   - pyyaml
   - pip:
     - linkchecker

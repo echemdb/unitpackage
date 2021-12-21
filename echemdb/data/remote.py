@@ -44,7 +44,7 @@ def collect_datapackages(data=".", url="https://github.com/echemdb/website/archi
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages()
+        >>> packages = collect_datapackages()  # doctest: +REMOTE_DATA
 
     """
     if outdir is None:
@@ -73,7 +73,7 @@ def collect_bibliography(data=".", url="https://github.com/echemdb/website/archi
 
     EXAMPLES::
 
-        >>> packages = collect_bibliography()
+        >>> packages = collect_bibliography()  # doctest: +REMOTE_DATA
 
     """
     if outdir is None:
