@@ -232,8 +232,8 @@ class Entry:
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
                     from svgdigitizer.test.cli import invoke
-                    from svgdigitizer.__main__ import cv
-                    invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+                    from svgdigitizer.__main__ import digitize_cv
+                    invoke(digitize_cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
                 assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
                 assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
