@@ -272,8 +272,8 @@ class Entry:
                 svg = os.path.splitext(yaml)[0] + ".svg"
 
                 from svgdigitizer.test.cli import invoke
-                from svgdigitizer.__main__ import cv
-                invoke(cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+                from svgdigitizer.__main__ import digitize_cv
+                invoke(digitize_cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
         packages = collect_datapackages(outdir)
