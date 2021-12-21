@@ -1,5 +1,5 @@
 r"""
-Implements a `render` macro that renders a template with thi Jinja engine.
+Implements a `render` macro that renders a template with the Jinja engine.
 
 EXAMPLES::
 
