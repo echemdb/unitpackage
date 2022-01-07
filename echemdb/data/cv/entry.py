@@ -128,6 +128,8 @@ class Entry:
         from astropy import units as u
         if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
             return 'U'
+        else:
+            raise ValueError(f"The variable on the x-axis is not equivalent to 'V'.")
 
     def y(self):
         r"""
@@ -148,6 +150,8 @@ class Entry:
             return 'j' 
         if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
             return 'I'
+        else:
+            raise ValueError(f"The variable on the y-axis is not equivalent to 'A / m2' or 'A'.")
 
     def x_unit(self, xunit=None):
         r"""
@@ -219,7 +223,6 @@ class Entry:
         if yunit == 'original':
             yunit = self.figure_description.current.unit
 
-```suggestion
         return u.Unit(yunit)
 
     def df(self, xunit=None, yunit=None):
