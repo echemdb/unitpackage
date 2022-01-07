@@ -130,7 +130,8 @@ class Entry:
             return 'U'
 
     def y(self):
-        r"""Return the y-axis name.
+        r"""
+        Return the name of the variable on the y-axis, i.e., `"j"` or `"I"`.
 
         TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
 
