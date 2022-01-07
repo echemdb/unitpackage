@@ -185,7 +185,8 @@ class Entry:
         return xunit
 
     def y_unit(self, yunit=None):
-        r"""Return an astropy unit, where `yunit` is a current (I) or current density (j).
+        r"""
+        Return the unit of the y-axis as an astropy unit.
 
         EXAMPLES:
 
