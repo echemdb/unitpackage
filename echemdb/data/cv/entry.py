@@ -219,10 +219,8 @@ class Entry:
         if yunit == 'original':
             yunit = self.figure_description.current.unit
 
-        if isinstance(yunit, str):
-            yunit = u.Unit(yunit)
-
-        return yunit
+```suggestion
+        return u.Unit(yunit)
 
     def df(self, xunit=None, yunit=None):
         r"""
