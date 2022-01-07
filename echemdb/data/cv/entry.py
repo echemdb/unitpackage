@@ -179,10 +179,8 @@ class Entry:
             xunit = u.V
         if xunit == 'original':
             xunit = self.figure_description.potential_scale.unit
-        if isinstance(xunit, str):
-            xunit = u.Unit(xunit)
 
-        return xunit
+        return u.Unit(xunit)
 
     def y_unit(self, yunit=None):
         r"""
