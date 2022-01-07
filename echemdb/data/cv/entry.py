@@ -113,7 +113,8 @@ class Entry:
         return Descriptor(self.package.descriptor)
 
     def x(self):
-        r"""Return the x-axis name.
+        r"""
+        Return the name of the variable on the x-axis, i.e., `"U"`.
 
         TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
 
