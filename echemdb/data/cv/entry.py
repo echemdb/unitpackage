@@ -295,7 +295,8 @@ class Entry:
         """
         import plotly.graph_objects
 
-        xunit, yunit = self.x_unit(xunit), self.y_unit(yunit)
+        xunit = self.x_unit(xunit)
+        yunit = self.y_unit(yunit)
 
         df = self.df(xunit=xunit, yunit=yunit)
 
