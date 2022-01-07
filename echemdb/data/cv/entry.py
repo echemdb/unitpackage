@@ -150,7 +150,8 @@ class Entry:
             return 'I'
 
     def x_unit(self, xunit=None):
-        r"""Return an astropy unit, where `xunit` is a voltage.
+        r"""
+        Return the unit on the x-axis as an astropy unit.
 
         EXAMPLES:
 
