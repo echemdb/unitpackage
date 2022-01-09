@@ -8,14 +8,14 @@ Create a database from local data packages in the `data/` directory::
     >>> from echemdb.data.local import collect_datapackages
     >>> database = Database(collect_datapackages('data/'))
 
+Create a database from the data packages published in the echemdb::
+
+    >>> database = Database()  # doctest: +REMOTE_DATA
+
 Search the database for a single publication::
 
     >>> database.filter(lambda entry: entry.source.doi == '10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
-
-Create a database from the data packages published in the echemdb::
-
-    >>> database = Database()  # doctest: +REMOTE_DATA
 
 """
 # ********************************************************************
@@ -126,7 +126,7 @@ class Database:
         EXAMPLES::
 
             >>> database = Database.create_example()
-            >>> database.filter(lambda entry: entry.source.doi == r'10.1039/C0CP01001D')
+            >>> database.filter(lambda entry: entry.source.doi == '10.1039/C0CP01001D')
             [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         """
