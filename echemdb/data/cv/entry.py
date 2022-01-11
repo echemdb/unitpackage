@@ -72,7 +72,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -172,41 +172,164 @@ class Entry:
 
         return EchemdbStyle(abbreviate_names=True).format_entry("unused", self.bibliography).text.render_as(backend)
 
-    def df(self, yunit=None):
+    def x(self):
         r"""
-        Return the CSV resource attached to this entry as a data frame.
+        Return the name of the variable on the x-axis, i.e., `"U"`.
+
+        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.df()
-                         t         U         j
-            0     0.000000 -0.103158 -0.099828
-            1     0.100000 -0.098158 -0.091664
-            ...
+            >>> entry.x()
+            'U'
 
-            >>> from astropy import units as u
-            >>> entry.df(yunit=u.A / u.m**2)
+        """
+        from astropy import units as u
+        if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
+            return 'U'
+        else:
+            raise ValueError(f"The variable on the x-axis is not equivalent to 'V'.")
+
+    def y(self):
+        r"""
+        Return the name of the variable on the y-axis, i.e., `"j"` or `"I"`.
+
+        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.y()
+            'j'
+
+        """
+        from astropy import units as u
+
+        if u.Unit(self.figure_description.current.unit).is_equivalent('A / m2'):
+            return 'j' 
+        if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
+            return 'I'
+        else:
+            raise ValueError(f"The variable on the y-axis is not equivalent to 'A / m2' or 'A'.")
+
+    def x_unit(self, xunit=None):
+        r"""
+        Return the unit on the x-axis as an astropy unit.
+
+        EXAMPLES:
+
+        Without parameters, SI units are returned::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.x_unit()
+            Unit("V")
+
+        When set to `"original"`, the original units of the published figure are returned::
+
+            >>> entry.x_unit(xunit='original')
+            Unit("V")
+
+        Units can be specified explicitly::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.x_unit(xunit='mV')
+            Unit("mV")
+
+        """
+        from astropy import units as u
+
+        if xunit is None:
+            xunit = u.V
+        if xunit == 'original':
+            xunit = self.figure_description.potential_scale.unit
+
+        return u.Unit(xunit)
+
+    def y_unit(self, yunit=None):
+        r"""
+        Return the unit of the y-axis as an astropy unit.
+
+        EXAMPLES:
+
+        Without parameters, SI units are returned::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.y_unit()
+            Unit("A / m2")
+
+        When set to `"original"`, the original units of the published figure are returned::
+
+            >>> entry.y_unit(yunit='original')
+            Unit("mA / cm2")
+
+        Units can be specified explicitly::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.y_unit(yunit='uA / cm2')
+            Unit("uA / cm2")
+
+        """
+        from astropy import units as u
+
+        if yunit is None:
+            if self.y() == 'j':
+                yunit = u.A / u.m**2
+            elif self.y() == 'I':
+                yunit = u.A
+            else:
+                raise NotImplementedError("Unexpected naming of y axis.")
+
+        if yunit == 'original':
+            yunit = self.figure_description.current.unit
+
+        return u.Unit(yunit)
+
+    def df(self, xunit=None, yunit=None):
+        r"""
+        Return the CSV resource attached to this entry as a data frame.
+
+        If the x and y-units are not specified, all values
+        are in SI units. The data frame can also be returned 
+        with the original figure units or with custom units as shown in the following examples.
+
+        EXAMPLES:
+        
+        A data frame in SI units::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df()
                          t         U         j
             0     0.000000 -0.103158 -0.998277
             1     0.100000 -0.098158 -0.916644
             ...
 
+        A data frame in the original units of the figure::
+
+            >>> entry.df(xunit='original', yunit='original')
+                         t         U         j
+            0     0.000000 -0.103158 -0.099828
+            1     0.100000 -0.098158 -0.091664
+            ...
+
+        A data frame with custom units::
+
+            >>> from astropy import units as u
+            >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
+                         t           U          j
+            0     0.000000 -103.158422 -99.827664
+            1     0.100000  -98.158422 -91.664367
+            ...
+
         """
-        from astropy import units as u
-        if yunit is None:
-            yunit = self.figure_description.current.unit
-        if isinstance(yunit, str):
-            yunit = u.Unit(yunit)
+        import pandas as pd
 
-        import pandas
-        df = pandas.read_csv(self.package.resources[0].raw_iter(stream=False))
+        df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
 
-        if 'j' in df.columns:
-            df['j'] *= (u.A / u.m**2).to(yunit)
-        if 'I' in df.columns:
-            df['I'] *= (u.A).to(yunit)
-
+        if xunit or yunit:
+            df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
+            df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
+        
         return df
 
     def __repr__(self):
@@ -222,9 +345,9 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def plot(self, yunit=None):
+    def plot(self, xunit=None, yunit=None):
         r"""
-        Return a plot of the database in this data package.
+        Return a plot of the data in this data package.
 
         EXAMPLES::
 
@@ -235,10 +358,24 @@ class Entry:
         """
         import plotly.graph_objects
 
+        xunit = self.x_unit(xunit)
+        yunit = self.y_unit(yunit)
+
+        df = self.df(xunit=xunit, yunit=yunit)
+
         fig = plotly.graph_objects.Figure()
-        df = self.df(yunit=yunit)
-        fig.add_trace(plotly.graph_objects.Scatter(x=df['U'], y=df['j'], mode='lines'))
-        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=450, height=350, margin=dict(l=70, r=70, b=70, t=70, pad=7))
+
+        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
+
+        reference = f' vs {self.figure_description.potential_scale.reference}' if self.figure_description.potential_scale.reference else ''
+
+        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
+                            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+                            xaxis_title=f"{self.x()} [{xunit}{reference}]",
+                            yaxis_title=f"{self.y()} [{yunit}]")
+
+        fig.update_xaxes(showline=True, mirror=True)
+        fig.update_yaxes(showline=True, mirror=True)
 
         return fig
 
