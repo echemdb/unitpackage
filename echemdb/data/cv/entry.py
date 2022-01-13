@@ -184,7 +184,7 @@ class Entry:
         if xunit is None:
             xunit = u.V
         if xunit == 'original':
-            xunit = self.figure_description.potential_scale.unit
+            xunit = self.figure_description.axes.E.unit
 
         return u.Unit(xunit)
 
