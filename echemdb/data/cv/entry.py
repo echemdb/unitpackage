@@ -137,8 +137,6 @@ class Entry:
         r"""
         Return the name of the variable on the y-axis, i.e., `"j"` or `"I"`.
 
-        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
-
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
@@ -148,12 +146,14 @@ class Entry:
         """
         from astropy import units as u
 
-        if u.Unit(self.figure_description.current.unit).is_equivalent('A / m2'):
-            return 'j' 
-        if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
+        if self.data_description.axes.I:
+            assert u.Unit(self.data_description.axes.I.unit).is_equivalent('A'), f"The variable on the x-axis is not equivalent to 'A'."
             return 'I'
+        if self.data_description.axes.j:
+            assert u.Unit(self.data_description.axes.j.unit).is_equivalent('A / m2'), f"The variable on the x-axis is not equivalent to 'A / m2'."
+            return 'j'
         else:
-            raise ValueError(f"The variable on the y-axis is not equivalent to 'A / m2' or 'A'.")
+            raise ValueError(f"None of the axes has a variable 'I' or 'j'.")
 
     def x_unit(self, xunit=None):
         r"""
@@ -223,7 +223,7 @@ class Entry:
                 raise NotImplementedError("Unexpected naming of y axis.")
 
         if yunit == 'original':
-            yunit = self.figure_description.current.unit
+            yunit = self.figure_description.axes.j.unit or self.figure_description.axes.I.unit
 
         return u.Unit(yunit)
 
