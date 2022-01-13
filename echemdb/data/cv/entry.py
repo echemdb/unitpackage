@@ -72,7 +72,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'data_description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -114,7 +114,7 @@ class Entry:
 
     def x(self):
         r"""
-        Return the name of the variable on the x-axis, i.e., `"U"`.
+        Return the name of the variable on the x-axis, i.e., `"E"`.
 
         TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
 
@@ -122,14 +122,23 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.x()
-            'U'
+            'E'
 
         """
         from astropy import units as u
-        if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
-            return 'U'
+
+        if not self.data_description.axes:
+            raise ValueError(f"No axes were specified for the dataset.")
+        if 'E' in self.data_description.axes._descriptor.keys():
+            assert u.Unit(self.data_description.axes.E.unit).is_equivalent('V'), f"The variable on the x-axis is not equivalent to 'V'."
+            return 'E'
         else:
-            raise ValueError(f"The variable on the x-axis is not equivalent to 'V'.")
+            raise ValueError(f"None of the axes has a variable 'E'.")
+        # if 
+        # if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
+        #     return 'U'
+        # else:
+        #     raise ValueError(f"The variable on the x-axis is not equivalent to 'V'.")
 
     def y(self):
         r"""
