@@ -233,7 +233,8 @@ class Entry:
 
         If the x and y-units are not specified, all values
         are in SI units. The data frame can also be returned 
-        with the original figure units or with custom units as shown in the following examples.
+        with the original figure units or with custom units as shown 
+        in the following examples.
 
         EXAMPLES:
         
@@ -241,7 +242,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df()
-                         t         U         j
+                         t         E         j
             0     0.000000 -0.103158 -0.998277
             1     0.100000 -0.098158 -0.916644
             ...
@@ -249,7 +250,7 @@ class Entry:
         A data frame in the original units of the figure::
 
             >>> entry.df(xunit='original', yunit='original')
-                         t         U         j
+                         t         E         j
             0     0.000000 -0.103158 -0.099828
             1     0.100000 -0.098158 -0.091664
             ...
@@ -258,7 +259,7 @@ class Entry:
 
             >>> from astropy import units as u
             >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
-                         t           U          j
+                         t           E          j
             0     0.000000 -103.158422 -99.827664
             1     0.100000  -98.158422 -91.664367
             ...
