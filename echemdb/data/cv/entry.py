@@ -116,8 +116,6 @@ class Entry:
         r"""
         Return the name of the variable on the x-axis, i.e., `"E"`.
 
-        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
-
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
@@ -134,11 +132,6 @@ class Entry:
             return 'E'
         else:
             raise ValueError(f"None of the axes has a variable 'E'.")
-        # if 
-        # if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
-        #     return 'U'
-        # else:
-        #     raise ValueError(f"The variable on the x-axis is not equivalent to 'V'.")
 
     def y(self):
         r"""
