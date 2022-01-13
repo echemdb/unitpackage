@@ -290,12 +290,26 @@ class Entry:
 
     def plot(self, xunit=None, yunit=None):
         r"""
-        Return a plot of the data in this data package.
+        Return a plot of the data in this data package in SI units.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.plot()
+            Figure(...)
+
+        The plot can also be returned with the axis units of the original figure::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.plot(xunit='original', yunit='original')
+            Figure(...)
+
+        The plot can also be returned with custum axis units, where 
+        `xunit` should be equivalents to `V` and 
+        yunit equivalnts to `A` or `A / m2`.::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.plot(xunit='mV', yunit='uA / cm2')
             Figure(...)
 
         """
@@ -310,7 +324,7 @@ class Entry:
 
         fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
 
-        reference = f' vs {self.figure_description.potential_scale.reference}' if self.figure_description.potential_scale.reference else ''
+        reference = f' vs {self.data_description.axes.E.reference}' if self.data_description.axes.E.reference else ''
 
         fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
                             margin=dict(l=70, r=70, b=70, t=70, pad=7),
