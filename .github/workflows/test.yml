@@ -14,6 +14,10 @@ jobs:
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         python: ["3.9", "3.10"]
+        include:
+          - os: ubuntu-latest
+            python: 3.10
+            pytest: --remote-data
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -31,4 +35,4 @@ jobs:
       - name: doctest
         shell: bash -l {0}
         run: |
-          pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb
+          pytest -n auto --doctest-plus ${{ matrix.pytest }} --doctest-modules echemdb
