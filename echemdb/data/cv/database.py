@@ -39,6 +39,10 @@ Search the database for a single publication::
 #  You should have received a copy of the GNU General Public License
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import logging
+
+logger = logging.getLogger("echemdb")
+
 
 class Database:
     r"""
@@ -129,8 +133,22 @@ class Database:
             >>> database.filter(lambda entry: entry.source.doi == '10.1039/C0CP01001D')
             [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
+        The filter predicate can use properties that are not present on all
+        entries in the database. If a property is missing the element is
+        removed from the database::
+
+            >>> database.filter(lambda entry: entry.non.existant.property)
+            []
+
         """
-        return Database(data_packages=[entry.package for entry in self if predicate(entry)], bibliography=self._bibliography)
+        def catching_predicate(entry):
+            try:
+                return predicate(entry)
+            except (KeyError, AttributeError) as e:
+                logger.debug(f"Filter removed entry {entry} due to error: {e}")
+                return False
+
+        return Database(data_packages=[entry.package for entry in self if catching_predicate(entry)], bibliography=self._bibliography)
 
     def __iter__(self):
         r"""
