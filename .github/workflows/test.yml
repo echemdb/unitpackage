@@ -20,9 +20,9 @@ jobs:
         - os: "ubuntu-latest"
           python: "3.10"
           # This leg of the tests runs doctests against the data that is
-          # currently in the echemdb. This test fails when there have been
-          # changes introduced with this run that have not been published in
-          # the echemdb yet.
+          # currently in the echemdb. This test might fail when substantial
+          # changes have been introduced with this run that have not been
+          # published in the echemdb yet.
           remote-data: 'remote'
     steps:
       - uses: actions/checkout@v2
