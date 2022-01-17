@@ -10,10 +10,20 @@ concurrency:
 jobs:
   test:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.remote-data == 'remote' }}
     strategy:
       matrix:
         os: ["ubuntu-latest", "macos-latest", "windows-latest"]
         python: ["3.9", "3.10"]
+        remote-data: [""]
+        include:
+        - os: "ubuntu-latest"
+          python: "3.10"
+          # This leg of the tests runs doctests against the data that is
+          # currently in the echemdb. This test might fail when substantial
+          # changes have been introduced with this run that have not been
+          # published in the echemdb yet.
+          remote-data: 'remote'
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -31,4 +41,4 @@ jobs:
       - name: doctest
         shell: bash -l {0}
         run: |
-          pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb
+          pytest -n auto --doctest-plus ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }} --doctest-modules echemdb
