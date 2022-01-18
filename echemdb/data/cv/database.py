@@ -90,7 +90,7 @@ class Database:
         EXAMPLES::
 
             >>> Database.create_example()
-            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid'), Entry('engstfeld_2018_polycrystalline_17743_4b_1')]
+            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
         from echemdb.data.cv.entry import Entry
