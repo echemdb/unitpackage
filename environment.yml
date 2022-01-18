@@ -31,4 +31,4 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
-    - git+https://github.com/echemdb/svgdigitizer.git@2f62ba85293f173178736b9e694ada7ad4cc9df8
+    - svgdigitizer=0.1.0
