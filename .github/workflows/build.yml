@@ -57,3 +57,7 @@ jobs:
           FOLDER: generated/website
           TARGET_FOLDER: ""
         if: ${{ github.event_name == 'push' }}
+      - name: doctest against generated website data
+        shell: bash -l {0}
+        run: |
+          pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb
