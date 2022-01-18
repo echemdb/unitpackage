@@ -31,6 +31,4 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
-    # We should use a released version of svgdigitizer instead once
-    # https://github.com/echemdb/svgdigitizer/issues/55 has been resolved.
-    - git+https://github.com/echemdb/svgdigitizer.git
+    - git+https://github.com/echemdb/svgdigitizer.git@2f62ba85293f173178736b9e694ada7ad4cc9df8
