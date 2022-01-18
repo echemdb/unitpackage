@@ -14,7 +14,7 @@ Create a database from the data packages published in the echemdb::
 
 Search the database for a single publication::
 
-    >>> database.filter(lambda entry: entry.source.doi == '10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+    >>> database.filter(lambda entry: entry.source.doi == 'https:/doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
 """
@@ -130,7 +130,7 @@ class Database:
         EXAMPLES::
 
             >>> database = Database.create_example()
-            >>> database.filter(lambda entry: entry.source.doi == '10.1039/C0CP01001D')
+            >>> database.filter(lambda entry: entry.source.doi == 'https:/doi.org/10.1039/C0CP01001D')
             [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
 
         The filter predicate can use properties that are not present on all
