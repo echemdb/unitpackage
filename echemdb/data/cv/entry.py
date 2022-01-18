@@ -72,7 +72,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curator', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'data_description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -174,28 +174,28 @@ class Entry:
 
     def x(self):
         r"""
-        Return the name of the variable on the x-axis, i.e., `"U"`.
-
-        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
+        Return the name of the variable on the x-axis, i.e., `"E"`.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.x()
-            'U'
+            'E'
 
         """
         from astropy import units as u
-        if u.Unit(self.figure_description.potential_scale.unit).is_equivalent('V'):
-            return 'U'
+
+        if not self.data_description.axes:
+            raise ValueError(f"No axes were specified for the dataset.")
+        if 'E' in self.data_description.axes._descriptor.keys():
+            assert u.Unit(self.data_description.axes.E.unit).is_equivalent('V'), f"The variable on the x-axis is not equivalent to 'V'."
+            return 'E'
         else:
-            raise ValueError(f"The variable on the x-axis is not equivalent to 'V'.")
+            raise ValueError(f"None of the axes has a variable 'E'.")
 
     def y(self):
         r"""
         Return the name of the variable on the y-axis, i.e., `"j"` or `"I"`.
-
-        TODO: Adapt along with https://github.com/echemdb/svgdigitizer/issues/106.
 
         EXAMPLES::
 
@@ -206,12 +206,14 @@ class Entry:
         """
         from astropy import units as u
 
-        if u.Unit(self.figure_description.current.unit).is_equivalent('A / m2'):
-            return 'j' 
-        if u.Unit(self.figure_description.current.unit).is_equivalent('A'):
+        if self.data_description.axes.I:
+            assert u.Unit(self.data_description.axes.I.unit).is_equivalent('A'), f"The variable on the x-axis is not equivalent to 'A'."
             return 'I'
+        if self.data_description.axes.j:
+            assert u.Unit(self.data_description.axes.j.unit).is_equivalent('A / m2'), f"The variable on the x-axis is not equivalent to 'A / m2'."
+            return 'j'
         else:
-            raise ValueError(f"The variable on the y-axis is not equivalent to 'A / m2' or 'A'.")
+            raise ValueError(f"None of the axes has a variable 'I' or 'j'.")
 
     def x_unit(self, xunit=None):
         r"""
@@ -242,7 +244,7 @@ class Entry:
         if xunit is None:
             xunit = u.V
         if xunit == 'original':
-            xunit = self.figure_description.potential_scale.unit
+            xunit = self.figure_description.axes.E.unit
 
         return u.Unit(xunit)
 
@@ -281,7 +283,7 @@ class Entry:
                 raise NotImplementedError("Unexpected naming of y axis.")
 
         if yunit == 'original':
-            yunit = self.figure_description.current.unit
+            yunit = self.figure_description.axes.j.unit or self.figure_description.axes.I.unit
 
         return u.Unit(yunit)
 
@@ -291,7 +293,8 @@ class Entry:
 
         If the x and y-units are not specified, all values
         are in SI units. The data frame can also be returned 
-        with the original figure units or with custom units as shown in the following examples.
+        with the original figure units or with custom units as shown 
+        in the following examples.
 
         EXAMPLES:
         
@@ -299,7 +302,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df()
-                         t         U         j
+                         t         E         j
             0     0.000000 -0.103158 -0.998277
             1     0.100000 -0.098158 -0.916644
             ...
@@ -307,7 +310,7 @@ class Entry:
         A data frame in the original units of the figure::
 
             >>> entry.df(xunit='original', yunit='original')
-                         t         U         j
+                         t         E         j
             0     0.000000 -0.103158 -0.099828
             1     0.100000 -0.098158 -0.091664
             ...
@@ -316,7 +319,7 @@ class Entry:
 
             >>> from astropy import units as u
             >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
-                         t           U          j
+                         t           E          j
             0     0.000000 -103.158422 -99.827664
             1     0.100000  -98.158422 -91.664367
             ...
@@ -347,12 +350,26 @@ class Entry:
 
     def plot(self, xunit=None, yunit=None):
         r"""
-        Return a plot of the data in this data package.
+        Return a plot of the data in this data package in SI units.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.plot()
+            Figure(...)
+
+        The plot can also be returned with the axis units of the original figure::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.plot(xunit='original', yunit='original')
+            Figure(...)
+
+        The plot can also be returned with custum axis units, where 
+        `xunit` should be equivalents to `V` and 
+        yunit equivalnts to `A` or `A / m2`.::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.plot(xunit='mV', yunit='uA / cm2')
             Figure(...)
 
         """
@@ -367,7 +384,7 @@ class Entry:
 
         fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
 
-        reference = f' vs {self.figure_description.potential_scale.reference}' if self.figure_description.potential_scale.reference else ''
+        reference = f' vs {self.data_description.axes.E.reference}' if self.data_description.axes.E.reference else ''
 
         fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
                             margin=dict(l=70, r=70, b=70, t=70, pad=7),
