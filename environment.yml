@@ -31,4 +31,4 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
-    - svgdigitizer=0.1.0
+    - svgdigitizer=0.1.2
