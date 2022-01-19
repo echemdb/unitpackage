@@ -62,11 +62,8 @@ jobs:
         run: |
           # Create a ZIP archive similar to the one automatically rovided by GitHub.
           mkdir website-gh-pages
-          ln -s generated/website/data website-gh-pages/data
-          zip generated/website/website-gh-pages.zip website-gh-pages
-
-          python -m http.server 8880 --directory generated &
-          sleep 1
+          cp -R generated/website/data website-gh-pages/
+          zip -r generated/website/website-gh-pages.zip website-gh-pages
 
           # Run tests against the new ZIP archive.
           export ECHEMDB_DATABASE_URL=http://localhost:8880/website/website-gh-pages.zip
