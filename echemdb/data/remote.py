@@ -23,6 +23,8 @@ Utilities to work with remote data packages.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+import os
+
 from functools import cache
 
 @cache
@@ -34,8 +36,12 @@ def collect_zipfile_from_url(url):
     from io import BytesIO
     return ZipFile(BytesIO(response.read()))
 
+
+ECHEMDB_DATABASE_URL = os.environ.get('ECHEMDB_DATABASE_URL', "https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip")
+
+
 @cache
-def collect_datapackages(data=".", url="https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip", outdir=None):
+def collect_datapackages(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
     r"""
     Return a list of data packages defined in a remote location.
 
@@ -64,7 +70,7 @@ def collect_datapackages(data=".", url="https://github.com/echemdb/website/archi
     return echemdb.data.local.collect_datapackages(os.path.join(outdir, data))
 
 @cache
-def collect_bibliography(data=".", url="https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip", outdir=None):
+def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
     r"""
     Return a list of bibliography files (bibtex) in a remote location.
 
