@@ -143,6 +143,7 @@ class Entry:
         """
         from pybtex.style.formatting.unsrt import Style
 
+        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
         class EchemdbStyle(Style):
             def format_names(self, role, as_sentence=True):
                 from pybtex.style.template import node
