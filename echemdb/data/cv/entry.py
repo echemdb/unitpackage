@@ -85,7 +85,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'bib': 'alves_2011_electrochemistry_6010', 'curve': 'solid', 'doi': 'https://doi.org/10.1039/C0CP01001D', 'figure': '2a', 'version': 1}
+            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -103,7 +103,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'bib': 'alves_2011_electrochemistry_6010', 'curve': 'solid', 'doi': 'https://doi.org/10.1039/C0CP01001D', 'figure': '2a', 'version': 1}
+            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
         return self._descriptor[name]
@@ -143,6 +143,7 @@ class Entry:
         """
         from pybtex.style.formatting.unsrt import Style
 
+        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
         class EchemdbStyle(Style):
             def format_names(self, role, as_sentence=True):
                 from pybtex.style.template import node
@@ -447,7 +448,7 @@ class Entry:
 
                     from svgdigitizer.test.cli import invoke
                     from svgdigitizer.__main__ import digitize_cv
-                    invoke(digitize_cv, "--sampling_interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+                    invoke(digitize_cv, "--sampling-interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
                 assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
                 assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."

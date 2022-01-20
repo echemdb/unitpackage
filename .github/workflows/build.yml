@@ -24,7 +24,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pushd literature
-          ls ./**/*.yaml | parallel --bar --halt now,fail=1 'svgdigitizer cv --sampling_interval .001 --package --metadata {} {.}.svg --outdir=../data/generated/svgdigitizer/{//}'
+          ls ./**/*.yaml | parallel --bar --halt now,fail=1 'svgdigitizer cv --sampling-interval .001 --package --metadata {} {.}.svg --outdir=../data/generated/svgdigitizer/{//}'
           popd
       - name: mkdocs
         shell: bash -l {0}
@@ -60,4 +60,11 @@ jobs:
       - name: doctest against generated website data
         shell: bash -l {0}
         run: |
+          # Create a ZIP archive similar to the one automatically rovided by GitHub.
+          mkdir website-gh-pages
+          cp -R generated/website/data website-gh-pages/
+          zip -r generated/website/website-gh-pages.zip website-gh-pages
+
+          # Run tests against the new ZIP archive.
+          export ECHEMDB_DATABASE_URL=http://localhost:8880/website/website-gh-pages.zip
           pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb

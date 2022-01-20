@@ -31,4 +31,4 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
-    - git+https://github.com/DunklesArchipel/svgdigitizer.git@refs/pull/112/head
+    - svgdigitizer >=0.2.0,<0.3.0
