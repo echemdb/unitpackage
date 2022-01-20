@@ -72,7 +72,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'create_examples', 'curator', 'data_description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curator', 'data description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -85,7 +85,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'version': 1, 'doi': '10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -103,7 +103,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'version': 1, 'doi': '10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
         return self._descriptor[name]
@@ -111,6 +111,67 @@ class Entry:
     @property
     def _descriptor(self):
         return Descriptor(self.package.descriptor)
+
+    def citation(self, backend='text'):
+        r"""
+        Return a formatted reference for the entry's bibliography such as:
+
+        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+
+        Rendering default is plain text 'text', but can be changed to any format
+        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.citation(backend='text')
+            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
+            >>> print(entry.citation(backend='md'))
+            O\. B\. Alves *et al\.*
+            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
+            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
+
+            >>> entry = Entry.create_examples(name="gomez-marin_2012_surface_558")[0]
+            >>> entry.citation(backend='text')
+            'A. M. Gómez-Marín et al. Pt(111) surface disorder kinetics in perchloric acid solutions and the influence of specific anion adsorption. Electrochimica acta, 82:558–569, 2012.'
+
+            >>> print(entry.citation(backend='md'))
+            A\. M\. Gómez\-Marín *et al\.*
+            *Pt\(111\) surface disorder kinetics in perchloric acid solutions and the influence of specific anion adsorption*\.
+            *Electrochimica acta*, 82:558–569, 2012\.
+
+        """
+        from pybtex.style.formatting.unsrt import Style
+
+        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
+        class EchemdbStyle(Style):
+            def format_names(self, role, as_sentence=True):
+                from pybtex.style.template import node
+
+                @node
+                def names(_, context, role):
+                    persons = context["entry"].persons[role]
+                    style = context["style"]
+
+                    names = [style.format_name(person, style.abbreviate_names) for person in persons]
+
+                    if len(names) == 1:
+                        return names[0].format_data(context)
+                    else:
+                        from pybtex.style.template import words, tag
+                        return words(sep=' ')[names[0], tag('i')['et al.']].format_data(context)
+
+                names = names(role)
+
+                from pybtex.style.template import sentence
+                return sentence[names] if as_sentence else names
+
+            def format_title(self, e, which_field, as_sentence=True):
+                from pybtex.style.template import field, tag, sentence
+                title = tag('i')[field(which_field)]
+                return sentence[title] if as_sentence else title
+
+        return EchemdbStyle(abbreviate_names=True).format_entry("unused", self.bibliography).text.render_as(backend)
 
     def x(self):
         r"""
