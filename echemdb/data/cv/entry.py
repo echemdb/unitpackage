@@ -208,10 +208,10 @@ class Entry:
         from astropy import units as u
 
         if self.data_description.axes.I:
-            assert u.Unit(self.data_description.axes.I.unit).is_equivalent('A'), f"The variable on the x-axis is not equivalent to 'A'."
+            assert u.Unit(self.data_description.axes.I.unit).is_equivalent('A'), f"The variable on the x-axis is not convertible to 'A'."
             return 'I'
         if self.data_description.axes.j:
-            assert u.Unit(self.data_description.axes.j.unit).is_equivalent('A / m2'), f"The variable on the x-axis is not equivalent to 'A / m2'."
+            assert u.Unit(self.data_description.axes.j.unit).is_equivalent('A / m2'), f"The variable on the x-axis is not convertible to 'A / m2'."
             return 'j'
         else:
             raise ValueError(f"None of the axes has a variable 'I' or 'j'.")
@@ -366,8 +366,8 @@ class Entry:
             Figure(...)
 
         The plot can also be returned with custom axis units, where 
-        `xunit` should be equivalent to `V` and 
-        `yunit` equivalent to `A` or `A / m2`.::
+        `xunit` should be convertible to `V` and 
+        `yunit` convertible to `A` or `A / m2`.::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.plot(xunit='mV', yunit='uA / cm2')
