@@ -105,11 +105,10 @@ class GenericDescriptor:
         """
         name = name.replace('_', ' ')
         
-        try:
-            if name in self._descriptor:
-                return Descriptor(self._descriptor[name])
-        except:
-            print(f"Descriptor has no entry {name}. Did you mean one of {[key.replace(' ', '_') for key in self._descriptor.keys()]}?")
+        if name in self._descriptor:
+            return Descriptor(self._descriptor[name])
+
+        raise AttributeError(f"Descriptor has no entry {name}. Did you mean one of {[key.replace(' ', '_') for key in self._descriptor.keys()]}?")
 
     def __getitem__(self, name):
         r"""
@@ -122,11 +121,10 @@ class GenericDescriptor:
             0
 
         """
-        try:
-            if name in self._descriptor:
-                return Descriptor(self._descriptor[name])
-        except:
-            print(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
+        if name in self._descriptor:
+            return Descriptor(self._descriptor[name])
+
+        raise KeyError(f"Descriptor has no entry {name}. Did you mean one of {list(self._descriptor.keys())}?")
 
     def __repr__(self):
         r"""
