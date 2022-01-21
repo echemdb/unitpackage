@@ -104,7 +104,7 @@ class GenericDescriptor:
 
         """
         name = name.replace('_', ' ')
-        
+
         if name in self._descriptor:
             return Descriptor(self._descriptor[name])
 
