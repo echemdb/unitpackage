@@ -85,7 +85,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'citation key': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -103,7 +103,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'citation key': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
 
         """
         return self._descriptor[name]

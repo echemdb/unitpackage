@@ -130,13 +130,9 @@ class Database:
         EXAMPLES::
 
             >>> database = Database.create_example()
-<<<<<<< HEAD
-            >>> database.filter(lambda entry: entry.source.doi == 'https://doi.org/10.1039/C0CP01001D')
-            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')]
-=======
             >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
-            [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
->>>>>>> DunklesArchipel/cventrystyle
+            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')]
+
 
         The filter predicate can use properties that are not present on all
         entries in the database. If a property is missing the element is
@@ -169,7 +165,7 @@ class Database:
         from echemdb.data.cv.entry import Entry
 
         def get_bibliography(package):
-            bib = Entry(package, bibliography=None).source.bib
+            bib = Entry(package, bibliography=None).source.citation_key
             return self._bibliography.entries.get(bib, None)
 
         return iter([Entry(package, bibliography=get_bibliography(package)) for package in self._packages])
