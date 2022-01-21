@@ -365,7 +365,7 @@ class Entry:
             >>> entry.plot(xunit='original', yunit='original')
             Figure(...)
 
-        The plot can also be returned with custum axis units, where 
+        The plot can also be returned with custom axis units, where 
         `xunit` should be equivalents to `V` and 
         yunit equivalnts to `A` or `A / m2`.::
 
