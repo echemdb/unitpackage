@@ -175,7 +175,7 @@ class Entry:
 
     def x(self):
         r"""
-        Return the name of the variable on the x-axis, i.e., `"E"`.
+        Return the name of the variable on the x-axis, i.e., ``"E"``.
 
         EXAMPLES::
 
