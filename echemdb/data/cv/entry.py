@@ -189,7 +189,7 @@ class Entry:
         if not self.data_description.axes:
             raise ValueError(f"No axes were specified for the dataset.")
         if 'E' in self.data_description.axes._descriptor.keys():
-            assert u.Unit(self.data_description.axes.E.unit).is_equivalent('V'), f"The variable on the x-axis is not equivalent to 'V'."
+            assert u.Unit(self.data_description.axes.E.unit).is_equivalent('V'), f"The variable on the x-axis is not convertible to 'V'."
             return 'E'
         else:
             raise ValueError(f"None of the axes has a variable 'E'.")
