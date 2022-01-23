@@ -208,28 +208,22 @@ class Entry:
 
         axes = getattr(self.data_description, 'axes', {})
 
-        axis = None
-        for variable in axes:
-            if variable not in ['I', 'j']:
-                continue
+        variables = [variable for variable in dir(axes) if variable in ['I', 'j']]
 
-            if variable == 'I':
-                if not u.Unit(axes[variable].unit).is_equivalent('A'):
-                    raise Exception("Unit on I axis must be convertible to A.")
+        if len(variables) != 1:
+            raise KeyError("Exactly one of the axes must have variable 'I' or 'j'.")
 
-            if variable == 'j':
-                if not u.Unit(axes[variable].unit).is_equivalent('A / m2'):
-                    raise Exception("Unit on j axis must be convertible to A / m².")
+        variable = variables[0]
 
-            if axis:
-                raise Exception("Exactly one of the axes must have variable 'I' or 'j'.")
+        if variable == 'I':
+            if not u.Unit(axes[variable].unit).is_equivalent('A'):
+                raise Exception("Unit on I axis must be convertible to A.")
 
-            axis = variable
+        if variable == 'j':
+            if not u.Unit(axes[variable].unit).is_equivalent('A / m2'):
+                raise Exception("Unit on I axis must be convertible to A / m².")
 
-        if axis is None:
-            raise Exception("Exactly one of the axes must have variable 'I' or 'j'.")
-
-        return axis
+        return variable
 
     def x_unit(self, xunit=None):
         r"""
