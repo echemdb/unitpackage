@@ -186,12 +186,10 @@ class Entry:
         """
         from astropy import units as u
 
-        if not self.data_description.axes:
-            raise IndexError("No axes were specified for the dataset.")
-        if 'E' not in self.data_description.axes._descriptor.keys():
-            raise KeyError("None of the axes has a variable 'E'.")
-        if not u.Unit(self.data_description.axes.E.unit).is_equivalent('V'):
-            raise ValueError("The variable on the x-axis denoted as'E', is not convertible to 'V'.")
+        axis = getattr(self.data_description, 'axes', {})['E']
+
+        if not u.Unit(axis.unit).is_equivalent('V'):
+            raise ValueError("The variable on the x-axis denoted as 'E', is not convertible to 'V'.")
         
         return 'E'
 
@@ -208,20 +206,24 @@ class Entry:
         """
         from astropy import units as u
 
-        if not self.data_description.axes:
-            raise IndexError("No axes were specified for the dataset.")
-        if not 'I' or not 'j' in self.data_description.axes._descriptor.keys():
-            raise KeyError("None of the axes has a variable 'I' or 'j'.")
-        if {'j', 'I'} <= self.data_description.axes._descriptor.keys():
-            raise KeyError("The axes should only contain the variable 'I' or 'j', but not both.")
+        axes = getattr(self.data_description, 'axes', {})
 
-        for key in self.data_description.axes._descriptor.keys():
-            if u.Unit(self.data_description.axes[key]['unit']).is_equivalent('A'):
-                return 'I'
-            if u.Unit(self.data_description.axes[key]['unit']).is_equivalent('A / m2'):
-                return 'j'
+        variables = [variable for variable in dir(axes) if variable in ['I', 'j']]
 
-        raise ValueError("The variables on the x-axis are not convertible to 'A' or 'A / m2.")
+        if len(variables) != 1:
+            raise KeyError("Exactly one of the axes must have variable 'I' or 'j'.")
+
+        variable = variables[0]
+
+        if variable == 'I':
+            if not u.Unit(axes[variable].unit).is_equivalent('A'):
+                raise Exception("Unit on I axis must be convertible to A.")
+
+        if variable == 'j':
+            if not u.Unit(axes[variable].unit).is_equivalent('A / m2'):
+                raise Exception("Unit on j axis must be convertible to A / m².")
+
+        return variable
 
     def x_unit(self, xunit=None):
         r"""
