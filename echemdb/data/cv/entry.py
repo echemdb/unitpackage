@@ -221,7 +221,7 @@ class Entry:
 
         if variable == 'j':
             if not u.Unit(axes[variable].unit).is_equivalent('A / m2'):
-                raise Exception("Unit on I axis must be convertible to A / m².")
+                raise Exception("Unit on j axis must be convertible to A / m².")
 
         return variable
 
