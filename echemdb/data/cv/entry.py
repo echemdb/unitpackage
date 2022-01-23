@@ -186,11 +186,8 @@ class Entry:
         """
         from astropy import units as u
 
-        axes = getattr(self.data_description, 'axes', {})
-        if 'E' not in axes:
-            raise KeyError("None of the axes has a variable 'E'.")
+        axis = getattr(self.data_description, 'axes', {})['E']
 
-        axis = axes.E
         if not u.Unit(axis.unit).is_equivalent('V'):
             raise ValueError("The variable on the x-axis denoted as 'E', is not convertible to 'V'.")
         
