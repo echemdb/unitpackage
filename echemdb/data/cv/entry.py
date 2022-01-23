@@ -209,7 +209,7 @@ class Entry:
         from astropy import units as u
 
         if not self.data_description.axes:
-            raise IndexError("No axes were specified for the dataset.")
+            raise Exception("No axes were specified for the dataset.")
         if not 'I' or not 'j' in self.data_description.axes._descriptor.keys():
             raise KeyError("None of the axes has a variable 'I' or 'j'.")
         if {'j', 'I'} <= self.data_description.axes._descriptor.keys():
