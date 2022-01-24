@@ -57,7 +57,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.identifier
-            'alves_2011_electrochemistry_6010_p2_2a_solid'
+            'alves_2011_electrochemistry_6010_p2_f2a_solid'
 
         """
         return self.package.resources[0].name
@@ -72,7 +72,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curator', 'data_description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curation', 'data_description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'version', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -85,7 +85,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source
-            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid', 'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '2a', 'version': 1}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -103,7 +103,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"]
-            {'version': 1, 'url': 'https://doi.org/10.1039/C0CP01001D', 'bib': 'alves_2011_electrochemistry_6010', 'figure': '2a', 'curve': 'solid'}
+            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid', 'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '2a', 'version': 1}
 
         """
         return self._descriptor[name]
@@ -353,7 +353,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry
-            Entry('alves_2011_electrochemistry_6010_p2_2a_solid')
+            Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
 
         """
         return f"Entry({repr(self.identifier)})"
@@ -416,7 +416,7 @@ class Entry:
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_p2_2a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')]
 
         """
         import os.path
