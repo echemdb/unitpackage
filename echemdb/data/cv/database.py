@@ -194,3 +194,29 @@ class Database:
 
         """
         return repr(list(self))
+    
+    def get_entry(self, identifier):
+        r"""
+        Return an entry with the given identifier.
+
+        EXAMPLES::
+
+            >>> database = Database.create_example()
+            >>> database.get_entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
+            Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
+
+        """
+        return [entry for entry in self if entry.identifier == identifier][0]
+    
+    def __getitem__(self, identifier):
+        r"""
+        Return an entry with the given identifier.
+
+        EXAMPLES::
+
+            >>> database = Database.create_example()
+            >>> database['alves_2011_electrochemistry_6010_p2_f2a_solid']
+            Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
+
+        """
+        return [entry for entry in self if entry.identifier == identifier][0]
