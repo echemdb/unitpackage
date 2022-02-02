@@ -197,7 +197,7 @@ class Database:
     
     def __getitem__(self, identifier):
         r"""
-        Return the entry with the given identifier.
+        Return the entry with this identifier.
 
         EXAMPLES::
 
