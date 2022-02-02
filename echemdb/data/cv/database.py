@@ -197,7 +197,7 @@ class Database:
     
     def __getitem__(self, identifier):
         r"""
-        Return an entry with the given identifier.
+        Return the entry with the given identifier.
 
         EXAMPLES::
 
@@ -205,16 +205,16 @@ class Database:
             >>> database['alves_2011_electrochemistry_6010_p2_f2a_solid']
             Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
 
-            >>> database['unvalid_key']
+            >>> database['invalid_key']
             Traceback (most recent call last):
             ...
-            KeyError: "No database entry with key 'unvalid_key'."
+            KeyError: "No database entry with identifier 'invalid_key'."
 
         """
         entries = [entry for entry in self if entry.identifier == identifier]
 
         if len(entries) == 0:
-            raise KeyError(f"No database entry with key '{identifier}'.")
+            raise KeyError(f"No database entry with identifier '{identifier}'.")
         if len(entries) > 1:
             raise KeyError(f"The database has more than one entry with key '{identifier}'.")
         return entries[0]
