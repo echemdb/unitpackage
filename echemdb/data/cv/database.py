@@ -194,3 +194,27 @@ class Database:
 
         """
         return repr(list(self))
+    
+    def __getitem__(self, identifier):
+        r"""
+        Return the entry with this identifier.
+
+        EXAMPLES::
+
+            >>> database = Database.create_example()
+            >>> database['alves_2011_electrochemistry_6010_p2_f2a_solid']
+            Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
+
+            >>> database['invalid_key']
+            Traceback (most recent call last):
+            ...
+            KeyError: "No database entry with identifier 'invalid_key'."
+
+        """
+        entries = [entry for entry in self if entry.identifier == identifier]
+
+        if len(entries) == 0:
+            raise KeyError(f"No database entry with identifier '{identifier}'.")
+        if len(entries) > 1:
+            raise KeyError(f"The database has more than one entry with identifier '{identifier}'.")
+        return entries[0]
