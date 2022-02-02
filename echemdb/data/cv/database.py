@@ -216,5 +216,5 @@ class Database:
         if len(entries) == 0:
             raise KeyError(f"No database entry with key '{identifier}'.")
         if len(entries) > 1:
-            raise KeyError(f"The database has more than one entry with key '{identifier}'")
+            raise KeyError(f"The database has more than one entry with key '{identifier}'.")
         return entries[0]
