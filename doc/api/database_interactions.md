@@ -14,7 +14,7 @@ jupyter:
 ---
 
 <!-- #region tags=[] -->
-## EchemDB Website content
+# EchemDB Website content
 <!-- #endregion -->
 
 The content of [EchemDB Website](https://echemdb.github.io/) can be stored in a local database.
@@ -24,7 +24,7 @@ from echemdb.data.cv.database import Database
 db = Database()
 ```
 
-### Database interaction
+## Database interaction
 
 
 The number of entries in the databse

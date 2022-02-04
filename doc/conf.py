@@ -15,7 +15,7 @@ source_suffix = {
 
 templates_path = ['_templates']
 
-exclude_patterns = ['generated', 'Thumbs.db', '.DS_Store', 'README.md', 'news', '.ipynb_checkpoints', '*.ipynb']
+exclude_patterns = ['generated', 'Thumbs.db', '.DS_Store', 'README.md', 'news', '.ipynb_checkpoints', '*.ipynb', '**/*.ipynb']
 
 todo_include_todos = True
 
