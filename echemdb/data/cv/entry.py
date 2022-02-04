@@ -11,10 +11,10 @@ also contain information on the source of the data.::
     >>> from echemdb.data.cv.database import Database
     >>> db = Database()
     >>> entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
-    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE
+    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
       fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'), 
+        ('itle', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'), 
         ('journal', 'Physical Chemistry Chemical Physics'), 
         ('volume', '13'), 
         ('number', '13'), 
