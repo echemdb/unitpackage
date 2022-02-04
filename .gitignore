@@ -1,6 +1,5 @@
 # Digitized data
 /data/generated
-/data/citations
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -30,7 +30,7 @@ jobs:
         shell: bash -l {0}
         run: |
           pushd literature
-          find . -name '*.bib' | cpio -pdm ../data/citations
+          find . -name '*.bib' | cpio -pdm ../data/generated/svgdigitizer
           popd
       - name: mkdocs
         shell: bash -l {0}
