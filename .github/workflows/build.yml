@@ -26,6 +26,12 @@ jobs:
           pushd literature
           ls ./**/*.yaml | parallel --bar --halt now,fail=1 'svgdigitizer cv --sampling-interval .001 --package --metadata {} {.}.svg --outdir=../data/generated/svgdigitizer/{//}'
           popd
+      - name: copy literature
+        shell: bash -l {0}
+        run: |
+          pushd literature
+          find . -name '*.bib' | cpio -pdm ../data/citations
+          popd
       - name: mkdocs
         shell: bash -l {0}
         run: |
