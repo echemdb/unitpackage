@@ -14,7 +14,7 @@ also contain information on the source of the data.::
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
       fields=[
-        ('itle', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'), 
+        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'), 
         ('journal', 'Physical Chemistry Chemical Physics'), 
         ('volume', '13'), 
         ('number', '13'), 
