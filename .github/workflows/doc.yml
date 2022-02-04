@@ -29,9 +29,9 @@ jobs:
         run: |
           cd doc
           make html
-          mv generated_docu/html generated_docu/html_
+          mv generated/html generated/html_
           mkdir generated_docu/html
-          mv generated_docu/html_ generated_docu/html/echemdbdocu
+          mv generated/html_ generated/html/echemdbdocu
           touch generated/html/echemdbdocu/.nojekyll
       - name: fix permissions
         shell: bash -l {0}
@@ -43,12 +43,12 @@ jobs:
         run: |
           python -m http.server 8880 --directory doc/generated/html &
           sleep 1
-          linkchecker --check-extern http://localhost:8880/svgdigitizer/
+          linkchecker --check-extern http://localhost:8880/echemdb/
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages-doc
-          FOLDER: doc/generated_docu/html/echemdbdocu
+          FOLDER: doc/generated/html/echemdbdocu
           TARGET_FOLDER: docs
         if: ${{ github.event_name == 'push' }}
 
