@@ -10,7 +10,6 @@ dependencies:
   - jupytext
   - matplotlib
   - mkdocs
-  - mkdocs-jupyter
   - pandas
   - parallel
   - pip
@@ -35,4 +34,3 @@ dependencies:
     - datapackage
     - python-frontmatter
     - svgdigitizer >=0.2.0,<0.3.0
-    - mknotebooks
