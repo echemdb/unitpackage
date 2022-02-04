@@ -2,6 +2,17 @@ r"""
 A Data Package decribing a Cyclic Voltammogram.
 
 These are the individual elements of a :class:`Database`.
+
+EXAMPLES:
+
+Data Packages containing published data, 
+also contain information on the source of the data.::
+
+    >>> from echemdb.data.cv.database import Database
+    >>> db = Database()
+    >>> entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+    >>> entry.bibliography
+
 """
 # ********************************************************************
 #  This file is part of echemdb.
