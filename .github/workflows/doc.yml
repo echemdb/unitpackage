@@ -30,9 +30,9 @@ jobs:
           cd doc
           make html
           mv generated/html generated/html_
-          mkdir generated_docu/html
-          mv generated/html_ generated/html/echemdbdocu
-          touch generated/html/echemdbdocu/.nojekyll
+          mkdir generated/html
+          mv generated/html_ generated/html/echemdb
+          touch generated/html/echemdb/.nojekyll
       - name: fix permissions
         shell: bash -l {0}
         run: |
@@ -47,8 +47,8 @@ jobs:
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages-doc
-          FOLDER: doc/generated/html/echemdbdocu
+          BRANCH: gh-pages
+          FOLDER: doc/generated/html/echemdb
           TARGET_FOLDER: docs
         if: ${{ github.event_name == 'push' }}
 
