@@ -14,7 +14,7 @@ jupyter:
 ---
 
 <!-- #region tags=[] -->
-# EchemDB Website content
+# Database interaction
 <!-- #endregion -->
 
 The entries on [EchemDB Website](https://echemdb.github.io/website) can be downloaded into a local database.
@@ -23,9 +23,6 @@ The entries on [EchemDB Website](https://echemdb.github.io/website) can be downl
 from echemdb.data.cv.database import Database
 db = Database()
 ```
-
-## Database interaction
-
 
 The number of entries in the databse are
 
