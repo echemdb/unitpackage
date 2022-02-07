@@ -18,14 +18,22 @@ jupyter:
 
 <!-- #endregion -->
 
-Each entry consits of a number of decsriptors containing metadata describing the entry, imported from the YAML files associated with the digitized data. For reference, the YAML files are located in the respective literature folders in the repository.
+```{todo}
+* add link to YAML Files and other resources related to data standardization.
+```
 
-* `source`: details on the respective publication and the figure from which the data was generated
-* `figure_description`: details about the original axis properties and other measurements linked to the published data
-* `data_description`: details on the axes properties of the associated CSV files
-* `electrochemical_system`: experimental details on the underlying electrochemical system
+Each entry consits of decsriptors with metadata describing the entry, wmong those:
 
-The underlying information can be retrieved by `entry.name` or `entry['name']`, where name is the respective descriptor.
+* `source`: details on the respective publication and the figure from which the data was generated.
+* `figure description`: details about the original figures axis properties and other measurements linked to the published data.
+* `data description`: details on the axes properties of the associated CSV files.
+* `electrochemical system`: experimental details on the underlying electrochemical system.
+
+## Basic interactions
+
+The underlying information can be retrieved by `entry['name']`, 
+where name is the respective descriptor. Alternatively you can write `entry.name` 
+where all spaces should be replaced by underscores.
 
 ```python
 from echemdb.data.cv.database import Database
@@ -56,7 +64,7 @@ Entries containing a unit and a value are nicely rendered
 entry.figure_description.scan_rate
 ```
 
-The unit and valule can be accessed separately
+The unit and value can be accessed separately
 
 ```python
 entry.figure_description.scan_rate.value
@@ -89,26 +97,21 @@ rate * 25 * u.m * c.c
 
 <!-- #region tags=[] -->
 
-## Basic interactions
-
-<!-- #endregion -->
-
-```python
-entry.electrochemical_system.electrodes.working_electrode.material == 'Pt'
-```
-
-```python
-entry.source
-```
 
 ## Dataframes
 
-```python
+The data of an entry can be returned a pandas dataframe.
 
+```python
+entry.df()
+```
+
+```{todo}
+* describe entry.df() options to return the df with different units.
 ```
 
 ## Plots
 
-```python
-
+```{todo}
+* describe how to get simple plots.
 ```
