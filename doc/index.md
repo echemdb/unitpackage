@@ -16,20 +16,15 @@ jupyter:
 Welcome to echemdb's documentation!
 ========================================
 
+The echemdb module (i) provides direct access to the database and 
+the entries presented on the [EchemDB Website](https://echemdb.github.io/website) 
+and (ii) allows creating a database from local files which have 
+the same file structure.
+
 ```{todo}
-* what is echemdb and what is our aim.
-* then refer to installation, cli, api and cv.
-```
-
-The echemdb module provides direct access to the database and the entries presented on the EchemDB Website.
-
-A database can also be created from local files which have the same file structure.
-
-The entries found on [EchemDB Website](https://echemdb.github.io/website) can be stored in a local database.
-
-```python
-from echemdb.data.cv.database import Database
-db = Database()
+* What is echemdb and what is our aim.
+* Refer to installation instructions, and all relevant sub-modules.
+* Include information on meta data standards.
 ```
 
 ```{toctree}
