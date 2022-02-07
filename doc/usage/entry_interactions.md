@@ -115,3 +115,4 @@ entry.df()
 ```{todo}
 * describe how to get simple plots.
 ```
+<!-- #endregion -->
