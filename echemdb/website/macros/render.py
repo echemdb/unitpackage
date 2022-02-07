@@ -55,9 +55,13 @@ def render(template, **kwargs):
 
     """
     import os.path
+
     from jinja2 import Environment, FileSystemLoader, select_autoescape
+
     env = Environment(
-        loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")),
+        loader=FileSystemLoader(
+            os.path.join(os.path.dirname(__file__), "..", "..", "..", "templates")
+        ),
         autoescape=select_autoescape(),
         trim_blocks=True,
         lstrip_blocks=True,
@@ -65,17 +69,21 @@ def render(template, **kwargs):
 
     # Load macros like mkdocs-macros does, see
     # https://github.com/fralau/mkdocs_macros_plugin/blob/master/mkdocs_macros/plugin.py#L157
-    def macro(f, name=''):
+    def macro(f, name=""):
         env.globals[name or f.__name__] = f
+
     env.macro = macro
     from echemdb.website.macros import enable_macros
+
     enable_macros(env)
     del env.macro
 
     from echemdb.website.filters import enable_filters
+
     enable_filters(env)
 
     from io import TextIOBase
+
     if isinstance(template, TextIOBase):
         template = env.from_string(template.read())
     else:

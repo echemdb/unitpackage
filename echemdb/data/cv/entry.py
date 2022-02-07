@@ -28,6 +28,7 @@ These are the individual elements of a :class:`Database`.
 
 from echemdb.data.cv.descriptor import Descriptor
 
+
 class Entry:
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
@@ -44,6 +45,7 @@ class Entry:
         >>> entry = next(iter(database))
 
     """
+
     def __init__(self, package, bibliography):
         self.package = package
         self.bibliography = bibliography
@@ -112,7 +114,7 @@ class Entry:
     def _descriptor(self):
         return Descriptor(self.package.descriptor)
 
-    def citation(self, backend='text'):
+    def citation(self, backend="text"):
         r"""
         Return a formatted reference for the entry's bibliography such as:
 
@@ -153,25 +155,37 @@ class Entry:
                     persons = context["entry"].persons[role]
                     style = context["style"]
 
-                    names = [style.format_name(person, style.abbreviate_names) for person in persons]
+                    names = [
+                        style.format_name(person, style.abbreviate_names)
+                        for person in persons
+                    ]
 
                     if len(names) == 1:
                         return names[0].format_data(context)
                     else:
-                        from pybtex.style.template import words, tag
-                        return words(sep=' ')[names[0], tag('i')['et al.']].format_data(context)
+                        from pybtex.style.template import tag, words
+
+                        return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
+                            context
+                        )
 
                 names = names(role)
 
                 from pybtex.style.template import sentence
+
                 return sentence[names] if as_sentence else names
 
             def format_title(self, e, which_field, as_sentence=True):
-                from pybtex.style.template import field, tag, sentence
-                title = tag('i')[field(which_field)]
+                from pybtex.style.template import field, sentence, tag
+
+                title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
 
-        return EchemdbStyle(abbreviate_names=True).format_entry("unused", self.bibliography).text.render_as(backend)
+        return (
+            EchemdbStyle(abbreviate_names=True)
+            .format_entry("unused", self.bibliography)
+            .text.render_as(backend)
+        )
 
     def x(self):
         r"""
@@ -186,12 +200,14 @@ class Entry:
         """
         from astropy import units as u
 
-        axis = getattr(self.data_description, 'axes', {})['E']
+        axis = getattr(self.data_description, "axes", {})["E"]
 
-        if not u.Unit(axis.unit).is_equivalent('V'):
-            raise ValueError("The variable on the x-axis denoted as 'E', is not convertible to 'V'.")
-        
-        return 'E'
+        if not u.Unit(axis.unit).is_equivalent("V"):
+            raise ValueError(
+                "The variable on the x-axis denoted as 'E', is not convertible to 'V'."
+            )
+
+        return "E"
 
     def y(self):
         r"""
@@ -206,21 +222,21 @@ class Entry:
         """
         from astropy import units as u
 
-        axes = getattr(self.data_description, 'axes', {})
+        axes = getattr(self.data_description, "axes", {})
 
-        variables = [variable for variable in dir(axes) if variable in ['I', 'j']]
+        variables = [variable for variable in dir(axes) if variable in ["I", "j"]]
 
         if len(variables) != 1:
             raise KeyError("Exactly one of the axes must have variable 'I' or 'j'.")
 
         variable = variables[0]
 
-        if variable == 'I':
-            if not u.Unit(axes[variable].unit).is_equivalent('A'):
+        if variable == "I":
+            if not u.Unit(axes[variable].unit).is_equivalent("A"):
                 raise Exception("Unit on I axis must be convertible to A.")
 
-        if variable == 'j':
-            if not u.Unit(axes[variable].unit).is_equivalent('A / m2'):
+        if variable == "j":
+            if not u.Unit(axes[variable].unit).is_equivalent("A / m2"):
                 raise Exception("Unit on j axis must be convertible to A / m².")
 
         return variable
@@ -253,7 +269,7 @@ class Entry:
 
         if xunit is None:
             xunit = u.V
-        if xunit == 'original':
+        if xunit == "original":
             xunit = self.figure_description.axes.E.unit
 
         return u.Unit(xunit)
@@ -285,15 +301,18 @@ class Entry:
         from astropy import units as u
 
         if yunit is None:
-            if self.y() == 'j':
+            if self.y() == "j":
                 yunit = u.A / u.m**2
-            elif self.y() == 'I':
+            elif self.y() == "I":
                 yunit = u.A
             else:
                 raise NotImplementedError("Unexpected naming of y axis.")
 
-        if yunit == 'original':
-            yunit = self.figure_description.axes.j.unit or self.figure_description.axes.I.unit
+        if yunit == "original":
+            yunit = (
+                self.figure_description.axes.j.unit
+                or self.figure_description.axes.I.unit
+            )
 
         return u.Unit(yunit)
 
@@ -302,12 +321,12 @@ class Entry:
         Return the CSV resource attached to this entry as a data frame.
 
         If the x and y-units are not specified, all values
-        are in SI units. The data frame can also be returned 
-        with the original figure units or with custom units as shown 
+        are in SI units. The data frame can also be returned
+        with the original figure units or with custom units as shown
         in the following examples.
 
         EXAMPLES:
-        
+
         A data frame in SI units::
 
             >>> entry = Entry.create_examples()[0]
@@ -342,7 +361,7 @@ class Entry:
         if xunit or yunit:
             df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
             df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
-        
+
         return df
 
     def __repr__(self):
@@ -374,8 +393,8 @@ class Entry:
             >>> entry.plot(xunit='original', yunit='original')
             Figure(...)
 
-        The plot can also be returned with custom axis units, where 
-        `xunit` should be convertible to `V` and 
+        The plot can also be returned with custom axis units, where
+        `xunit` should be convertible to `V` and
         `yunit` convertible to `A` or `A / m2`.::
 
             >>> entry = Entry.create_examples()[0]
@@ -392,14 +411,31 @@ class Entry:
 
         fig = plotly.graph_objects.Figure()
 
-        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
+        fig.add_trace(
+            plotly.graph_objects.Scatter(
+                x=df[self.x()],
+                y=df[self.y()],
+                mode="lines",
+                name=f"Fig. {self.source.figure}: {self.source.curve}",
+            )
+        )
 
-        reference = f' vs {self.data_description.axes.E.reference}' if self.data_description.axes.E.reference else ''
+        reference = (
+            f" vs {self.data_description.axes.E.reference}"
+            if self.data_description.axes.E.reference
+            else ""
+        )
 
-        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
-                            margin=dict(l=70, r=70, b=70, t=70, pad=7),
-                            xaxis_title=f"{self.x()} [{xunit}{reference}]",
-                            yaxis_title=f"{self.y()} [{yunit}]")
+        fig.update_layout(
+            template="simple_white",
+            showlegend=True,
+            autosize=True,
+            width=600,
+            height=400,
+            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+            xaxis_title=f"{self.x()} [{xunit}{reference}]",
+            yaxis_title=f"{self.y()} [{yunit}]",
+        )
 
         fig.update_xaxes(showline=True, mirror=True)
         fig.update_yaxes(showline=True, mirror=True)
@@ -422,25 +458,24 @@ class Entry:
         import os.path
 
         source = os.path.join(
-            os.path.dirname(__file__),
-            '..',
-            '..',
-            '..',
-            'literature',
-            name)
+            os.path.dirname(__file__), "..", "..", "..", "literature", name
+        )
 
         if not os.path.exists(source):
-            raise ValueError(f"No subdirectory in literature/ for {name}, i.e., could not find {source}.")
+            raise ValueError(
+                f"No subdirectory in literature/ for {name}, i.e., could not find {source}."
+            )
 
         outdir = os.path.join(
             os.path.dirname(__file__),
-            '..',
-            '..',
-            '..',
-            'data',
-            'generated',
-            'svgdigitizer',
-            name)
+            "..",
+            "..",
+            "..",
+            "data",
+            "generated",
+            "svgdigitizer",
+            name,
+        )
 
         # We now might have to digitize some files on demand. When running
         # tests in parallel, this introduces a race condition that we avoid
@@ -449,20 +484,39 @@ class Entry:
         os.makedirs(os.path.dirname(lockfile), exist_ok=True)
 
         from filelock import FileLock
+
         with FileLock(lockfile):
             if not os.path.exists(outdir):
                 from glob import glob
+
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
-                    from svgdigitizer.test.cli import invoke
                     from svgdigitizer.__main__ import digitize_cv
-                    invoke(digitize_cv, "--sampling-interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
+                    from svgdigitizer.test.cli import invoke
 
-                assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
-                assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+                    invoke(
+                        digitize_cv,
+                        "--sampling-interval",
+                        ".005",
+                        "--package",
+                        "--metadata",
+                        yaml,
+                        svg,
+                        "--outdir",
+                        outdir,
+                    )
 
-        from echemdb.data.local import collect_datapackages, collect_bibliography
+                assert os.path.exists(
+                    outdir
+                ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
+                assert any(
+                    os.scandir(outdir)
+                ), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+
+        from echemdb.data.local import (collect_bibliography,
+                                        collect_datapackages)
+
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
         assert len(bibliography) == 1, f"No bibliography found for {name}."
@@ -470,6 +524,11 @@ class Entry:
 
         if len(packages) == 0:
             from glob import glob
-            raise ValueError(f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }")
 
-        return [Entry(package=package, bibliography=bibliography) for package in packages]
+            raise ValueError(
+                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+            )
+
+        return [
+            Entry(package=package, bibliography=bibliography) for package in packages
+        ]

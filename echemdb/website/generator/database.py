@@ -21,25 +21,18 @@
 # ********************************************************************
 
 import os.path
+
 import echemdb.data.cv.database
 import echemdb.data.local
 
 packages = echemdb.data.local.collect_datapackages(
-    os.path.normpath(os.path.join(
-        os.path.dirname(__file__),
-        '..',
-        '..',
-        '..',
-        'data'))
+    os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "data"))
 )
 
 bibliography = echemdb.data.local.collect_bibliography(
-    os.path.normpath(os.path.join(
-        os.path.dirname(__file__),
-        '..',
-        '..',
-        '..',
-        'literature'))
+    os.path.normpath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..", "literature")
+    )
 )
 
 cv = echemdb.data.cv.database.Database(packages, bibliography)

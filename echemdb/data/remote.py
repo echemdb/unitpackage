@@ -24,20 +24,25 @@ Utilities to work with remote data packages.
 # ********************************************************************
 
 import os
-
 from functools import cache
+
 
 @cache
 def collect_zipfile_from_url(url):
     from urllib.request import urlopen
+
     response = urlopen(url)
 
-    from zipfile import ZipFile
     from io import BytesIO
+    from zipfile import ZipFile
+
     return ZipFile(BytesIO(response.read()))
 
 
-ECHEMDB_DATABASE_URL = os.environ.get('ECHEMDB_DATABASE_URL', "https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip")
+ECHEMDB_DATABASE_URL = os.environ.get(
+    "ECHEMDB_DATABASE_URL",
+    "https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip",
+)
 
 
 @cache
@@ -54,20 +59,30 @@ def collect_datapackages(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
 
     """
     if outdir is None:
-        import tempfile
         import atexit
         import shutil
+        import tempfile
 
         outdir = tempfile.mkdtemp()
         atexit.register(lambda dirname: shutil.rmtree(dirname), outdir)
 
     compressed = collect_zipfile_from_url(url)
 
-    compressed.extractall(outdir, members=[name for name in compressed.namelist() if name.endswith('.json') or name.endswith('.csv')])
+    compressed.extractall(
+        outdir,
+        members=[
+            name
+            for name in compressed.namelist()
+            if name.endswith(".json") or name.endswith(".csv")
+        ],
+    )
 
     import os.path
+
     import echemdb.data.local
+
     return echemdb.data.local.collect_datapackages(os.path.join(outdir, data))
+
 
 @cache
 def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
@@ -83,17 +98,22 @@ def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
 
     """
     if outdir is None:
-        import tempfile
         import atexit
         import shutil
+        import tempfile
 
         outdir = tempfile.mkdtemp()
         atexit.register(lambda dirname: shutil.rmtree(dirname), outdir)
 
     compressed = collect_zipfile_from_url(url)
 
-    compressed.extractall(outdir, members=[name for name in compressed.namelist() if name.endswith('.bib')])
+    compressed.extractall(
+        outdir,
+        members=[name for name in compressed.namelist() if name.endswith(".bib")],
+    )
 
     import os.path
+
     import echemdb.data.local
+
     return echemdb.data.local.collect_bibliography(os.path.join(outdir, data))

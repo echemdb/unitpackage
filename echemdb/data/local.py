@@ -23,6 +23,7 @@ Utilities to work with local data packages.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+
 def collect_datapackages(data):
     r"""
     Return a list of data packages defined in the directory `data` and its
@@ -37,11 +38,14 @@ def collect_datapackages(data):
     # https://specs.frictionlessdata.io/data-package/#metadata
     import os.path
     from glob import glob
-    descriptors = glob(os.path.join(data, '**', '*.json'), recursive=True)
+
+    descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
 
     # Read the package descriptors (does not read the actual data CSVs)
     from datapackage import Package
+
     return [Package(descriptor) for descriptor in descriptors]
+
 
 def collect_bibliography(bibfiles):
     r"""
@@ -55,6 +59,11 @@ def collect_bibliography(bibfiles):
     """
     import os.path
     from glob import glob
+
     from pybtex.database import parse_file
 
-    return [entry for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True) for entry in parse_file(file, bib_format="bibtex").entries.values()]
+    return [
+        entry
+        for file in glob(os.path.join(bibfiles, "**", "*.bib"), recursive=True)
+        for entry in parse_file(file, bib_format="bibtex").entries.values()
+    ]
