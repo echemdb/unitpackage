@@ -15,49 +15,39 @@ jupyter:
 
 # Bibliography
 
-The bibliography to all entries is stored as a pybtex database `db.bibliography`, which is based on bibtex entries.
-Each entry has a citation key, which is not identical to its identifier (but is part of it), since several entries can be found in the same source.
-Both the citation key and the pybtex bibliography entry are accessible from the entry. 
+The bibliography to all entries is stored as a pybtex database `db.bibliography`, 
+which basically contains bibtex entries.
 
 ```python
 from echemdb.data.cv.database import Database
 db = Database()
-entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
-entry
 ```
 
+Each entry is associated with a citation key.
+
 ```python
+entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
 entry.source.citation_key
 ```
+
+as well as the bibliographic details.
 
 ```python
 entry.bibliography
 ```
 
-With that key the bibliography can be retrieved from the db.bibliography
+```{todo}
+* show different possibilities to export the bibliography.
+```
+
+For comparison the the identifier to each entry contains the citation key. 
+
+```python
+entry.identifier
+```
+
+The bibliography key of an entry can be used to retrieve the bibliograhy entry directly from the complete database
 
 <!-- #raw -->
 db.bibliography['alves_2011_electrochemistry_6010']
 <!-- #endraw -->
-
-```python
-
-```
-
-<!-- #raw -->
-entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
-<!-- #endraw -->
-
-<!-- #raw -->
-entry.bibliography()
-<!-- #endraw -->
-
-<!-- #raw -->
-entry.source.citation_key
-<!-- #endraw -->
-
-```python
-
-```
-
-## 
