@@ -1,0 +1,32 @@
+{
+    "creators": [
+        {   
+            "orcid": "0000-0002-9686-3948",
+            "name": "Engstfeld, Albert Kilian",
+            "affiliation": "Ulm University"
+        },
+        {   
+            "orcid": "0000-0001-7119-1295",
+            "name": "Hermann, Johannes M.",
+            "affiliation": "Ulm University"
+        },
+        {   
+            "orcid": "0000-0001-6944-5575",
+            "name": "Hörmann, Nicolas",
+            "affiliation": "Fritz-Haber-Institut"
+        },
+        {   
+            "orcid": "0000-0002-3930-9107",
+            "name": "Rüth, Julian"
+        }
+        {   
+            "orcid": "0000-0003-2684-3711",
+            "name": "Technische Universität München",
+            "affiliation": 
+        }
+    ],    
+
+    "license": "GPL-3.0-or-later",
+    "title": "echemdb",
+    "description": "<p>The echemdb is supposed to be a repository for high quality data on electrochemical systems including a Python API to interact with the repository.</p>"
+}
