@@ -15,4 +15,6 @@ jupyter:
 
 # Create database locally
 
-Write something meaningful.
+```{todo}
+* describe how to create a local database.
+```
