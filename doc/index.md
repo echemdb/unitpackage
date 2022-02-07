@@ -37,8 +37,8 @@ db = Database()
 :caption: "Contents:"
 :hidden:
 installation.md
-api/database_interactions.md
-api/entry_interactions.md
-api/bibliography.md
-api/local_database.md
+usage/database_interactions.md
+usage/entry_interactions.md
+usage/bibliography.md
+usage/local_database.md
 ```

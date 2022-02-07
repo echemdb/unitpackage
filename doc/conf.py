@@ -28,5 +28,5 @@ html_context = {
     'display_github': True,
     'github_user': 'echemdb',
     'github_repo': 'website',
-    'github_version': 'master/doc/',
+    'github_version': 'main/doc/',
 }

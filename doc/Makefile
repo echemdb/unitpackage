@@ -1,7 +1,7 @@
 SPHINXOPTS    ?= -W -E
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = .
-BUILDDIR      = generated
+BUILDDIR      = ../generated/website/doc
 
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
