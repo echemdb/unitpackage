@@ -17,7 +17,7 @@ jupyter:
 # EchemDB Website content
 <!-- #endregion -->
 
-The content of [EchemDB Website](https://echemdb.github.io/website) can be stored in a local database.
+The entries on [EchemDB Website](https://echemdb.github.io/website) can be downloaded into a local database.
 
 ```python
 from echemdb.data.cv.database import Database
@@ -27,7 +27,7 @@ db = Database()
 ## Database interaction
 
 
-The number of entries in the databse
+The number of entries in the databse are
 
 ```python
 len(db)
@@ -39,7 +39,8 @@ You can iterate over these entries
 next(iter(db))
 ```
 
-The database can be filtered for specific descriptors (see below) which returns a new database.
+The database can be filtered for specific descriptors (see below), 
+wherby a new database is created.
 
 ```python
 db_filtered = db.filter(lambda entry: entry.electrochemical_system.electrodes.working_electrode.material == 'Pt')
