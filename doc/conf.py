@@ -1,5 +1,5 @@
 project = 'echemdb'
-copyright = '2021, the echemdb website authors'
+copyright = '2022, the echemdb website authors'
 author = 'the echemdb authors'
 
 release = '0.0.0'
