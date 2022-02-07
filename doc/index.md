@@ -25,7 +25,7 @@ The echemdb module provides direct access to the database and the entries presen
 
 A database can also be created from local files which have the same file structure.
 
-The content of [EchemDB Website](https://echemdb.github.io/) can be stored in a local database.
+The entries found on [EchemDB Website](https://echemdb.github.io/website) can be stored in a local database.
 
 ```python
 from echemdb.data.cv.database import Database

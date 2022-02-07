@@ -17,7 +17,7 @@ jupyter:
 # EchemDB Website content
 <!-- #endregion -->
 
-The content of [EchemDB Website](https://echemdb.github.io/) can be stored in a local database.
+The content of [EchemDB Website](https://echemdb.github.io/website) can be stored in a local database.
 
 ```python
 from echemdb.data.cv.database import Database
@@ -46,7 +46,7 @@ db_filtered = db.filter(lambda entry: entry.electrochemical_system.electrodes.wo
 print(f'{len(db_filtered)} entries contain Pt as working electrode material.')
 ```
 
-Single entries can be selected by their identifier provided on the [echemDB website](https://echemdb.github.io/) for each entry.
+Single entries can be selected by their identifier provided on the [echemDB website](https://echemdb.github.io/website) for each entry.
 
 ```python
 entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
