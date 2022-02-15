@@ -68,7 +68,7 @@ Each entry has information about its source
 
 Among other metadata, the entry also has information on the original figure properties (`entry.figure_description`) and the `entry.electrochemical_system` in general.
 
-The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as CSV file (or any other format supported by pandas).
+The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as a CSV file (or any other format supported by pandas).
 
 ```python
 >>> entry.df() 
