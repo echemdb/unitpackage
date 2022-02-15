@@ -67,7 +67,7 @@ class Database:
             data_packages = echemdb.data.remote.collect_datapackages(os.path.join('website-gh-pages', 'data', 'generated', 'svgdigitizer'))
 
             if bibliography is None:
-                bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'Literature'))
+                bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'data', 'generated'))
 
         if bibliography is None:
             bibliography = []
