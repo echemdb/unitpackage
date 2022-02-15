@@ -28,5 +28,5 @@
 
     "license": "GPL-3.0-or-later",
     "title": "echemdb",
-    "description": "<p>The echemdb is supposed to be a repository for high quality data on electrochemical systems including a Python API to interact with the repository.</p>"
+    "description": "<p>The echemdb aims to be a repository for high-quality data on electrochemical systems. It provides a Python API to interact with the repository.</p>"
 }
