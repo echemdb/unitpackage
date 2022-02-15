@@ -84,9 +84,9 @@ Custom or original figure axes' units can be requested explicitly
 
 ```python
 >>> entry.df(xunit='original', yunit='mA / m2')
-           t	        E	       j
-0	0.000000	-0.196962	0.043009
-1	0.011368	-0.196393	0.051408
+	       t	        E	        j
+0	0.000000	-0.196962	43.008842
+1	0.011368	-0.196393	51.408200
 ...
 ```
 
