@@ -92,7 +92,6 @@ The data can be visualized in a plotly figure, with preferred axis units (defaul
 ```python
 >>> entry.plot(xunit='V', yunit='original')
 ```
-<!-- ![doc/images/readme_demo_plot.png](doc/images/readme_demo_plot.png)-->
 <img src=doc/images/readme_demo_plot.png style="width:400px">
 
 
