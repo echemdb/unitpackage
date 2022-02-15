@@ -4,7 +4,7 @@ theoretical data on electrochemical systems.
 The standardized and validated data displayed on the [projects website](https://echemdb.github.io/website/) so far is from the community and publications aiming at fullfilling the [FAIR principles](https://www.go-fair.org/fair-principles/). 
 
 The repository consists of two interdependent parts:
-1. a Python API
+1. a Python library
 2. pages and tools to build the website
 
 In the following we provide installation instructions for the echemdb module and a short summary of the basic usage of the Python API. For detailed installation instructions, description of the modules, advanced usage examples, including local database creation, and building the website locally, is provided in our [documentation](https://echemdb.github.io/website/doc/html/index.md).
