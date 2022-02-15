@@ -46,7 +46,7 @@ The current state of the website can be downloaded and stored in a database.
 >>> db = Database()
 ```
 
-Filtering the database for entries having specific properties, i.e., containing Pt as working electrode material, returns a new database.
+Filtering the database for entries having specific properties, e.g., containing Pt as working electrode material, returns a new database.
 
 ```python
 >>> db_filtered = db.filter(lambda entry: entry.electrochemical_system.electrodes.working_electrode.material == 'Pt')
