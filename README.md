@@ -34,9 +34,7 @@ conda env update --name <your_env_name> --file environment.yml
 Clone the repository and install echemdb
 
 ```
-git clone https://github.com/echemdb/website.git
-cd website
-pip install -e .
+pip install git+https://github.com/echemdb/website.git
 ```
 
 # Python API
