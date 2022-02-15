@@ -67,7 +67,7 @@ Each entry has information about its source
 {'citation key': 'engstfeld_2018_polycrystalline_17743', 'curve': 1, 'url': 'https://doi.org/10.1002/chem.201803418', 'figure': '4b', 'version': 1}
 ```
 
-Among other metadata, the entry also has information on the original figure properties (`entry.figure_description`) and the `entry.electrochemical_system` in general.
+Among other metadata, the entry also has information on the original publication's figure properties (`entry.figure_description`) and the `entry.electrochemical_system` in general.
 
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as a CSV file (or any other format supported by pandas).
 
