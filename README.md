@@ -11,11 +11,11 @@ In the following we provide installation instructions for the echemdb module and
 
 # Installation instructions
 
-<!-- I hope we can publish soon on PyPI then this section reduces to 
+<!-- TODO: Make echemdb pip installable, publish on PyPI and conda-forge. See #130
 ```
 pip install echemdb
 ```
--->
+
 
 Create an environment with the required packages
 
@@ -30,6 +30,7 @@ Alternatively, if you want to install the required packages into an existing, en
 ```
 conda env update --name <your_env_name> --file environment.yml
 ```
+-->
 
 Clone the repository and install echemdb
 
@@ -76,12 +77,20 @@ The data related to an entry can be returned as a [pandas](https://pandas.pydata
 0	0.000000	-0.196962	0.043009
 1	0.011368	-0.196393	0.051408
 ...
-# Custom or original figure axes' units can be requested explicitly 
-# entry.df(xunit='original', yunit='mA / m2')
 >>> entry.df().to_csv('../testtesttest.csv', index=False)
 ```
 
-The reference electrode to the potential axis `E` is provided in the `entry.data_description`
+Custom or original figure axes' units can be requested explicitly 
+
+```python
+>>> entry.df(xunit='original', yunit='mA / m2')
+           t	        E	       j
+0	0.000000	-0.196962	0.043009
+1	0.011368	-0.196393	0.051408
+...
+```
+
+The reference electrode of the potential axis `E` is provided in the `entry.data_description`
 ```python
 >>> entry.data_description.axes.E.reference
 'RHE'
