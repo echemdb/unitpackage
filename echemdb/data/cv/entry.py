@@ -2,6 +2,28 @@ r"""
 A Data Package decribing a Cyclic Voltammogram.
 
 These are the individual elements of a :class:`Database`.
+
+EXAMPLES:
+
+Data Packages containing published data, 
+also contain information on the source of the data.::
+
+    >>> from echemdb.data.cv.database import Database
+    >>> db = Database()
+    >>> entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
+    Entry('article',
+      fields=[
+        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'), 
+        ('journal', 'Physical Chemistry Chemical Physics'), 
+        ('volume', '13'), 
+        ('number', '13'), 
+        ('pages', '6010--6021'), 
+        ('year', '2011'), 
+        ('publisher', 'Royal Society of Chemistry'), 
+        ('abstract', 'We investigated the electrochemical oxidation and reduction processes on ultrahigh vacuum prepared, smooth and structurally well-characterized Ru(0001) electrodes in a CO-saturated and, for comparison, in a CO-free flowing HClO4 electrolyte by electrochemical methods and by comparison with previous structural data. Structure and reactivity of the adsorbed layers are largely governed by a critical potential of E = 0.57 V, which determines the onset of Oad formation on the COad saturated surface in the positive-going scan and of Oadreduction in the negative-going scan. Oad formation proceeds via nucleation and 2D growth of high-coverage Oad islands in a surrounding COad phase, and it is connected with COadoxidation at the interface between the two phases. In the negative-going scan, mixed (COad + Oad) phases, most likely a (2 $\\times$ 2)-(CO + 2O) and a (2$\\times$2)-(2CO + O), are proposed to form at E $<$ 0.57 V by reduction of the Oad-rich islands and CO adsorption into the resulting lower-density Oad structures. CO bulk oxidation rates in the potential range E $>$ 0.57 V are low, but significantly higher than those observed during oxidation of pre-adsorbed CO in the CO-free electrolyte. We relate this to high local COad coverages due to CO adsorption in the CO-saturated electrolyte, which lowers the CO adsorption energy and thus the barrier for COadoxidation during CO bulk oxidation.')],
+      persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
+
 """
 # ********************************************************************
 #  This file is part of echemdb.

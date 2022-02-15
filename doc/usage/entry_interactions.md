@@ -96,23 +96,25 @@ rate * 25 * u.m * c.c
 ```
 
 <!-- #region tags=[] -->
-
-
 ## Dataframes
 
 The data of an entry can be returned a pandas dataframe.
+<!-- #endregion -->
 
 ```python
 entry.df()
 ```
 
-```{todo}
-* describe entry.df() options to return the df with different units.
+Custom or original figure axes' units can be requested explicitly
+
+```python
+entry.df(xunit='original', yunit='mA / m2')
 ```
 
 ## Plots
 
-```{todo}
-* describe how to get simple plots.
+The data can be visualized in a plotly figure, with preferred axis units (default is SI):
+
+```python
+entry.plot(xunit='V', yunit='original')
 ```
-<!-- #endregion -->
