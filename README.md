@@ -76,7 +76,7 @@ The data related to an entry can be returned as a [pandas](https://pandas.pydata
 0	0.000000	-0.196962	0.043009
 1	0.011368	-0.196393	0.051408
 ...
-# Custom or original figure axes units can be set specifically 
+# Custom or original figure axes' units can be requested explicitly 
 # entry.df(xunit='original', yunit='mA / m2')
 >>> entry.df().to_csv('../testtesttest.csv', index=False)
 ```
