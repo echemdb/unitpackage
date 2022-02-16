@@ -6,8 +6,12 @@ dependencies:
   - astropy
   - filelock
   - inflect
+  - jupyterlab
+  - jupytext
   - matplotlib
   - mkdocs
+  - myst-nb>=0.13.0,<0.14.0
+  - myst-parser>=0.15,<0.17
   - pandas
   - parallel
   - pip
@@ -19,6 +23,7 @@ dependencies:
   - pytest-xdist
   - pytest-remotedata
   - pyyaml
+  - sphinx>=4.3,<5
   - pip:
     - linkchecker
     - mkdocs-material
@@ -31,4 +36,5 @@ dependencies:
     - tabulate
     - datapackage
     - python-frontmatter
+    - sphinx_rtd_theme>=1,<2
     - svgdigitizer >=0.2.0,<0.3.0
