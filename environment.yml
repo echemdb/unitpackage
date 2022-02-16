@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - astropy
+  - black
   - filelock
   - inflect
   - jupyterlab
