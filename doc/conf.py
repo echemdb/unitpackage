@@ -23,14 +23,16 @@ html_theme = 'sphinx_rtd_theme'
 
 html_static_path = []
 
-linkcheck_ignore = [
-    r'http://localhost:\d+/', 
-    r'https://github.com/echemdb/website/blob/main/doc\d+/',
-]
-
-html_context = {
-    'display_github': True,
-    'github_user': 'echemdb',
-    'github_repo': 'website',
-    'github_version': 'main/doc/',
-}
+# TODO: Add linkchecke. See #131
+#
+# linkcheck_ignore = [
+#     r'http://localhost:\d+/', 
+#     r'https://github.com/echemdb/website/blob/main/doc\d+/',
+# ]
+# 
+# html_context = {
+#     'display_github': True,
+#     'github_user': 'echemdb',
+#     'github_repo': 'website',
+#     'github_version': 'main/doc/',
+# }
