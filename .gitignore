@@ -84,6 +84,7 @@ target/
 # IPython
 profile_default/
 ipython_config.py
+*.ipynb
 
 # pyenv
 .python-version
@@ -131,3 +132,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# VS Code
+.vscode/

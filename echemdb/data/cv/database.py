@@ -72,9 +72,7 @@ class Database:
             )
 
             if bibliography is None:
-                bibliography = echemdb.data.remote.collect_bibliography(
-                    os.path.join("website-gh-pages", "Literature")
-                )
+                bibliography = echemdb.data.remote.collect_bibliography(os.path.join('website-gh-pages', 'data', 'generated'))
 
         if bibliography is None:
             bibliography = []
