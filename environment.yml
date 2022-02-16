@@ -16,6 +16,7 @@ dependencies:
   - plotly
   - pip
   - pybtex
+  - pylint
   - pytest
   - pytest-doctestplus
   - pytest-xdist

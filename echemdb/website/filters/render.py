@@ -82,7 +82,7 @@ def render(value, template=None):
     if template is None:
         if hasattr(value, "markdown"):
             return value.markdown
-        elif hasattr(value, "markdown_template"):
+        if hasattr(value, "markdown_template"):
             template = value.markdown_template
         else:
             raise ValueError(
