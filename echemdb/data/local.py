@@ -30,7 +30,7 @@ def collect_datapackages(data):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("data")
+        >>> packages = collect_datapackages(".")
 
     """
     # Collect all datapackage descriptors, see
