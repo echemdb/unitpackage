@@ -40,8 +40,9 @@ next(iter(db))
 The database can be filtered for specific descriptors (see below), 
 wherby a new database is created.
 
+
 ```{code-cell} ipython3
-db_filtered = db.filter(lambda entry: entry.electrochemical_system.electrodes.working_electrode.material == 'Pt')
+db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
 print(f'{len(db_filtered)} entries contain Pt as working electrode material.')
 ```
 
