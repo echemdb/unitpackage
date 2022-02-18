@@ -94,7 +94,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curation', 'data_description', 'df', 'electrochemical_system', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'version', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curation', 'data_description', 'df', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'system', 'version', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -111,7 +111,7 @@ class Entry:
 
         The returned descriptor can again be accessed in the same way::
 
-            >>> entry.electrochemical_system.electrolyte.components[0].name
+            >>> entry.system.electrolyte.components[0].name
             'H2O'
 
         """

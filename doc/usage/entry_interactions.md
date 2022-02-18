@@ -27,7 +27,7 @@ Each entry consits of decsriptors with metadata describing the entry, wmong thos
 * `source`: details on the respective publication and the figure from which the data was generated.
 * `figure description`: details about the original figures axis properties and other measurements linked to the published data.
 * `data description`: details on the axes properties of the associated CSV files.
-* `electrochemical system`: experimental details on the underlying electrochemical system.
+* `system`: experimental details on the underlying electrochemical system.
 
 ## Basic interactions
 
@@ -53,7 +53,7 @@ entry.source
 Specific information can be retrieved by selecting the desired descriptor
 
 ```python
-entry.electrochemical_system.electrodes.working_electrode.material
+entry.system.electrodes.working_electrode.material
 ```
 
 ## Units and values
