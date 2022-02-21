@@ -319,53 +319,102 @@ class Entry:
 
         return u.Unit(yunit)
 
-    def df(self, xunit=None, yunit=None):
-        r"""
-        Return the CSV resource attached to this entry as a data frame.
+    def rescale_original(self):
+        # self.rescale(parse original axes units)
+        pass
 
-        If the x and y-units are not specified, all values
-        are in SI units. The data frame can also be returned 
-        with the original figure units or with custom units as shown 
-        in the following examples.
+    def rescale(self, new_units={}):
+        r"""
+        Returns an Entry with rescaled axes with the specified units. 
+        Provide a dict, where the key is the axis name and the value 
+        the new unit, such as `{'j':'uA / cm2', 't':'h'}.
+            
+        EXAMPLES:
+
+        The axes units of the original entry.::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.data_description.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number', 'format': 'default'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
+
+        A rescaled entry with updated axes units::
+
+            >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
+            >>> rescaled_entry.data_description.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 'h', 'type': 'number', 'format': 'default'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
+            {'name': 'j', 'unit': 'uA / cm2', 'type': 'number', 'format': 'default'}]
+
+        """
+        from copy import deepcopy
+
+        package = deepcopy(self.package)
+        fields = package.descriptor['resources'][0]['schema']['fields']
+
+        for idx, field in enumerate(fields):
+            if field['name'] in new_units.keys():
+                    package.descriptor['resources'][0]['schema']['fields'][idx]['unit'] = new_units[field['name']]
+                    package.descriptor['data description']['fields'][idx]['unit'] = new_units[field['name']]
+
+        # print(self.package.descriptor['resources'][0]['schema']['fields'])
+        # print(package.descriptor['resources'][0]['schema']['fields'])
+
+        from datapackage import Package
+        
+        return Entry(package=Package(package.to_dict()), bibliography=self.bibliography)
+    
+    @property
+    def df(self):
+        r"""
+        Return the CSV resource attached to this entry as a data frame,
+        based on the units given in `entry.data_description.fields`.
 
         EXAMPLES:
         
-        A data frame in SI units::
+        A data frame of the CSV resource::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.df()
+            >>> entry.df
                          t         E         j
             0     0.000000 -0.103158 -0.998277
             1     0.100000 -0.098158 -0.916644
             ...
 
-        A data frame in the original units of the figure::
+        The axes units and description can be found in ``entry.data_description.fields``::
 
-            >>> entry.df(xunit='original', yunit='original')
-                         t         E         j
-            0     0.000000 -0.103158 -0.099828
-            1     0.100000 -0.098158 -0.091664
-            ...
-
-        A data frame with custom units::
-
-            >>> from astropy import units as u
-            >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
-                         t           E          j
-            0     0.000000 -103.158422 -99.827664
-            1     0.100000  -98.158422 -91.664367
-            ...
+            >>> entry.data_description.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number', 'format': 'default'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
 
         """
+        
+        # A data frame in the original units of the figure::
+
+        #     >>> entry.df(xunit='original', yunit='original')
+        #                  t         E         j
+        #     0     0.000000 -0.103158 -0.099828
+        #     1     0.100000 -0.098158 -0.091664
+        #     ...
+
+        # A data frame with custom units::
+
+        #     >>> from astropy import units as u
+        #     >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
+        #                  t           E          j
+        #     0     0.000000 -103.158422 -99.827664
+        #     1     0.100000  -98.158422 -91.664367
+        #     ...
+
         import pandas as pd
 
-        df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
-
-        if xunit or yunit:
-            df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
-            df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
+        # if xunit or yunit:
+        #     df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
+        #     df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
         
-        return df
+        return pd.read_csv(self.package.resources[0].raw_iter(stream=False))
 
     def __repr__(self):
         r"""
