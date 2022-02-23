@@ -349,17 +349,24 @@ class Entry:
 
         """
         from copy import deepcopy
+        from astropy import units as u
 
         package = deepcopy(self.package)
         fields = package.descriptor['resources'][0]['schema']['fields']
+        df = self.df.copy()
 
         for idx, field in enumerate(fields):
             if field['name'] in new_units.keys():
-                    package.descriptor['resources'][0]['schema']['fields'][idx]['unit'] = new_units[field['name']]
-                    package.descriptor['data description']['fields'][idx]['unit'] = new_units[field['name']]
+                df[field['name']] *= u.Unit(field['unit']).to(u.Unit(new_units[field['name']]))
+                package.descriptor['resources'][0]['schema']['fields'][idx]['unit'] = new_units[field['name']]
+                package.descriptor['data description']['fields'][idx]['unit'] = new_units[field['name']]
 
-        # print(self.package.descriptor['resources'][0]['schema']['fields'])
-        # print(package.descriptor['resources'][0]['schema']['fields'])
+        import tempfile
+        import os
+        _tmpdir = tempfile.TemporaryDirectory()
+        outdir=os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path'])
+        print(outdir)
+        df.to_csv(os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path']))
 
         from datapackage import Package
         
