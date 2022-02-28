@@ -46,7 +46,9 @@ also contain information on the source of the data.::
 #  You should have received a copy of the GNU General Public License
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import logging
 
+logger = logging.getLogger("echemdb")
 
 from echemdb.data.cv.descriptor import Descriptor
 
@@ -319,6 +321,35 @@ class Entry:
 
         return u.Unit(yunit)
 
+    def field_unit(self, field_name):
+        """Returns the unit of a given field name.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.field_unit('E')
+            'V'
+
+        """
+        self._verify_field_name(field_name)
+        for field in self.resources[0].schema.fields:
+            if field.name == field_name:
+                return field.unit
+
+    @property
+    def field_names(self):
+        """Return all field names.
+        
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.field_names # doctest: +NORMALIZE_WHITESPACE
+            ['t', 'E', 'j']
+
+        """
+
+        return [field['name'] for field in self.resources[0].schema.fields]
+
     def rescale_original(self):
         # self.rescale(parse original axes units)
         pass
@@ -363,14 +394,26 @@ class Entry:
 
         import tempfile
         import os
+
+        # with tempfile.TemporaryDirectory() as _tmpdir:
+        #     outdir=os.path.join(_tmpdir, package.descriptor['resources'][0]['path'])
+        #     print(outdir)
+        #     df.to_csv(outdir)
+        #     package.descriptor['resources'][0]['path'] = outdir
+        #     #package.infer([self.package outdir)
+        #     from datapackage import Package
+            
+        #     return Entry(package=Package(package.to_dict(), unsafe=True), bibliography=self.bibliography)
+
         _tmpdir = tempfile.TemporaryDirectory()
         outdir=os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path'])
         print(outdir)
-        df.to_csv(os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path']))
-
+        df.to_csv(outdir)
+        package.descriptor['resources'][0]['path'] = outdir
+        # package.infer([self.package outdir)
         from datapackage import Package
         
-        return Entry(package=Package(package.to_dict()), bibliography=self.bibliography)
+        return Entry(package=Package(package.to_dict(), unsafe=True), bibliography=self.bibliography)
     
     @property
     def df(self):
@@ -436,9 +479,34 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def plot(self, xunit=None, yunit=None):
+    def _verify_field_name(self, field_name):
+        """Verify if a given field name exists in the resources field names.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._verify_field_name('E')
+            'E'
+
+        For a field with name `x` that does not exist::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._verify_field_name('x')
+            Traceback (most recent call last):
+            ...
+            ValueError: None of the axes is named 'x'.
+
+        """
+        if field_name not in self.field_names:
+            raise ValueError(f"None of the axes is named '{field_name}'.")
+        return field_name
+
+    def plot(self, x_label='E', y_label='j', units={}):
         r"""
-        Return a plot of the data in this data package in SI units.
+        Return a plot of the data in this data package 
+        in SI units unless other units are specified.
+        The default plot is a cyclic voltammogram ('j vs E').
+        When `j` is not defined `I` is used instead.
 
         EXAMPLES::
 
@@ -448,36 +516,51 @@ class Entry:
 
         The plot can also be returned with the axis units of the original figure::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.plot(xunit='original', yunit='original')
+            # >>> entry = Entry.create_examples()[0]
+            # >>> entry.plot(xunit='original', yunit='original')
             Figure(...)
 
         The plot can also be returned with custom axis units, where 
         `xunit` should be convertible to `V` and 
         `yunit` convertible to `A` or `A / m2`.::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.plot(xunit='mV', yunit='uA / cm2')
+            # >>> entry = Entry.create_examples()[0]
+            # >>> entry.plot_cv(xunit='mV', yunit='uA / cm2')
             Figure(...)
 
         """
         import plotly.graph_objects
 
-        xunit = self.x_unit(xunit)
-        yunit = self.y_unit(yunit)
+        if units:
+            df = self.rescale(units).df
+        else:
+            df = self.df
+        
+        def catching_label(label):
+            if label == 'j':
+                try:
+                    return self._verify_field_name(label)
+                except (ValueError) as e:
+                    logger.debug(f"None of the axes is named '{label}'. Trying 'I' instead.")
+                    return catching_label('I')
+            else:
+                return self._verify_field_name(label)
 
-        df = self.df(xunit=xunit, yunit=yunit)
+
+        x_label = catching_label(x_label)
+        y_label = catching_label(y_label)
 
         fig = plotly.graph_objects.Figure()
 
-        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
+        fig.add_trace(plotly.graph_objects.Scatter(x=df[x_label], y=df[y_label], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
 
-        reference = f' vs {self.data_description.axes.E.reference}' if self.data_description.axes.E.reference else ''
+        # TODO: Select reference properly
+        reference = ''# f' vs {self.data_description.fields[y_label].reference}' if self.data_description.fields[y_label].reference else ''
 
         fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
                             margin=dict(l=70, r=70, b=70, t=70, pad=7),
-                            xaxis_title=f"{self.x()} [{xunit}{reference}]",
-                            yaxis_title=f"{self.y()} [{yunit}]")
+                            xaxis_title=f"{x_label} [{self.field_unit(x_label)}{reference}]",
+                            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]")
 
         fig.update_xaxes(showline=True, mirror=True)
         fig.update_yaxes(showline=True, mirror=True)
