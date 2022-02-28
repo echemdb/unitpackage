@@ -223,11 +223,12 @@ class Entry:
             ['t', 'E', 'j']
 
         """
-
         return [field['name'] for field in self.resources[0].schema.fields]
 
     def rescale_original(self):
-        # self.rescale(parse original axes units)
+        """Returns a recaled entry with the original axes units 
+        found in `entry.figure_description.fields`.
+        """
         pass
 
     def rescale(self, new_units={}):
@@ -253,6 +254,9 @@ class Entry:
             [{'name': 't', 'unit': 'h', 'type': 'number', 'format': 'default'},
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
             {'name': 'j', 'unit': 'uA / cm2', 'type': 'number', 'format': 'default'}]
+
+        A rescaled dataframe::
+            >>> rescaled_entry.df
 
         """
         from copy import deepcopy
@@ -283,7 +287,7 @@ class Entry:
 
         _tmpdir = tempfile.TemporaryDirectory()
         outdir=os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path'])
-        print(outdir)
+        # print(outdir)
         df.to_csv(outdir)
         package.descriptor['resources'][0]['path'] = outdir
         # package.infer([self.package outdir)
@@ -316,29 +320,7 @@ class Entry:
             {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
 
         """
-        
-        # A data frame in the original units of the figure::
-
-        #     >>> entry.df(xunit='original', yunit='original')
-        #                  t         E         j
-        #     0     0.000000 -0.103158 -0.099828
-        #     1     0.100000 -0.098158 -0.091664
-        #     ...
-
-        # A data frame with custom units::
-
-        #     >>> from astropy import units as u
-        #     >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
-        #                  t           E          j
-        #     0     0.000000 -103.158422 -99.827664
-        #     1     0.100000  -98.158422 -91.664367
-        #     ...
-
         import pandas as pd
-
-        # if xunit or yunit:
-        #     df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
-        #     df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
         
         return pd.read_csv(self.package.resources[0].raw_iter(stream=False))
 
@@ -390,6 +372,7 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
+        # TODO: Remove or adaot the following doctests.
         The plot can also be returned with the axis units of the original figure::
 
             # >>> entry = Entry.create_examples()[0]
