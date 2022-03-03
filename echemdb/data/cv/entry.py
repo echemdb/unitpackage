@@ -257,6 +257,10 @@ class Entry:
 
         A rescaled dataframe::
             >>> rescaled_entry.df
+                        t         E          j
+            0    0.000000 -0.103158 -99.827664
+            1    0.000028 -0.098158 -91.664367
+            ...
 
         """
         from copy import deepcopy
