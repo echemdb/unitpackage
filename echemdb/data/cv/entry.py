@@ -275,25 +275,14 @@ class Entry:
         import tempfile
         import os
 
-        # with tempfile.TemporaryDirectory() as _tmpdir:
-        #     outdir=os.path.join(_tmpdir, package.descriptor['resources'][0]['path'])
-        #     print(outdir)
-        #     df.to_csv(outdir)
-        #     package.descriptor['resources'][0]['path'] = outdir
-        #     #package.infer([self.package outdir)
-        #     from datapackage import Package
-            
-        #     return Entry(package=Package(package.to_dict(), unsafe=True), bibliography=self.bibliography)
-
         _tmpdir = tempfile.TemporaryDirectory()
         outdir=os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path'])
-        # print(outdir)
-        df.to_csv(outdir)
+        df.to_csv(outdir, index=False)
         package.descriptor['resources'][0]['path'] = outdir
-        # package.infer([self.package outdir)
+
         from datapackage import Package
         
-        entry = Entry(package=Package(package.to_dict(), unsafe=True), bibliography=self.bibliography)
+        entry = Entry(package=Package(package.descriptor, unsafe=True), bibliography=self.bibliography)
         entry._keepalive = _tmpdir
         return entry
     
