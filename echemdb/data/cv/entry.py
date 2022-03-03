@@ -293,7 +293,9 @@ class Entry:
         # package.infer([self.package outdir)
         from datapackage import Package
         
-        return Entry(package=Package(package.to_dict(), unsafe=True), bibliography=self.bibliography)
+        entry = Entry(package=Package(package.to_dict(), unsafe=True), bibliography=self.bibliography)
+        entry._keepalive = _tmpdir
+        return entry
     
     @property
     def df(self):
