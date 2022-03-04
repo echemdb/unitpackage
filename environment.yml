@@ -6,6 +6,7 @@ dependencies:
   - astropy
   - black
   - filelock
+  - frictionless
   - inflect
   - jupyterlab
   - jupytext

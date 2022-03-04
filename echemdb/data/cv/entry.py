@@ -279,15 +279,15 @@ class Entry:
         import tempfile
         import os
 
-        _tmpdir = tempfile.TemporaryDirectory()
-        outdir=os.path.join(_tmpdir.name, package.descriptor['resources'][0]['path'])
-        df.to_csv(outdir, index=False)
-        package.descriptor['resources'][0]['path'] = outdir
+        from frictionless import Resource
 
-        from datapackage import Package
-        
-        entry = Entry(package=Package(package.descriptor, unsafe=True), bibliography=self.bibliography)
-        entry._keepalive = _tmpdir
+        with tempfile.TemporaryDirectory() as tmpdir:
+            df.to_csv(os.path.join(tmpdir, 'temp.csv'), index=False)
+            resource = Resource(open(os.path.join(tmpdir, 'temp.csv'), 'rb'), format='csv')
+            package.data = resource.write(scheme='buffer', format='csv')
+
+        entry = Entry(package=package, bibliography=self.bibliography)
+
         return entry
     
     @property
@@ -316,8 +316,10 @@ class Entry:
 
         """
         import pandas as pd
+        from io import BytesIO
         
-        return pd.read_csv(self.package.resources[0].raw_iter(stream=False))
+        return pd.read_csv(BytesIO(self.package.data.data))
+        # return pd.read_csv(self.package.resources[0].raw_iter(stream=False))
 
     def __repr__(self):
         r"""

@@ -53,6 +53,7 @@ def collect_datapackages(data):
         resource = Resource(package.resources[0].raw_iter(stream=False), format='csv')
         package.data = resource.write(scheme='buffer', format='csv')
         packages.append(package)
+
     return packages
 
 def collect_bibliography(bibfiles):
