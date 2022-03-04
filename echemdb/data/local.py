@@ -23,6 +23,9 @@ Utilities to work with local data packages.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+from struct import pack
+
+
 def collect_datapackages(data):
     r"""
     Return a list of data packages defined in the directory `data` and its
@@ -41,7 +44,16 @@ def collect_datapackages(data):
 
     # Read the package descriptors (does not read the actual data CSVs)
     from datapackage import Package
-    return [Package(descriptor) for descriptor in descriptors]
+    from frictionless import Resource
+    
+    packages = []
+
+    for descriptor in descriptors:
+        package = Package(descriptor)
+        resource = Resource(package.resources[0].raw_iter(stream=False), format='csv')
+        package.data = resource.write(scheme='buffer', format='csv')
+        packages.append(package)
+    return packages
 
 def collect_bibliography(bibfiles):
     r"""
