@@ -40,21 +40,32 @@ def collect_datapackages(data):
     # https://specs.frictionlessdata.io/data-package/#metadata
     import os.path
     from glob import glob
-    descriptors = glob(os.path.join(data, '**', '*.json'), recursive=True)
+
+    descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
 
     # Read the package descriptors (does not read the actual data CSVs)
-    from datapackage import Package
-    from frictionless import Resource
-    
+    from frictionless import Package
+
     packages = []
 
     for descriptor in descriptors:
         package = Package(descriptor)
-        resource = Resource(package.resources[0].raw_iter(stream=False), format='csv')
-        package.data = resource.write(scheme='buffer', format='csv')
+        # resource = Resource(package.resources[0].raw_iter(stream=False), format='csv')
+        # package.data = resource.write(scheme='buffer', format='csv')
+        package.add_resource(
+            package.resources[0].write(
+                scheme="buffer",
+                format="csv", **{'name': 'echemdb'}
+                # **{"name": "echemdb", "schema": package.resources[0].schema}
+            )
+        )
         packages.append(package)
-
+    # file = (df.to_csv(index=False)).encode()
+    # resource = fric.Resource(data=file, format='csv', **{'name': 'echemdb2', 'schema': {'fields': []}})
+    # fri.add_resource(resource)
+    # fri.add_resource(fri.resources[0].write(scheme='buffer', format='csv', **{'name': 'echemdb', 'schema': {'fields': []}}))
     return packages
+
 
 def collect_bibliography(bibfiles):
     r"""
@@ -70,4 +81,8 @@ def collect_bibliography(bibfiles):
     from glob import glob
     from pybtex.database import parse_file
 
-    return [entry for file in glob(os.path.join(bibfiles, '**', '*.bib'), recursive=True) for entry in parse_file(file, bib_format="bibtex").entries.values()]
+    return [
+        entry
+        for file in glob(os.path.join(bibfiles, "**", "*.bib"), recursive=True)
+        for entry in parse_file(file, bib_format="bibtex").entries.values()
+    ]

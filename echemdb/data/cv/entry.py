@@ -52,6 +52,7 @@ logger = logging.getLogger("echemdb")
 
 from echemdb.data.cv.descriptor import Descriptor
 
+
 class Entry:
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
@@ -68,6 +69,7 @@ class Entry:
         >>> entry = next(iter(database))
 
     """
+
     def __init__(self, package, bibliography):
         self.package = package
         self.bibliography = bibliography
@@ -145,9 +147,9 @@ class Entry:
 
     @property
     def _descriptor(self):
-        return Descriptor(self.package.descriptor)
+        return Descriptor(self.package.to_dict())
 
-    def citation(self, backend='text'):
+    def citation(self, backend="text"):
         r"""
         Return a formatted reference for the entry's bibliography such as:
 
@@ -188,25 +190,37 @@ class Entry:
                     persons = context["entry"].persons[role]
                     style = context["style"]
 
-                    names = [style.format_name(person, style.abbreviate_names) for person in persons]
+                    names = [
+                        style.format_name(person, style.abbreviate_names)
+                        for person in persons
+                    ]
 
                     if len(names) == 1:
                         return names[0].format_data(context)
                     else:
                         from pybtex.style.template import words, tag
-                        return words(sep=' ')[names[0], tag('i')['et al.']].format_data(context)
+
+                        return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
+                            context
+                        )
 
                 names = names(role)
 
                 from pybtex.style.template import sentence
+
                 return sentence[names] if as_sentence else names
 
             def format_title(self, e, which_field, as_sentence=True):
                 from pybtex.style.template import field, tag, sentence
-                title = tag('i')[field(which_field)]
+
+                title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
 
-        return EchemdbStyle(abbreviate_names=True).format_entry("unused", self.bibliography).text.render_as(backend)
+        return (
+            EchemdbStyle(abbreviate_names=True)
+            .format_entry("unused", self.bibliography)
+            .text.render_as(backend)
+        )
 
     def field_unit(self, field_name):
         """Returns the unit of a given field name.
@@ -226,7 +240,7 @@ class Entry:
     @property
     def field_names(self):
         """Return all field names.
-        
+
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
@@ -234,20 +248,20 @@ class Entry:
             ['t', 'E', 'j']
 
         """
-        return [field['name'] for field in self.resources[0].schema.fields]
+        return [field["name"] for field in self.resources[0].schema.fields]
 
     def rescale_original(self):
-        """Returns a recaled entry with the original axes units 
+        """Returns a recaled entry with the original axes units
         found in `entry.figure_description.fields`.
         """
         pass
 
     def rescale(self, new_units={}):
         r"""
-        Returns an Entry with rescaled axes with the specified units. 
-        Provide a dict, where the key is the axis name and the value 
+        Returns an Entry with rescaled axes with the specified units.
+        Provide a dict, where the key is the axis name and the value
         the new unit, such as `{'j':'uA / cm2', 't':'h'}.
-            
+
         EXAMPLES:
 
         The axes units of the original entry.::
@@ -278,14 +292,20 @@ class Entry:
         from astropy import units as u
 
         package = deepcopy(self.package)
-        fields = package.descriptor['resources'][0]['schema']['fields']
+        fields = package.descriptor["resources"][0]["schema"]["fields"]
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
-            if field['name'] in new_units.keys():
-                df[field['name']] *= u.Unit(field['unit']).to(u.Unit(new_units[field['name']]))
-                package.descriptor['resources'][0]['schema']['fields'][idx]['unit'] = new_units[field['name']]
-                package.descriptor['data description']['fields'][idx]['unit'] = new_units[field['name']]
+            if field["name"] in new_units.keys():
+                df[field["name"]] *= u.Unit(field["unit"]).to(
+                    u.Unit(new_units[field["name"]])
+                )
+                package.descriptor["resources"][0]["schema"]["fields"][idx][
+                    "unit"
+                ] = new_units[field["name"]]
+                package.descriptor["data description"]["fields"][idx][
+                    "unit"
+                ] = new_units[field["name"]]
 
         import tempfile
         import os
@@ -293,14 +313,16 @@ class Entry:
         from frictionless import Resource
 
         with tempfile.TemporaryDirectory() as tmpdir:
-            df.to_csv(os.path.join(tmpdir, 'temp.csv'), index=False)
-            resource = Resource(open(os.path.join(tmpdir, 'temp.csv'), 'rb'), format='csv')
-            package.data = resource.write(scheme='buffer', format='csv')
+            df.to_csv(os.path.join(tmpdir, "temp.csv"), index=False)
+            resource = Resource(
+                open(os.path.join(tmpdir, "temp.csv"), "rb"), format="csv"
+            )
+            package.data = resource.write(scheme="buffer", format="csv")
 
         entry = Entry(package=package, bibliography=self.bibliography)
 
         return entry
-    
+
     @property
     def df(self):
         r"""
@@ -308,7 +330,7 @@ class Entry:
         based on the units given in `entry.data_description.fields`.
 
         EXAMPLES:
-        
+
         A data frame of the CSV resource::
 
             >>> entry = Entry.create_examples()[0]
@@ -328,7 +350,7 @@ class Entry:
         """
         import pandas as pd
         from io import BytesIO
-        
+
         return pd.read_csv(BytesIO(self.package.data.data))
         # return pd.read_csv(self.package.resources[0].raw_iter(stream=False))
 
@@ -367,9 +389,9 @@ class Entry:
             raise ValueError(f"None of the axes is named '{field_name}'.")
         return field_name
 
-    def plot(self, x_label='E', y_label='j', units={}):
+    def plot(self, x_label="E", y_label="j", units={}):
         r"""
-        Return a plot of the data in this data package 
+        Return a plot of the data in this data package
         in SI units unless other units are specified.
         The default plot is a cyclic voltammogram ('j vs E').
         When `j` is not defined `I` is used instead.
@@ -387,8 +409,8 @@ class Entry:
             # >>> entry.plot(xunit='original', yunit='original')
             Figure(...)
 
-        The plot can also be returned with custom axis units, where 
-        `xunit` should be convertible to `V` and 
+        The plot can also be returned with custom axis units, where
+        `xunit` should be convertible to `V` and
         `yunit` convertible to `A` or `A / m2`.::
 
             # >>> entry = Entry.create_examples()[0]
@@ -402,32 +424,46 @@ class Entry:
             df = self.rescale(units).df
         else:
             df = self.df
-        
+
         def catching_label(label):
-            if label == 'j':
+            if label == "j":
                 try:
                     return self._verify_field_name(label)
                 except (ValueError) as e:
-                    logger.debug(f"None of the axes is named '{label}'. Trying 'I' instead.")
-                    return catching_label('I')
+                    logger.debug(
+                        f"None of the axes is named '{label}'. Trying 'I' instead."
+                    )
+                    return catching_label("I")
             else:
                 return self._verify_field_name(label)
-
 
         x_label = catching_label(x_label)
         y_label = catching_label(y_label)
 
         fig = plotly.graph_objects.Figure()
 
-        fig.add_trace(plotly.graph_objects.Scatter(x=df[x_label], y=df[y_label], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
+        fig.add_trace(
+            plotly.graph_objects.Scatter(
+                x=df[x_label],
+                y=df[y_label],
+                mode="lines",
+                name=f"Fig. {self.source.figure}: {self.source.curve}",
+            )
+        )
 
         # TODO: Select reference properly
-        reference = ''# f' vs {self.data_description.fields[y_label].reference}' if self.data_description.fields[y_label].reference else ''
+        reference = ""  # f' vs {self.data_description.fields[y_label].reference}' if self.data_description.fields[y_label].reference else ''
 
-        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
-                            margin=dict(l=70, r=70, b=70, t=70, pad=7),
-                            xaxis_title=f"{x_label} [{self.field_unit(x_label)}{reference}]",
-                            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]")
+        fig.update_layout(
+            template="simple_white",
+            showlegend=True,
+            autosize=True,
+            width=600,
+            height=400,
+            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+            xaxis_title=f"{x_label} [{self.field_unit(x_label)}{reference}]",
+            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+        )
 
         fig.update_xaxes(showline=True, mirror=True)
         fig.update_yaxes(showline=True, mirror=True)
@@ -450,25 +486,24 @@ class Entry:
         import os.path
 
         source = os.path.join(
-            os.path.dirname(__file__),
-            '..',
-            '..',
-            '..',
-            'literature',
-            name)
+            os.path.dirname(__file__), "..", "..", "..", "literature", name
+        )
 
         if not os.path.exists(source):
-            raise ValueError(f"No subdirectory in literature/ for {name}, i.e., could not find {source}.")
+            raise ValueError(
+                f"No subdirectory in literature/ for {name}, i.e., could not find {source}."
+            )
 
         outdir = os.path.join(
             os.path.dirname(__file__),
-            '..',
-            '..',
-            '..',
-            'data',
-            'generated',
-            'svgdigitizer',
-            name)
+            "..",
+            "..",
+            "..",
+            "data",
+            "generated",
+            "svgdigitizer",
+            name,
+        )
 
         # We now might have to digitize some files on demand. When running
         # tests in parallel, this introduces a race condition that we avoid
@@ -477,20 +512,38 @@ class Entry:
         os.makedirs(os.path.dirname(lockfile), exist_ok=True)
 
         from filelock import FileLock
+
         with FileLock(lockfile):
             if not os.path.exists(outdir):
                 from glob import glob
+
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
                     from svgdigitizer.test.cli import invoke
                     from svgdigitizer.__main__ import digitize_cv
-                    invoke(digitize_cv, "--sampling-interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
-                assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
-                assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+                    invoke(
+                        digitize_cv,
+                        "--sampling-interval",
+                        ".005",
+                        "--package",
+                        "--metadata",
+                        yaml,
+                        svg,
+                        "--outdir",
+                        outdir,
+                    )
+
+                assert os.path.exists(
+                    outdir
+                ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
+                assert any(
+                    os.scandir(outdir)
+                ), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
+
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
         assert len(bibliography) == 1, f"No bibliography found for {name}."
@@ -498,6 +551,11 @@ class Entry:
 
         if len(packages) == 0:
             from glob import glob
-            raise ValueError(f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }")
 
-        return [Entry(package=package, bibliography=bibliography) for package in packages]
+            raise ValueError(
+                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+            )
+
+        return [
+            Entry(package=package, bibliography=bibliography) for package in packages
+        ]
