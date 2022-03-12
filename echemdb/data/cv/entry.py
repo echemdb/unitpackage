@@ -223,7 +223,7 @@ class Entry:
         )
 
     def field_unit(self, field_name):
-        """Returns the unit of a given field name.
+        """Returns the unit of a given field name of the `echemdb` resource.
 
         EXAMPLES::
 
@@ -235,10 +235,15 @@ class Entry:
         return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
 
     def rescale_original(self):
-        """Returns a recaled entry with the original axes units
-        found in `entry.figure_description.fields`.
+        """Returns a rescaled entry with the original axes units of the digitized plot. 
+        
+        The original axis units are found in `entry.figure_description.fields`.
         """
-        pass
+        units = {}
+        for field in self.figure_description.fields:
+            units[field['name']] = field['unit']
+
+        return self.rescale(units)
 
     def rescale(self, new_units={}):
         r"""
