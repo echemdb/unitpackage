@@ -292,31 +292,25 @@ class Entry:
         from astropy import units as u
 
         package = deepcopy(self.package)
-        fields = package["resources"][0]["schema"]["fields"]
-        # fields = self.get_resource('echemdb').schema.field_names
+        fields = self.package.get_resource('echemdb').schema.fields
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
-            if field["name"] in new_units.keys():
-                df[field["name"]] *= u.Unit(field["unit"]).to(
-                    u.Unit(new_units[field["name"]])
+            if field.name in new_units.keys():
+                df[field.name] *= u.Unit(field['unit']).to(
+                    u.Unit(new_units[field.name])
                 )
-                package["resources"][0]["schema"]["fields"][idx][
+                package.get_resource('echemdb')["schema"]["fields"][idx][
                     "unit"
                 ] = new_units[field["name"]]
                 package["data description"]["fields"][idx][
                     "unit"
                 ] = new_units[field["name"]]
 
-        from frictionless import Resource
 
-        file = (df.to_csv(index=False)).encode()
-        resource = Resource(data=file, format='csv', **{'name': 'echemdb', 'schema': {'fields': []}})
-        package.add_resource(resource)
+        package.get_resource('echemdb').data = df.to_csv(index=False).encode()
 
-        entry = Entry(package=package, bibliography=self.bibliography)
-
-        return entry
+        return Entry(package=package, bibliography=self.bibliography)
 
     @property
     def df(self):
@@ -347,8 +341,6 @@ class Entry:
         from io import BytesIO
 
         return pd.read_csv(BytesIO(self.package.get_resource('echemdb').data))
-        # return pd.read_csv(BytesIO(self.package.data.data))
-        # return pd.read_csv(self.package.resources[0].raw_iter(stream=False))
 
     def __repr__(self):
         r"""

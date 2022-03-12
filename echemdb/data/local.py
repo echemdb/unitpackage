@@ -23,6 +23,7 @@ Utilities to work with local data packages.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+from msilib import schema
 from struct import pack
 
 
@@ -55,8 +56,7 @@ def collect_datapackages(data):
         package.add_resource(
             package.resources[0].write(
                 scheme="buffer",
-                format="csv", **{'name': 'echemdb'}
-                # **{"name": "echemdb", "schema": package.resources[0].schema}
+                format="csv", **{'name': 'echemdb', 'schema': package.resources[0].schema.to_dict()}
             )
         )
         packages.append(package)
