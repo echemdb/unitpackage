@@ -105,7 +105,7 @@ class Entry:
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
             '__subclasshook__', '__weakref__', '_descriptor', '_verify_field_name',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
-            'df', 'experimental', 'field_names', 'field_unit', 'figure_description',
+            'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'plot', 'profile', 'rescale', 'rescale_original',
             'resources', 'source', 'system', 'version', 'yaml']
 
@@ -232,23 +232,7 @@ class Entry:
             'V'
 
         """
-        self._verify_field_name(field_name)
-        for field in self.resources[0].schema.fields:
-            if field.name == field_name:
-                return field.unit
-
-    @property
-    def field_names(self):
-        """Return all field names.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.field_names # doctest: +NORMALIZE_WHITESPACE
-            ['t', 'E', 'j']
-
-        """
-        return [field["name"] for field in self.resources[0].schema.fields]
+        return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
 
     def rescale_original(self):
         """Returns a recaled entry with the original axes units
@@ -260,14 +244,14 @@ class Entry:
         r"""
         Returns an Entry with rescaled axes with the specified units.
         Provide a dict, where the key is the axis name and the value
-        the new unit, such as `{'j':'uA / cm2', 't':'h'}.
+        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}.
 
         EXAMPLES:
 
         The axes units of the original entry.::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.data_description.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'unit': 's', 'type': 'number', 'format': 'default'},
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
             {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
@@ -275,7 +259,7 @@ class Entry:
         A rescaled entry with updated axes units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.data_description.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'unit': 'h', 'type': 'number', 'format': 'default'},
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
             {'name': 'j', 'unit': 'uA / cm2', 'type': 'number', 'format': 'default'}]
@@ -329,9 +313,9 @@ class Entry:
             1     0.100000 -0.098158 -0.916644
             ...
 
-        The axes units and description can be found in ``entry.data_description.fields``::
+        The axes units and description can be found in ``entry.package.get_resource('echemdb').schema.fields``::
 
-            >>> entry.data_description.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'unit': 's', 'type': 'number', 'format': 'default'},
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
             {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
@@ -373,7 +357,7 @@ class Entry:
             ValueError: None of the axes is named 'x'.
 
         """
-        if field_name not in self.field_names:
+        if field_name not in self.package.get_resource('echemdb').schema.field_names:
             raise ValueError(f"None of the axes is named '{field_name}'.")
         return field_name
 
