@@ -25,7 +25,7 @@ db = Database()
 Each entry is associated with a citation key.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+entry = db['alves_2011_electrochemistry_6010_f2a_solid']
 entry.source.citation_key
 ```
 

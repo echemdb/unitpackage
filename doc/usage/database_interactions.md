@@ -49,6 +49,6 @@ print(f'{len(db_filtered)} entries contain Pt as working electrode material.')
 Single entries can be selected by their identifier provided on the [echemDB website](https://echemdb.github.io/website) for each entry.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+entry = db['alves_2011_electrochemistry_6010_f2a_solid']
 entry
 ```

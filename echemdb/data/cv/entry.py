@@ -10,7 +10,7 @@ also contain information on the source of the data.::
 
     >>> from echemdb.data.cv.database import Database
     >>> db = Database()
-    >>> entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+    >>> entry = db['alves_2011_electrochemistry_6010_f2a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
       fields=[
@@ -79,7 +79,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.identifier
-            'alves_2011_electrochemistry_6010_p2_f2a_solid'
+            'alves_2011_electrochemistry_6010_f2a_solid'
 
         """
         return self.package.resources[0].name
@@ -375,7 +375,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry
-            Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
+            Entry('alves_2011_electrochemistry_6010_f2a_solid')
 
         """
         return f"Entry({repr(self.identifier)})"
@@ -438,7 +438,7 @@ class Entry:
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_f2a_solid')]
 
         """
         import os.path

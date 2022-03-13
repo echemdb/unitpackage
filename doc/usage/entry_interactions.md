@@ -37,7 +37,7 @@ where all spaces should be replaced by underscores.
 ```{code-cell} ipython3
 from echemdb.data.cv.database import Database
 db = Database()
-entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+entry = db['alves_2011_electrochemistry_6010_f2a_solid']
 entry
 ```
 
