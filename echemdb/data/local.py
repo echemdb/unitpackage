@@ -51,8 +51,6 @@ def collect_datapackages(data):
 
     for descriptor in descriptors:
         package = Package(descriptor)
-        # resource = Resource(package.resources[0].raw_iter(stream=False), format='csv')
-        # package.data = resource.write(scheme='buffer', format='csv')
         package.add_resource(
             package.resources[0].write(
                 scheme="buffer",
@@ -60,10 +58,7 @@ def collect_datapackages(data):
             )
         )
         packages.append(package)
-    # file = (df.to_csv(index=False)).encode()
-    # resource = fric.Resource(data=file, format='csv', **{'name': 'echemdb2', 'schema': {'fields': []}})
-    # fri.add_resource(resource)
-    # fri.add_resource(fri.resources[0].write(scheme='buffer', format='csv', **{'name': 'echemdb', 'schema': {'fields': []}}))
+ 
     return packages
 
 
