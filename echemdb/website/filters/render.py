@@ -76,7 +76,7 @@ def render(value, template=None):
 
         >>> snippet = StringIO("{{ value | render(template='components/quantity.md') }}")
         >>> render(snippet, value={ 'quantity': 1 * Unit("A / m^2") })
-        '1.0 $\\mathrm{A\\,m^{-2}}$'
+        '1 $\\mathrm{A\\,m^{-2}}$'
 
     """
     if template is None:
