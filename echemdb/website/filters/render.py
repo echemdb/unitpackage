@@ -11,7 +11,7 @@ The `render` filter renders an element using a specific template::
 
     >>> snippet = StringIO("{{ value | render(template='components/quantity.md') }}")
     >>> render(snippet, value={ 'quantity': 1 * Unit("mol / l") })
-    '1.0 M'
+    '1 M'
 
 When no template is given, the filter returns the `markdown` property if
 present::
@@ -34,7 +34,7 @@ When no template is given, the filter renders the value with the
     ...     markdown_template = 'components/quantity.md'
 
     >>> render(snippet, value=Value({ 'quantity': 1 * Unit("mol / l") }))
-    '1.0 M'
+    '1 M'
 
 """
 # ********************************************************************
