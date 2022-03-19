@@ -9,12 +9,12 @@ dependencies:
   - inflect
   - jupyterlab
   - jupytext
+  - make
   - matplotlib
   - mkdocs
   - myst-nb>=0.13.0,<0.14.0
   - myst-parser>=0.15,<0.17
   - pandas
-  - parallel
   - pip
   - plotly
   - pip

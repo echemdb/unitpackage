@@ -23,15 +23,8 @@ jobs:
       - name: digitize
         shell: bash -l {0}
         run: |
-          pushd literature
-          ls ./**/*.yaml | parallel --bar --halt now,fail=1 'svgdigitizer cv --sampling-interval .001 --package --metadata {} {.}.svg --outdir=../data/generated/svgdigitizer/{//}'
-          popd
-      - name: copy literature
-        shell: bash -l {0}
-        run: |
-          pushd literature
-          find . -name '*.bib' | cpio -pdm ../data/generated/svgdigitizer
-          popd
+          cd data
+          make
       - name: install echemdb
         shell: bash -l {0}
         run: |
@@ -82,3 +75,6 @@ jobs:
           # Run tests against the new ZIP archive.
           export ECHEMDB_DATABASE_URL=http://localhost:8880/website/website-gh-pages.zip
           pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb
+
+env:
+  MAKEFLAGS: -j2
