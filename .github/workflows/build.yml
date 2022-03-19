@@ -64,7 +64,7 @@ jobs:
           # We check for broken links:
           # * ignore fonts.gstatic.com which is mentioned by a link preconnect tag that linkchecker does not parse correctly.
           # * only check that DOIs are valid but do not check that the journal page resolves since publishers sometimes block GitHub access.
-          linkchecker --check-extern --no-robots --ignore fonts.gstatic.com --no-follow-url='^https://doi.org/' http://localhost:8880/website/
+          linkchecker --check-extern --no-robots --ignore fonts.gstatic.com --no-follow-url='^https://doi.org/.*$' http://localhost:8880/website/
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
