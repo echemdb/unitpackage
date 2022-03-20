@@ -9,7 +9,10 @@ concurrency:
 
 jobs:
   build-manual:
-    runs-on: ubuntu-20.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest", "macos-latest", "windows-latest"]
     steps:
       - uses: actions/checkout@v2
         with: { submodules: recursive }
@@ -23,15 +26,8 @@ jobs:
       - name: digitize
         shell: bash -l {0}
         run: |
-          pushd literature
-          ls ./**/*.yaml | parallel --bar --halt now,fail=1 'svgdigitizer cv --sampling-interval .001 --package --metadata {} {.}.svg --outdir=../data/generated/svgdigitizer/{//}'
-          popd
-      - name: copy literature
-        shell: bash -l {0}
-        run: |
-          pushd literature
-          find . -name '*.bib' | cpio -pdm ../data/generated/svgdigitizer
-          popd
+          cd data
+          make
       - name: install echemdb
         shell: bash -l {0}
         run: |
@@ -64,13 +60,15 @@ jobs:
           # We check for broken links:
           # * ignore fonts.gstatic.com which is mentioned by a link preconnect tag that linkchecker does not parse correctly.
           linkchecker --check-extern --no-robots --ignore fonts.gstatic.com http://localhost:8880/website/ --ignore-url=https://doi.org/10.1002/chem.201803418
+        # We only check links on Linux since we do not want to get flagged because of too many requests by the target websites.
+        if: ${{ matrix.os == 'ubuntu-latest' }}
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: generated/website
           TARGET_FOLDER: ""
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && matrix.os == 'ubuntu-latest' }}
       - name: doctest against generated website data
         shell: bash -l {0}
         run: |
@@ -82,3 +80,8 @@ jobs:
           # Run tests against the new ZIP archive.
           export ECHEMDB_DATABASE_URL=http://localhost:8880/website/website-gh-pages.zip
           pytest -n auto --doctest-plus --remote-data --doctest-modules echemdb
+        # We only run tests on Linux since we already run tests for all OSes in the test workflow.
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+
+env:
+  MAKEFLAGS: -j2
