@@ -10,7 +10,7 @@ The `render` macro renders an element using a specific template::
 
     >>> snippet = StringIO("{{ render('components/quantity.md', value=value) }}")
     >>> render(snippet, value={ 'quantity': 1 * Unit("mol / l") })
-    '1.0 M'
+    '1 M'
 
 """
 # ********************************************************************

@@ -50,7 +50,7 @@ The current state of the website can be downloaded and stored in a database.
 Filtering the database for entries having specific properties, e.g., containing Pt as working electrode material, returns a new database.
 
 ```python
->>> db_filtered = db.filter(lambda entry: entry.electrochemical_system.electrodes.working_electrode.material == 'Pt')
+>>> db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
 ```
 
 A single entry can be retrieved with the identifiers provided on the website 
@@ -67,7 +67,7 @@ Each entry has information about its source
 {'citation key': 'engstfeld_2018_polycrystalline_17743', 'curve': 1, 'url': 'https://doi.org/10.1002/chem.201803418', 'figure': '4b', 'version': 1}
 ```
 
-Among other metadata, the entry also has information on the original publication's figure properties (`entry.figure_description`) and the `entry.electrochemical_system` in general.
+Among other metadata, the entry also has information on the original publication's figure properties (`entry.figure_description`) and the `entry.system` in general.
 
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as a CSV file (or any other format supported by pandas).
 
