@@ -4,10 +4,10 @@ Utilities to work with local data packages.
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C)      2021 Johannes Hermann
+#        Copyright (C)      2021 Julian Rüth
+#        Copyright (C)      2021 Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -22,9 +22,6 @@ Utilities to work with local data packages.
 #  You should have received a copy of the GNU General Public License
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
-
-from msilib import schema
-from struct import pack
 
 
 def collect_datapackages(data):
@@ -51,8 +48,6 @@ def collect_datapackages(data):
 
     for descriptor in descriptors:
         package = Package(descriptor)
-        # resource = Resource(package.resources[0].raw_iter(stream=False), format='csv')
-        # package.data = resource.write(scheme='buffer', format='csv')
         package.add_resource(
             package.resources[0].write(
                 scheme="buffer",
@@ -60,10 +55,7 @@ def collect_datapackages(data):
             )
         )
         packages.append(package)
-    # file = (df.to_csv(index=False)).encode()
-    # resource = fric.Resource(data=file, format='csv', **{'name': 'echemdb2', 'schema': {'fields': []}})
-    # fri.add_resource(resource)
-    # fri.add_resource(fri.resources[0].write(scheme='buffer', format='csv', **{'name': 'echemdb', 'schema': {'fields': []}}))
+ 
     return packages
 
 
