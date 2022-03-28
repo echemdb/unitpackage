@@ -10,7 +10,7 @@ also contain information on the source of the data.::
 
     >>> from echemdb.data.cv.database import Database
     >>> db = Database()
-    >>> entry = db['alves_2011_electrochemistry_6010_p2_f2a_solid']
+    >>> entry = db['alves_2011_electrochemistry_6010_p2_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
       fields=[
@@ -257,23 +257,23 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number', 'format': 'default'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
         A rescaled entry with updated axes units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 'h', 'type': 'number', 'format': 'default'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
-            {'name': 'j', 'unit': 'uA / cm2', 'type': 'number', 'format': 'default'}]
+            [{'name': 't', 'unit': 'h', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
 
         A rescaled dataframe::
             >>> rescaled_entry.df
-                        t         E          j
-            0    0.000000 -0.103158 -99.827664
-            1    0.000028 -0.098158 -91.664367
+                         t         E          j
+            0     0.000000 -0.103158 -99.827664
+            1     0.000006 -0.102158 -98.176205
             ...
 
         """
@@ -292,10 +292,6 @@ class Entry:
                 package.get_resource('echemdb')["schema"]["fields"][idx][
                     "unit"
                 ] = new_units[field["name"]]
-                package["data description"]["fields"][idx][
-                    "unit"
-                ] = new_units[field["name"]]
-
 
         package.get_resource('echemdb').data = df.to_csv(index=False).encode()
 
@@ -313,17 +309,17 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df
-                         t         E         j
-            0     0.000000 -0.103158 -0.998277
-            1     0.100000 -0.098158 -0.916644
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
             ...
 
         The axes units and description can be found in ``entry.package.get_resource('echemdb').schema.fields``::
 
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number', 'format': 'default'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number', 'format': 'default'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number', 'format': 'default'}]
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
         """
         import pandas as pd
@@ -339,7 +335,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry
-            Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')
+            Entry('alves_2011_electrochemistry_6010_p2_f1a_solid')
 
         """
         return f"Entry({repr(self.identifier)})"
@@ -457,7 +453,7 @@ class Entry:
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_p2_f2a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_p2_f1a_solid')]
 
         """
         import os.path
