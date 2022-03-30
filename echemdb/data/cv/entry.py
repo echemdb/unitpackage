@@ -235,25 +235,31 @@ class Entry:
         return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
 
     def rescale_original(self):
-        """Returns a rescaled entry with the original axes units of the digitized plot. 
-        
-        The original axis units are found in `entry.figure_description.fields`.
-        """
-        units = {}
-        for field in self.figure_description.fields:
-            units[field['name']] = field['unit']
+        r"""Returns an entry with a rescaled `echemdb` resource 
+        with the original axes units of the digitized plot. 
 
-        return self.rescale(units)
+            >>> entry = Entry.create_examples()[0]
+            >>> rescaled_entry = entry.rescale_original()
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
+
+        """
+
+        original_units = {field['name']: field['unit'] for field in self.figure_description.fields}
+
+        return self.rescale(original_units)
 
     def rescale(self, new_units={}):
         r"""
-        Returns an Entry with rescaled axes with the specified units.
+        Returns a rescaled echemdb resource with axes in the specified units.
         Provide a dict, where the key is the axis name and the value
         the new unit, such as `{'j': 'uA / cm2', 't': 'h'}.
 
         EXAMPLES:
 
-        The axes units of the original entry.::
+        The axes units of the original entry for comparison with the rescaled entry.::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
