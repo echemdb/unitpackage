@@ -368,10 +368,9 @@ class Entry:
             raise ValueError(f"None of the axes is named '{field_name}'.")
         return field_name
 
-    def plot(self, x_label="E", y_label="j", units={}):
+    def plot(self, x_label='E', y_label='j'):
         r"""
-        Return a plot of the data in this data package
-        in SI units unless other units are specified.
+        Return a plot of the 'echemdb resource' in this entry. 
         The default plot is a cyclic voltammogram ('j vs E').
         When `j` is not defined `I` is used instead.
 
@@ -381,7 +380,7 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
-        # TODO: Remove or adaot the following doctests.
+        # TODO: Remove or adaopt the following doctests.
         The plot can also be returned with the axis units of the original figure::
 
             # >>> entry = Entry.create_examples()[0]
@@ -399,12 +398,9 @@ class Entry:
         """
         import plotly.graph_objects
 
-        if units:
-            df = self.rescale(units).df
-        else:
-            df = self.df
-
         def catching_label(label):
+            r"""Verifies that the labels exit. When a current density exists
+            """
             if label == "j":
                 try:
                     return self._verify_field_name(label)
@@ -423,15 +419,15 @@ class Entry:
 
         fig.add_trace(
             plotly.graph_objects.Scatter(
-                x=df[x_label],
-                y=df[y_label],
+                x=self.df[x_label],
+                y=self.df[y_label],
                 mode="lines",
                 name=f"Fig. {self.source.figure}: {self.source.curve}",
             )
         )
 
         # TODO: Select reference properly
-        reference = ""  # f' vs {self.data_description.fields[y_label].reference}' if self.data_description.fields[y_label].reference else ''
+        reference = f" vs {self.package.get_resource('echemdb').schema.get_field(x_label)['reference']}" if self.package.get_resource('echemdb').schema.get_field(x_label)['reference'] else ""
 
         fig.update_layout(
             template="simple_white",
