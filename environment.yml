@@ -12,7 +12,7 @@ dependencies:
   - jupytext
   - make
   - matplotlib
-  - mkdocs
+  - mkdocs=1.2.3
   - myst-nb>=0.13.0,<0.14.0
   - myst-parser>=0.15,<0.17
   - pandas
@@ -28,13 +28,14 @@ dependencies:
   - sphinx>=4.3,<5
   - pip:
     - linkchecker
-    - mkdocs-material
-    - mkdocs-gen-files
-    - mkdocs-literate-nav
+    - mkdocs-gen-files=0.3.4
+    - mkdocs-literate-nav=0.4.1
+    - mkdocs-macros-plugin=0.6.4
+    - mkdocs-material=8.2.5
+    - mkdocs-material-extension=1.0.3
+    - mkdocs-section-index=0.3.3
     - markdown-include
     - mdutils
-    - mkdocs-section-index
-    - mkdocs-macros-plugin
     - tabulate
     - datapackage
     - python-frontmatter
