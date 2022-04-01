@@ -9,7 +9,7 @@ Data Packages containing published data,
 also contain information on the source of the data.::
 
     >>> from echemdb.data.cv.database import Database
-    >>> db = Database()
+    >>> db = Database.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_p2_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
