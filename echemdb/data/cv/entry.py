@@ -501,7 +501,7 @@ class Entry:
                     invoke(
                         digitize_cv,
                         "--sampling-interval",
-                        ".005",
+                        ".001",
                         "--package",
                         "--metadata",
                         yaml,
