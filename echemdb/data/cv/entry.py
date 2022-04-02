@@ -10,7 +10,7 @@ also contain information on the source of the data.::
 
     >>> from echemdb.data.cv.database import Database
     >>> db = Database()
-    >>> entry = db['alves_2011_electrochemistry_6010_f2a_solid']
+    >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
       fields=[
@@ -46,9 +46,12 @@ also contain information on the source of the data.::
 #  You should have received a copy of the GNU General Public License
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import logging
 
+logger = logging.getLogger("echemdb")
 
 from echemdb.data.cv.descriptor import Descriptor
+
 
 class Entry:
     r"""
@@ -66,6 +69,7 @@ class Entry:
         >>> entry = next(iter(database))
 
     """
+
     def __init__(self, package, bibliography):
         self.package = package
         self.bibliography = bibliography
@@ -79,7 +83,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.identifier
-            'alves_2011_electrochemistry_6010_f2a_solid'
+            'alves_2011_electrochemistry_6010_f1a_solid'
 
         """
         return self.package.resources[0].name
@@ -93,8 +97,17 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> dir(entry)
-            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_descriptor', 'bibliography', 'citation', 'create_examples', 'curation', 'data_description', 'df', 'experimental', 'figure_description', 'identifier', 'package', 'plot', 'profile', 'resources', 'source', 'system', 'version', 'x', 'x_unit', 'y', 'y_unit', 'yaml']
+            >>> dir(entry) # doctest: +NORMALIZE_WHITESPACE
+            ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__',
+            '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__',
+            '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
+            '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
+            '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
+            '__subclasshook__', '__weakref__', '_descriptor', '_verify_field_name',
+            'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
+            'df', 'experimental', 'field_unit', 'figure_description',
+            'identifier', 'package', 'plot', 'profile', 'rescale', 'rescale_original',
+            'resources', 'source', 'system', 'version', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -106,8 +119,9 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.source
-            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid', 'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '2a', 'version': 1}
+            >>> entry.source # doctest: +NORMALIZE_WHITESPACE
+            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid',
+            'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '1a', 'version': 1}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -124,17 +138,18 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry["source"]
-            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid', 'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '2a', 'version': 1}
+            >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
+            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid',
+            'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '1a', 'version': 1}
 
         """
         return self._descriptor[name]
 
     @property
     def _descriptor(self):
-        return Descriptor(self.package.descriptor)
+        return Descriptor(self.package.to_dict())
 
-    def citation(self, backend='text'):
+    def citation(self, backend="text"):
         r"""
         Return a formatted reference for the entry's bibliography such as:
 
@@ -175,197 +190,148 @@ class Entry:
                     persons = context["entry"].persons[role]
                     style = context["style"]
 
-                    names = [style.format_name(person, style.abbreviate_names) for person in persons]
+                    names = [
+                        style.format_name(person, style.abbreviate_names)
+                        for person in persons
+                    ]
 
                     if len(names) == 1:
                         return names[0].format_data(context)
                     else:
                         from pybtex.style.template import words, tag
-                        return words(sep=' ')[names[0], tag('i')['et al.']].format_data(context)
+
+                        return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
+                            context
+                        )
 
                 names = names(role)
 
                 from pybtex.style.template import sentence
+
                 return sentence[names] if as_sentence else names
 
             def format_title(self, e, which_field, as_sentence=True):
                 from pybtex.style.template import field, tag, sentence
-                title = tag('i')[field(which_field)]
+
+                title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
 
-        return EchemdbStyle(abbreviate_names=True).format_entry("unused", self.bibliography).text.render_as(backend)
+        return (
+            EchemdbStyle(abbreviate_names=True)
+            .format_entry("unused", self.bibliography)
+            .text.render_as(backend)
+        )
 
-    def x(self):
-        r"""
-        Return the name of the variable on the x-axis, i.e., ``"E"``.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.x()
-            'E'
-
-        """
-        from astropy import units as u
-
-        axis = getattr(self.data_description, 'axes', {})['E']
-
-        if not u.Unit(axis.unit).is_equivalent('V'):
-            raise ValueError("The variable on the x-axis denoted as 'E', is not convertible to 'V'.")
-        
-        return 'E'
-
-    def y(self):
-        r"""
-        Return the name of the variable on the y-axis, i.e., ``"j"`` or ``"I"``.
+    def field_unit(self, field_name):
+        """Returns the unit of a given field name of the `echemdb` resource.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.y()
-            'j'
+            >>> entry.field_unit('E')
+            'V'
 
         """
-        from astropy import units as u
+        return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
 
-        axes = getattr(self.data_description, 'axes', {})
+    def rescale_original(self):
+        r"""Returns an entry with a rescaled `echemdb` resource 
+        with the original axes units of the digitized plot. 
 
-        variables = [variable for variable in dir(axes) if variable in ['I', 'j']]
+            >>> entry = Entry.create_examples()[0]
+            >>> rescaled_entry = entry.rescale_original()
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
 
-        if len(variables) != 1:
-            raise KeyError("Exactly one of the axes must have variable 'I' or 'j'.")
+        """
 
-        variable = variables[0]
+        original_units = {field['name']: field['unit'] for field in self.figure_description.fields}
 
-        if variable == 'I':
-            if not u.Unit(axes[variable].unit).is_equivalent('A'):
-                raise Exception("Unit on I axis must be convertible to A.")
+        return self.rescale(original_units)
 
-        if variable == 'j':
-            if not u.Unit(axes[variable].unit).is_equivalent('A / m2'):
-                raise Exception("Unit on j axis must be convertible to A / m².")
-
-        return variable
-
-    def x_unit(self, xunit=None):
+    def rescale(self, new_units={}):
         r"""
-        Return the unit on the x-axis as an astropy unit.
+        Returns a rescaled echemdb resource with axes in the specified units.
+        Provide a dict, where the key is the axis name and the value
+        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}.
 
         EXAMPLES:
 
-        Without parameters, SI units are returned::
+        The axes units of the original entry for comparison with the rescaled entry.::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.x_unit()
-            Unit("V")
+            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
-        When set to `"original"`, the original units of the published figure are returned::
+        A rescaled entry with updated axes units::
 
-            >>> entry.x_unit(xunit='original')
-            Unit("V")
+            >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 'h', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
 
-        Units can be specified explicitly::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.x_unit(xunit='mV')
-            Unit("mV")
+        A rescaled dataframe::
+            >>> rescaled_entry.df
+                         t         E          j
+            0     0.000000 -0.103158 -99.827664
+            1     0.000006 -0.102158 -98.176205
+            ...
 
         """
+        from copy import deepcopy
         from astropy import units as u
 
-        if xunit is None:
-            xunit = u.V
-        if xunit == 'original':
-            xunit = self.figure_description.axes.E.unit
+        package = deepcopy(self.package)
+        fields = self.package.get_resource('echemdb').schema.fields
+        df = self.df.copy()
 
-        return u.Unit(xunit)
+        for idx, field in enumerate(fields):
+            if field.name in new_units.keys():
+                df[field.name] *= u.Unit(field['unit']).to(
+                    u.Unit(new_units[field.name])
+                )
+                package.get_resource('echemdb')["schema"]["fields"][idx][
+                    "unit"
+                ] = new_units[field["name"]]
 
-    def y_unit(self, yunit=None):
+        package.get_resource('echemdb').data = df.to_csv(index=False).encode()
+
+        return Entry(package=package, bibliography=self.bibliography)
+
+    @property
+    def df(self):
         r"""
-        Return the unit of the y-axis as an astropy unit.
+        Return the CSV resource attached to this entry as a data frame,
+        based on the units given in `entry.data_description.fields`.
 
         EXAMPLES:
 
-        Without parameters, SI units are returned::
+        A data frame of the CSV resource::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.y_unit()
-            Unit("A / m2")
-
-        When set to `"original"`, the original units of the published figure are returned::
-
-            >>> entry.y_unit(yunit='original')
-            Unit("mA / cm2")
-
-        Units can be specified explicitly::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.y_unit(yunit='uA / cm2')
-            Unit("uA / cm2")
-
-        """
-        from astropy import units as u
-
-        if yunit is None:
-            if self.y() == 'j':
-                yunit = u.A / u.m**2
-            elif self.y() == 'I':
-                yunit = u.A
-            else:
-                raise NotImplementedError("Unexpected naming of y axis.")
-
-        if yunit == 'original':
-            yunit = self.figure_description.axes.j.unit or self.figure_description.axes.I.unit
-
-        return u.Unit(yunit)
-
-    def df(self, xunit=None, yunit=None):
-        r"""
-        Return the CSV resource attached to this entry as a data frame.
-
-        If the x and y-units are not specified, all values
-        are in SI units. The data frame can also be returned 
-        with the original figure units or with custom units as shown 
-        in the following examples.
-
-        EXAMPLES:
-        
-        A data frame in SI units::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.df()
-                         t         E         j
-            0     0.000000 -0.103158 -0.998277
-            1     0.100000 -0.098158 -0.916644
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
             ...
 
-        A data frame in the original units of the figure::
+        The axes units and description can be found in ``entry.package.get_resource('echemdb').schema.fields``::
 
-            >>> entry.df(xunit='original', yunit='original')
-                         t         E         j
-            0     0.000000 -0.103158 -0.099828
-            1     0.100000 -0.098158 -0.091664
-            ...
-
-        A data frame with custom units::
-
-            >>> from astropy import units as u
-            >>> entry.df(xunit='mV', yunit=u.uA / u.cm**2)
-                         t           E          j
-            0     0.000000 -103.158422 -99.827664
-            1     0.100000  -98.158422 -91.664367
-            ...
+            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
         """
         import pandas as pd
+        from io import BytesIO
 
-        df = pd.read_csv(self.package.resources[0].raw_iter(stream=False))
-
-        if xunit or yunit:
-            df[self.x()] *= self.x_unit().to(self.x_unit(xunit))
-            df[self.y()] *= self.y_unit().to(self.y_unit(yunit))
-        
-        return df
+        return pd.read_csv(BytesIO(self.package.get_resource('echemdb').data))
 
     def __repr__(self):
         r"""
@@ -375,14 +341,38 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry
-            Entry('alves_2011_electrochemistry_6010_f2a_solid')
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
         return f"Entry({repr(self.identifier)})"
 
-    def plot(self, xunit=None, yunit=None):
+    def _verify_field_name(self, field_name):
+        """Verify if a given field name exists in the resources field names.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._verify_field_name('E')
+            'E'
+
+        For a field with name `x` that does not exist::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._verify_field_name('x')
+            Traceback (most recent call last):
+            ...
+            ValueError: None of the axes is named 'x'.
+
+        """
+        if field_name not in self.package.get_resource('echemdb').schema.field_names:
+            raise ValueError(f"None of the axes is named '{field_name}'.")
+        return field_name
+
+    def plot(self, x_label='E', y_label='j'):
         r"""
-        Return a plot of the data in this data package in SI units.
+        Return a plot of the 'echemdb resource' in this entry. 
+        The default plot is a cyclic voltammogram ('j vs E').
+        When `j` is not defined `I` is used instead.
 
         EXAMPLES::
 
@@ -390,38 +380,65 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
+        # TODO: Remove or adaopt the following doctests.
         The plot can also be returned with the axis units of the original figure::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.plot(xunit='original', yunit='original')
+            # >>> entry = Entry.create_examples()[0]
+            # >>> entry.plot(xunit='original', yunit='original')
             Figure(...)
 
-        The plot can also be returned with custom axis units, where 
-        `xunit` should be convertible to `V` and 
+        The plot can also be returned with custom axis units, where
+        `xunit` should be convertible to `V` and
         `yunit` convertible to `A` or `A / m2`.::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.plot(xunit='mV', yunit='uA / cm2')
+            # >>> entry = Entry.create_examples()[0]
+            # >>> entry.plot_cv(xunit='mV', yunit='uA / cm2')
             Figure(...)
 
         """
         import plotly.graph_objects
 
-        xunit = self.x_unit(xunit)
-        yunit = self.y_unit(yunit)
+        def catching_label(label):
+            r"""Verifies that the labels exit. When a current density exists
+            """
+            if label == "j":
+                try:
+                    return self._verify_field_name(label)
+                except (ValueError) as e:
+                    logger.debug(
+                        f"None of the axes is named '{label}'. Trying 'I' instead."
+                    )
+                    return catching_label("I")
+            else:
+                return self._verify_field_name(label)
 
-        df = self.df(xunit=xunit, yunit=yunit)
+        x_label = catching_label(x_label)
+        y_label = catching_label(y_label)
 
         fig = plotly.graph_objects.Figure()
 
-        fig.add_trace(plotly.graph_objects.Scatter(x=df[self.x()], y=df[self.y()], mode='lines', name=f'Fig. {self.source.figure}: {self.source.curve}'))
+        fig.add_trace(
+            plotly.graph_objects.Scatter(
+                x=self.df[x_label],
+                y=self.df[y_label],
+                mode="lines",
+                name=f"Fig. {self.source.figure}: {self.source.curve}",
+            )
+        )
 
-        reference = f' vs {self.data_description.axes.E.reference}' if self.data_description.axes.E.reference else ''
+        # TODO: Select reference properly
+        reference = f" vs {self.package.get_resource('echemdb').schema.get_field(x_label)['reference']}" if self.package.get_resource('echemdb').schema.get_field(x_label)['reference'] else ""
 
-        fig.update_layout(template="simple_white", showlegend=True, autosize=True, width=600, height=400, 
-                            margin=dict(l=70, r=70, b=70, t=70, pad=7),
-                            xaxis_title=f"{self.x()} [{xunit}{reference}]",
-                            yaxis_title=f"{self.y()} [{yunit}]")
+        fig.update_layout(
+            template="simple_white",
+            showlegend=True,
+            autosize=True,
+            width=600,
+            height=400,
+            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+            xaxis_title=f"{x_label} [{self.field_unit(x_label)}{reference}]",
+            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+        )
 
         fig.update_xaxes(showline=True, mirror=True)
         fig.update_yaxes(showline=True, mirror=True)
@@ -438,31 +455,30 @@ class Entry:
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_f2a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
         """
         import os.path
 
         source = os.path.join(
-            os.path.dirname(__file__),
-            '..',
-            '..',
-            '..',
-            'literature',
-            name)
+            os.path.dirname(__file__), "..", "..", "..", "literature", name
+        )
 
         if not os.path.exists(source):
-            raise ValueError(f"No subdirectory in literature/ for {name}, i.e., could not find {source}.")
+            raise ValueError(
+                f"No subdirectory in literature/ for {name}, i.e., could not find {source}."
+            )
 
         outdir = os.path.join(
             os.path.dirname(__file__),
-            '..',
-            '..',
-            '..',
-            'data',
-            'generated',
-            'svgdigitizer',
-            name)
+            "..",
+            "..",
+            "..",
+            "data",
+            "generated",
+            "svgdigitizer",
+            name,
+        )
 
         # We now might have to digitize some files on demand. When running
         # tests in parallel, this introduces a race condition that we avoid
@@ -471,20 +487,38 @@ class Entry:
         os.makedirs(os.path.dirname(lockfile), exist_ok=True)
 
         from filelock import FileLock
+
         with FileLock(lockfile):
             if not os.path.exists(outdir):
                 from glob import glob
+
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
                     from svgdigitizer.test.cli import invoke
                     from svgdigitizer.__main__ import digitize_cv
-                    invoke(digitize_cv, "--sampling-interval", ".005", "--package", "--metadata", yaml, svg, "--outdir", outdir)
 
-                assert os.path.exists(outdir), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
-                assert any(os.scandir(outdir)), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+                    invoke(
+                        digitize_cv,
+                        "--sampling-interval",
+                        ".001",
+                        "--package",
+                        "--metadata",
+                        yaml,
+                        svg,
+                        "--outdir",
+                        outdir,
+                    )
+
+                assert os.path.exists(
+                    outdir
+                ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
+                assert any(
+                    os.scandir(outdir)
+                ), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
+
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
         assert len(bibliography) == 1, f"No bibliography found for {name}."
@@ -492,6 +526,11 @@ class Entry:
 
         if len(packages) == 0:
             from glob import glob
-            raise ValueError(f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }")
 
-        return [Entry(package=package, bibliography=bibliography) for package in packages]
+            raise ValueError(
+                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+            )
+
+        return [
+            Entry(package=package, bibliography=bibliography) for package in packages
+        ]

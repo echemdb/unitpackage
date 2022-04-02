@@ -22,7 +22,7 @@ The entries on [EchemDB Website](https://echemdb.github.io/website) can be downl
 
 ```{code-cell} ipython3
 from echemdb.data.cv.database import Database
-db = Database()
+db = Database.create_example()
 ```
 
 The number of entries in the databse are
@@ -40,7 +40,6 @@ next(iter(db))
 The database can be filtered for specific descriptors (see below), 
 wherby a new database is created.
 
-
 ```{code-cell} ipython3
 db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
 print(f'{len(db_filtered)} entries contain Pt as working electrode material.')
@@ -49,6 +48,6 @@ print(f'{len(db_filtered)} entries contain Pt as working electrode material.')
 Single entries can be selected by their identifier provided on the [echemDB website](https://echemdb.github.io/website) for each entry.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_f2a_solid']
+entry = db['alves_2011_electrochemistry_6010_p2_f1a_solid']
 entry
 ```

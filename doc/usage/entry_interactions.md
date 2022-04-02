@@ -36,8 +36,8 @@ where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
 from echemdb.data.cv.database import Database
-db = Database()
-entry = db['alves_2011_electrochemistry_6010_f2a_solid']
+db = Database.create_example()
+entry = db['alves_2011_electrochemistry_6010_p2_f1a_solid']
 entry
 ```
 
@@ -98,22 +98,30 @@ rate * 25 * u.m * c.c
 
 ## Dataframes
 
-The data of an entry can be returned a pandas dataframe.
-
-```{code-cell} ipython3
-entry.df().head(3)
+```{todo}
+* Describe the dataframe interface.
+* Describe entry rescaling.
 ```
+
++++
 
 Custom or original figure axes' units can be requested explicitly
 
-```{code-cell} ipython3
-entry.df(xunit='original', yunit='mA / m2').head(3)
-```
++++ {"tags": []}
 
 ## Plots
+
+```{todo}
+* Describe how to create plots.
+* Describe how to create rescaled plots (with original axis units).
+```
 
 The data can be visualized in a plotly figure, with preferred axis units (default is SI):
 
 ```{code-cell} ipython3
-entry.plot(xunit='V', yunit='original')
+# entry.plot(xunit='V', yunit='original')
+```
+
+```{code-cell} ipython3
+
 ```

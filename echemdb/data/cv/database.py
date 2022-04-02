@@ -15,7 +15,7 @@ Create a database from the data packages published in the echemdb::
 Search the database for a single publication::
 
     >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
-    [Entry('alves_2011_electrochemistry_6010_f2a_solid')]
+    [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
 """
 # ********************************************************************
@@ -90,7 +90,7 @@ class Database:
         EXAMPLES::
 
             >>> Database.create_example()
-            [Entry('alves_2011_electrochemistry_6010_f2a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
         from echemdb.data.cv.entry import Entry
@@ -131,7 +131,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
-            [Entry('alves_2011_electrochemistry_6010_f2a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
 
         The filter predicate can use properties that are not present on all
@@ -159,7 +159,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> next(iter(database))
-            Entry('alves_2011_electrochemistry_6010_f2a_solid')
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
         from echemdb.data.cv.entry import Entry
@@ -202,8 +202,8 @@ class Database:
         EXAMPLES::
 
             >>> database = Database.create_example()
-            >>> database['alves_2011_electrochemistry_6010_f2a_solid']
-            Entry('alves_2011_electrochemistry_6010_f2a_solid')
+            >>> database['alves_2011_electrochemistry_6010_f1a_solid']
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
             >>> database['invalid_key']
             Traceback (most recent call last):
