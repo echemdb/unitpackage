@@ -19,7 +19,7 @@ which basically contains bibtex entries.
 
 ```{code-cell} ipython3
 from echemdb.data.cv.database import Database
-db = Database()
+db = Database.create_example()
 ```
 
 Each entry is associated with a citation key.
@@ -39,7 +39,7 @@ entry.bibliography
 * show different possibilities to export the bibliography.
 ```
 
-For comparison the the identifier to each entry contains the citation key. 
+For comparison the the identifier to each entry contains the citation key.
 
 ```{code-cell} ipython3
 entry.identifier
