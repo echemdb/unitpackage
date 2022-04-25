@@ -31,4 +31,4 @@ jobs:
       - name: isort
         shell: bash -l {0}
         run: |
-          isort --check --diff echemdb
+          isort --check --diff --profile black echemdb
