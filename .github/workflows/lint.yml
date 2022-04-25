@@ -23,7 +23,7 @@ jobs:
       - name: pylint
         shell: bash -l {0}
         run: |
-          pylint echemdb --ignore-paths .+legacy.+
+          pylint echemdb
       - name: black
         shell: bash -l {0}
         run: |
