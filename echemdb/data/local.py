@@ -4,10 +4,10 @@ Utilities to work with local data packages.
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C)      2021 Johannes Hermann
+#        Copyright (C)      2021 Julian Rüth
+#        Copyright (C)      2021 Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -42,9 +42,22 @@ def collect_datapackages(data):
     descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
 
     # Read the package descriptors (does not read the actual data CSVs)
-    from datapackage import Package
+    from frictionless import Package
 
-    return [Package(descriptor) for descriptor in descriptors]
+    packages = []
+
+    for descriptor in descriptors:
+        package = Package(descriptor)
+        package.add_resource(
+            package.resources[0].write(
+                scheme="buffer",
+                format="csv", **{'name': 'echemdb', 'schema': package.resources[0].schema.to_dict()}
+            )
+        )
+        packages.append(package)
+ 
+    return packages
+
 
 
 def collect_bibliography(bibfiles):
