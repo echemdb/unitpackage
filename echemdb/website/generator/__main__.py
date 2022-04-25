@@ -1,3 +1,10 @@
+r"""
+Create generated pages for the website.
+
+This module is invoked by the `mkdocs-gen-files module
+<https://oprypin.github.io/mkdocs-gen-files/>` to generate pages such as the
+individual pages for each CV.
+"""
 # ********************************************************************
 #  This file is part of echemdb.
 #
@@ -29,6 +36,12 @@ from echemdb.website.macros.render import render
 
 
 def main():
+    r"""
+    Create MarkDown files in a virtual file system that is consumed by mkdocs
+    when building the website.
+
+    This function is invoked automatically by mkdocs during the build process.
+    """
     for entry in echemdb.website.generator.database.cv:
         with mkdocs_gen_files.open(
             os.path.join("cv", "entries", f"{entry.identifier}.md"), "w"
