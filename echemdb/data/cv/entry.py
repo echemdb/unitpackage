@@ -223,7 +223,8 @@ class Entry:
         )
 
     def field_unit(self, field_name):
-        """Returns the unit of a given field name of the `echemdb` resource.
+        r"""
+        Return the unit of the ``field_name`` of the `echemdb` resource.
 
         EXAMPLES::
 
@@ -253,13 +254,13 @@ class Entry:
 
     def rescale(self, new_units={}):
         r"""
-        Returns a rescaled echemdb resource with axes in the specified units.
+        Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
         the new unit, such as `{'j': 'uA / cm2', 't': 'h'}.
 
         EXAMPLES:
 
-        The axes units of the original entry for comparison with the rescaled entry.::
+        The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
@@ -267,7 +268,7 @@ class Entry:
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
             {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
-        A rescaled entry with updated axes units::
+        A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
@@ -275,7 +276,7 @@ class Entry:
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
             {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
 
-        A rescaled dataframe::
+        The values in the data frame are scaled to match the new units::
             >>> rescaled_entry.df
                          t         E          j
             0     0.000000 -0.103158 -99.827664
@@ -291,7 +292,7 @@ class Entry:
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
-            if field.name in new_units.keys():
+            if field.name in new_units:
                 df[field.name] *= u.Unit(field['unit']).to(
                     u.Unit(new_units[field.name])
                 )
@@ -306,12 +307,10 @@ class Entry:
     @property
     def df(self):
         r"""
-        Return the CSV resource attached to this entry as a data frame,
-        based on the units given in `entry.data_description.fields`.
+        Return the data of this entry as a data frame,
+        based on the units given in ``data_description.fields``.
 
-        EXAMPLES:
-
-        A data frame of the CSV resource::
+        EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df
@@ -320,7 +319,7 @@ class Entry:
             1      0.020000 -0.102158 -0.981762
             ...
 
-        The axes units and description can be found in ``entry.package.get_resource('echemdb').schema.fields``::
+        The units and descriptions of the axes in the data frame can be recovered::
 
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'unit': 's', 'type': 'number'},
@@ -357,7 +356,6 @@ class Entry:
 
         For a field with name `x` that does not exist::
 
-            >>> entry = Entry.create_examples()[0]
             >>> entry._verify_field_name('x')
             Traceback (most recent call last):
             ...
@@ -398,19 +396,12 @@ class Entry:
         """
         import plotly.graph_objects
 
-        def catching_label(label):
-            r"""Verifies that the labels exit. When a current density exists
-            """
-            if label == "j":
-                try:
-                    return self._verify_field_name(label)
-                except (ValueError) as e:
-                    logger.debug(
-                        f"None of the axes is named '{label}'. Trying 'I' instead."
-                    )
-                    return catching_label("I")
-            else:
-                return self._verify_field_name(label)
+        def normalize_field_name(field_name):
+            if self._has_field(field_name):
+                return field_name
+            if field_name == "j":
+                return normalize_field_name("I")
+            raise ValueError(f"No axis {field_name} found.")
 
         x_label = catching_label(x_label)
         y_label = catching_label(y_label)
@@ -515,7 +506,7 @@ class Entry:
                 ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
                 assert any(
                     os.scandir(outdir)
-                ), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+                ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
 
