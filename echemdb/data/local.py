@@ -51,13 +51,13 @@ def collect_datapackages(data):
         package.add_resource(
             package.resources[0].write(
                 scheme="buffer",
-                format="csv", **{'name': 'echemdb', 'schema': package.resources[0].schema.to_dict()}
+                format="csv",
+                **{"name": "echemdb", "schema": package.resources[0].schema.to_dict()}
             )
         )
         packages.append(package)
- 
-    return packages
 
+    return packages
 
 
 def collect_bibliography(bibfiles):

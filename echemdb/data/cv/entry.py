@@ -235,7 +235,7 @@ class Entry:
             'V'
 
         """
-        return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
+        return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
 
     def rescale(self, units={}):
         r"""
@@ -277,26 +277,26 @@ class Entry:
             {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
 
         """
-        if units=='original':
-            units = {field['name']: field['unit'] for field in self.figure_description.fields}
+        if units == "original":
+            units = {
+                field["name"]: field["unit"] for field in self.figure_description.fields
+            }
 
         from copy import deepcopy
         from astropy import units as u
 
         package = deepcopy(self.package)
-        fields = self.package.get_resource('echemdb').schema.fields
+        fields = self.package.get_resource("echemdb").schema.fields
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
             if field.name in units:
-                df[field.name] *= u.Unit(field['unit']).to(
-                    u.Unit(units[field.name])
-                )
-                package.get_resource('echemdb')["schema"]["fields"][idx][
+                df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
+                package.get_resource("echemdb")["schema"]["fields"][idx][
                     "unit"
                 ] = units[field["name"]]
 
-        package.get_resource('echemdb').data = df.to_csv(index=False).encode()
+        package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
         return Entry(package=package, bibliography=self.bibliography)
 
@@ -325,7 +325,7 @@ class Entry:
         import pandas as pd
         from io import BytesIO
 
-        return pd.read_csv(BytesIO(self.package.get_resource('echemdb').data))
+        return pd.read_csv(BytesIO(self.package.get_resource("echemdb").data))
 
     def __repr__(self):
         r"""
@@ -340,9 +340,9 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def plot(self, x_label='E', y_label='j'):
+    def plot(self, x_label="E", y_label="j"):
         r"""
-        Return a plot of this entry. 
+        Return a plot of this entry.
         The default plot is a cyclic voltammogram ('j vs E').
         When `j` is not defined `I` is used instead.
 
@@ -367,7 +367,7 @@ class Entry:
         import plotly.graph_objects
 
         def normalize_field_name(field_name):
-            if field_name in self.package.get_resource('echemdb').schema.field_names:
+            if field_name in self.package.get_resource("echemdb").schema.field_names:
                 return field_name
             if field_name == "j":
                 return normalize_field_name("I")
@@ -386,16 +386,15 @@ class Entry:
                 name=f"Fig. {self.source.figure}: {self.source.curve}",
             )
         )
-        
+
         def reference(label):
-            if label == 'E':
+            if label == "E":
                 return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
             else:
-                return ''
+                return ""
 
         def axis_label(label):
             return f"{label} [{self.field_unit(label)}{reference(label)}]"
-
 
         fig.update_layout(
             template="simple_white",
