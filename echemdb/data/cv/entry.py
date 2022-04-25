@@ -235,24 +235,7 @@ class Entry:
         """
         return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
 
-    def rescale_original(self):
-        r"""Returns an entry with a rescaled `echemdb` resource 
-        with the original axes units of the digitized plot. 
-
-            >>> entry = Entry.create_examples()[0]
-            >>> rescaled_entry = entry.rescale_original()
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
-
-        """
-
-        original_units = {field['name']: field['unit'] for field in self.figure_description.fields}
-
-        return self.rescale(original_units)
-
-    def rescale(self, new_units={}):
+    def rescale(self, units={}):
         r"""
         Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
@@ -283,7 +266,18 @@ class Entry:
             1     0.000006 -0.102158 -98.176205
             ...
 
+        A rescaled entry with the original axes units of the digitized plot::
+
+            >>> rescaled_entry = entry.rescale(units='original')
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
+
         """
+        if units=='original':
+            units = {field['name']: field['unit'] for field in self.figure_description.fields}
+
         from copy import deepcopy
         from astropy import units as u
 
@@ -292,13 +286,13 @@ class Entry:
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
-            if field.name in new_units:
+            if field.name in units:
                 df[field.name] *= u.Unit(field['unit']).to(
-                    u.Unit(new_units[field.name])
+                    u.Unit(units[field.name])
                 )
                 package.get_resource('echemdb')["schema"]["fields"][idx][
                     "unit"
-                ] = new_units[field["name"]]
+                ] = units[field["name"]]
 
         package.get_resource('echemdb').data = df.to_csv(index=False).encode()
 
