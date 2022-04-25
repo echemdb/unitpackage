@@ -23,8 +23,6 @@ Provides custom Jinja filters for rendering the echemdb websites.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
-from echemdb.website.filters.render import render
-
 
 def enable_filters(env):
     r"""
@@ -43,4 +41,6 @@ def enable_filters(env):
         '1 M'
 
     """
+    from echemdb.website.filters.render import render
+
     env.filters["render"] = render
