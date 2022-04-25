@@ -69,8 +69,8 @@ def render(template, **kwargs):
 
     # Load macros like mkdocs-macros does, see
     # https://github.com/fralau/mkdocs_macros_plugin/blob/master/mkdocs_macros/plugin.py#L157
-    def macro(f, name=""):
-        env.globals[name or f.__name__] = f
+    def macro(function, name=""):
+        env.globals[name or function.__name__] = function
 
     env.macro = macro
     from echemdb.website.macros import enable_macros
