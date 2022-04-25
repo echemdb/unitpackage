@@ -25,7 +25,7 @@ db = Database.create_example()
 Each entry is associated with a citation key.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_p2_f1a_solid']
+entry = db['alves_2011_electrochemistry_6010_f1a_solid']
 entry.source.citation_key
 ```
 
@@ -49,4 +49,8 @@ The bibliography key of an entry can be used to retrieve the bibliograhy entry d
 
 ```{raw-cell}
 db.bibliography['alves_2011_electrochemistry_6010']
+```
+
+```{code-cell} ipython3
+
 ```

@@ -19,7 +19,6 @@ dependencies:
   - pandas
   - pip
   - plotly
-  - pip
   - pybtex
   - pytest
   - pytest-doctestplus
