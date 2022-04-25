@@ -1,10 +1,26 @@
+r"""
+Data packages and bibliography built from local data.
+
+This module provides a (cached) database of CVs which is queried when building
+the website. In principle, this is no different than calling ``Database()``
+directly. However, this uses data from the local ``data`` directory and it also
+caches this information in a global variable for improved performance during
+the website build.
+
+EXAMPLES::
+
+    >>> from echemdb.website.generator.database import cv
+    >>> cv
+    [Entry(...), ...]
+
+"""
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C)      2021 Albert Engstfeld
+#        Copyright (C)      2021 Johannes Hermann
+#        Copyright (C) 2021-2022 Julian Rüth
+#        Copyright (C)      2021 Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
