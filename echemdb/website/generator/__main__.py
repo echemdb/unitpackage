@@ -32,8 +32,8 @@ def main():
     for entry in echemdb.website.generator.database.cv:
         with mkdocs_gen_files.open(
             os.path.join("cv", "entries", f"{entry.identifier}.md"), "w"
-        ) as md:
-            md.write(
+        ) as markdown:
+            markdown.write(
                 render(
                     "pages/cv_entry.md",
                     database=echemdb.website.generator.database.cv,
