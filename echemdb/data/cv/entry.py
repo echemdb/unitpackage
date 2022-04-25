@@ -392,7 +392,7 @@ class Entry:
                 return ''
 
         def axis_label(label):
-            return f"{label} [{self.field_unit(label)}{reference}]"
+            return f"{label} [{self.field_unit(label)}{reference(label)}]"
 
 
         fig.update_layout(
