@@ -103,10 +103,10 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_descriptor', '_verify_field_name',
+            '__subclasshook__', '__weakref__', '_descriptor',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package', 'plot', 'profile', 'rescale', 'rescale_original',
+            'identifier', 'package', 'plot', 'profile', 'rescale',
             'resources', 'source', 'system', 'version', 'yaml']
 
         """
@@ -301,8 +301,7 @@ class Entry:
     @property
     def df(self):
         r"""
-        Return the data of this entry as a data frame,
-        based on the units given in ``data_description.fields``.
+        Return the data of this entry as a data frame.
 
         EXAMPLES::
 
@@ -339,30 +338,9 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def _verify_field_name(self, field_name):
-        """Verify if a given field name exists in the resources field names.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry._verify_field_name('E')
-            'E'
-
-        For a field with name `x` that does not exist::
-
-            >>> entry._verify_field_name('x')
-            Traceback (most recent call last):
-            ...
-            ValueError: None of the axes is named 'x'.
-
-        """
-        if field_name not in self.package.get_resource('echemdb').schema.field_names:
-            raise ValueError(f"None of the axes is named '{field_name}'.")
-        return field_name
-
     def plot(self, x_label='E', y_label='j'):
         r"""
-        Return a plot of the 'echemdb resource' in this entry. 
+        Return a plot of this entry. 
         The default plot is a cyclic voltammogram ('j vs E').
         When `j` is not defined `I` is used instead.
 
@@ -372,33 +350,29 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
-        # TODO: Remove or adaopt the following doctests.
-        The plot can also be returned with the axis units of the original figure::
+        The plot can also be returned with custom axis units available in the resource::
 
-            # >>> entry = Entry.create_examples()[0]
-            # >>> entry.plot(xunit='original', yunit='original')
+            >>> entry.plot(x_label='t', y_label='E')
             Figure(...)
 
-        The plot can also be returned with custom axis units, where
-        `xunit` should be convertible to `V` and
-        `yunit` convertible to `A` or `A / m2`.::
+        The plot with axis units of the original figure can be obtained by first rescaling the entry::
 
-            # >>> entry = Entry.create_examples()[0]
-            # >>> entry.plot_cv(xunit='mV', yunit='uA / cm2')
+            >>> rescaled_entry = entry.rescale('original')
+            >>> rescaled_entry.plot()
             Figure(...)
 
         """
         import plotly.graph_objects
 
         def normalize_field_name(field_name):
-            if self._has_field(field_name):
+            if field_name in self.package.get_resource('echemdb').schema.field_names:
                 return field_name
             if field_name == "j":
                 return normalize_field_name("I")
             raise ValueError(f"No axis {field_name} found.")
 
-        x_label = catching_label(x_label)
-        y_label = catching_label(y_label)
+        x_label = normalize_field_name(x_label)
+        y_label = normalize_field_name(y_label)
 
         fig = plotly.graph_objects.Figure()
 
@@ -410,9 +384,16 @@ class Entry:
                 name=f"Fig. {self.source.figure}: {self.source.curve}",
             )
         )
+        
+        def reference(label):
+            if label == 'E':
+                return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
+            else:
+                return ''
 
-        # TODO: Select reference properly
-        reference = f" vs {self.package.get_resource('echemdb').schema.get_field(x_label)['reference']}" if self.package.get_resource('echemdb').schema.get_field(x_label)['reference'] else ""
+        def axis_label(label):
+            return f"{label} [{self.field_unit(label)}{reference}]"
+
 
         fig.update_layout(
             template="simple_white",
@@ -421,8 +402,8 @@ class Entry:
             width=600,
             height=400,
             margin=dict(l=70, r=70, b=70, t=70, pad=7),
-            xaxis_title=f"{x_label} [{self.field_unit(x_label)}{reference}]",
-            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+            xaxis_title=axis_label(x_label),
+            yaxis_title=axis_label(y_label),
         )
 
         fig.update_xaxes(showline=True, mirror=True)
