@@ -56,7 +56,7 @@ def collect_datapackages(data):
             package.resources[0].write(
                 scheme="buffer",
                 format="csv",
-                **{"name": "echemdb", "schema": package.resources[0].schema.to_dict()}
+                **{"name": "echemdb", "schema": package.resources[0].schema.to_dict()},
             )
         )
         packages.append(package)
