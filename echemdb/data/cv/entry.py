@@ -213,7 +213,7 @@ class Entry:
                 return sentence[names] if as_sentence else names
 
             def format_title(self, e, which_field, as_sentence=True):
-                from pybtex.style.template import field, tag, sentence
+                from pybtex.style.template import field, sentence, tag
 
                 title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
@@ -283,6 +283,7 @@ class Entry:
             }
 
         from copy import deepcopy
+
         from astropy import units as u
 
         package = deepcopy(self.package)
@@ -322,8 +323,9 @@ class Entry:
             {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
         """
-        import pandas as pd
         from io import BytesIO
+
+        import pandas as pd
 
         return pd.read_csv(BytesIO(self.package.get_resource("echemdb").data))
 
@@ -483,7 +485,7 @@ class Entry:
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
-        from echemdb.data.local import collect_datapackages, collect_bibliography
+        from echemdb.data.local import collect_bibliography, collect_datapackages
 
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
