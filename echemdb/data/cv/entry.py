@@ -103,10 +103,10 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_descriptor', '_verify_field_name',
+            '__subclasshook__', '__weakref__', '_descriptor',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package', 'plot', 'profile', 'rescale', 'rescale_original',
+            'identifier', 'package', 'plot', 'profile', 'rescale',
             'resources', 'source', 'system', 'version', 'yaml']
 
         """
@@ -223,7 +223,8 @@ class Entry:
         )
 
     def field_unit(self, field_name):
-        """Returns the unit of a given field name of the `echemdb` resource.
+        r"""
+        Return the unit of the ``field_name`` of the `echemdb` resource.
 
         EXAMPLES::
 
@@ -234,32 +235,15 @@ class Entry:
         """
         return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
 
-    def rescale_original(self):
-        r"""Returns an entry with a rescaled `echemdb` resource 
-        with the original axes units of the digitized plot. 
-
-            >>> entry = Entry.create_examples()[0]
-            >>> rescaled_entry = entry.rescale_original()
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
-
-        """
-
-        original_units = {field['name']: field['unit'] for field in self.figure_description.fields}
-
-        return self.rescale(original_units)
-
-    def rescale(self, new_units={}):
+    def rescale(self, units={}):
         r"""
-        Returns a rescaled echemdb resource with axes in the specified units.
+        Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
         the new unit, such as `{'j': 'uA / cm2', 't': 'h'}.
 
         EXAMPLES:
 
-        The axes units of the original entry for comparison with the rescaled entry.::
+        The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
@@ -267,7 +251,7 @@ class Entry:
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
             {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
-        A rescaled entry with updated axes units::
+        A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
@@ -275,14 +259,25 @@ class Entry:
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
             {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
 
-        A rescaled dataframe::
+        The values in the data frame are scaled to match the new units::
             >>> rescaled_entry.df
                          t         E          j
             0     0.000000 -0.103158 -99.827664
             1     0.000006 -0.102158 -98.176205
             ...
 
+        A rescaled entry with the original axes units of the digitized plot::
+
+            >>> rescaled_entry = entry.rescale(units='original')
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
+
         """
+        if units=='original':
+            units = {field['name']: field['unit'] for field in self.figure_description.fields}
+
         from copy import deepcopy
         from astropy import units as u
 
@@ -291,13 +286,13 @@ class Entry:
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
-            if field.name in new_units.keys():
+            if field.name in units:
                 df[field.name] *= u.Unit(field['unit']).to(
-                    u.Unit(new_units[field.name])
+                    u.Unit(units[field.name])
                 )
                 package.get_resource('echemdb')["schema"]["fields"][idx][
                     "unit"
-                ] = new_units[field["name"]]
+                ] = units[field["name"]]
 
         package.get_resource('echemdb').data = df.to_csv(index=False).encode()
 
@@ -306,12 +301,9 @@ class Entry:
     @property
     def df(self):
         r"""
-        Return the CSV resource attached to this entry as a data frame,
-        based on the units given in `entry.data_description.fields`.
+        Return the data of this entry as a data frame.
 
-        EXAMPLES:
-
-        A data frame of the CSV resource::
+        EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.df
@@ -320,7 +312,7 @@ class Entry:
             1      0.020000 -0.102158 -0.981762
             ...
 
-        The axes units and description can be found in ``entry.package.get_resource('echemdb').schema.fields``::
+        The units and descriptions of the axes in the data frame can be recovered::
 
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'unit': 's', 'type': 'number'},
@@ -346,31 +338,9 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def _verify_field_name(self, field_name):
-        """Verify if a given field name exists in the resources field names.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry._verify_field_name('E')
-            'E'
-
-        For a field with name `x` that does not exist::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry._verify_field_name('x')
-            Traceback (most recent call last):
-            ...
-            ValueError: None of the axes is named 'x'.
-
-        """
-        if field_name not in self.package.get_resource('echemdb').schema.field_names:
-            raise ValueError(f"None of the axes is named '{field_name}'.")
-        return field_name
-
     def plot(self, x_label='E', y_label='j'):
         r"""
-        Return a plot of the 'echemdb resource' in this entry. 
+        Return a plot of this entry. 
         The default plot is a cyclic voltammogram ('j vs E').
         When `j` is not defined `I` is used instead.
 
@@ -380,40 +350,29 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
-        # TODO: Remove or adaopt the following doctests.
-        The plot can also be returned with the axis units of the original figure::
+        The plot can also be returned with custom axis units available in the resource::
 
-            # >>> entry = Entry.create_examples()[0]
-            # >>> entry.plot(xunit='original', yunit='original')
+            >>> entry.plot(x_label='t', y_label='E')
             Figure(...)
 
-        The plot can also be returned with custom axis units, where
-        `xunit` should be convertible to `V` and
-        `yunit` convertible to `A` or `A / m2`.::
+        The plot with axis units of the original figure can be obtained by first rescaling the entry::
 
-            # >>> entry = Entry.create_examples()[0]
-            # >>> entry.plot_cv(xunit='mV', yunit='uA / cm2')
+            >>> rescaled_entry = entry.rescale('original')
+            >>> rescaled_entry.plot()
             Figure(...)
 
         """
         import plotly.graph_objects
 
-        def catching_label(label):
-            r"""Verifies that the labels exit. When a current density exists
-            """
-            if label == "j":
-                try:
-                    return self._verify_field_name(label)
-                except (ValueError) as e:
-                    logger.debug(
-                        f"None of the axes is named '{label}'. Trying 'I' instead."
-                    )
-                    return catching_label("I")
-            else:
-                return self._verify_field_name(label)
+        def normalize_field_name(field_name):
+            if field_name in self.package.get_resource('echemdb').schema.field_names:
+                return field_name
+            if field_name == "j":
+                return normalize_field_name("I")
+            raise ValueError(f"No axis {field_name} found.")
 
-        x_label = catching_label(x_label)
-        y_label = catching_label(y_label)
+        x_label = normalize_field_name(x_label)
+        y_label = normalize_field_name(y_label)
 
         fig = plotly.graph_objects.Figure()
 
@@ -425,9 +384,16 @@ class Entry:
                 name=f"Fig. {self.source.figure}: {self.source.curve}",
             )
         )
+        
+        def reference(label):
+            if label == 'E':
+                return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
+            else:
+                return ''
 
-        # TODO: Select reference properly
-        reference = f" vs {self.package.get_resource('echemdb').schema.get_field(x_label)['reference']}" if self.package.get_resource('echemdb').schema.get_field(x_label)['reference'] else ""
+        def axis_label(label):
+            return f"{label} [{self.field_unit(label)}{reference(label)}]"
+
 
         fig.update_layout(
             template="simple_white",
@@ -436,8 +402,8 @@ class Entry:
             width=600,
             height=400,
             margin=dict(l=70, r=70, b=70, t=70, pad=7),
-            xaxis_title=f"{x_label} [{self.field_unit(x_label)}{reference}]",
-            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+            xaxis_title=axis_label(x_label),
+            yaxis_title=axis_label(y_label),
         )
 
         fig.update_xaxes(showline=True, mirror=True)
@@ -515,7 +481,7 @@ class Entry:
                 ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
                 assert any(
                     os.scandir(outdir)
-                ), f"Ran digitizer to generate {outdir}. But the directory generated is empty after invoking digitizer."
+                ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
         from echemdb.data.local import collect_datapackages, collect_bibliography
 
