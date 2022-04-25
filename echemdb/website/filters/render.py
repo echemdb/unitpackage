@@ -89,6 +89,6 @@ def render(value, template=None):
                 "No template specified but value does neither provide a markdown property nor a markdown_template property."
             )
 
-    from echemdb.website.macros.render import render
+    import echemdb.website.macros.render
 
-    return render(template, value=value)
+    return echemdb.website.macros.render.render(template, value=value)
