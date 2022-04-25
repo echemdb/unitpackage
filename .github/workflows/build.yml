@@ -59,8 +59,8 @@ jobs:
           sleep 1
           # We check for broken links:
           # * ignore fonts.gstatic.com which is mentioned by a link preconnect tag that linkchecker does not parse correctly.
-          # * ignore some specific URLs that work fine in the browser but reject bots.
-          linkchecker --check-extern --no-robots --ignore fonts.gstatic.com --ignore-url='https://doi.org/10.1002/chem.201803418' http://localhost:8880/website/
+          # * ignore DOIs since some publishers ban GitHub or bots.
+          linkchecker --check-extern --no-robots --ignore fonts.gstatic.com --ignore=doi.org http://localhost:8880/website/
         # We only check links on Linux since we do not want to get flagged because of too many requests by the target websites.
         if: ${{ matrix.os == 'ubuntu-latest' }}
       - uses: JamesIves/github-pages-deploy-action@3.7.1
