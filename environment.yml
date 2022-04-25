@@ -35,7 +35,6 @@ dependencies:
     - mkdocs-section-index
     - mkdocs-macros-plugin
     - tabulate
-    - datapackage
     - python-frontmatter
     - sphinx_rtd_theme>=1,<2
     - svgdigitizer >=0.2.0,<0.3.0
