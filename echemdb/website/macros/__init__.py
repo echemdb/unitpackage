@@ -25,10 +25,6 @@ Provides custom Jinja macros for rendering the echemdb websites.
 
 
 def enable_macros(env):
-    from echemdb.website.macros.legacy import define_env
-
-    define_env(env)
-
     from echemdb.website.macros.render import render
 
     env.macro(render)
