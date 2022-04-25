@@ -120,8 +120,9 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source # doctest: +NORMALIZE_WHITESPACE
-            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid',
-            'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '1a', 'version': 1}
+            {'citation key': 'alves_2011_electrochemistry_6010',
+            'url': 'https://doi.org/10.1039/C0CP01001D',
+            'version': 1, 'figure': '1a', 'curve': 'solid'}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -139,8 +140,9 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
-            {'citation key': 'alves_2011_electrochemistry_6010', 'curve': 'solid',
-            'url': 'https://doi.org/10.1039/C0CP01001D', 'figure': '1a', 'version': 1}
+            {'citation key': 'alves_2011_electrochemistry_6010',
+            'url': 'https://doi.org/10.1039/C0CP01001D',
+            'version': 1, 'figure': '1a', 'curve': 'solid'}
 
         """
         return self._descriptor[name]
