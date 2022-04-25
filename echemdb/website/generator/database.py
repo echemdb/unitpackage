@@ -11,7 +11,7 @@ EXAMPLES::
 
     >>> from echemdb.website.generator.database import cv
     >>> cv
-    [Entry(...), ...]
+    [...]
 
 """
 # ********************************************************************
