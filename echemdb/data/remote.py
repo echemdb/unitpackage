@@ -46,7 +46,7 @@ ECHEMDB_DATABASE_URL = os.environ.get(
 
 
 @cache
-def collect_datapackages(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
+def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
     r"""
     Return a list of data packages defined in a remote location.
 

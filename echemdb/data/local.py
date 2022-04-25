@@ -48,6 +48,10 @@ def collect_datapackages(data):
 
     for descriptor in descriptors:
         package = Package(descriptor)
+
+        if not package.resources:
+            raise ValueError(f"package {descriptor} has no CSV resources")
+
         package.add_resource(
             package.resources[0].write(
                 scheme="buffer",
