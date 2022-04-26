@@ -23,8 +23,24 @@ Provides custom Jinja filters for rendering the echemdb websites.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
-from echemdb.website.filters.render import render
-
 
 def enable_filters(env):
+    r"""
+    Register filters for use in mkdocs.
+
+    EXAMPLES:
+
+    This registers ``render`` as a filter::
+
+        >>> from echemdb.website.macros.render import render
+        >>> from io import StringIO
+        >>> from astropy.units import Unit
+
+        >>> snippet = StringIO("{{ value | render('components/quantity.md') }}")
+        >>> render(snippet, value={'quantity': 1 * Unit("mol / l")})
+        '1 M'
+
+    """
+    from echemdb.website.filters.render import render
+
     env.filters["render"] = render

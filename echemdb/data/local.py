@@ -48,14 +48,19 @@ def collect_datapackages(data):
 
     for descriptor in descriptors:
         package = Package(descriptor)
+
+        if not package.resources:
+            raise ValueError(f"package {descriptor} has no CSV resources")
+
         package.add_resource(
             package.resources[0].write(
                 scheme="buffer",
-                format="csv", **{'name': 'echemdb', 'schema': package.resources[0].schema.to_dict()}
+                format="csv",
+                **{"name": "echemdb", "schema": package.resources[0].schema.to_dict()},
             )
         )
         packages.append(package)
- 
+
     return packages
 
 
@@ -71,6 +76,7 @@ def collect_bibliography(bibfiles):
     """
     import os.path
     from glob import glob
+
     from pybtex.database import parse_file
 
     return [

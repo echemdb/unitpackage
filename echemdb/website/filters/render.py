@@ -82,10 +82,13 @@ def render(value, template=None):
     if template is None:
         if hasattr(value, "markdown"):
             return value.markdown
-        elif hasattr(value, "markdown_template"):
+        if hasattr(value, "markdown_template"):
             template = value.markdown_template
         else:
-            raise ValueError("No template specified but value does neither provide a markdown property nor a markdown_template property.")
+            raise ValueError(
+                "No template specified but value does neither provide a markdown property nor a markdown_template property."
+            )
 
-    from echemdb.website.macros.render import render
-    return render(template, value=value)
+    import echemdb.website.macros.render
+
+    return echemdb.website.macros.render.render(template, value=value)

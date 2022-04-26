@@ -8,6 +8,7 @@ dependencies:
   - filelock
   - frictionless
   - inflect
+  - isort
   - jupyterlab
   - jupytext
   - make
@@ -20,6 +21,7 @@ dependencies:
   - pip
   - plotly
   - pybtex
+  - pylint
   - pytest
   - pytest-doctestplus
   - pytest-xdist

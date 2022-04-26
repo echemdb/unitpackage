@@ -5,7 +5,7 @@ These are the individual elements of a :class:`Database`.
 
 EXAMPLES:
 
-Data Packages containing published data, 
+Data Packages containing published data,
 also contain information on the source of the data.::
 
     >>> from echemdb.data.cv.database import Database
@@ -14,13 +14,13 @@ also contain information on the source of the data.::
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
       fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'), 
-        ('journal', 'Physical Chemistry Chemical Physics'), 
-        ('volume', '13'), 
-        ('number', '13'), 
-        ('pages', '6010--6021'), 
-        ('year', '2011'), 
-        ('publisher', 'Royal Society of Chemistry'), 
+        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
+        ('journal', 'Physical Chemistry Chemical Physics'),
+        ('volume', '13'),
+        ('number', '13'),
+        ('pages', '6010--6021'),
+        ('year', '2011'),
+        ('publisher', 'Royal Society of Chemistry'),
         ('abstract', 'We investigated the electrochemical oxidation and reduction processes on ultrahigh vacuum prepared, smooth and structurally well-characterized Ru(0001) electrodes in a CO-saturated and, for comparison, in a CO-free flowing HClO4 electrolyte by electrochemical methods and by comparison with previous structural data. Structure and reactivity of the adsorbed layers are largely governed by a critical potential of E = 0.57 V, which determines the onset of Oad formation on the COad saturated surface in the positive-going scan and of Oadreduction in the negative-going scan. Oad formation proceeds via nucleation and 2D growth of high-coverage Oad islands in a surrounding COad phase, and it is connected with COadoxidation at the interface between the two phases. In the negative-going scan, mixed (COad + Oad) phases, most likely a (2 $\\times$ 2)-(CO + 2O) and a (2$\\times$2)-(2CO + O), are proposed to form at E $<$ 0.57 V by reduction of the Oad-rich islands and CO adsorption into the resulting lower-density Oad structures. CO bulk oxidation rates in the potential range E $>$ 0.57 V are low, but significantly higher than those observed during oxidation of pre-adsorbed CO in the CO-free electrolyte. We relate this to high local COad coverages due to CO adsorption in the CO-saturated electrolyte, which lowers the CO adsorption energy and thus the barrier for COadoxidation during CO bulk oxidation.')],
       persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
 
@@ -48,9 +48,9 @@ also contain information on the source of the data.::
 # ********************************************************************
 import logging
 
-logger = logging.getLogger("echemdb")
-
 from echemdb.data.cv.descriptor import Descriptor
+
+logger = logging.getLogger("echemdb")
 
 
 class Entry:
@@ -200,7 +200,7 @@ class Entry:
                     if len(names) == 1:
                         return names[0].format_data(context)
                     else:
-                        from pybtex.style.template import words, tag
+                        from pybtex.style.template import tag, words
 
                         return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
                             context
@@ -213,7 +213,7 @@ class Entry:
                 return sentence[names] if as_sentence else names
 
             def format_title(self, e, which_field, as_sentence=True):
-                from pybtex.style.template import field, tag, sentence
+                from pybtex.style.template import field, sentence, tag
 
                 title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
@@ -235,7 +235,7 @@ class Entry:
             'V'
 
         """
-        return self.package.get_resource('echemdb').schema.get_field(field_name)['unit']
+        return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
 
     def rescale(self, units={}):
         r"""
@@ -277,26 +277,27 @@ class Entry:
             {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
 
         """
-        if units=='original':
-            units = {field['name']: field['unit'] for field in self.figure_description.fields}
+        if units == "original":
+            units = {
+                field["name"]: field["unit"] for field in self.figure_description.fields
+            }
 
         from copy import deepcopy
+
         from astropy import units as u
 
         package = deepcopy(self.package)
-        fields = self.package.get_resource('echemdb').schema.fields
+        fields = self.package.get_resource("echemdb").schema.fields
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
             if field.name in units:
-                df[field.name] *= u.Unit(field['unit']).to(
-                    u.Unit(units[field.name])
-                )
-                package.get_resource('echemdb')["schema"]["fields"][idx][
+                df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
+                package.get_resource("echemdb")["schema"]["fields"][idx][
                     "unit"
                 ] = units[field["name"]]
 
-        package.get_resource('echemdb').data = df.to_csv(index=False).encode()
+        package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
         return Entry(package=package, bibliography=self.bibliography)
 
@@ -322,10 +323,11 @@ class Entry:
             {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
         """
-        import pandas as pd
         from io import BytesIO
 
-        return pd.read_csv(BytesIO(self.package.get_resource('echemdb').data))
+        import pandas as pd
+
+        return pd.read_csv(BytesIO(self.package.get_resource("echemdb").data))
 
     def __repr__(self):
         r"""
@@ -340,9 +342,9 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def plot(self, x_label='E', y_label='j'):
+    def plot(self, x_label="E", y_label="j"):
         r"""
-        Return a plot of this entry. 
+        Return a plot of this entry.
         The default plot is a cyclic voltammogram ('j vs E').
         When `j` is not defined `I` is used instead.
 
@@ -367,7 +369,7 @@ class Entry:
         import plotly.graph_objects
 
         def normalize_field_name(field_name):
-            if field_name in self.package.get_resource('echemdb').schema.field_names:
+            if field_name in self.package.get_resource("echemdb").schema.field_names:
                 return field_name
             if field_name == "j":
                 return normalize_field_name("I")
@@ -386,16 +388,15 @@ class Entry:
                 name=f"Fig. {self.source.figure}: {self.source.curve}",
             )
         )
-        
+
         def reference(label):
-            if label == 'E':
+            if label == "E":
                 return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
             else:
-                return ''
+                return ""
 
         def axis_label(label):
             return f"{label} [{self.field_unit(label)}{reference(label)}]"
-
 
         fig.update_layout(
             template="simple_white",
@@ -463,8 +464,8 @@ class Entry:
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
-                    from svgdigitizer.test.cli import invoke
                     from svgdigitizer.__main__ import digitize_cv
+                    from svgdigitizer.test.cli import invoke
 
                     invoke(
                         digitize_cv,
@@ -485,7 +486,7 @@ class Entry:
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
-        from echemdb.data.local import collect_datapackages, collect_bibliography
+        from echemdb.data.local import collect_bibliography, collect_datapackages
 
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
