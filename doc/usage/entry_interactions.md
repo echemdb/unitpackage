@@ -59,8 +59,8 @@ entry.system.electrodes.working_electrode.material
 ## Data
 
 The datapackage consists of two resources. 
-* The first resource has the entries identifier as name. It describes the data in the CSV.
-* The second resource is named 'echemdb'. It contains the data used by the echemdb module.
+* The first resource has the entry's identifier as name. It describes the data in the CSV.
+* The second resource is named "echemdb". It contains the data used by the echemdb module.
 
 ```{code-cell} ipython3
 entry.package.resource_names
@@ -91,7 +91,7 @@ The units of a field are directly accessible via
 rescaled_entry.field_unit('E')
 ```
 
-The df can be restored to the original figure axes' units of the published figure.
+The dataframe can be restored to the original figure axes' units of the published figure.
 
 ```{code-cell} ipython3
 original_entry = rescaled_entry.rescale('original')
