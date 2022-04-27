@@ -79,9 +79,9 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
 
     import os.path
 
-    import echemdb.data.local
+    import echemdb.local
 
-    return echemdb.data.local.collect_datapackages(os.path.join(outdir, data))
+    return echemdb.local.collect_datapackages(os.path.join(outdir, data))
 
 
 @cache
@@ -114,6 +114,6 @@ def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
 
     import os.path
 
-    import echemdb.data.local
+    import echemdb.local
 
-    return echemdb.data.local.collect_bibliography(os.path.join(outdir, data))
+    return echemdb.local.collect_bibliography(os.path.join(outdir, data))

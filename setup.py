@@ -25,7 +25,7 @@ from distutils.core import setup
 setup(
     name='echemdb',
     version='0.1.0',
-    packages=['echemdb', 'echemdb.website', 'echemdb.website.macros', 'echemdb.data', 'echemdb.data.cv'],
+    packages=['echemdb', 'echemdb.website', 'echemdb.website.macros', 'echemdb', 'echemdb.cv'],
     license='GPL 3.0+',
     long_description=open('README.md').read(),
     include_package_data=True,
