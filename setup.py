@@ -25,8 +25,19 @@ from distutils.core import setup
 setup(
     name='echemdb',
     version='0.1.0',
-    packages=['echemdb', 'echemdb.website', 'echemdb.website.macros', 'echemdb', 'echemdb.cv'],
+    packages=['echemdb', 'echemdb.cv'],
     license='GPL 3.0+',
-    long_description=open('README.md').read(),
+    description="a Python library to work with the echemdb repository",
+    long_description=open('README.md', encoding="UTF-8").read(),
+    long_description_content_type="text/markdown",
     include_package_data=True,
+    install_requires=[
+      "astropy>=5,<6",
+      "filelock>=3,<4",
+      "frictionless>=4.29,<5",
+      "pandas>=1,<2",
+      "plotly<=5,<6",
+      "pybtex>=0.24,<0.25",
+      "svgdigitizer>=0.5.0,<0.6.0",
+    ],
 )
