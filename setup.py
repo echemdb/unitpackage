@@ -24,7 +24,7 @@ from distutils.core import setup
 
 setup(
     name='echemdb',
-    version="0.1.0",
+    version="0.1.1",
     packages=['echemdb', 'echemdb.cv'],
     license='GPL 3.0+',
     description="a Python library to work with the echemdb repository",
