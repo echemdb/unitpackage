@@ -92,7 +92,7 @@ class Database:
         self._bibliography = bibliography
 
     @classmethod
-    def create_example(self):
+    def create_example(cls):
         r"""
         Return a sample database for use in automated tests.
 
