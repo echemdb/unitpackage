@@ -110,7 +110,7 @@ The data can be visualized in a plotly figure:
 ```python
 >>> entry.plot()
 ```
-<img src=doc/images/readme_demo_plot.png style="width:400px">
+<img src=https://raw.githubusercontent.com/echemdb/echemdb/main/doc/images/readme_demo_plot.png style="width:400px">
 
 # License
 
