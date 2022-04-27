@@ -18,7 +18,7 @@ The bibliography to all entries is stored as a pybtex database `db.bibliography`
 which basically contains bibtex entries.
 
 ```{code-cell} ipython3
-from echemdb.data.cv.database import Database
+from echemdb.cv.database import Database
 db = Database.create_example()
 ```
 

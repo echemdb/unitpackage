@@ -21,7 +21,7 @@ kernelspec:
 The entries on [EchemDB Website](https://echemdb.github.io/website) can be downloaded into a local database.
 
 ```{code-cell} ipython3
-from echemdb.data.cv.database import Database
+from echemdb.cv.database import Database
 db = Database.create_example()
 ```
 
