@@ -72,37 +72,45 @@ Among other metadata, the entry also has information on the original publication
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as a CSV file (or any other format supported by pandas).
 
 ```python
->>> entry.df()
+>>> entry.df
            t	        E	       j
 0	0.000000	-0.196962	0.043009
 1	0.011368	-0.196393	0.051408
 ...
->>> entry.df().to_csv('../testtesttest.csv', index=False)
+>>> entry.df.to_csv('../testtesttest.csv', index=False)
 ```
 
-Custom or original figure axes' units can be requested explicitly
+The dataframe can be returned with custom or original figure axes' units by rescaling the entry.
 
 ```python
->>> entry.df(xunit='original', yunit='mA / m2')
-	       t	        E	        j
-0	0.000000	-0.196962	43.008842
-1	0.011368	-0.196393	51.408200
+>>> entry.rescale({'E' : 'mV', 'j' : 'uA / m2'}).df
+          t           E             j
+0  0.000000 -196.961730  43008.842162
+1  0.011368 -196.393321  51408.199892
+...
+>>> entry.rescale('original').df
+          t         E         j
+0  0.000000 -0.196962  4.300884
+1  0.011368 -0.196393  5.140820
 ...
 ```
 
-The reference electrode of the potential axis `E` is provided in the `entry.data_description`
+The units and reference electrodes can be found in the resource schema. The units are updated upon rescaling an entry.
+
 ```python
->>> entry.data_description.axes.E.reference
-'RHE'
+>>> entry.package.get_resource('echemdb')['schema']
+{'fields': 
+[{'name': 't', 'unit': 's', 'type': 'number'}, 
+{'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'}, 
+{'name': 'j', 'unit': 'A / m2', 'type': 'number'}]}
 ```
 
-The data can be visualized in a plotly figure, with preferred axis units (default is SI):
+The data can be visualized in a plotly figure:
 
 ```python
->>> entry.plot(xunit='V', yunit='original')
+>>> entry.plot()
 ```
 <img src=doc/images/readme_demo_plot.png style="width:400px">
-
 
 # License
 
