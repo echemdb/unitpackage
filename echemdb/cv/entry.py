@@ -21,7 +21,7 @@ also contain information on the source of the data.::
         ('pages', '6010--6021'),
         ('year', '2011'),
         ('publisher', 'Royal Society of Chemistry'),
-        ('abstract', 'We investigated the electrochemical oxidation and reduction processes on ultrahigh vacuum prepared, smooth and structurally well-characterized Ru(0001) electrodes in a CO-saturated and, for comparison, in a CO-free flowing HClO4 electrolyte by electrochemical methods and by comparison with previous structural data. Structure and reactivity of the adsorbed layers are largely governed by a critical potential of E = 0.57 V, which determines the onset of Oad formation on the COad saturated surface in the positive-going scan and of Oadreduction in the negative-going scan. Oad formation proceeds via nucleation and 2D growth of high-coverage Oad islands in a surrounding COad phase, and it is connected with COadoxidation at the interface between the two phases. In the negative-going scan, mixed (COad + Oad) phases, most likely a (2 $\\times$ 2)-(CO + 2O) and a (2$\\times$2)-(2CO + O), are proposed to form at E $<$ 0.57 V by reduction of the Oad-rich islands and CO adsorption into the resulting lower-density Oad structures. CO bulk oxidation rates in the potential range E $>$ 0.57 V are low, but significantly higher than those observed during oxidation of pre-adsorbed CO in the CO-free electrolyte. We relate this to high local COad coverages due to CO adsorption in the CO-saturated electrolyte, which lowers the CO adsorption energy and thus the barrier for COadoxidation during CO bulk oxidation.')],
+        ('abstract', 'We investigated ...')],
       persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
 
 """
@@ -47,6 +47,7 @@ also contain information on the source of the data.::
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
+import os.path
 
 from echemdb.cv.descriptor import Descriptor
 
@@ -103,7 +104,7 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_descriptor',
+            '__subclasshook__', '__weakref__', '_descriptor', '_digitize_example',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'plot', 'profile', 'rescale',
@@ -175,6 +176,10 @@ class Entry:
 
         # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
         class EchemdbStyle(Style):
+            r"""
+            A citation style for the echemdb website.
+            """
+
             def format_names(self, role, as_sentence=True):
                 from pybtex.style.template import node
 
@@ -190,13 +195,15 @@ class Entry:
 
                     if len(names) == 1:
                         return names[0].format_data(context)
-                    else:
-                        from pybtex.style.template import tag, words
 
-                        return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
-                            context
-                        )
+                    from pybtex.style.template import tag, words
 
+                    # pylint: disable=no-value-for-parameter
+                    return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
+                        context
+                    )
+
+                # pylint: disable=no-value-for-parameter
                 names = names(role)
 
                 from pybtex.style.template import sentence
@@ -206,6 +213,7 @@ class Entry:
             def format_title(self, e, which_field, as_sentence=True):
                 from pybtex.style.template import field, sentence, tag
 
+                # pylint: disable=no-value-for-parameter
                 title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
 
@@ -228,7 +236,7 @@ class Entry:
         """
         return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
 
-    def rescale(self, units={}):
+    def rescale(self, units=None):
         r"""
         Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
@@ -272,6 +280,9 @@ class Entry:
             units = {
                 field["name"]: field["unit"] for field in self.figure_description.fields
             }
+
+        if not units:
+            units = {}
 
         from copy import deepcopy
 
@@ -383,8 +394,8 @@ class Entry:
         def reference(label):
             if label == "E":
                 return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
-            else:
-                return ""
+
+            return ""
 
         def axis_label(label):
             return f"{label} [{self.field_unit(label)}{reference(label)}]"
@@ -418,11 +429,7 @@ class Entry:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
         """
-        import os.path
-
-        source = os.path.join(
-            os.path.dirname(__file__), "..", "..", "examples", name
-        )
+        source = os.path.join(os.path.dirname(__file__), "..", "..", "examples", name)
 
         if not os.path.exists(source):
             raise ValueError(
@@ -440,9 +447,38 @@ class Entry:
             name,
         )
 
-        # We now might have to digitize some files on demand. When running
-        # tests in parallel, this introduces a race condition that we avoid
-        # with a global lock in the file system.
+        cls._digitize_example(source=source, outdir=outdir)
+
+        from echemdb.local import collect_bibliography, collect_datapackages
+
+        packages = collect_datapackages(outdir)
+        bibliography = collect_bibliography(source)
+        assert len(bibliography) == 1, f"No bibliography found for {name}."
+        bibliography = next(iter(bibliography))
+
+        if len(packages) == 0:
+            from glob import glob
+
+            raise ValueError(
+                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
+                f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+            )
+
+        return [
+            Entry(package=package, bibliography=bibliography) for package in packages
+        ]
+
+    @classmethod
+    def _digitize_example(cls, source, outdir):
+        r"""
+        Digitize ``source`` and write the output to ``outdir``.
+
+        When running tests in parallel, this introduces a race condition that
+        we avoid with a global lock in the file system. Therefore, this method
+        not is not suitable to digitize files outside of doctesting. To
+        digitize data in bulk, have a look at the ``Makefile`` in the
+        echemdb/website project.
+        """
         lockfile = f"{outdir}.lock"
         os.makedirs(os.path.dirname(lockfile), exist_ok=True)
 
@@ -476,21 +512,3 @@ class Entry:
                 assert any(
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
-
-        from echemdb.local import collect_bibliography, collect_datapackages
-
-        packages = collect_datapackages(outdir)
-        bibliography = collect_bibliography(source)
-        assert len(bibliography) == 1, f"No bibliography found for {name}."
-        bibliography = next(iter(bibliography))
-
-        if len(packages) == 0:
-            from glob import glob
-
-            raise ValueError(
-                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
-            )
-
-        return [
-            Entry(package=package, bibliography=bibliography) for package in packages
-        ]
