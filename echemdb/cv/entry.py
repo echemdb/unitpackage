@@ -104,7 +104,7 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_descriptor',
+            '__subclasshook__', '__weakref__', '_descriptor', '_digitize_example',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'plot', 'profile', 'rescale',
