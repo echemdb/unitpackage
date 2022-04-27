@@ -433,7 +433,7 @@ class Entry:
 
         if not os.path.exists(source):
             raise ValueError(
-                f"No subdirectory in literature/ for {name}, i.e., could not find {source}."
+                f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
             )
 
         outdir = os.path.join(
