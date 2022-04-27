@@ -1,17 +1,12 @@
 project = 'echemdb'
-copyright = '2022, the echemdb website authors'
+copyright = '2022, the echemdb authors'
 author = 'the echemdb authors'
 
-release = '0.0.0'
-
+release = '0.1.0'
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "myst_nb"]
 
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.ipynb': 'myst-nb',
-    '.myst': 'myst-nb',
-}
+source_suffix = [".rst", ".md"]
 
 templates_path = ['_templates']
 
@@ -23,16 +18,10 @@ html_theme = 'sphinx_rtd_theme'
 
 html_static_path = []
 
-# TODO: Add linkchecke. See #131
-#
-# linkcheck_ignore = [
-#     r'http://localhost:\d+/', 
-#     r'https://github.com/echemdb/website/blob/main/doc\d+/',
-# ]
-# 
-# html_context = {
-#     'display_github': True,
-#     'github_user': 'echemdb',
-#     'github_repo': 'website',
-#     'github_version': 'main/doc/',
-# }
+# Add Edit on GitHub links
+html_context = {
+    'display_github': True,
+    'github_user': 'echemdb',
+    'github_repo': 'echemdb',
+    'github_version': 'main/doc/',
+}
