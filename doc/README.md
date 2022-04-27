@@ -7,7 +7,7 @@ To see the documentation locally, type:
 ```
 cd doc
 make html
-python -m http.server 8880 --directory ../generated/website/doc/html &
+python -m http.server 8880 --directory ../generated/doc/html &
 ```
 
 Then open http://localhost:8880/ with your browser.
