@@ -408,9 +408,9 @@ class Entry:
     @classmethod
     def create_examples(cls, name="alves_2011_electrochemistry_6010"):
         r"""
-        Return some example entries for use in doctesting.
+        Return some example entries for use in automated tests.
 
-        The examples are built on-demand from data in echemdb's literature directory.
+        The examples are built on-demand from data in echemdb's examples directory.
 
         EXAMPLES::
 
