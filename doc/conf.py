@@ -18,6 +18,8 @@ html_theme = 'sphinx_rtd_theme'
 
 html_static_path = []
 
+html_extra_path = ["robots.txt"]
+
 # Add Edit on GitHub links
 html_context = {
     'display_github': True,
