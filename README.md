@@ -1,13 +1,13 @@
-The [echemdb repository](https://github.com/echemdb/website) 
-contains high quality experimental and 
-theoretical data on electrochemical systems. 
-The standardized and validated data displayed on the [projects website](https://echemdb.github.io/website/) so far is from the community and publications aiming at fullfilling the [FAIR principles](https://www.go-fair.org/fair-principles/). 
+The [echemdb repository](https://echemdb.github.io/website/) contains high
+quality experimental and theoretical data on electrochemical systems.
 
-The repository consists of two interdependent parts:
-1. a Python library
-2. pages and tools to build the website
+This module provides a Python library to interact with the data in the repository.
 
-In the following we provide installation instructions for the echemdb module and a short summary of the basic usage of the Python API. Detailed installation instructions, description of the modules, advanced usage examples, including local database creation, and building the website locally, are provided in our [documentation](https://echemdb.github.io/website/doc/html/index.md).
+In the following we provide installation instructions for the echemdb module
+and a short summary of the basic usage of the Python API. Detailed installation
+instructions, description of the modules, advanced usage examples, including
+local database creation, are provided in our
+[documentation](https://echemdb.github.io/echemdb/).
 
 # Installation instructions
 
@@ -35,7 +35,7 @@ conda env update --name <your_env_name> --file environment.yml
 Clone the repository and install echemdb
 
 ```
-pip install git+https://github.com/echemdb/website.git
+pip install git+https://github.com/echemdb/echemdb.git
 ```
 
 # Python API
@@ -53,7 +53,7 @@ Filtering the database for entries having specific properties, e.g., containing 
 >>> db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
 ```
 
-A single entry can be retrieved with the identifiers provided on the website 
+A single entry can be retrieved with the identifiers provided on the website
 (see for example [engstfeld_2018_polycrystalline_17743_f4b_1](https://echemdb.github.io/website/cv/entries/engstfeld_2018_polycrystalline_17743_f4b_1/))
 
 ```python
@@ -72,7 +72,7 @@ Among other metadata, the entry also has information on the original publication
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as a CSV file (or any other format supported by pandas).
 
 ```python
->>> entry.df() 
+>>> entry.df()
            t	        E	       j
 0	0.000000	-0.196962	0.043009
 1	0.011368	-0.196393	0.051408
@@ -80,7 +80,7 @@ The data related to an entry can be returned as a [pandas](https://pandas.pydata
 >>> entry.df().to_csv('../testtesttest.csv', index=False)
 ```
 
-Custom or original figure axes' units can be requested explicitly 
+Custom or original figure axes' units can be requested explicitly
 
 ```python
 >>> entry.df(xunit='original', yunit='mA / m2')
@@ -107,7 +107,4 @@ The data can be visualized in a plotly figure, with preferred axis units (defaul
 # License
 
 The contents of this repository are licensed under the [GNU General Public
-License v3.0](./LICENSE) or, at your option, any later version.  The contents
-of [data/](./data/) and [literature/](./literature/) are additionally licensed
-under the [Creative Commons Attribution 4.0 International
-License](https://creativecommons.org/licenses/by/4.0/).
+License v3.0](./LICENSE) or, at your option, any later version.
