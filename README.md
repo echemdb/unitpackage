@@ -43,7 +43,7 @@ pip install git+https://github.com/echemdb/website.git
 The current state of the website can be downloaded and stored in a database.
 
 ```python
->>> from echemdb.data.cv.database import Database
+>>> from echemdb.cv.database import Database
 >>> db = Database()
 ```
 

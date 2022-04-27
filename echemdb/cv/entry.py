@@ -8,7 +8,7 @@ EXAMPLES:
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.data.cv.database import Database
+    >>> from echemdb.cv.database import Database
     >>> db = Database.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
@@ -48,7 +48,7 @@ also contain information on the source of the data.::
 # ********************************************************************
 import logging
 
-from echemdb.data.cv.descriptor import Descriptor
+from echemdb.cv.descriptor import Descriptor
 
 logger = logging.getLogger("echemdb")
 
@@ -64,7 +64,7 @@ class Entry:
     with svgdigitizer's `cv` command. However, they are normally obtained by
     opening a :class:`Database` of entries::
 
-        >>> from echemdb.data.cv.database import Database
+        >>> from echemdb.cv.database import Database
         >>> database = Database.create_example()
         >>> entry = next(iter(database))
 
@@ -169,15 +169,6 @@ class Entry:
             O\. B\. Alves *et al\.*
             *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
             *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
-
-            >>> entry = Entry.create_examples(name="gomez-marin_2012_surface_558")[0]
-            >>> entry.citation(backend='text')
-            'A. M. Gómez-Marín et al. Pt(111) surface disorder kinetics in perchloric acid solutions and the influence of specific anion adsorption. Electrochimica acta, 82:558–569, 2012.'
-
-            >>> print(entry.citation(backend='md'))
-            A\. M\. Gómez\-Marín *et al\.*
-            *Pt\(111\) surface disorder kinetics in perchloric acid solutions and the influence of specific anion adsorption*\.
-            *Electrochimica acta*, 82:558–569, 2012\.
 
         """
         from pybtex.style.formatting.unsrt import Style
@@ -417,9 +408,9 @@ class Entry:
     @classmethod
     def create_examples(cls, name="alves_2011_electrochemistry_6010"):
         r"""
-        Return some example entries for use in doctesting.
+        Return some example entries for use in automated tests.
 
-        The examples are built on-demand from data in echemdb's literature directory.
+        The examples are built on-demand from data in echemdb's examples directory.
 
         EXAMPLES::
 
@@ -430,7 +421,7 @@ class Entry:
         import os.path
 
         source = os.path.join(
-            os.path.dirname(__file__), "..", "..", "..", "literature", name
+            os.path.dirname(__file__), "..", "..", "examples", name
         )
 
         if not os.path.exists(source):
@@ -486,7 +477,7 @@ class Entry:
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
-        from echemdb.data.local import collect_bibliography, collect_datapackages
+        from echemdb.local import collect_bibliography, collect_datapackages
 
         packages = collect_datapackages(outdir)
         bibliography = collect_bibliography(source)
