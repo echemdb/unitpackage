@@ -4,10 +4,10 @@ Utilities to work with remote data packages.
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C)      2021 Albert Engstfeld
+#        Copyright (C)      2021 Johannes Hermann
+#        Copyright (C) 2021-2022 Julian Rüth
+#        Copyright (C)      2021 Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -23,20 +23,23 @@ Utilities to work with remote data packages.
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
-import os
+import os.path
 from functools import cache
 
 
 @cache
 def collect_zipfile_from_url(url):
+    r"""
+    Download ZIP file from ``url`` and return it as a temporary object to
+    extract contents from.
+    """
     from urllib.request import urlopen
 
-    response = urlopen(url)
+    with urlopen(url) as response:
+        from io import BytesIO
+        from zipfile import ZipFile
 
-    from io import BytesIO
-    from zipfile import ZipFile
-
-    return ZipFile(BytesIO(response.read()))
+        return ZipFile(BytesIO(response.read()))
 
 
 ECHEMDB_DATABASE_URL = os.environ.get(
@@ -64,7 +67,7 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
         import tempfile
 
         outdir = tempfile.mkdtemp()
-        atexit.register(lambda dirname: shutil.rmtree(dirname), outdir)
+        atexit.register(shutil.rmtree, outdir)
 
     compressed = collect_zipfile_from_url(url)
 
@@ -76,8 +79,6 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
             if name.endswith(".json") or name.endswith(".csv")
         ],
     )
-
-    import os.path
 
     import echemdb.local
 
@@ -103,7 +104,7 @@ def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
         import tempfile
 
         outdir = tempfile.mkdtemp()
-        atexit.register(lambda dirname: shutil.rmtree(dirname), outdir)
+        atexit.register(shutil.rmtree, outdir)
 
     compressed = collect_zipfile_from_url(url)
 
@@ -111,8 +112,6 @@ def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
         outdir,
         members=[name for name in compressed.namelist() if name.endswith(".bib")],
     )
-
-    import os.path
 
     import echemdb.local
 
