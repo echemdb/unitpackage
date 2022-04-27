@@ -210,6 +210,7 @@ class QuantityDescriptor(GenericDescriptor):
         return str(self.quantity)
 
 
+# pylint: disable=invalid-name
 def Descriptor(descriptor):
     r"""
     Return `descriptor` augmented with additional convenience methods.
