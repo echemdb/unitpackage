@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.7
+    jupytext_version: 1.13.8
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -19,7 +19,7 @@ which basically contains bibtex entries.
 
 ```{code-cell} ipython3
 from echemdb.cv.database import Database
-db = Database.create_example()
+db = Database()
 ```
 
 Each entry is associated with a citation key.
