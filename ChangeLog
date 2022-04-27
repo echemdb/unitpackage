@@ -4,6 +4,15 @@ echemdb Change Log
 
 .. current developments
 
+v0.1.1
+====================
+
+**Changed:**
+
+* Changed link of the image in the readme to render the image on PyPi.
+
+
+
 v0.1.0
 ====================
 
