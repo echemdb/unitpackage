@@ -179,6 +179,7 @@ class Entry:
             r"""
             A citation style for the echemdb website.
             """
+
             def format_names(self, role, as_sentence=True):
                 from pybtex.style.template import node
 
@@ -200,7 +201,7 @@ class Entry:
                     # pylint: disable=no-value-for-parameter
                     return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
                         context
-                        )
+                    )
 
                 # pylint: disable=no-value-for-parameter
                 names = names(role)
@@ -428,9 +429,7 @@ class Entry:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
         """
-        source = os.path.join(
-            os.path.dirname(__file__), "..", "..", "examples", name
-        )
+        source = os.path.join(os.path.dirname(__file__), "..", "..", "examples", name)
 
         if not os.path.exists(source):
             raise ValueError(
