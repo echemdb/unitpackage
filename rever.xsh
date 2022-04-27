@@ -30,7 +30,7 @@ branch=$(git branch --show-current)
 if branch.strip() != "main":
   raise Exception("You must be on the main branch to release.")
 # and that it is up to date with origin/main
-git fetch https://github.com/echemdb/svgdigitizer.git
+git fetch https://github.com/echemdb/echemdb.git
 git reset FETCH_HEAD
 git diff --exit-code
 git diff --cached --exit-code
