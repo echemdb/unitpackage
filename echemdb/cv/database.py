@@ -5,7 +5,7 @@ EXAMPLES:
 
 Create a database from local data packages in the `data/` directory::
 
-    >>> from echemdb.data.local import collect_datapackages
+    >>> from echemdb.local import collect_datapackages
     >>> database = Database(collect_datapackages('data/'))
 
 Create a database from the data packages published in the echemdb::
@@ -65,14 +65,14 @@ class Database:
         if data_packages is None:
             import os.path
 
-            import echemdb.data.remote
+            import echemdb.remote
 
-            data_packages = echemdb.data.remote.collect_datapackages(
+            data_packages = echemdb.remote.collect_datapackages(
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
 
             if bibliography is None:
-                bibliography = echemdb.data.remote.collect_bibliography(
+                bibliography = echemdb.remote.collect_bibliography(
                     os.path.join("website-gh-pages", "data", "generated")
                 )
 
@@ -102,7 +102,7 @@ class Database:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from echemdb.data.cv.entry import Entry
+        from echemdb.cv.entry import Entry
 
         entries = Entry.create_examples(
             "alves_2011_electrochemistry_6010"
@@ -185,7 +185,7 @@ class Database:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        from echemdb.data.cv.entry import Entry
+        from echemdb.cv.entry import Entry
 
         def get_bibliography(package):
             bib = Entry(package, bibliography=None).source.citation_key

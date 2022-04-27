@@ -34,9 +34,9 @@ setup(
     install_requires=[
       "astropy>=5,<6",
       "filelock>=3,<4",
-      "frictionless>=4.31,<5",
+      "frictionless>=4.29,<5",
       "pandas>=1,<2",
-      "plotly<=5,<6",
+      "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
       "svgdigitizer>=0.5.0,<0.6.0",
     ],
