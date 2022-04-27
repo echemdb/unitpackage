@@ -128,7 +128,7 @@ entry.plot(x_label='t', y_label='j')
 
 ## Units and values
 
-Entries containing a unit and a value are nicely rendered
+Entries are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
 entry.figure_description.scan_rate
@@ -142,25 +142,4 @@ entry.figure_description.scan_rate.value
 
 ```{code-cell} ipython3
 entry.figure_description.scan_rate.unit
-```
-
-All units are compatible with [astropy units](https://docs.astropy.org/en/stable/units/index.html) to create quantities and make simple unit transformations or multiplications with [astropy units](https://docs.astropy.org/en/stable/units/index.html) or [atropy constants](https://docs.astropy.org/en/stable/constants/index.html).
-
-```{code-cell} ipython3
-from astropy import units as u
-rate = entry.figure_description.scan_rate.value * u.Unit(entry.figure_description.scan_rate.unit)
-rate
-```
-
-```{code-cell} ipython3
-type(rate)
-```
-
-```{code-cell} ipython3
-rate.to('mV / h')
-```
-
-```{code-cell} ipython3
-from astropy import constants as c # c: speed of light
-rate * 25 * u.m * c.c
 ```
