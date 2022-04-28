@@ -1,0 +1,12 @@
+name: echemdb
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - jupytext>=1.13,<2
+  - ipywidgets
+  - notebook
+  - pip
+  - python>=3.9,<3.11
+  - pip:
+    - echemdb
