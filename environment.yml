@@ -8,7 +8,7 @@ dependencies:
   - filelock>=3,<4
   - frictionless>=4.29,<5
   - isort
-  - jupytext
+  - jupytext>=1.13,<2
   - myst-nb>=0.13.0,<0.14.0
   - myst-parser>=0.15,<0.17
   - pandas>=1,<2
