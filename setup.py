@@ -38,6 +38,5 @@ setup(
       "pandas>=1,<2",
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
-      "svgdigitizer>=0.5.0,<0.6.0",
     ],
 )
