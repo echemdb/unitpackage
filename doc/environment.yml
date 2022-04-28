@@ -1,8 +1,0 @@
-name: echemdb
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - pip
-  - pip:
-    - echemdb
