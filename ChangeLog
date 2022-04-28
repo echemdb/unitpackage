@@ -4,6 +4,19 @@ echemdb Change Log
 
 .. current developments
 
+v0.1.2
+====================
+
+**Added:**
+
+* Added Binder links to the documentation.
+
+**Fixed:**
+
+* Fixed dependencies of echemdb package. We do not require the svgdigitizer to use echemdb.
+
+
+
 v0.1.1
 ====================
 
