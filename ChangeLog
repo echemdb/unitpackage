@@ -4,6 +4,15 @@ echemdb Change Log
 
 .. current developments
 
+v0.1.3
+====================
+
+**Changed:**
+
+* Changed binder configuration to use conda.
+
+
+
 v0.1.2
 ====================
 
