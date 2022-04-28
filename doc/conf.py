@@ -2,7 +2,7 @@ project = 'echemdb'
 copyright = '2022, the echemdb authors'
 author = 'the echemdb authors'
 
-release = '0.1.1'
+release = '0.1.2'
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "myst_nb"]
 
