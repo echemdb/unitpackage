@@ -248,3 +248,46 @@ class Database:
                 f"The database has more than one entry with identifier '{identifier}'."
             )
         return entries[0]
+
+    def materials(self):
+        r"""
+        Return the substrate materials in the database.
+
+        EXAMPLES::
+            >>> database = Database.create_example()
+            >>> database.materials()
+            ['Ru', 'Cu']
+
+        """
+        import pandas as pd
+
+        return list(
+            pd.unique(
+                pd.Series(
+                    [
+                        entry.system.electrodes.working_electrode.material
+                        for entry in self
+                    ]
+                )
+            )
+        )
+
+    def describe(self):
+        r"""
+        Returns some statistics about the database.
+
+        EXAMPLES::
+
+            >>> database = Database.create_example()
+            >>> database.describe() # doctest: +NORMALIZE_WHITESPACE
+            {'number of references': 2,
+            'number of entries': 2,
+            'materials': ['Ru', 'Cu']}
+
+        """
+        stats = {
+            "number of references": len(self.bibliography.entries),
+            "number of entries": len(self),
+            "materials": self.materials(),
+        }
+        return stats
