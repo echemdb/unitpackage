@@ -18,6 +18,8 @@ html_theme = 'sphinx_rtd_theme'
 
 html_static_path = []
 
+html_js_files = ["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"]
+
 # Add Edit on GitHub links
 html_context = {
     'display_github': True,
