@@ -20,6 +20,8 @@ the entries presented on the [EchemDB Website](https://echemdb.github.io/website
 and (ii) allows creating a database from local files which have 
 the same file structure.
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.1.3?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+
 ```{todo}
 * What is echemdb and what is our aim.
 * Refer to installation instructions, and all relevant sub-modules.
