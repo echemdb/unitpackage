@@ -15,25 +15,33 @@ kernelspec:
 # Bibliography
 
 The bibliography to all entries is stored as a pybtex database `db.bibliography`, 
-which basically contains bibtex entries.
+which contains bibtex entries.
 
 ```{code-cell} ipython3
 from echemdb.cv.database import Database
 db = Database()
 ```
 
-Each database is associated with a [Pybtex](https://docs.pybtex.org/api/index.html) bibliography.
-
 ```{code-cell} ipython3
-db.bibliography
+len(db.bibliography.entries)
 ```
 
-Individual entries can be accessed with the citation key found in echemdbs' entries
+Each entry in the echemdb databse can be cited.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_f1a_solid']
+entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
+entry.citation(backend='text') # other available backends: 'latex' or 'markdown'. 'text' is default.
+```
+
+Individual `db.bibliography` entries can be accessed with the citation key associated with an echemdb entry.
+
+```{code-cell} ipython3
 bibtex_key = entry.source.citation_key
 bibtex_key
+```
+
+```{code-cell} ipython3
+entry.citation(backend='text')
 ```
 
 ```{code-cell} ipython3
@@ -41,7 +49,7 @@ citation_entry = db.bibliography.entries[bibtex_key]
 citation_entry
 ```
 
-Individiual `fields` are accessible, such as year or title:
+Individiual `fields` are accessible, such as `year` or `title`.
 
 ```{code-cell} ipython3
 citation_entry.fields['year']
