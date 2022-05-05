@@ -49,9 +49,9 @@ $ACTIVITIES = [
 $VERSION_BUMP_PATTERNS = [
     ('setup.py', r"    version=", r'    version="$VERSION",'),
     ('doc/conf.py', r"release = ", r"release = '$VERSION'"),
-    ('binder/environment.yml', r"echemdb==", r"echemdb==$VERSION"),
     ('doc/index.md', r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/", r"https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)")
     ('README.md', r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/", r"https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)")
+    ('binder/environment.yml', r"    - echemdb==", r"    - echemdb==$VERSION"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
