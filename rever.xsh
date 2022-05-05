@@ -49,7 +49,7 @@ $ACTIVITIES = [
 $VERSION_BUMP_PATTERNS = [
     ('setup.py', r"    version=", r'    version="$VERSION",'),
     ('doc/conf.py', r"release = ", r"release = '$VERSION'"),
-    ('binder/environment.yml', r"echemdb==", r"echemdb==$VERSION"),
+    ('binder/environment.yml', r"    - echemdb==", r"    - echemdb==$VERSION"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
