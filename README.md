@@ -1,3 +1,5 @@
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.1.3?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+
 The [echemdb repository](https://echemdb.github.io/website/) contains high
 quality experimental and theoretical data on electrochemical systems.
 
