@@ -22,35 +22,45 @@ from echemdb.cv.database import Database
 db = Database()
 ```
 
-Each entry is associated with a citation key.
+Each database is associated with a [Pybtex](https://docs.pybtex.org/api/index.html) bibliography.
+
+```{code-cell} ipython3
+db.bibliography
+```
+
+Individual entries can be accessed with the citation key found in echemdbs' entries
 
 ```{code-cell} ipython3
 entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-entry.source.citation_key
-```
-
-as well as the bibliographic details.
-
-```{code-cell} ipython3
-entry.bibliography
-```
-
-```{todo}
-* show different possibilities to export the bibliography.
-```
-
-For comparison the the identifier to each entry contains the citation key.
-
-```{code-cell} ipython3
-entry.identifier
-```
-
-The bibliography key of an entry can be used to retrieve the bibliograhy entry directly from the complete database
-
-```{raw-cell}
-db.bibliography['alves_2011_electrochemistry_6010']
+bibtex_key = entry.source.citation_key
+bibtex_key
 ```
 
 ```{code-cell} ipython3
+citation_entry = db.bibliography.entries[bibtex_key]
+citation_entry
+```
 
+Individiual `fields` are accessible, such as year or title:
+
+```{code-cell} ipython3
+citation_entry.fields['year']
+```
+
+```{code-cell} ipython3
+citation_entry.fields['title']
+```
+
+The authors are accessible via `persons`. Read more in the [pybtex documentation](https://docs.pybtex.org/api/parsing.html?highlight=persons#pybtex.database.Entry.persons).
+
+```{code-cell} ipython3
+citation_entry.persons['author']
+```
+
+```{code-cell} ipython3
+citation_entry.persons['author'][0]
+```
+
+```{code-cell} ipython3
+print(citation_entry.persons['author'][0])
 ```
