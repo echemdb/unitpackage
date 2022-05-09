@@ -25,10 +25,10 @@ from echemdb.cv.database import Database
 db = Database()
 ```
 
-The number of entries in the databse are
+Show statistics of the databse
 
 ```{code-cell} ipython3
-len(db)
+db.describe()
 ```
 
 You can iterate over these entries
