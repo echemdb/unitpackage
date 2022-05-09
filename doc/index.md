@@ -35,4 +35,5 @@ usage/database_interactions.md
 usage/entry_interactions.md
 usage/bibliography.md
 usage/local_database.md
+api.md
 ```

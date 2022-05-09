@@ -15,42 +15,60 @@ kernelspec:
 # Bibliography
 
 The bibliography to all entries is stored as a pybtex database `db.bibliography`, 
-which basically contains bibtex entries.
+which contains bibtex entries.
 
 ```{code-cell} ipython3
 from echemdb.cv.database import Database
 db = Database()
 ```
 
-Each entry is associated with a citation key.
+```{code-cell} ipython3
+len(db.bibliography.entries)
+```
+
+Each entry in the echemdb databse can be cited.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-entry.source.citation_key
+entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
+entry.citation(backend='text') # other available backends: 'latex' or 'markdown'. 'text' is default.
 ```
 
-as well as the bibliographic details.
+Individual `db.bibliography` entries can be accessed with the citation key associated with an echemdb entry.
 
 ```{code-cell} ipython3
-entry.bibliography
-```
-
-```{todo}
-* show different possibilities to export the bibliography.
-```
-
-For comparison the the identifier to each entry contains the citation key.
-
-```{code-cell} ipython3
-entry.identifier
-```
-
-The bibliography key of an entry can be used to retrieve the bibliograhy entry directly from the complete database
-
-```{raw-cell}
-db.bibliography['alves_2011_electrochemistry_6010']
+bibtex_key = entry.source.citation_key
+bibtex_key
 ```
 
 ```{code-cell} ipython3
+entry.citation(backend='text')
+```
 
+```{code-cell} ipython3
+citation_entry = db.bibliography.entries[bibtex_key]
+citation_entry
+```
+
+Individiual `fields` are accessible, such as `year` or `title`.
+
+```{code-cell} ipython3
+citation_entry.fields['year']
+```
+
+```{code-cell} ipython3
+citation_entry.fields['title']
+```
+
+The authors are accessible via `persons`. Read more in the [pybtex documentation](https://docs.pybtex.org/api/parsing.html?highlight=persons#pybtex.database.Entry.persons).
+
+```{code-cell} ipython3
+citation_entry.persons['author']
+```
+
+```{code-cell} ipython3
+citation_entry.persons['author'][0]
+```
+
+```{code-cell} ipython3
+print(citation_entry.persons['author'][0])
 ```

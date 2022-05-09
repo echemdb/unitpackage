@@ -15,17 +15,11 @@ kernelspec:
 
 # Entry interactions
 
-<!-- #endregion -->
+Each entry consists of 
+1. descriptors describing the data in the datapackage.
+2. a bibliography reference (see [Bibliography](bibliography.md)).
+3. functions for descriptor representation, data manipulation and data visualization.
 
-```{todo}
-* add link to YAML Files and other resources related to data standardization.
-```
-
-Each entry consits of decsriptors with metadata describing the entry, among those:
-
-* `source`: details on the respective publication and the figure from which the data was generated.
-* `figure description`: details about the original figures axis properties and other measurements linked to the published data.
-* `system`: experimental details on the underlying electrochemical system.
 
 ## Basic interactions
 
@@ -36,7 +30,7 @@ where all spaces should be replaced by underscores.
 ```{code-cell} ipython3
 from echemdb.cv.database import Database
 db = Database()
-entry = db['alves_2011_electrochemistry_6010_f1a_solid']
+entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```
 
@@ -48,11 +42,17 @@ entry['source']
 entry.source
 ```
 
+```{code-cell} ipython3
+entry.source.citation_key
+```
+
 Specific information can be retrieved by selecting the desired descriptor
 
 ```{code-cell} ipython3
 entry.system.electrodes.working_electrode.material
 ```
+
+`entry.package` provides a full list of available descriptors including the `echemdb` resource ([see below](#data)).
 
 +++ {"tags": []}
 
@@ -61,6 +61,11 @@ entry.system.electrodes.working_electrode.material
 The datapackage consists of two resources. 
 * The first resource has the entry's identifier as name. It describes the data in the CSV.
 * The second resource is named "echemdb". It contains the data used by the echemdb module.
+
+```{note}
+The content of the CSV never changes unless it is explicitly overwritten. 
+Changes to the data with the echemdb module are only applied to the `echemdb` resource.
+```
 
 ```{code-cell} ipython3
 entry.package.resource_names
@@ -85,7 +90,7 @@ rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
 rescaled_entry.df.head()
 ```
 
-The units of a field are directly accessible via 
+The units of a field are directly accessible via
 
 ```{code-cell} ipython3
 rescaled_entry.field_unit('E')
@@ -108,7 +113,9 @@ entry.figure_description.fields
 
 ## Plots
 
-The data can be visualized in a plotly figure. The default plot is j vs. E (or I vs. E)
+The data can be visualized in a plotly figure.  
+The default plot is `j` vs. `E` (or `I` vs. `E`).  
+The curve label consits of the figure number in the original publication followed by a unique identifier.
 
 ```{code-cell} ipython3
 entry.plot()
@@ -128,7 +135,7 @@ entry.plot(x_label='t', y_label='j')
 
 ## Units and values
 
-Entries are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
+Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
 entry.figure_description.scan_rate
@@ -142,4 +149,8 @@ entry.figure_description.scan_rate.value
 
 ```{code-cell} ipython3
 entry.figure_description.scan_rate.unit
+```
+
+```{todo}
+add link to YAML Files and other resources related to data standardization.
 ```
