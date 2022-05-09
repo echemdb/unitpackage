@@ -285,9 +285,8 @@ class Database:
             'materials': ['Ru', 'Cu']}
 
         """
-        stats = {
+        return {
             "number of references": len(self.bibliography.entries),
             "number of entries": len(self),
             "materials": self.materials(),
         }
-        return stats
