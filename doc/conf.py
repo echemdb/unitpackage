@@ -20,6 +20,9 @@ execution_timeout = 90
 
 html_static_path = []
 
+# We render some demo notebooks as part of the documentation. These notebooks try to load plotly through RequireJS (which is how Jupyter notebooks load dependencies) so we need to ship this with our Sphinx documentation.
+html_js_files = ["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"]
+
 # Add Edit on GitHub links
 html_context = {
     'display_github': True,
