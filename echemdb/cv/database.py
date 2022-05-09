@@ -254,6 +254,7 @@ class Database:
         Return the substrate materials in the database.
 
         EXAMPLES::
+
             >>> database = Database.create_example()
             >>> database.materials()
             ['Ru', 'Cu']
