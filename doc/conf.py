@@ -16,6 +16,8 @@ todo_include_todos = True
 
 html_theme = 'sphinx_rtd_theme'
 
+execution_timeout = 90
+
 html_static_path = []
 
 # We render some demo notebooks as part of the documentation. These notebooks try to load plotly through RequireJS (which is how Jupyter notebooks load dependencies) so we need to ship this with our Sphinx documentation.

@@ -225,7 +225,7 @@ class Entry:
 
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the `echemdb` resource.
+        Return the unit of the ``field_name`` of the ``echemdb`` resource.
 
         EXAMPLES::
 
@@ -240,7 +240,7 @@ class Entry:
         r"""
         Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
-        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}.
+        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
 
         EXAMPLES:
 
@@ -261,6 +261,7 @@ class Entry:
             {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
 
         The values in the data frame are scaled to match the new units::
+
             >>> rescaled_entry.df
                          t         E          j
             0     0.000000 -0.103158 -99.827664
