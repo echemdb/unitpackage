@@ -16,6 +16,8 @@ todo_include_todos = True
 
 html_theme = 'sphinx_rtd_theme'
 
+execution_timeout = 90
+
 html_static_path = []
 
 # Add Edit on GitHub links
