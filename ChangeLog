@@ -4,6 +4,28 @@ echemdb Change Log
 
 .. current developments
 
+v0.2.0
+====================
+
+**Added:**
+
+* Added links to the API in the documentation.
+* Added `cv.database.describe` showing some basic stats of the database.
+* Added `cv.database.materials` showing a list of materials currently in the database.
+
+**Changed:**
+
+* Changed the usage examples of `database.bibliography` in the documentation.
+
+**Fixed:**
+
+* Fixed an erronoues command line text in the readme on how to build the documentation locally.
+* Fixed version pattern for binder in rever deployment script.
+* Added Python version 3.9 as a requirement to setup.py and environment.yaml.
+* Fixed rendering of plotly plots in the documentation.
+
+
+
 v0.1.3
 ====================
 
