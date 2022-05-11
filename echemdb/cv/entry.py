@@ -104,11 +104,12 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_descriptor', '_digitize_example',
+            '__subclasshook__', '__weakref__',
+            '_descriptor', '_digitize_example', '_normalize_field_name',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'plot', 'profile', 'rescale',
-            'resources', 'source', 'system', 'version', 'yaml']
+            'resources', 'source', 'system', 'thumbnail', 'version', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -345,6 +346,39 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
+    def _normalize_field_name(self, field_name):
+        if field_name in self.package.get_resource("echemdb").schema.field_names:
+            return field_name
+        if field_name == "j":
+            return self._normalize_field_name("I")
+        raise ValueError(f"No axis {field_name} found.")
+
+    def thumbnail(self):
+        r"""
+        Return a thumbnail of the curve without axis and labels.
+        
+        <img src="data:image/png;base64,CODE>
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.thumbnail()
+            b'iVBORw0KGgoAAAANSUhEUgAAAK8AAABhCAYAAACgc...
+
+        """
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots(1,1, figsize=[2,1])
+        self.df.plot('E',self._normalize_field_name('j'), ax=ax)
+        plt.axis('off')
+
+        import io
+        buffer = io.BytesIO()
+        fig.savefig(buffer, format='png', bbox_inches='tight')
+        
+        import base64
+        buffer.seek(0)
+        return base64.b64encode(buffer.read())
+
     def plot(self, x_label="E", y_label="j"):
         r"""
         Return a plot of this entry.
@@ -371,15 +405,15 @@ class Entry:
         """
         import plotly.graph_objects
 
-        def normalize_field_name(field_name):
-            if field_name in self.package.get_resource("echemdb").schema.field_names:
-                return field_name
-            if field_name == "j":
-                return normalize_field_name("I")
-            raise ValueError(f"No axis {field_name} found.")
+        # def normalize_field_name(field_name):
+        #     if field_name in self.package.get_resource("echemdb").schema.field_names:
+        #         return field_name
+        #     if field_name == "j":
+        #         return normalize_field_name("I")
+        #     raise ValueError(f"No axis {field_name} found.")
 
-        x_label = normalize_field_name(x_label)
-        y_label = normalize_field_name(y_label)
+        x_label = self._normalize_field_name(x_label)
+        y_label = self._normalize_field_name(y_label)
 
         fig = plotly.graph_objects.Figure()
 
