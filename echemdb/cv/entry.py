@@ -347,13 +347,28 @@ class Entry:
         return f"Entry({repr(self.identifier)})"
 
     def _normalize_field_name(self, field_name):
+        r"""
+        Tests whether a field name exists in the `echemdb` resource field names.
+        In addition, field name 'I' will be tested if 'j' does not exist.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._normalize_field_name('j')
+            'j'
+            >>> entry._normalize_field_name('x')
+            Traceback (most recent call last):
+            ...
+            ValueError: No axis named 'x' found.
+
+        """
         if field_name in self.package.get_resource("echemdb").schema.field_names:
             return field_name
         if field_name == "j":
             return self._normalize_field_name("I")
-        raise ValueError(f"No axis {field_name} found.")
+        raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self):
+    def thumbnail(self, stream=False):
         r"""
         Return a thumbnail of the curve without axis and labels.
         
@@ -368,9 +383,13 @@ class Entry:
         """
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots(1,1, figsize=[2,1])
-        self.df.plot('E',self._normalize_field_name('j'), ax=ax)
+        self.df.plot('E',self._normalize_field_name('j'), ax=ax, label=False)
+        print('hello1')
         plt.axis('off')
-
+        print('hello2')
+        if not stream:
+            return fig
+        
         import io
         buffer = io.BytesIO()
         fig.savefig(buffer, format='png', bbox_inches='tight')
