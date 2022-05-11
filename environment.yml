@@ -21,6 +21,7 @@ dependencies:
   - pytest-doctestplus
   - pytest-xdist
   - pytest-remotedata
+  - python>=3.9
   - sphinx>=4.3,<5
   - svgdigitizer>=0.5.0,<0.6.0
   - pip:

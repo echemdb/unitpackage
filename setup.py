@@ -40,4 +40,5 @@ setup(
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
     ],
+    python_requires=">=3.9",
 )
