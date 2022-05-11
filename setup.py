@@ -38,6 +38,6 @@ setup(
       "pandas>=1,<2",
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
-      "python>=3.9,<4"
     ],
+    python_requires=">=3.9",
 )
