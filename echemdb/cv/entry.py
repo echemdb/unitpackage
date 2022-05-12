@@ -384,7 +384,7 @@ class Entry:
 
         Return a PNG with specific dimensions (in inches)::
 
-            >>> entry.thumbnail(width=4, height=2])
+            >>> entry.thumbnail(width=4, height=2)
             <Figure size 400x200 with 1 Axes>
 
         Return a biteIO object::
