@@ -348,8 +348,10 @@ class Entry:
 
     def _normalize_field_name(self, field_name):
         r"""
-        Tests whether a field name exists in the `echemdb` resource field names.
-        In addition, field name 'I' will be tested if 'j' does not exist.
+        Return a field name when it exists in the `echemdb` resource's field names.
+        
+        If 'j' is asked and does not exists in the resource's field names,
+        'I' will be checked instead.
 
         EXAMPLES::
 
@@ -370,14 +372,19 @@ class Entry:
 
     def thumbnail(self, stream=False):
         r"""
-        Return a thumbnail of the curve without axis and labels.
+        Return a thumbnail of the entry's curve without axis.
 
-        <img src="data:image/png;base64,CODE>
+        EXAMPLES:
 
-        EXAMPLES::
+        Return a PNG::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.thumbnail()
+
+        Return a biteIO object, for use in, i.e., rendering images in html
+        <img src="data:image/png;base64,CODE>::
+
+            >>> entry.thumbnail(stream=True)
             b'iVBORw0KGgoAAAANSUhEUgAAAK8AAABhCAYAAACgc...
 
         """
