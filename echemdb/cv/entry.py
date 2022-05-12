@@ -370,7 +370,7 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, stream=False, html=False, figsize=[2, 1]):
+    def thumbnail(self, stream=False, html=False, width=2, height=1):
         r"""
         Return a thumbnail of the entry's curve without axis.
 
@@ -384,7 +384,7 @@ class Entry:
 
         Return a PNG with specific dimensions (in inches)::
 
-            >>> entry.thumbnail(figsize=[4, 2])
+            >>> entry.thumbnail(width=4, height=2])
             <Figure size 400x200 with 1 Axes>
 
         Return a biteIO object::
@@ -400,8 +400,8 @@ class Entry:
         """
         import matplotlib.pyplot as plt
 
-        fig, ax = plt.subplots(1, 1, figsize=figsize)
-        self.df.plot("E", self._normalize_field_name("j"), ax=ax, legend=False)
+        fig, axis = plt.subplots(1, 1, figsize=[width, height])
+        self.df.plot("E", self._normalize_field_name("j"), ax=axis, legend=False)
 
         plt.axis("off")
         plt.close(fig)
