@@ -349,7 +349,7 @@ class Entry:
     def _normalize_field_name(self, field_name):
         r"""
         Return a field name when it exists in the `echemdb` resource's field names.
-        
+
         If 'j' is asked and does not exists in the resource's field names,
         'I' will be checked instead.
 
@@ -397,7 +397,7 @@ class Entry:
             >>> entry.thumbnail(stream=True, html=True)
             '<img src="data:image/png;base64,iVBORw0KGgoAAAANSU...
 
-        """        
+        """
         import matplotlib.pyplot as plt
 
         fig, ax = plt.subplots(1, 1, figsize=figsize)
@@ -417,7 +417,7 @@ class Entry:
         import base64
 
         buffer.seek(0)
-        
+
         if html:
             return f'<img src="data:image/png;base64,{base64.b64encode(buffer.read()).decode("UTF-8")}">'
 
