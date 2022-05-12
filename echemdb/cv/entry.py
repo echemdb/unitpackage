@@ -371,7 +371,7 @@ class Entry:
     def thumbnail(self, stream=False):
         r"""
         Return a thumbnail of the curve without axis and labels.
-        
+
         <img src="data:image/png;base64,CODE>
 
         EXAMPLES::
@@ -382,20 +382,23 @@ class Entry:
 
         """
         import matplotlib.pyplot as plt
-        fig, ax = plt.subplots(1,1, figsize=[2,1])
-        self.df.plot('E',self._normalize_field_name('j'), ax=ax, label=False)
-        
-        plt.axis('off')
+
+        fig, ax = plt.subplots(1, 1, figsize=[2, 1])
+        self.df.plot("E", self._normalize_field_name("j"), ax=ax, label=False)
+
+        plt.axis("off")
         plt.close(fig)
 
         if not stream:
             return fig
 
         import io
+
         buffer = io.BytesIO()
-        fig.savefig(buffer, format='png', bbox_inches='tight')
-        
+        fig.savefig(buffer, format="png", bbox_inches="tight")
+
         import base64
+
         buffer.seek(0)
         return base64.b64encode(buffer.read())
 
@@ -424,13 +427,6 @@ class Entry:
 
         """
         import plotly.graph_objects
-
-        # def normalize_field_name(field_name):
-        #     if field_name in self.package.get_resource("echemdb").schema.field_names:
-        #         return field_name
-        #     if field_name == "j":
-        #         return normalize_field_name("I")
-        #     raise ValueError(f"No axis {field_name} found.")
 
         x_label = self._normalize_field_name(x_label)
         y_label = self._normalize_field_name(y_label)
