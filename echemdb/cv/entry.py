@@ -370,7 +370,7 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, stream=False, html=False, width=2, height=1):
+    def thumbnail(self, stream=False, html=False, width=2, height=1, linewidth=1):
         r"""
         Return a thumbnail of the entry's curve without axis.
 
@@ -401,7 +401,13 @@ class Entry:
         import matplotlib.pyplot as plt
 
         fig, axis = plt.subplots(1, 1, figsize=[width, height])
-        self.df.plot("E", self._normalize_field_name("j"), ax=axis, legend=False)
+        self.df.plot(
+            "E",
+            self._normalize_field_name("j"),
+            ax=axis,
+            legend=False,
+            linewidth=linewidth,
+        )
 
         plt.axis("off")
         plt.close(fig)
