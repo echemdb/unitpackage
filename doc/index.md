@@ -20,8 +20,8 @@ Welcome to echemdb's documentation!
 This echemdb module provides a Python library to interact with a database of 
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data schown on [echemdb.org](https://www.echemdb.org) 
-or it can be created from local files which have the same file structure.
+Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org) 
+or from local files.
 
 Examples
 ========
@@ -48,7 +48,7 @@ A single entry can be retrieved with the identifiers provided on the website
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 ```
 
-Each entry has a set of descriptors which contain information about its `source`, the electrochemical system `system`, or the original publication's figure properties `entry.figure_description`.
+Each entry has a set of descriptors such as its ``source`` or the electrochemical ``system``.
 
 ```{code-cell} ipython3
 entry.source # or entry['source']
@@ -84,18 +84,18 @@ original_entry.plot()
 Installation
 =========
 
-The package is hosted on [PiPY](https://pypi.org/project/echemdb/) and can be installed via pip
+This package is available on [PiPY](https://pypi.org/project/echemdb/) and can be installed with pip:
 
 ```sh .noeval
 pip install echemdb
 ```
-or via conda
+The package is also available on [conda-forge](https://github.com/conda-forge/echemdb-feedstock) an can be installed with conda:
 
 ```sh .noeval
-conda install echemdb
+conda install -c conda-forge echemdb
 ```
 
-Read the [installation instructions](installation.md) on further details if you want to contribute to the project.
+See the [installation instructions](installation.md) for further details.
 
 +++
 

@@ -7,8 +7,8 @@ quality experimental and theoretical data on electrochemical systems.
 This echemdb module provides a Python library to interact with a database of 
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data schown on [echemdb.org](https://www.echemdb.org) 
-or it can be created from local files which have the same file structure.
+Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org) 
+or from local files.
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local database creation, are provided in our
@@ -63,7 +63,7 @@ A single entry can be retrieved with the identifiers provided on the website
 >>> entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 ```
 
-Each entry has a set of descriptors which contain information about its `source`, the electrochemical system `system`, or the original publication's figure properties `entry.figure_description`.
+Each entry has a set of descriptors such as its ``source`` or the electrochemical ``system``.
 
 ```python
 >>> entry.source # or entry['source']

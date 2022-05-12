@@ -18,9 +18,9 @@ kernelspec:
 
 +++
 
-A database can be generated from a remote or local source. 
+A database can be generated from a remote or a local source. 
 
-In the example the database is created from the available entries shown on [echemdb.org](https://www.echemdb.org).
+You can create a database from the entries on [echemdb.org](https://www.echemdb.org):
 
 ```{code-cell} ipython3
 from echemdb.cv.database import Database
