@@ -1,13 +1,16 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.1.3?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.2.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
 The [echemdb repository](https://echemdb.github.io/website/) contains high
 quality experimental and theoretical data on electrochemical systems.
 
-This module provides a Python library to interact with the data in the repository.
+This echemdb module provides a Python library to interact with a database of 
+[frictionless datapackages](https://frictionlessdata.io/)
+containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
+Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org) 
+or from local files.
 
-In the following we provide installation instructions for the echemdb module
-and a short summary of the basic usage of the Python API. Detailed installation
-instructions, description of the modules, advanced usage examples, including
+Detailed installation instructions, description of the modules, advanced usage examples, including
 local database creation, are provided in our
 [documentation](https://echemdb.github.io/echemdb/).
 
@@ -34,15 +37,13 @@ conda env update --name <your_env_name> --file environment.yml
 ```
 -->
 
-Clone the repository and install echemdb
-
 ```
-pip install git+https://github.com/echemdb/echemdb.git
+pip install echemdb
 ```
 
 # Python API
 
-The current state of the website can be downloaded and stored in a database.
+The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
 
 ```python
 >>> from echemdb.cv.database import Database
@@ -62,16 +63,14 @@ A single entry can be retrieved with the identifiers provided on the website
 >>> entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 ```
 
-Each entry has information about its source
+Each entry has a set of descriptors such as its ``source`` or the electrochemical ``system``.
 
 ```python
 >>> entry.source # or entry['source']
 {'citation key': 'engstfeld_2018_polycrystalline_17743', 'curve': 1, 'url': 'https://doi.org/10.1002/chem.201803418', 'figure': '4b', 'version': 1}
 ```
 
-Among other metadata, the entry also has information on the original publication's figure properties (`entry.figure_description`) and the `entry.system` in general.
-
-The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units) and can be stored as a CSV file (or any other format supported by pandas).
+The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units).
 
 ```python
 >>> entry.df
@@ -79,7 +78,6 @@ The data related to an entry can be returned as a [pandas](https://pandas.pydata
 0	0.000000	-0.196962	0.043009
 1	0.011368	-0.196393	0.051408
 ...
->>> entry.df.to_csv('../testtesttest.csv', index=False)
 ```
 
 The dataframe can be returned with custom or original figure axes' units by rescaling the entry.

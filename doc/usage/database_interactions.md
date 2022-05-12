@@ -18,7 +18,9 @@ kernelspec:
 
 +++
 
-The entries on [EchemDB Website](https://echemdb.github.io/website) can be downloaded into a local database.
+A database can be generated from a remote or a local source. 
+
+You can create a database from the entries on [echemdb.org](https://www.echemdb.org):
 
 ```{code-cell} ipython3
 from echemdb.cv.database import Database
@@ -37,17 +39,17 @@ You can iterate over these entries
 next(iter(db))
 ```
 
-The database can be filtered for specific descriptors (see below), 
+The database can be filtered for specific descriptors, 
 wherby a new database is created.
 
 ```{code-cell} ipython3
 db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
-print(f'{len(db_filtered)} entries contain Pt as working electrode material.')
+db_filtered.describe()
 ```
 
-Single entries can be selected by their identifier provided on the [echemDB website](https://echemdb.github.io/website) for each entry.
+Single entries can be selected by their identifier provided on the [echemdb.org](https://www.echemdb.org) for each entry.
 
 ```{code-cell} ipython3
-entry = db['alves_2011_electrochemistry_6010_f1a_solid']
+entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```
