@@ -370,7 +370,7 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, stream=False, html=True):
+    def thumbnail(self, stream=False, html=False, figsize=[2, 1]):
         r"""
         Return a thumbnail of the entry's curve without axis.
 
@@ -382,17 +382,25 @@ class Entry:
             >>> entry.thumbnail()
             <Figure size 200x100 with 1 Axes>
 
-        Return a biteIO object, for use in, i.e., rendering images in html
-        <img src="data:image/png;base64,CODE">::
+        Return a PNG with specific dimensions (in inches)::
+
+            >>> entry.thumbnail(figsize=[4, 2])
+            <Figure size 400x200 with 1 Axes>
+
+        Return a biteIO object::
 
             >>> entry.thumbnail(stream=True)
             b'iVBORw0KGgoAAAANSUhEUgAAAK8AAABhCAYAAACgc...
-            >>> entry.thumbnail(stream=True, html=True)
 
-        """
+        Return an html image element::
+
+            >>> entry.thumbnail(stream=True, html=True)
+            '<img src="data:image/png;base64,iVBORw0KGgoAAAANSU...
+
+        """        
         import matplotlib.pyplot as plt
 
-        fig, ax = plt.subplots(1, 1, figsize=[2, 1])
+        fig, ax = plt.subplots(1, 1, figsize=figsize)
         self.df.plot("E", self._normalize_field_name("j"), ax=ax, legend=False)
 
         plt.axis("off")
