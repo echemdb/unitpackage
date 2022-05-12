@@ -370,7 +370,7 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, stream=False):
+    def thumbnail(self, stream=False, html=True):
         r"""
         Return a thumbnail of the entry's curve without axis.
 
@@ -380,18 +380,20 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.thumbnail()
+            <Figure size 200x100 with 1 Axes>
 
         Return a biteIO object, for use in, i.e., rendering images in html
-        <img src="data:image/png;base64,CODE>::
+        <img src="data:image/png;base64,CODE">::
 
             >>> entry.thumbnail(stream=True)
             b'iVBORw0KGgoAAAANSUhEUgAAAK8AAABhCAYAAACgc...
+            >>> entry.thumbnail(stream=True, html=True)
 
         """
         import matplotlib.pyplot as plt
 
         fig, ax = plt.subplots(1, 1, figsize=[2, 1])
-        self.df.plot("E", self._normalize_field_name("j"), ax=ax, label=False)
+        self.df.plot("E", self._normalize_field_name("j"), ax=ax, legend=False)
 
         plt.axis("off")
         plt.close(fig)
@@ -407,6 +409,10 @@ class Entry:
         import base64
 
         buffer.seek(0)
+        
+        if html:
+            return f'<img src="data:image/png;base64,{base64.b64encode(buffer.read()).decode("UTF-8")}">'
+
         return base64.b64encode(buffer.read())
 
     def plot(self, x_label="E", y_label="j"):
