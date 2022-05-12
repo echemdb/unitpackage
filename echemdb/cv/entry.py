@@ -370,7 +370,9 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, stream=False, html=False, width=2, height=1, linewidth=1, color='b'):
+    def thumbnail(
+        self, stream=False, html=False, width=2, height=1, linewidth=1, color="b"
+    ):
         r"""
         Return a thumbnail of the entry's curve without axis.
 
