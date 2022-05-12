@@ -14,7 +14,7 @@ kernelspec:
 
 Welcome to echemdb's documentation!
 ========================================
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.1.3?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md) 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.2.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md) 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
 This echemdb module provides a Python library to interact with a database of 
@@ -22,8 +22,6 @@ This echemdb module provides a Python library to interact with a database of
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 Such a database can be generated from the data schown on [echemdb.org](https://www.echemdb.org) 
 or it can be created from local files which have the same file structure.
-
-+++
 
 Examples
 ========
