@@ -384,12 +384,13 @@ class Entry:
         import matplotlib.pyplot as plt
         fig, ax = plt.subplots(1,1, figsize=[2,1])
         self.df.plot('E',self._normalize_field_name('j'), ax=ax, label=False)
-        print('hello1')
+        
         plt.axis('off')
-        print('hello2')
+        plt.close(fig)
+
         if not stream:
             return fig
-        
+
         import io
         buffer = io.BytesIO()
         fig.savefig(buffer, format='png', bbox_inches='tight')
