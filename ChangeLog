@@ -4,6 +4,16 @@ echemdb Change Log
 
 .. current developments
 
+v0.3.0
+====================
+
+**Added:**
+
+* Added content to the main page of the documentation.
+* Added `echemdb.cv.entry.Entry.thumbnail()` which returns a thumbnail as bytes of the entry without axis.
+
+
+
 v0.2.0
 ====================
 
