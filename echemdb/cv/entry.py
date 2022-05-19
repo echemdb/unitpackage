@@ -350,8 +350,8 @@ class Entry:
         r"""
         Return a field name when it exists in the `echemdb` resource's field names.
 
-        If 'j' is asked and does not exists in the resource's field names,
-        'I' will be checked instead.
+        If 'j' is requested and does not exists in the resource's field names,
+	    'I' will be returned instead.
 
         EXAMPLES::
 
@@ -370,35 +370,21 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(
-        self, stream=False, html=False, width=2, height=1, linewidth=1, color="b"
-    ):
+    def thumbnail(self, width=2, height=1, linewidth=1, color="b"):
         r"""
-        Return a thumbnail of the entry's curve without axis.
+        Return a thumbnail as bytes of the entry's curve without axis.
 
-        EXAMPLES:
-
-        Return a PNG::
+        EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.thumbnail()
-            <Figure size 200x100 with 1 Axes>
-
-        Return a PNG with specific dimensions (in inches),
-        linecolor and linewidth::
-
-            >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
-            <Figure size 400x200 with 1 Axes>
-
-        Return a biteIO object::
-
-            >>> entry.thumbnail(stream=True)
             b'iVBORw0KGgoAAAANSUhEUgAAAK8AAABhCAYAAACgc...
 
-        Return an html image element::
+        The dimensions (in inches), linecolor, and linewidth
+        can be specified::
 
-            >>> entry.thumbnail(stream=True, html=True)
-            '<img src="data:image/png;base64,iVBORw0KGgoAAAANSU...
+            >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
+            b'iVBORw0KGgoAAAANSUhEUgAAAUoAAACuCAYAAABQi...
 
         """
         import matplotlib.pyplot as plt
@@ -416,9 +402,6 @@ class Entry:
         plt.axis("off")
         plt.close(fig)
 
-        if not stream:
-            return fig
-
         import io
 
         buffer = io.BytesIO()
@@ -427,9 +410,6 @@ class Entry:
         import base64
 
         buffer.seek(0)
-
-        if html:
-            return f'<img src="data:image/png;base64,{base64.b64encode(buffer.read()).decode("UTF-8")}">'
 
         return base64.b64encode(buffer.read())
 
