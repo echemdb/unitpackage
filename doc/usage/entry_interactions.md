@@ -133,12 +133,6 @@ The dimensions of the axis can be specified explicitly.
 entry.plot(x_label='t', y_label='j')
 ```
 
-The data can also be depicted in a thumbnail.
-
-```{code-cell} ipython3
-entry.thumbnail(width=3, height=1.5, linewidth=1.5, color='red')
-```
-
 ## Units and values
 
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
