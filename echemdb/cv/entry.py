@@ -28,10 +28,10 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C)      2021 Johannes Hermann
+#        Copyright (C) 2021-2022 Julian Rüth
+#        Copyright (C)      2021 Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -351,7 +351,7 @@ class Entry:
         Return a field name when it exists in the `echemdb` resource's field names.
 
         If 'j' is requested and does not exists in the resource's field names,
-	    'I' will be returned instead.
+        'I' will be returned instead.
 
         EXAMPLES::
 
@@ -370,48 +370,48 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, width=2, height=1, linewidth=1, color="b"):
+    def thumbnail(self, width=2, height=1, **kwds):
         r"""
-        Return a thumbnail as bytes of the entry's curve without axis.
+        Return a thumbnail of the entry's curve as a PNG byte stream.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.thumbnail()
-            b'iVBORw0KGgoAAAANSUhEUgAAAK8AAABhCAYAAACgc...
+            b'\x89PNG...'
 
-        The dimensions (in inches), linecolor, and linewidth
-        can be specified::
+        The PNG's ``width`` and ``height`` in inches can be modified.
+        Additional keyword arguments are passed to the data frame plotting
+        method::
 
             >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
-            b'iVBORw0KGgoAAAANSUhEUgAAAUoAAACuCAYAAABQi...
+            b'\x89PNG...'
 
         """
-        import matplotlib.pyplot as plt
+        kwds.setdefault("color", "b")
+        kwds.setdefault("linewidth", 1)
+        kwds.setdefault("legend", False)
 
-        fig, axis = plt.subplots(1, 1, figsize=[width, height])
+        import matplotlib.pyplot
+
+        fig, axis = matplotlib.pyplot.subplots(1, 1, figsize=[width, height])
         self.df.plot(
             "E",
             self._normalize_field_name("j"),
             ax=axis,
-            legend=False,
-            linewidth=linewidth,
-            color=color,
+            **kwds,
         )
 
-        plt.axis("off")
-        plt.close(fig)
+        matplotlib.pyplot.axis("off")
+        matplotlib.pyplot.close(fig)
 
         import io
 
         buffer = io.BytesIO()
         fig.savefig(buffer, format="png", bbox_inches="tight")
 
-        import base64
-
         buffer.seek(0)
-
-        return base64.b64encode(buffer.read())
+        return buffer.read()
 
     def plot(self, x_label="E", y_label="j"):
         r"""
