@@ -9,7 +9,7 @@ dependencies:
   - frictionless>=4.29,<5
   - isort
   - jupytext>=1.13,<2
-  - matplotlib>=3.5.0,<4
+  - matplotlib-base>=3.5.0,<4
   - myst-nb>=0.13.0,<0.14.0
   - myst-parser>=0.15,<0.17
   - pandas>=1,<2

@@ -35,7 +35,7 @@ setup(
       "astropy>=5,<6",
       "filelock>=3,<4",
       "frictionless>=4.29,<5",
-      "matplotlib>=3.5.0,<4",
+      "matplotlib-base>=3.5.0,<4",
       "pandas>=1,<2",
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
