@@ -28,10 +28,10 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C)      2021 Johannes Hermann
+#        Copyright (C) 2021-2022 Julian Rüth
+#        Copyright (C)      2021 Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -104,11 +104,12 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_descriptor', '_digitize_example',
+            '__subclasshook__', '__weakref__',
+            '_descriptor', '_digitize_example', '_normalize_field_name',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'plot', 'profile', 'rescale',
-            'resources', 'source', 'system', 'version', 'yaml']
+            'resources', 'source', 'system', 'thumbnail', 'version', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -345,6 +346,73 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
+    def _normalize_field_name(self, field_name):
+        r"""
+        Return a field name when it exists in the `echemdb` resource's field names.
+
+        If 'j' is requested and does not exists in the resource's field names,
+        'I' will be returned instead.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._normalize_field_name('j')
+            'j'
+            >>> entry._normalize_field_name('x')
+            Traceback (most recent call last):
+            ...
+            ValueError: No axis named 'x' found.
+
+        """
+        if field_name in self.package.get_resource("echemdb").schema.field_names:
+            return field_name
+        if field_name == "j":
+            return self._normalize_field_name("I")
+        raise ValueError(f"No axis named '{field_name}' found.")
+
+    def thumbnail(self, width=2, height=1, **kwds):
+        r"""
+        Return a thumbnail of the entry's curve as a PNG byte stream.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.thumbnail()
+            b'\x89PNG...'
+
+        The PNG's ``width`` and ``height`` in inches can be modified.
+        Additional keyword arguments are passed to the data frame plotting
+        method::
+
+            >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
+            b'\x89PNG...'
+
+        """
+        kwds.setdefault("color", "b")
+        kwds.setdefault("linewidth", 1)
+        kwds.setdefault("legend", False)
+
+        import matplotlib.pyplot
+
+        fig, axis = matplotlib.pyplot.subplots(1, 1, figsize=[width, height])
+        self.df.plot(
+            "E",
+            self._normalize_field_name("j"),
+            ax=axis,
+            **kwds,
+        )
+
+        matplotlib.pyplot.axis("off")
+        matplotlib.pyplot.close(fig)
+
+        import io
+
+        buffer = io.BytesIO()
+        fig.savefig(buffer, format="png", bbox_inches="tight")
+
+        buffer.seek(0)
+        return buffer.read()
+
     def plot(self, x_label="E", y_label="j"):
         r"""
         Return a plot of this entry.
@@ -371,15 +439,8 @@ class Entry:
         """
         import plotly.graph_objects
 
-        def normalize_field_name(field_name):
-            if field_name in self.package.get_resource("echemdb").schema.field_names:
-                return field_name
-            if field_name == "j":
-                return normalize_field_name("I")
-            raise ValueError(f"No axis {field_name} found.")
-
-        x_label = normalize_field_name(x_label)
-        y_label = normalize_field_name(y_label)
+        x_label = self._normalize_field_name(x_label)
+        y_label = self._normalize_field_name(y_label)
 
         fig = plotly.graph_objects.Figure()
 
