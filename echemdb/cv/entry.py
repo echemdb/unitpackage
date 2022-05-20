@@ -370,7 +370,7 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, width=2, height=1, **kwds):
+    def thumbnail(self, width=96, height=72, **kwds):
         r"""
         Return a thumbnail of the entry's curve as a PNG byte stream.
 
@@ -380,7 +380,7 @@ class Entry:
             >>> entry.thumbnail()
             b'\x89PNG...'
 
-        The PNG's ``width`` and ``height`` in inches can be modified.
+        The PNG's ``width`` and ``height`` can be specified in pixels.
         Additional keyword arguments are passed to the data frame plotting
         method::
 
@@ -394,7 +394,10 @@ class Entry:
 
         import matplotlib.pyplot
 
-        fig, axis = matplotlib.pyplot.subplots(1, 1, figsize=[width, height])
+        # A reasonable DPI setting that should work for most screens.
+        dpi = 72
+
+        fig, axis = matplotlib.pyplot.subplots(1, 1, figsize=[width/dpi, height/dpi], dpi=dpi)
         self.df.plot(
             "E",
             self._normalize_field_name("j"),
@@ -408,7 +411,7 @@ class Entry:
         import io
 
         buffer = io.BytesIO()
-        fig.savefig(buffer, format="png", bbox_inches="tight")
+        fig.savefig(buffer, format="png", transparent=True, dpi=dpi)
 
         buffer.seek(0)
         return buffer.read()
