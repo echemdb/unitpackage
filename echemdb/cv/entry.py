@@ -385,7 +385,7 @@ class Entry:
         method::
 
             >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
-            b'\x89PNG...'
+            b"\x89PNG..."
 
         """
         kwds.setdefault("color", "b")
@@ -397,7 +397,9 @@ class Entry:
         # A reasonable DPI setting that should work for most screens.
         dpi = 72
 
-        fig, axis = matplotlib.pyplot.subplots(1, 1, figsize=[width/dpi, height/dpi], dpi=dpi)
+        fig, axis = matplotlib.pyplot.subplots(
+            1, 1, figsize=[width / dpi, height / dpi], dpi=dpi
+        )
         self.df.plot(
             "E",
             self._normalize_field_name("j"),
