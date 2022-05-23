@@ -370,7 +370,7 @@ class Entry:
             return self._normalize_field_name("I")
         raise ValueError(f"No axis named '{field_name}' found.")
 
-    def thumbnail(self, width=96, height=72, **kwds):
+    def thumbnail(self, width=96, height=72, dpi=72, **kwds):
         r"""
         Return a thumbnail of the entry's curve as a PNG byte stream.
 
@@ -394,9 +394,7 @@ class Entry:
 
         import matplotlib.pyplot
 
-        # A reasonable DPI setting that should work for most screens.
-        dpi = 72
-
+        # A reasonable DPI setting that should work for most screens is the default value of 72.
         fig, axis = matplotlib.pyplot.subplots(
             1, 1, figsize=[width / dpi, height / dpi], dpi=dpi
         )
