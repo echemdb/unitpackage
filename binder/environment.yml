@@ -9,4 +9,4 @@ dependencies:
   - pip
   - python>=3.9,<3.11
   - pip:
-    - echemdb==0.3.0
+    - echemdb==0.4.0
