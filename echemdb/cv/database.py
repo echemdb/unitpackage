@@ -15,16 +15,16 @@ Create a database from the data packages published in the echemdb::
 Search the database for a single publication::
 
     >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
-    [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
+    [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021      Johannes Hermann
+#        Copyright (C) 2021-2022 Julian Rüth
+#        Copyright (C) 2021      Nicolas Hörmann
 #
 #  echemdb is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
