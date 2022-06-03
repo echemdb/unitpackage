@@ -64,7 +64,6 @@ To use the echemdb, activate the `echemdb` environment:
 
 ```sh
 conda activate echemdb
-echemdb --help
 ```
 
 To install the echemdb into an existing environment, activate that environment and then
