@@ -13,7 +13,7 @@ local database creation, are provided in our
 
 # Installation instructions
 
-Install the latest stable version of svgdigitizer from PyPI or conda.
+Install the latest stable version of echemdb from PyPI or conda.
 ```
 pip install echemdb
 ```
