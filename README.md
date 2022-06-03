@@ -1,13 +1,10 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.4.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-The [echemdb repository](https://echemdb.github.io/website/) contains high
-quality experimental and theoretical data on electrochemical systems.
-
-This echemdb module provides a Python library to interact with a database of 
+The echemdb module provides a Python library to interact with a database of
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org) 
+Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
 or from local files.
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
@@ -16,29 +13,13 @@ local database creation, are provided in our
 
 # Installation instructions
 
-<!-- TODO: Make echemdb pip installable, publish on PyPI and conda-forge. See #130
+Install the latest stable version of svgdigitizer from PyPI or conda.
 ```
 pip install echemdb
 ```
 
-
-Create an environment with the required packages
-
 ```
-conda config --add channels conda-forge
-conda config --set channel_priority strict
-conda env create --force -f environment.yml
-```
-
-Alternatively, if you want to install the required packages into an existing, environment use:
-
-```
-conda env update --name <your_env_name> --file environment.yml
-```
--->
-
-```
-pip install echemdb
+conda install -c conda-forge echemdb
 ```
 
 # Python API
@@ -99,9 +80,9 @@ The units and reference electrodes can be found in the resource schema. The unit
 
 ```python
 >>> entry.package.get_resource('echemdb')['schema']
-{'fields': 
-[{'name': 't', 'unit': 's', 'type': 'number'}, 
-{'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'}, 
+{'fields':
+[{'name': 't', 'unit': 's', 'type': 'number'},
+{'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
 {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]}
 ```
 
