@@ -35,7 +35,7 @@ You can instead also install the latest unreleased version of the echemdb
 from our [GitHub Repository](https://github.com/echemdb/echemdb) with
 
 ```sh
-pip install git+https://github.com/echemdb/echemdb@master
+pip install git+https://github.com/echemdb/echemdb@main
 ```
 
 
