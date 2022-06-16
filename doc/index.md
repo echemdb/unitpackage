@@ -82,7 +82,7 @@ original_entry.plot()
 ```
 
 Installation
-=========
+============
 
 This package is available on [PiPY](https://pypi.org/project/echemdb/) and can be installed with pip:
 
@@ -96,6 +96,12 @@ conda install -c conda-forge echemdb
 ```
 
 See the [installation instructions](installation.md) for further details.
+
+License
+=======
+
+The contents of this repository are licensed under the [GNU General Public
+License v3.0](https://www.gnu.org/licenses/gpl-3.0.html) or, at your option, any later version.
 
 +++
 
