@@ -101,7 +101,7 @@ License
 =======
 
 The contents of this repository are licensed under the [GNU General Public
-License v3.0](./LICENSE) or, at your option, any later version.
+License v3.0](https://www.gnu.org/licenses/gpl-3.0.html) or, at your option, any later version.
 
 +++
 
