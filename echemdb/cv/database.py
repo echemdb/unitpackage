@@ -188,7 +188,13 @@ class Database:
         from echemdb.cv.entry import Entry
 
         def get_bibliography(package):
-            bib = Entry(package, bibliography=None).source.citation_key
+            if len(self._bibliography.entries) == 0:
+                return None
+            try:
+                bib = Entry(package, bibliography=None).source.citation_key
+            except AttributeError:
+                return None
+
             return self._bibliography.entries.get(bib, None)
 
         return iter(

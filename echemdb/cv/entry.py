@@ -447,17 +447,33 @@ class Entry:
 
         fig = plotly.graph_objects.Figure()
 
+        def figure_name():
+            try:
+                self.source.figure
+            except AttributeError:
+                try:
+                    self.source.curve
+                except AttributeError:
+                    return self.identifier
+            return f"Fig. {self.source.figure}: {self.source.curve}"
+
         fig.add_trace(
             plotly.graph_objects.Scatter(
                 x=self.df[x_label],
                 y=self.df[y_label],
                 mode="lines",
-                name=f"Fig. {self.source.figure}: {self.source.curve}",
+                name=f"{figure_name()}",
             )
         )
 
         def reference(label):
             if label == "E":
+                try:
+                    self.package.get_resource("echemdb").schema.get_field(label)[
+                        "reference"
+                    ]
+                except KeyError:
+                    return ""
                 return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
 
             return ""
