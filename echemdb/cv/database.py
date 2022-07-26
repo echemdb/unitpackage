@@ -41,10 +41,12 @@ Search the database for a single publication::
 # ********************************************************************
 import logging
 
+from echemdb.database import Database
+
 logger = logging.getLogger("echemdb")
 
 
-class Database:
+class Database(Database):
     r"""
     A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
 
@@ -60,200 +62,6 @@ class Database:
         0
 
     """
-
-    def __init__(self, data_packages=None, bibliography=None):
-        if data_packages is None:
-            import os.path
-
-            import echemdb.remote
-
-            data_packages = echemdb.remote.collect_datapackages(
-                os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
-            )
-
-            if bibliography is None:
-                bibliography = echemdb.remote.collect_bibliography(
-                    os.path.join("website-gh-pages", "data", "generated")
-                )
-
-        if bibliography is None:
-            bibliography = []
-
-        from collections.abc import Iterable
-
-        if isinstance(bibliography, Iterable):
-            from pybtex.database import BibliographyData
-
-            bibliography = BibliographyData(
-                entries={entry.key: entry for entry in bibliography}
-            )
-
-        self._packages = data_packages
-        self._bibliography = bibliography
-
-    @classmethod
-    def create_example(cls):
-        r"""
-        Return a sample database for use in automated tests.
-
-        EXAMPLES::
-
-            >>> Database.create_example()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
-
-        """
-        from echemdb.cv.entry import Entry
-
-        entries = Entry.create_examples(
-            "alves_2011_electrochemistry_6010"
-        ) + Entry.create_examples("engstfeld_2018_polycrystalline_17743")
-
-        return Database(
-            [entry.package for entry in entries],
-            [entry.bibliography for entry in entries],
-        )
-
-    @property
-    def bibliography(self):
-        r"""
-        Return a pybtex database of all bibtex bibliography files.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> database.bibliography
-            BibliographyData(
-              entries=OrderedCaseInsensitiveDict([
-                ('alves_2011_electrochemistry_6010', Entry('article',
-                ...
-                ('engstfeld_2018_polycrystalline_17743', Entry('article',
-                ...
-
-        """
-        from pybtex.database import BibliographyData
-
-        return BibliographyData(
-            {
-                entry.bibliography.key: entry.bibliography
-                for entry in self
-                if entry.bibliography
-            }
-        )
-
-    def filter(self, predicate):
-        r"""
-        Return the subset of the database that satisfies predicate.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
-
-
-        The filter predicate can use properties that are not present on all
-        entries in the database. If a property is missing the element is
-        removed from the database::
-
-            >>> database.filter(lambda entry: entry.non.existant.property)
-            []
-
-        """
-
-        def catching_predicate(entry):
-            try:
-                return predicate(entry)
-            except (KeyError, AttributeError) as e:
-                logger.debug(f"Filter removed entry {entry} due to error: {e}")
-                return False
-
-        return Database(
-            data_packages=[
-                entry.package for entry in self if catching_predicate(entry)
-            ],
-            bibliography=self._bibliography,
-        )
-
-    def __iter__(self):
-        r"""
-        Return an iterator over the entries in this database.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> next(iter(database))
-            Entry('alves_2011_electrochemistry_6010_f1a_solid')
-
-        """
-        from echemdb.cv.entry import Entry
-
-        def get_bibliography(package):
-            if len(self._bibliography.entries) == 0:
-                return None
-            try:
-                bib = Entry(package, bibliography=None).source.citation_key
-            except AttributeError:
-                return None
-
-            return self._bibliography.entries.get(bib, None)
-
-        return iter(
-            [
-                Entry(package, bibliography=get_bibliography(package))
-                for package in self._packages
-            ]
-        )
-
-    def __len__(self):
-        r"""
-        Return the number of entries in this database.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> len(database)
-            2
-
-        """
-        return len(self._packages)
-
-    def __repr__(self):
-        r"""
-        Return a printable representation of this database.
-
-        EXAMPLES::
-
-            >>> Database([])
-            []
-
-        """
-        return repr(list(self))
-
-    def __getitem__(self, identifier):
-        r"""
-        Return the entry with this identifier.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> database['alves_2011_electrochemistry_6010_f1a_solid']
-            Entry('alves_2011_electrochemistry_6010_f1a_solid')
-
-            >>> database['invalid_key']
-            Traceback (most recent call last):
-            ...
-            KeyError: "No database entry with identifier 'invalid_key'."
-
-        """
-        entries = [entry for entry in self if entry.identifier == identifier]
-
-        if len(entries) == 0:
-            raise KeyError(f"No database entry with identifier '{identifier}'.")
-        if len(entries) > 1:
-            raise KeyError(
-                f"The database has more than one entry with identifier '{identifier}'."
-            )
-        return entries[0]
 
     def materials(self):
         r"""
@@ -297,3 +105,25 @@ class Database:
             "number of entries": len(self),
             "materials": self.materials(),
         }
+
+    @classmethod
+    def create_example(cls):
+        r"""
+        Return a sample database for use in automated tests.
+
+        EXAMPLES::
+
+            >>> Database.create_example()
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+
+        """
+        from echemdb.cv.entry import Entry
+
+        entries = Entry.create_examples(
+            "alves_2011_electrochemistry_6010"
+        ) + Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+
+        return Database(
+            [entry.package for entry in entries],
+            [entry.bibliography for entry in entries],
+        )
