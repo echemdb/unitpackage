@@ -167,7 +167,7 @@ class Entry:
                 ...
 
         """
-        citation = self.package['citation']
+        citation = self.package['bibliography']
         from pybtex.database import parse_string
         bibliography = parse_string(citation, 'bibtex')
         return bibliography.entries[self.package['source']['citation key']]
@@ -584,7 +584,7 @@ class Entry:
                         svg,
                         "--outdir",
                         outdir,
-                        "--citation",
+                        "--bibliography",
                     )
 
                 assert os.path.exists(
