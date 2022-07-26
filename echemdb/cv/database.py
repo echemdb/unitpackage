@@ -61,7 +61,7 @@ class Database:
 
     """
 
-    def __init__(self, data_packages=None, bibliography=None):
+    def __init__(self, data_packages=None):
         if data_packages is None:
             import os.path
 
@@ -71,25 +71,7 @@ class Database:
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
 
-            if bibliography is None:
-                bibliography = echemdb.remote.collect_bibliography(
-                    os.path.join("website-gh-pages", "data", "generated")
-                )
-
-        if bibliography is None:
-            bibliography = []
-
-        from collections.abc import Iterable
-
-        if isinstance(bibliography, Iterable):
-            from pybtex.database import BibliographyData
-
-            bibliography = BibliographyData(
-                entries={entry.key: entry for entry in bibliography}
-            )
-
         self._packages = data_packages
-        self._bibliography = bibliography
 
     @classmethod
     def create_example(cls):
@@ -110,7 +92,6 @@ class Database:
 
         return Database(
             [entry.package for entry in entries],
-            [entry.bibliography for entry in entries],
         )
 
     @property
@@ -171,7 +152,6 @@ class Database:
             data_packages=[
                 entry.package for entry in self if catching_predicate(entry)
             ],
-            bibliography=self._bibliography,
         )
 
     def __iter__(self):
@@ -187,13 +167,9 @@ class Database:
         """
         from echemdb.cv.entry import Entry
 
-        def get_bibliography(package):
-            bib = Entry(package, bibliography=None).source.citation_key
-            return self._bibliography.entries.get(bib, None)
-
         return iter(
             [
-                Entry(package, bibliography=get_bibliography(package))
+                Entry(package)
                 for package in self._packages
             ]
         )

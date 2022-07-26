@@ -71,9 +71,8 @@ class Entry:
 
     """
 
-    def __init__(self, package, bibliography):
+    def __init__(self, package):
         self.package = package
-        self.bibliography = bibliography
 
     @property
     def identifier(self):
@@ -105,8 +104,8 @@ class Entry:
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
             '__subclasshook__', '__weakref__',
-            '_descriptor', '_digitize_example', '_normalize_field_name',
-            'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
+            '_descriptor', '_digitize_example', '_normalize_field_name', 'bibliography',
+            'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'plot', 'profile', 'rescale',
             'resources', 'source', 'system', 'thumbnail', 'version', 'yaml']
@@ -152,6 +151,26 @@ class Entry:
     @property
     def _descriptor(self):
         return Descriptor(self.package.to_dict())
+
+    @property
+    def bibliography(self):
+        r"""
+        Return a pybtex bibliography object.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
+            Entry('article',
+            fields=[
+                ('title', ...
+                ...
+
+        """
+        citation = self.package['citation']
+        from pybtex.database import parse_string
+        bibliography = parse_string(citation, 'bibtex')
+        return bibliography.entries[self.package['source']['citation key']]
 
     def citation(self, backend="text"):
         r"""
@@ -303,7 +322,7 @@ class Entry:
 
         package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
-        return Entry(package=package, bibliography=self.bibliography)
+        return Entry(package=package)
 
     @property
     def df(self):
@@ -514,12 +533,9 @@ class Entry:
 
         cls._digitize_example(source=source, outdir=outdir)
 
-        from echemdb.local import collect_bibliography, collect_datapackages
+        from echemdb.local import collect_datapackages
 
         packages = collect_datapackages(outdir)
-        bibliography = collect_bibliography(source)
-        assert len(bibliography) == 1, f"No bibliography found for {name}."
-        bibliography = next(iter(bibliography))
 
         if len(packages) == 0:
             from glob import glob
@@ -530,7 +546,7 @@ class Entry:
             )
 
         return [
-            Entry(package=package, bibliography=bibliography) for package in packages
+            Entry(package=package) for package in packages
         ]
 
     @classmethod
@@ -552,7 +568,6 @@ class Entry:
         with FileLock(lockfile):
             if not os.path.exists(outdir):
                 from glob import glob
-
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
@@ -569,6 +584,7 @@ class Entry:
                         svg,
                         "--outdir",
                         outdir,
+                        "--citation",
                     )
 
                 assert os.path.exists(
