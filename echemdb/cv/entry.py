@@ -149,8 +149,8 @@ class Entry(UnitPackage):
         buffer.seek(0)
         return buffer.read()
 
-    def rescale(self, units=None):
-        return Entry(package=self._rescale(units=units), bibliography=self.bibliography)
+    # def rescale(self, units=None):
+    #     return Entry(package=self._rescale(units=units), bibliography=self.bibliography)
 
     def plot(self, x_label="E", y_label="j"):
         r"""

@@ -105,7 +105,7 @@ class UnitPackage:
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
             '__subclasshook__', '__weakref__', '_create_example_packages_bibliography',
-            '_descriptor', '_digitize_example', '_rescale',
+            '_descriptor', '_digitize_example', '_rescale', '_rescaleing',
             'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
             'df', 'experimental', 'field_unit', 'figure_description', 'identifier',
             'package', 'profile', 'rescale', 'resources', 'source', 'special_units',
@@ -240,7 +240,7 @@ class UnitPackage:
     def special_units(self, units):
         return units
 
-    def _rescale(self, units=None):
+    def _rescaleing(self, units=None):
         units = self.special_units(units)
 
         if not units:
@@ -265,7 +265,8 @@ class UnitPackage:
 
         return package
 
-    def rescale(self, units=None):
+    @classmethod
+    def _rescale(cls, package, bibliography):
         r"""
         Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
@@ -329,8 +330,10 @@ class UnitPackage:
         # package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
         #print(dir(package))
+        return cls(package=package, bibliography=bibliography)
 
-        return UnitPackage(package=self._rescale(units=units), bibliography=self.bibliography)
+    def rescale(self, units):
+        return self._rescale(self._rescaleing(units), None)
 
     @property
     def df(self):
