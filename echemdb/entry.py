@@ -8,7 +8,7 @@ EXAMPLES:
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.cv.database import Database
+    >>> from echemdb.database import Database
     >>> db = Database.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
@@ -65,7 +65,7 @@ class Entry:
     with svgdigitizer's `cv` command. However, they are normally obtained by
     opening a :class:`Database` of entries::
 
-        >>> from echemdb.cv.database import Database
+        >>> from echemdb.database import Database
         >>> database = Database.create_example()
         >>> entry = next(iter(database))
 
@@ -82,7 +82,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry.identifier
             'alves_2011_electrochemistry_6010_f1a_solid'
 
@@ -97,7 +97,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +NORMALIZE_WHITESPACE
             ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__',
             '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__',
@@ -106,9 +106,9 @@ class Entry:
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
             '__subclasshook__', '__weakref__', '_create_example_packages_bibliography',
             '_descriptor', '_digitize_example', '_rescale', '_rescaleing',
-            'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
-            'df', 'experimental', 'field_unit', 'figure_description', 'identifier',
-            'package', 'profile', 'rescale', 'resources', 'source', 'special_units',
+            'bibliography', 'citation', 'create_examples', 'curation', 'custom_units',
+            'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
+            'identifier', 'package', 'profile', 'rescale', 'resources', 'source',
             'system', 'version', 'yaml']
 
         """
@@ -120,7 +120,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry.source # doctest: +NORMALIZE_WHITESPACE
             {'citation key': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
@@ -140,7 +140,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
             {'citation key': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
@@ -164,7 +164,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry.citation(backend='text')
             'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
             >>> print(entry.citation(backend='md'))
@@ -230,18 +230,18 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry.field_unit('E')
             'V'
 
         """
         return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
 
-    def special_units(self, units):
+    def custom_units(self, units):
         return units
 
     def _rescaleing(self, units=None):
-        units = self.special_units(units)
+        units = self.custom_units(units)
 
         if not units:
             units = {}
@@ -276,7 +276,7 @@ class Entry:
 
         The units without any rescaling::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'unit': 's', 'type': 'number'},
             {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
@@ -342,7 +342,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -369,7 +369,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = UnitPackage.create_examples()[0]
+            >>> entry = Entry.create_examples()[0]
             >>> entry
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
@@ -423,46 +423,46 @@ class Entry:
 
         EXAMPLES::
 
-            >>> UnitPackage.create_examples()
+            >>> Entry.create_examples()
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
         """
-        # source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
+        source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
 
-        # if not os.path.exists(source):
-        #     raise ValueError(
-        #         f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
-        #     )
+        if not os.path.exists(source):
+            raise ValueError(
+                f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
+            )
 
-        # outdir = os.path.join(
-        #     os.path.dirname(__file__),
-        #     "..",
-        #     "..",
-        #     "data",
-        #     "generated",
-        #     "svgdigitizer",
-        #     name,
-        # )
+        outdir = os.path.join(
+            os.path.dirname(__file__),
+            "..",
+            "..",
+            "data",
+            "generated",
+            "svgdigitizer",
+            name,
+        )
 
-        # cls._digitize_example(source=source, outdir=outdir)
+        cls._digitize_example(source=source, outdir=outdir)
 
-        # from echemdb.local import collect_bibliography, collect_datapackages
+        from echemdb.local import collect_bibliography, collect_datapackages
 
-        # packages = collect_datapackages(outdir)
-        # bibliography = collect_bibliography(source)
-        # assert len(bibliography) == 1, f"No bibliography found for {name}."
-        # bibliography = next(iter(bibliography))
+        packages = collect_datapackages(outdir)
+        bibliography = collect_bibliography(source)
+        assert len(bibliography) == 1, f"No bibliography found for {name}."
+        bibliography = next(iter(bibliography))
 
-        # if len(packages) == 0:
-        #     from glob import glob
+        if len(packages) == 0:
+            from glob import glob
 
-        #     raise ValueError(
-        #         f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
-        #         f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
-        #     )
-        packages, bibliography = cls._create_example_packages_bibliography(name=name)
+            raise ValueError(
+                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
+                f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+            )
+        # packages, bibliography = cls._create_example_packages_bibliography(name=name)
         return [
-            Entry(package=package, bibliography=bibliography) for package in packages
+            cls(package=package, bibliography=bibliography) for package in packages
         ]
 
     @classmethod

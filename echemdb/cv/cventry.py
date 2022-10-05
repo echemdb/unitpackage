@@ -1,18 +1,18 @@
 r"""
 A Data Package describing a Cyclic Voltammogram.
 
-These are the individual elements of a :class:`Database`.
+These are the individual elements of a :class:`CVdatabase`.
 
 EXAMPLES:
 
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.cv.database import Database
-    >>> db = Database.create_example()
+    >>> from echemdb.cv.cvdatabase import CVdatabase
+    >>> db = CVdatabase.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    Entry('article',
+    CVentry('article',
       fields=[
         ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
         ('journal', 'Physical Chemistry Chemical Physics'),
@@ -47,7 +47,6 @@ also contain information on the source of the data.::
 #  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-import os.path
 
 from echemdb.entry import Entry
 
@@ -61,17 +60,30 @@ class CVentry(Entry):
 
     EXAMPLES:
 
-    Entries could be created directly from a datapackage that has been created
-    with svgdigitizer's `cv` command. However, they are normally obtained by
-    opening a :class:`Database` of entries::
+    An entry can be created directly from a datapackage that has been created
+    with svgdigitizer's `cv` command. However, the entry normally obtained by
+    opening a :class:`CVdatabase` of entries::
 
-        >>> from echemdb.cv.database import Database
-        >>> database = Database.create_example()
+        >>> from echemdb.cv.cvdatabase import CVdatabase
+        >>> database = CVdatabase.create_example()
         >>> entry = next(iter(database))
 
     """
 
-    def special_units(self, units):
+    def __repr__(self):
+        r"""
+        Return a printable representation of this entry.
+
+        EXAMPLES::
+
+            >>> entry = CVentry.create_examples()[0]
+            >>> entry
+            CVentry('alves_2011_electrochemistry_6010_f1a_solid')
+
+        """
+        return f"CVentry({repr(self.identifier)})"
+
+    def custom_units(self, units):
         if units == "original":
             units = {
                 field["name"]: field["unit"] for field in self.figure_description.fields
@@ -88,7 +100,7 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = CVentry.create_examples()[0]
             >>> entry._normalize_field_name('j')
             'j'
             >>> entry._normalize_field_name('x')
@@ -109,7 +121,7 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = CVentry.create_examples()[0]
             >>> entry.thumbnail()
             b'\x89PNG...'
 
@@ -157,7 +169,7 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = CVentry.create_examples()[0]
             >>> entry.plot()
             Figure(...)
 
@@ -229,118 +241,3 @@ class CVentry(Entry):
         fig.update_yaxes(showline=True, mirror=True)
 
         return fig
-
-    # @classmethod
-    # def create_examples(cls, name="alves_2011_electrochemistry_6010"):
-    #     r"""
-    #     Return some example entries for use in automated tests.
-
-    #     The examples are built on-demand from data in echemdb's examples directory.
-
-    #     EXAMPLES::
-
-    #         >>> Entry.create_examples()
-    #         [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
-
-    #     """
-    #     source = os.path.join(os.path.dirname(__file__), "..", "..", "examples", name)
-
-    #     if not os.path.exists(source):
-    #         raise ValueError(
-    #             f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
-    #         )
-
-    #     outdir = os.path.join(
-    #         os.path.dirname(__file__),
-    #         "..",
-    #         "..",
-    #         "..",
-    #         "data",
-    #         "generated",
-    #         "svgdigitizer",
-    #         name,
-    #     )
-
-    #     cls._digitize_example(source=source, outdir=outdir)
-
-    #     from echemdb.local import collect_bibliography, collect_datapackages
-
-    #     packages = collect_datapackages(outdir)
-    #     bibliography = collect_bibliography(source)
-    #     assert len(bibliography) == 1, f"No bibliography found for {name}."
-    #     bibliography = next(iter(bibliography))
-
-    #     if len(packages) == 0:
-    #         from glob import glob
-
-    #         raise ValueError(
-    #             f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
-    #             f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
-    #         )
-
-    #     return [
-    #         Entry(package=package, bibliography=bibliography) for package in packages
-    #     ]
-
-    @classmethod
-    def create_examples(cls, name="alves_2011_electrochemistry_6010"):
-        r"""
-        Return some example entries for use in automated tests.
-
-        The examples are built on-demand from data in echemdb's examples directory.
-
-        EXAMPLES::
-
-            >>> UnitPackage.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
-
-        """
-        packages, bibliography = cls._create_example_packages_bibliography(name=name)
-        return [
-            CVentry(package=package, bibliography=bibliography) for package in packages
-        ]
-
-    @classmethod
-    def _digitize_example(cls, source, outdir):
-        r"""
-        Digitize ``source`` and write the output to ``outdir``.
-
-        When running tests in parallel, this introduces a race condition that
-        we avoid with a global lock in the file system. Therefore, this method
-        not is not suitable to digitize files outside of doctesting. To
-        digitize data in bulk, have a look at the ``Makefile`` in the
-        echemdb/website project.
-        """
-        lockfile = f"{outdir}.lock"
-        os.makedirs(os.path.dirname(lockfile), exist_ok=True)
-
-        from filelock import FileLock
-
-        with FileLock(lockfile):
-            if not os.path.exists(outdir):
-                from glob import glob
-
-                for yaml in glob(os.path.join(source, "*.yaml")):
-                    svg = os.path.splitext(yaml)[0] + ".svg"
-
-                    from svgdigitizer.__main__ import digitize_cv
-                    from svgdigitizer.test.cli import invoke
-
-                    invoke(
-                        digitize_cv,
-                        "--sampling-interval",
-                        ".001",
-                        "--package",
-                        "--metadata",
-                        yaml,
-                        svg,
-                        "--outdir",
-                        outdir,
-                    )
-
-                assert os.path.exists(
-                    outdir
-                ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
-                assert any(
-                    os.scandir(outdir)
-                ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."

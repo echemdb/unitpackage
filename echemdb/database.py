@@ -1,5 +1,5 @@
 r"""
-A Database of Cyclic Voltammograms.
+A Database of datapackages with units.
 
 EXAMPLES:
 
@@ -185,13 +185,13 @@ class Database:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        from echemdb.cv.cventry import CVentry
+        from echemdb.entry import Entry
 
         def get_bibliography(package):
             if len(self._bibliography.entries) == 0:
                 return None
             try:
-                bib = CVentry(package, bibliography=None).source.citation_key
+                bib = Entry(package, bibliography=None).source.citation_key
             except AttributeError:
                 return None
 
@@ -199,7 +199,7 @@ class Database:
 
         return iter(
             [
-                CVentry(package, bibliography=get_bibliography(package))
+                Entry(package, bibliography=get_bibliography(package))
                 for package in self._packages
             ]
         )

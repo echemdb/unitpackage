@@ -6,11 +6,11 @@ EXAMPLES:
 Create a database from local data packages in the `data/` directory::
 
     >>> from echemdb.local import collect_datapackages
-    >>> database = Database(collect_datapackages('data/'))
+    >>> database = CVdatabase(collect_datapackages('data/'))
 
 Create a database from the data packages published in the echemdb::
 
-    >>> database = Database()  # doctest: +REMOTE_DATA
+    >>> database = CVdatabase()  # doctest: +REMOTE_DATA
 
 Search the database for a single publication::
 
@@ -46,7 +46,7 @@ from echemdb.database import Database
 logger = logging.getLogger("echemdb")
 
 
-class Database(Database):
+class CVdatabase(Database):
     r"""
     A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
 
@@ -57,7 +57,7 @@ class Database(Database):
 
     An empty database::
 
-        >>> database = Database([])
+        >>> database = CVdatabase([])
         >>> len(database)
         0
 
@@ -69,7 +69,7 @@ class Database(Database):
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
+            >>> database = CVdatabase.create_example()
             >>> database.materials()
             ['Ru', 'Cu']
 
@@ -93,7 +93,7 @@ class Database(Database):
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
+            >>> database = CVdatabase.create_example()
             >>> database.describe() # doctest: +NORMALIZE_WHITESPACE
             {'number of references': 2,
             'number of entries': 2,
@@ -113,7 +113,7 @@ class Database(Database):
 
         EXAMPLES::
 
-            >>> Database.create_example()
+            >>> CVdatabase.create_example()
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
@@ -123,7 +123,7 @@ class Database(Database):
             "alves_2011_electrochemistry_6010"
         ) + CVentry.create_examples("engstfeld_2018_polycrystalline_17743")
 
-        return Database(
+        return CVdatabase(
             [entry.package for entry in entries],
             [entry.bibliography for entry in entries],
         )
