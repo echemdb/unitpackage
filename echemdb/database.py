@@ -102,11 +102,11 @@ class Database:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from echemdb.entry import UnitPackage
+        from echemdb.entry import Entry
 
-        entries = UnitPackage.create_examples(
+        entries = Entry.create_examples(
             "alves_2011_electrochemistry_6010"
-        ) + UnitPackage.create_examples("engstfeld_2018_polycrystalline_17743")
+        ) + Entry.create_examples("engstfeld_2018_polycrystalline_17743")
 
         return Database(
             [entry.package for entry in entries],
@@ -185,13 +185,13 @@ class Database:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        from echemdb.cv.entry import Entry
+        from echemdb.cv.cventry import CVentry
 
         def get_bibliography(package):
             if len(self._bibliography.entries) == 0:
                 return None
             try:
-                bib = Entry(package, bibliography=None).source.citation_key
+                bib = CVentry(package, bibliography=None).source.citation_key
             except AttributeError:
                 return None
 
@@ -199,7 +199,7 @@ class Database:
 
         return iter(
             [
-                Entry(package, bibliography=get_bibliography(package))
+                CVentry(package, bibliography=get_bibliography(package))
                 for package in self._packages
             ]
         )

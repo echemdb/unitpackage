@@ -54,7 +54,7 @@ from echemdb.descriptor import Descriptor
 logger = logging.getLogger("echemdb")
 
 
-class UnitPackage:
+class Entry:
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
     describing a Cyclic Voltammogram.
@@ -462,7 +462,7 @@ class UnitPackage:
         #     )
         packages, bibliography = cls._create_example_packages_bibliography(name=name)
         return [
-            UnitPackage(package=package, bibliography=bibliography) for package in packages
+            Entry(package=package, bibliography=bibliography) for package in packages
         ]
 
     @classmethod

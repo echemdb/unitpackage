@@ -117,11 +117,11 @@ class Database(Database):
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from echemdb.cv.entry import Entry
+        from echemdb.cv.cventry import CVentry
 
-        entries = Entry.create_examples(
+        entries = CVentry.create_examples(
             "alves_2011_electrochemistry_6010"
-        ) + Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+        ) + CVentry.create_examples("engstfeld_2018_polycrystalline_17743")
 
         return Database(
             [entry.package for entry in entries],

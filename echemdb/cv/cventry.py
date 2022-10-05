@@ -49,12 +49,12 @@ also contain information on the source of the data.::
 import logging
 import os.path
 
-from echemdb.entry import UnitPackage
+from echemdb.entry import Entry
 
 logger = logging.getLogger("echemdb")
 
 
-class Entry(UnitPackage):
+class CVentry(Entry):
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
     describing a Cyclic Voltammogram.
@@ -148,9 +148,6 @@ class Entry(UnitPackage):
 
         buffer.seek(0)
         return buffer.read()
-
-    # def rescale(self, units=None):
-    #     return Entry(package=self._rescale(units=units), bibliography=self.bibliography)
 
     def plot(self, x_label="E", y_label="j"):
         r"""
@@ -300,7 +297,7 @@ class Entry(UnitPackage):
         """
         packages, bibliography = cls._create_example_packages_bibliography(name=name)
         return [
-            Entry(package=package, bibliography=bibliography) for package in packages
+            CVentry(package=package, bibliography=bibliography) for package in packages
         ]
 
     @classmethod
