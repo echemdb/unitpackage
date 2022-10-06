@@ -108,7 +108,7 @@ class Entry:
             '_descriptor', '_digitize_example',
             'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package', 'profile', 'rescale', 'resources', 'source',
+            'identifier', 'package',  'plot', 'profile', 'rescale', 'resources', 'source',
             'system', 'version', 'yaml']
 
         """
@@ -433,3 +433,53 @@ class Entry:
                 assert any(
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
+
+    def plot(self, x_label=None, y_label=None):
+        r"""
+        Return a plot of this entry.
+
+        The default plot is constructed from the first two columns of the dataframne.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.plot()
+            Figure(...)
+
+        The plot can also be returned with custom axis units available in the resource::
+
+            >>> entry.plot(x_label='j', y_label='E')
+            Figure(...)
+
+        """
+        import plotly.graph_objects
+
+        x_label = x_label or self.df.columns[0]
+        y_label = y_label or self.df.columns[1]
+
+        fig = plotly.graph_objects.Figure()
+
+        fig.add_trace(
+            plotly.graph_objects.Scatter(
+                x=self.df[x_label],
+                y=self.df[y_label],
+                mode="lines",
+                name="self.identifier",
+            )
+        )
+
+        fig.update_layout(
+            template="simple_white",
+            showlegend=True,
+            autosize=True,
+            width=600,
+            height=400,
+            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+            xaxis_title=f"{x_label} [{self.field_unit(x_label)}]",
+            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+        )
+
+        fig.update_xaxes(showline=True, mirror=True)
+        fig.update_yaxes(showline=True, mirror=True)
+
+        return fig

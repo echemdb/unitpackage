@@ -84,6 +84,23 @@ class CVentry(Entry):
         return f"CVentry({repr(self.identifier)})"
 
     def rescale(self, units):
+        r"""
+        Returns a rescaled :class:`CVentry` with axes in the specified ``units``.
+
+        Usage is the same as :class:`echemdb.entry.Entry'.
+        Provide a dict, where the key is the axis name and the value
+        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
+
+        The entry can be rescaled to the original axes units of the original datapackage::
+
+            >>> entry = CVentry.create_examples()[0]
+            >>> rescaled_entry = entry.rescale(units='original')
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'unit': 's', 'type': 'number'},
+            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+
+        """
         if units == "original":
             units = {
                 field["name"]: field["unit"] for field in self.figure_description.fields
@@ -202,6 +219,7 @@ class CVentry(Entry):
                     return self.identifier
             return f"Fig. {self.source.figure}: {self.source.curve}"
 
+        # pylint: disable=duplicate-code
         fig.add_trace(
             plotly.graph_objects.Scatter(
                 x=self.df[x_label],
@@ -226,6 +244,7 @@ class CVentry(Entry):
         def axis_label(label):
             return f"{label} [{self.field_unit(label)}{reference(label)}]"
 
+        # pylint: disable=duplicate-code
         fig.update_layout(
             template="simple_white",
             showlegend=True,
