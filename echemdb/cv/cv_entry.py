@@ -1,18 +1,18 @@
 r"""
 A Data Package describing a Cyclic Voltammogram.
 
-These are the individual elements of a :class:`CVdatabase`.
+These are the individual elements of a :class:`CVDatabase`.
 
 EXAMPLES:
 
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.cv.cvdatabase import CVdatabase
-    >>> db = CVdatabase.create_example()
+    >>> from echemdb.cv.cv_database import CVDatabase
+    >>> db = CVDatabase.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    CVentry('article',
+    CVEntry('article',
       fields=[
         ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
         ('journal', 'Physical Chemistry Chemical Physics'),
@@ -53,7 +53,7 @@ from echemdb.entry import Entry
 logger = logging.getLogger("echemdb")
 
 
-class CVentry(Entry):
+class CVEntry(Entry):
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
     describing a Cyclic Voltammogram.
@@ -62,10 +62,10 @@ class CVentry(Entry):
 
     An entry can be created directly from a datapackage that has been created
     with svgdigitizer's `cv` command. However, the entry normally obtained by
-    opening a :class:`CVdatabase` of entries::
+    opening a :class:`CVDatabase` of entries::
 
-        >>> from echemdb.cv.cvdatabase import CVdatabase
-        >>> database = CVdatabase.create_example()
+        >>> from echemdb.cv.cv_database import CVDatabase
+        >>> database = CVDatabase.create_example()
         >>> entry = next(iter(database))
 
     """
@@ -76,16 +76,16 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVentry.create_examples()[0]
+            >>> entry = CVEntry.create_examples()[0]
             >>> entry
-            CVentry('alves_2011_electrochemistry_6010_f1a_solid')
+            CVEntry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        return f"CVentry({repr(self.identifier)})"
+        return f"CVEntry({repr(self.identifier)})"
 
     def rescale(self, units):
         r"""
-        Returns a rescaled :class:`CVentry` with axes in the specified ``units``.
+        Returns a rescaled :class:`CVEntry` with axes in the specified ``units``.
 
         Usage is the same as :class:`echemdb.entry.Entry'.
         Provide a dict, where the key is the axis name and the value
@@ -93,7 +93,7 @@ class CVentry(Entry):
 
         The entry can be rescaled to the original axes units of the original datapackage::
 
-            >>> entry = CVentry.create_examples()[0]
+            >>> entry = CVEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
@@ -117,7 +117,7 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVentry.create_examples()[0]
+            >>> entry = CVEntry.create_examples()[0]
             >>> entry._normalize_field_name('j')
             'j'
             >>> entry._normalize_field_name('x')
@@ -138,7 +138,7 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVentry.create_examples()[0]
+            >>> entry = CVEntry.create_examples()[0]
             >>> entry.thumbnail()
             b'\x89PNG...'
 
@@ -186,7 +186,7 @@ class CVentry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVentry.create_examples()[0]
+            >>> entry = CVEntry.create_examples()[0]
             >>> entry.plot()
             Figure(...)
 

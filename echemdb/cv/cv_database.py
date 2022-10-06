@@ -6,16 +6,16 @@ EXAMPLES:
 Create a database from local data packages in the `data/` directory::
 
     >>> from echemdb.local import collect_datapackages
-    >>> database = CVdatabase(collect_datapackages('data/'))
+    >>> database = CVDatabase(collect_datapackages('data/'))
 
 Create a database from the data packages published in the echemdb::
 
-    >>> database = CVdatabase()  # doctest: +REMOTE_DATA
+    >>> database = CVDatabase()  # doctest: +REMOTE_DATA
 
 Search the database for a single publication::
 
     >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
-    [CVentry('alves_2011_electrochemistry_6010_f1a_solid'), ...
+    [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
 # ********************************************************************
@@ -46,7 +46,7 @@ from echemdb.database import Database
 logger = logging.getLogger("echemdb")
 
 
-class CVdatabase(Database):
+class CVDatabase(Database):
     r"""
     A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
 
@@ -57,14 +57,14 @@ class CVdatabase(Database):
 
     An empty database::
 
-        >>> database = CVdatabase([])
+        >>> database = CVDatabase([])
         >>> len(database)
         0
 
     """
-    from echemdb.cv.cventry import CVentry
+    from echemdb.cv.cv_entry import CVEntry
 
-    Entry = CVentry
+    Entry = CVEntry
 
     def materials(self):
         r"""
@@ -72,7 +72,7 @@ class CVdatabase(Database):
 
         EXAMPLES::
 
-            >>> database = CVdatabase.create_example()
+            >>> database = CVDatabase.create_example()
             >>> database.materials()
             ['Ru', 'Cu']
 
@@ -96,7 +96,7 @@ class CVdatabase(Database):
 
         EXAMPLES::
 
-            >>> database = CVdatabase.create_example()
+            >>> database = CVDatabase.create_example()
             >>> database.describe() # doctest: +NORMALIZE_WHITESPACE
             {'number of references': 2,
             'number of entries': 2,
@@ -116,17 +116,17 @@ class CVdatabase(Database):
 
         EXAMPLES::
 
-            >>> CVdatabase.create_example()
-            [CVentry('alves_2011_electrochemistry_6010_f1a_solid'), CVentry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+            >>> CVDatabase.create_example()
+            [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), CVEntry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from echemdb.cv.cventry import CVentry
+        from echemdb.cv.cv_entry import CVEntry
 
-        entries = CVentry.create_examples(
+        entries = CVEntry.create_examples(
             "alves_2011_electrochemistry_6010"
-        ) + CVentry.create_examples("engstfeld_2018_polycrystalline_17743")
+        ) + CVEntry.create_examples("engstfeld_2018_polycrystalline_17743")
 
-        return CVdatabase(
+        return CVDatabase(
             [entry.package for entry in entries],
             [entry.bibliography for entry in entries],
         )

@@ -8,7 +8,7 @@ API
 
 ```{toctree}
 :caption: "Modules:"
-api/cv_database.md
+api/CVDatabase.md
 api/cv_descriptor.md
 api/cv_entry.md
 api/remote.md
