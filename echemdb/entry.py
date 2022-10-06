@@ -269,15 +269,13 @@ class Entry:
             1     0.000006 -0.102158 -98.176205
             ...
 
-        A rescaled entry with the original axes units of the digitized plot::
-
-            >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
-
         """
+        from collections.abc import Mapping
+
+        if not isinstance(units, Mapping):
+            raise ValueError(
+                "'units' must have the format {'dimension': 'new unit'}, i.e., `{'j': 'uA / cm2', 't': 'h'}`"
+            )
 
         if not units:
             units = {}
@@ -389,9 +387,7 @@ class Entry:
                 f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
             )
 
-        return [
-            cls(package=package, bibliography=bibliography) for package in packages
-        ]
+        return [cls(package=package, bibliography=bibliography) for package in packages]
 
     @classmethod
     def _digitize_example(cls, source, outdir):

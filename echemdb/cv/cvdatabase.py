@@ -15,7 +15,7 @@ Create a database from the data packages published in the echemdb::
 Search the database for a single publication::
 
     >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
-    [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
+    [CVentry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
 # ********************************************************************
@@ -63,6 +63,7 @@ class CVdatabase(Database):
 
     """
     from echemdb.cv.cventry import CVentry
+
     Entry = CVentry
 
     def materials(self):
