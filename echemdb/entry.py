@@ -249,17 +249,17 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 'h', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 'h'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
 
         The values in the data frame are scaled to match the new units::
 
@@ -316,9 +316,9 @@ class Entry:
         The units and descriptions of the axes in the data frame can be recovered::
 
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
         from io import BytesIO
