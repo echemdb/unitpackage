@@ -17,10 +17,10 @@ Welcome to echemdb's documentation!
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.4.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-This echemdb module provides a Python library to interact with a database of 
+This echemdb module provides a Python library to interact with a database of
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org) 
+Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
 or from local files.
 
 Examples
@@ -29,8 +29,8 @@ Examples
 The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
 
 ```{code-cell} ipython3
-from echemdb.cv.database import Database
-db = Database()
+from echemdb.cv.cv_database import CVDatabase
+db = CVDatabase()
 db.describe()
 ```
 

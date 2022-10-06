@@ -15,7 +15,7 @@ kernelspec:
 
 # Entry interactions
 
-Each entry consists of 
+Each entry consists of
 1. descriptors describing the data in the datapackage.
 2. a bibliography reference (see [Bibliography](bibliography.md)).
 3. functions for descriptor representation, data manipulation and data visualization.
@@ -23,13 +23,13 @@ Each entry consists of
 
 ## Basic interactions
 
-The underlying information can be retrieved by `entry['name']`, 
-where name is the respective descriptor. Alternatively you can write `entry.name` 
+The underlying information can be retrieved by `entry['name']`,
+where name is the respective descriptor. Alternatively you can write `entry.name`
 where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
-from echemdb.cv.database import Database
-db = Database()
+from echemdb.cv.cv_database import CVDatabase
+db = CVDatabase()
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```
@@ -58,12 +58,12 @@ entry.system.electrodes.working_electrode.material
 
 ## Data
 
-The datapackage consists of two resources. 
+The datapackage consists of two resources.
 * The first resource has the entry's identifier as name. It describes the data in the CSV.
 * The second resource is named "echemdb". It contains the data used by the echemdb module.
 
 ```{note}
-The content of the CSV never changes unless it is explicitly overwritten. 
+The content of the CSV never changes unless it is explicitly overwritten.
 Changes to the data with the echemdb module are only applied to the `echemdb` resource.
 ```
 
@@ -113,8 +113,8 @@ entry.figure_description.fields
 
 ## Plots
 
-The data can be visualized in a plotly figure.  
-The default plot is `j` vs. `E` (or `I` vs. `E`).  
+The data can be visualized in a plotly figure.
+The default plot is `j` vs. `E` (or `I` vs. `E`).
 The curve label consits of the figure number in the original publication followed by a unique identifier.
 
 ```{code-cell} ipython3
