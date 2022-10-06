@@ -12,7 +12,7 @@ also contain information on the source of the data.::
     >>> db = CVDatabase.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    CVEntry('article',
+    Entry('article',
       fields=[
         ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
         ('journal', 'Physical Chemistry Chemical Physics'),
