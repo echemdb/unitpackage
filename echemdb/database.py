@@ -62,6 +62,8 @@ class Database:
     """
     from echemdb.entry import Entry
 
+    Entry = Entry
+
     def __init__(self, data_packages=None, bibliography=None):
         if data_packages is None:
             import os.path
@@ -103,13 +105,12 @@ class Database:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from echemdb.entry import Entry
 
-        entries = Entry.create_examples(
+        entries = cls.Entry.create_examples(
             "alves_2011_electrochemistry_6010"
-        ) + Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+        ) + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
 
-        return Database(
+        return cls(
             [entry.package for entry in entries],
             [entry.bibliography for entry in entries],
         )
@@ -168,7 +169,7 @@ class Database:
                 logger.debug(f"Filter removed entry {entry} due to error: {e}")
                 return False
 
-        return Database(
+        return type(self)(
             data_packages=[
                 entry.package for entry in self if catching_predicate(entry)
             ],

@@ -108,25 +108,3 @@ class CVDatabase(Database):
             "number of entries": len(self),
             "materials": self.materials(),
         }
-
-    @classmethod
-    def create_example(cls):
-        r"""
-        Return a sample database for use in automated tests.
-
-        EXAMPLES::
-
-            >>> CVDatabase.create_example()
-            [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), CVEntry('engstfeld_2018_polycrystalline_17743_f4b_1')]
-
-        """
-        from echemdb.cv.cv_entry import CVEntry
-
-        entries = CVEntry.create_examples(
-            "alves_2011_electrochemistry_6010"
-        ) + CVEntry.create_examples("engstfeld_2018_polycrystalline_17743")
-
-        return CVDatabase(
-            [entry.package for entry in entries],
-            [entry.bibliography for entry in entries],
-        )
