@@ -62,6 +62,8 @@ class CVdatabase(Database):
         0
 
     """
+    from echemdb.cv.cventry import CVentry
+    Entry = CVentry
 
     def materials(self):
         r"""
@@ -114,7 +116,7 @@ class CVdatabase(Database):
         EXAMPLES::
 
             >>> CVdatabase.create_example()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+            [CVentry('alves_2011_electrochemistry_6010_f1a_solid'), CVentry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
         from echemdb.cv.cventry import CVentry

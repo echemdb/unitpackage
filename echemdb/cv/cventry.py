@@ -83,13 +83,13 @@ class CVentry(Entry):
         """
         return f"CVentry({repr(self.identifier)})"
 
-    def custom_units(self, units):
+    def rescale(self, units):
         if units == "original":
             units = {
                 field["name"]: field["unit"] for field in self.figure_description.fields
             }
 
-        return units
+        return super().rescale(units)
 
     def _normalize_field_name(self, field_name):
         r"""

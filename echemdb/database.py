@@ -60,6 +60,7 @@ class Database:
         0
 
     """
+    from echemdb.entry import Entry
 
     def __init__(self, data_packages=None, bibliography=None):
         if data_packages is None:
@@ -155,7 +156,7 @@ class Database:
         entries in the database. If a property is missing the element is
         removed from the database::
 
-            >>> database.filter(lambda entry: entry.non.existant.property)
+            >>> database.filter(lambda entry: entry.non.existing.property)
             []
 
         """
@@ -185,13 +186,12 @@ class Database:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        from echemdb.entry import Entry
 
         def get_bibliography(package):
             if len(self._bibliography.entries) == 0:
                 return None
             try:
-                bib = Entry(package, bibliography=None).source.citation_key
+                bib = self.Entry(package, bibliography=None).source.citation_key
             except AttributeError:
                 return None
 
@@ -199,7 +199,7 @@ class Database:
 
         return iter(
             [
-                Entry(package, bibliography=get_bibliography(package))
+                self.Entry(package, bibliography=get_bibliography(package))
                 for package in self._packages
             ]
         )
