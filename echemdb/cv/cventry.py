@@ -106,14 +106,14 @@ class CVentry(Entry):
             >>> entry._normalize_field_name('x')
             Traceback (most recent call last):
             ...
-            ValueError: No axis named 'x' found.
+            ValueError: No axis with name 'x' found.
 
         """
         if field_name in self.package.get_resource("echemdb").schema.field_names:
             return field_name
         if field_name == "j":
             return self._normalize_field_name("I")
-        raise ValueError(f"No axis named '{field_name}' found.")
+        raise ValueError(f"No axis with name '{field_name}' found.")
 
     def thumbnail(self, width=96, height=72, dpi=72, **kwds):
         r"""

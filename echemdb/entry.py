@@ -1,7 +1,9 @@
 r"""
-A Data Package describing a Cyclic Voltammogram.
+A Data Package describing tabulated data for which the units of the
+column names (pandas) or fields (frictionless) are known.
 
-These are the individual elements of a :class:`Database`.
+Datapackages are the individual elements of a :class:`Database` and
+are denoted as `entry`.
 
 EXAMPLES:
 
@@ -57,13 +59,11 @@ logger = logging.getLogger("echemdb")
 class Entry:
     r"""
     A [data packages](https://github.com/frictionlessdata/datapackage-py)
-    describing a Cyclic Voltammogram.
+    describing tabulated data.
 
     EXAMPLES:
 
-    Entries could be created directly from a datapackage that has been created
-    with svgdigitizer's `cv` command. However, they are normally obtained by
-    opening a :class:`Database` of entries::
+    Entries are normally obtained by opening a :class:`Database` of entries::
 
         >>> from echemdb.database import Database
         >>> database = Database.create_example()
@@ -78,7 +78,7 @@ class Entry:
     @property
     def identifier(self):
         r"""
-        Return a unique identifier for this entry, i.e., its filename in the echemdb.
+        Return a unique identifier for this entry, i.e., its filename.
 
         EXAMPLES::
 
@@ -104,8 +104,8 @@ class Entry:
             '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
-            '__subclasshook__', '__weakref__', '_create_example_packages_bibliography',
-            '_descriptor', '_digitize_example', '_rescale', '_rescaleing',
+            '__subclasshook__', '__weakref__',
+            '_descriptor', '_digitize_example',
             'bibliography', 'citation', 'create_examples', 'curation', 'custom_units',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package', 'profile', 'rescale', 'resources', 'source',
@@ -238,35 +238,103 @@ class Entry:
         return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
 
     def custom_units(self, units):
+        r"""
+        """
         return units
 
-    def _rescaleing(self, units=None):
-        units = self.custom_units(units)
+    # def _rescaleing(self, units=None):
+    #     units = self.custom_units(units)
 
-        if not units:
-            units = {}
+    #     if not units:
+    #         units = {}
 
-        from copy import deepcopy
+    #     from copy import deepcopy
 
-        from astropy import units as u
+    #     from astropy import units as u
 
-        package = deepcopy(self.package)
-        fields = self.package.get_resource("echemdb").schema.fields
-        df = self.df.copy()
+    #     package = deepcopy(self.package)
+    #     fields = self.package.get_resource("echemdb").schema.fields
+    #     df = self.df.copy()
 
-        for idx, field in enumerate(fields):
-            if field.name in units:
-                df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
-                package.get_resource("echemdb")["schema"]["fields"][idx][
-                    "unit"
-                ] = units[field["name"]]
+    #     for idx, field in enumerate(fields):
+    #         if field.name in units:
+    #             df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
+    #             package.get_resource("echemdb")["schema"]["fields"][idx][
+    #                 "unit"
+    #             ] = units[field["name"]]
 
-        package.get_resource("echemdb").data = df.to_csv(index=False).encode()
+    #     package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
-        return package
+    #     return package
 
-    @classmethod
-    def _rescale(cls, package, bibliography):
+    # @classmethod
+    # def _rescale(cls, package, bibliography):
+    #     r"""
+    #     Returns a rescaled :class:`Entry` with axes in the specified ``units``.
+    #     Provide a dict, where the key is the axis name and the value
+    #     the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
+
+    #     EXAMPLES:
+
+    #     The units without any rescaling::
+
+    #         >>> entry = Entry.create_examples()[0]
+    #         >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+    #         [{'name': 't', 'unit': 's', 'type': 'number'},
+    #         {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+    #         {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+
+    #     A rescaled entry using different units::
+
+    #         >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
+    #         >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+    #         [{'name': 't', 'unit': 'h', 'type': 'number'},
+    #         {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+    #         {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
+
+    #     The values in the data frame are scaled to match the new units::
+
+    #         >>> rescaled_entry.df
+    #                      t         E          j
+    #         0     0.000000 -0.103158 -99.827664
+    #         1     0.000006 -0.102158 -98.176205
+    #         ...
+
+    #     A rescaled entry with the original axes units of the digitized plot::
+
+    #         >>> rescaled_entry = entry.rescale(units='original')
+    #         >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+    #         [{'name': 't', 'unit': 's', 'type': 'number'},
+    #         {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
+    #         {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+
+    #     """
+    #     units = self.custom_units(units)
+
+    #     if not units:
+    #         units = {}
+
+    #     from copy import deepcopy
+
+    #     from astropy import units as u
+
+    #     package = deepcopy(self.package)
+    #     fields = self.package.get_resource("echemdb").schema.fields
+    #     df = self.df.copy()
+
+    #     for idx, field in enumerate(fields):
+    #         if field.name in units:
+    #             df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
+    #             package.get_resource("echemdb")["schema"]["fields"][idx][
+    #                 "unit"
+    #             ] = units[field["name"]]
+
+    #     package.get_resource("echemdb").data = df.to_csv(index=False).encode()
+
+    #     #print(dir(package))
+    #     return cls(package=package, bibliography=bibliography)
+
+    def rescale(self, units):
         r"""
         Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
@@ -307,33 +375,30 @@ class Entry:
             {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
 
         """
-        # units = self.special_units(units)
+        units = self.custom_units(units)
 
-        # if not units:
-        #     units = {}
+        if not units:
+            units = {}
 
-        # from copy import deepcopy
+        from copy import deepcopy
 
-        # from astropy import units as u
+        from astropy import units as u
 
-        # package = deepcopy(self.package)
-        # fields = self.package.get_resource("echemdb").schema.fields
-        # df = self.df.copy()
+        package = deepcopy(self.package)
+        fields = self.package.get_resource("echemdb").schema.fields
+        df = self.df.copy()
 
-        # for idx, field in enumerate(fields):
-        #     if field.name in units:
-        #         df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
-        #         package.get_resource("echemdb")["schema"]["fields"][idx][
-        #             "unit"
-        #         ] = units[field["name"]]
+        for idx, field in enumerate(fields):
+            if field.name in units:
+                df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
+                package.get_resource("echemdb")["schema"]["fields"][idx][
+                    "unit"
+                ] = units[field["name"]]
 
-        # package.get_resource("echemdb").data = df.to_csv(index=False).encode()
+        package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
-        #print(dir(package))
-        return cls(package=package, bibliography=bibliography)
+        return type(self)(package=package, bibliography=self.bibliography)
 
-    def rescale(self, units):
-        return self._rescale(self._rescaleing(units), None)
 
     @property
     def df(self):
@@ -376,43 +441,43 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    @classmethod
-    def _create_example_packages_bibliography(cls, name="alves_2011_electrochemistry_6010"):
-        source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
+    # @classmethod
+    # def _create_example_packages_bibliography(cls, name="alves_2011_electrochemistry_6010"):
+    #     source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
 
-        if not os.path.exists(source):
-            raise ValueError(
-                f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
-            )
+    #     if not os.path.exists(source):
+    #         raise ValueError(
+    #             f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
+    #         )
 
-        outdir = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "..",
-            "data",
-            "generated",
-            "svgdigitizer",
-            name,
-        )
+    #     outdir = os.path.join(
+    #         os.path.dirname(__file__),
+    #         "..",
+    #         "..",
+    #         "data",
+    #         "generated",
+    #         "svgdigitizer",
+    #         name,
+    #     )
 
-        cls._digitize_example(source=source, outdir=outdir)
+    #     cls._digitize_example(source=source, outdir=outdir)
 
-        from echemdb.local import collect_bibliography, collect_datapackages
+    #     from echemdb.local import collect_bibliography, collect_datapackages
 
-        packages = collect_datapackages(outdir)
-        bibliography = collect_bibliography(source)
-        assert len(bibliography) == 1, f"No bibliography found for {name}."
-        bibliography = next(iter(bibliography))
+    #     packages = collect_datapackages(outdir)
+    #     bibliography = collect_bibliography(source)
+    #     assert len(bibliography) == 1, f"No bibliography found for {name}."
+    #     bibliography = next(iter(bibliography))
 
-        if len(packages) == 0:
-            from glob import glob
+    #     if len(packages) == 0:
+    #         from glob import glob
 
-            raise ValueError(
-                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
-                f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
-            )
+    #         raise ValueError(
+    #             f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
+    #             f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+    #         )
 
-        return packages, bibliography
+    #     return packages, bibliography
 
     @classmethod
     def create_examples(cls, name="alves_2011_electrochemistry_6010"):
