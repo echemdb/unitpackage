@@ -231,15 +231,10 @@ class CVEntry(Entry):
 
         def reference(label):
             if label == "E":
-                try:
-                    self.package.get_resource("echemdb").schema.get_field(label)[
-                        "reference"
-                    ]
-                except KeyError:
+                field = self.package.get_resource("echemdb").schema.get_field(label)
+                if "reference" not in field:
                     return ""
-                return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
-
-            return ""
+                return f" vs. {field['reference']}"
 
         def axis_label(label):
             return f"{label} [{self.field_unit(label)}{reference(label)}]"
