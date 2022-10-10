@@ -1,5 +1,5 @@
 r"""
-A Database of datapackages with units.
+A collection of datapackages with units.
 
 EXAMPLES:
 
@@ -62,6 +62,7 @@ class Database:
     """
     from echemdb.entry import Entry
 
+    # Entries of this database are created from this type. Subclasses can replace this with a specialized entry type.
     Entry = Entry
 
     def __init__(self, data_packages=None, bibliography=None):

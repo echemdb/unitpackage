@@ -79,7 +79,7 @@ class CVDatabase(Database):
         """
         import pandas as pd
 
-        return list(
+        return set(
             pd.unique(
                 pd.Series(
                     [

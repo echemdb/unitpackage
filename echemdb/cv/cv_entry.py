@@ -55,13 +55,13 @@ logger = logging.getLogger("echemdb")
 
 class CVEntry(Entry):
     r"""
-    A [data packages](https://github.com/frictionlessdata/datapackage-py)
+    A [data package](https://github.com/frictionlessdata/datapackage-py)
     describing a Cyclic Voltammogram.
 
     EXAMPLES:
 
     An entry can be created directly from a datapackage that has been created
-    with svgdigitizer's `cv` command. However, the entry normally obtained by
+    with svgdigitizer's `cv` command. However, entries are normally obtained by
     opening a :class:`CVDatabase` of entries::
 
         >>> from echemdb.cv.cv_database import CVDatabase
@@ -85,13 +85,13 @@ class CVEntry(Entry):
 
     def rescale(self, units):
         r"""
-        Returns a rescaled :class:`CVEntry` with axes in the specified ``units``.
+        Return a rescaled :class:`CVEntry` with axes in the specified ``units``.
 
-        Usage is the same as :class:`echemdb.entry.Entry'.
-        Provide a dict, where the key is the axis name and the value
+        Usage is essentially the same as for :meth:`echemdb.entry.Entry.rescale', i.e.,
+        new units are expected as dict, where the key is the axis name and the value
         the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
 
-        The entry can be rescaled to the original axes units of the original datapackage::
+        Additionally, the entry can be rescaled to the axes' units of the original datapackage::
 
             >>> entry = CVEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
@@ -110,10 +110,10 @@ class CVEntry(Entry):
 
     def _normalize_field_name(self, field_name):
         r"""
-        Return a field name when it exists in the `echemdb` resource's field names.
+        Return the name of a field name of the `echemdb` resource.
 
-        If 'j' is requested and does not exists in the resource's field names,
-        'I' will be returned instead.
+        If 'j' is requested but is not present in the resource,
+        'I' is returned instead.
 
         EXAMPLES::
 
@@ -182,7 +182,7 @@ class CVEntry(Entry):
         r"""
         Return a plot of this entry.
         The default plot is a cyclic voltammogram ('j vs E').
-        When `j` is not defined `I` is used instead.
+        When `j` is present in the data, `I` is used instead.
 
         EXAMPLES::
 
@@ -190,12 +190,12 @@ class CVEntry(Entry):
             >>> entry.plot()
             Figure(...)
 
-        The plot can also be returned with custom axis units available in the resource::
+        The plot can also be returned with custom axis dimensions (field names) available in the resource::
 
             >>> entry.plot(x_label='t', y_label='E')
             Figure(...)
 
-        The plot with axis units of the original figure can be obtained by first rescaling the entry::
+        A plot resembling the original figure can be obtained by first rescaling::
 
             >>> rescaled_entry = entry.rescale('original')
             >>> rescaled_entry.plot()
