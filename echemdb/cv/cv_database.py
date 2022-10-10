@@ -74,7 +74,7 @@ class CVDatabase(Database):
 
             >>> database = CVDatabase.create_example()
             >>> database.materials()
-            ['Ru', 'Cu']
+            {'Cu', 'Ru'}
 
         """
         import pandas as pd
@@ -100,7 +100,7 @@ class CVDatabase(Database):
             >>> database.describe() # doctest: +NORMALIZE_WHITESPACE
             {'number of references': 2,
             'number of entries': 2,
-            'materials': ['Ru', 'Cu']}
+            'materials': {'Cu', 'Ru'}}
 
         """
         return {
