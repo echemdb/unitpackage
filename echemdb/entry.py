@@ -464,7 +464,7 @@ class Entry:
                 x=self.df[x_label],
                 y=self.df[y_label],
                 mode="lines",
-                name="self.identifier",
+                name=self.identifier,
             )
         )
 

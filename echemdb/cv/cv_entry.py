@@ -207,8 +207,6 @@ class CVEntry(Entry):
         x_label = self._normalize_field_name(x_label)
         y_label = self._normalize_field_name(y_label)
 
-        fig = plotly.graph_objects.Figure()
-
         def figure_name():
             try:
                 self.source.figure
@@ -219,15 +217,8 @@ class CVEntry(Entry):
                     return self.identifier
             return f"Fig. {self.source.figure}: {self.source.curve}"
 
-        # pylint: disable=duplicate-code
-        fig.add_trace(
-            plotly.graph_objects.Scatter(
-                x=self.df[x_label],
-                y=self.df[y_label],
-                mode="lines",
-                name=f"{figure_name()}",
-            )
-        )
+        fig = super.plot(x_label=x_label, y_label=y_label, name=figure_name())
+
 
         def reference(label):
             if not label == "E":
@@ -240,19 +231,9 @@ class CVEntry(Entry):
         def axis_label(label):
             return f"{label} [{self.field_unit(label)}{reference(label)}]"
 
-        # pylint: disable=duplicate-code
         fig.update_layout(
-            template="simple_white",
-            showlegend=True,
-            autosize=True,
-            width=600,
-            height=400,
-            margin=dict(l=70, r=70, b=70, t=70, pad=7),
             xaxis_title=axis_label(x_label),
             yaxis_title=axis_label(y_label),
         )
-
-        fig.update_xaxes(showline=True, mirror=True)
-        fig.update_yaxes(showline=True, mirror=True)
 
         return fig
