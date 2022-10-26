@@ -217,7 +217,7 @@ class CVEntry(Entry):
                     return self.identifier
             return f"Fig. {self.source.figure}: {self.source.curve}"
 
-        fig = super.plot(x_label=x_label, y_label=y_label, name=figure_name())
+        fig = super().plot(x_label=x_label, y_label=y_label, name=figure_name())
 
 
         def reference(label):
