@@ -434,7 +434,7 @@ class Entry:
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
-    def plot(self, x_label=None, y_label=None):
+    def plot(self, x_label=None, y_label=None, name=None):
         r"""
         Return a plot of this entry.
 
@@ -464,7 +464,7 @@ class Entry:
                 x=self.df[x_label],
                 y=self.df[y_label],
                 mode="lines",
-                name=self.identifier,
+                name=name or self.identifier,
             )
         )
 
