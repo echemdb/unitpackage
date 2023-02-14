@@ -249,17 +249,17 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 'h', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'uA / cm2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 'h'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
 
         The values in the data frame are scaled to match the new units::
 
@@ -273,9 +273,9 @@ class Entry:
 
             >>> rescaled_entry = entry.rescale(units='original')
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'mA / cm2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
         """
         if units == "original":
@@ -322,9 +322,9 @@ class Entry:
         The units and descriptions of the axes in the data frame can be recovered::
 
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'unit': 's', 'type': 'number'},
-            {'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-            {'name': 'j', 'unit': 'A / m2', 'type': 'number'}]
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
         from io import BytesIO
@@ -471,7 +471,7 @@ class Entry:
             autosize=True,
             width=600,
             height=400,
-            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+            margin={"l": 70, "r": 70, "b": 70, "t": 70, "pad": 7},
             xaxis_title=axis_label(x_label),
             yaxis_title=axis_label(y_label),
         )
