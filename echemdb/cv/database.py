@@ -191,10 +191,14 @@ class Database:
             bib = Entry(package, bibliography=None).source.citation_key
             return self._bibliography.entries.get(bib, None)
 
+        # Return the entries sorted by their identifier. There's a small cost
+        # associated with the sorting but we do not expect to be managing
+        # millions of identifiers and having them show in sorted order is very
+        # convenient, e.g., when doctesting.
         return iter(
             [
                 Entry(package, bibliography=get_bibliography(package))
-                for package in self._packages
+                for package in sorted(self._packages, key=lambda p: p.resources[0].name)
             ]
         )
 
