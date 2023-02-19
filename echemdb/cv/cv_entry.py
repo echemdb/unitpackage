@@ -206,15 +206,11 @@ class CVEntry(Entry):
         y_label = self._normalize_field_name(y_label)
 
         def figure_name():
-            # try:
-            #     self.source.figure
-            # except AttributeError:
-            #     try:
-            #         self.source.curve
-            #     except AttributeError:
-            #         return self.identifier
-            # return f"Fig. {self.source.figure}: {self.source.curve}"
-            if hasattr(self, "source") and hasattr(self.source, "figure") and hasattr(self.source, "curve"):
+            if (
+                hasattr(self, "source")
+                and hasattr(self.source, "figure")
+                and hasattr(self.source, "curve")
+            ):
                 return f"Fig. {self.source.figure}: {self.source.curve}"
 
             return self.identifier
