@@ -217,7 +217,6 @@ class CVEntry(Entry):
 
         fig = super().plot(x_label=x_label, y_label=y_label, name=name or figure_name())
 
-
         def reference(label):
             if not label == "E":
                 return ""
