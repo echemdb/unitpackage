@@ -101,7 +101,7 @@ class Entry:
             >>> dir(entry) # doctest: +NORMALIZE_WHITESPACE
             ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__',
             '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__',
-            '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__',
+            '__getitem__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__',
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
             '__subclasshook__', '__weakref__',
@@ -269,6 +269,17 @@ class Entry:
             1     0.000006 -0.102158 -98.176205
             ...
 
+<<<<<<< HEAD:echemdb/entry.py
+=======
+        A rescaled entry with the original axes units of the digitized plot::
+
+            >>> rescaled_entry = entry.rescale(units='original')
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
+
+>>>>>>> origin/main:echemdb/cv/entry.py
         """
         from collections.abc import Mapping
 
