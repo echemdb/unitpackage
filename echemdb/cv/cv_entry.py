@@ -178,7 +178,7 @@ class CVEntry(Entry):
         buffer.seek(0)
         return buffer.read()
 
-    def plot(self, x_label="E", y_label="j"):
+    def plot(self, x_label="E", y_label="j", name=None):
         r"""
         Return a plot of this entry.
         The default plot is a cyclic voltammogram ('j vs E').
@@ -202,8 +202,6 @@ class CVEntry(Entry):
             Figure(...)
 
         """
-        import plotly.graph_objects
-
         x_label = self._normalize_field_name(x_label)
         y_label = self._normalize_field_name(y_label)
 
@@ -217,7 +215,7 @@ class CVEntry(Entry):
                     return self.identifier
             return f"Fig. {self.source.figure}: {self.source.curve}"
 
-        fig = super().plot(x_label=x_label, y_label=y_label, name=figure_name())
+        fig = super().plot(x_label=x_label, y_label=y_label, name=name or figure_name())
 
 
         def reference(label):

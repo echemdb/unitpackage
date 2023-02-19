@@ -474,7 +474,7 @@ class Entry:
             autosize=True,
             width=600,
             height=400,
-            margin=dict(l=70, r=70, b=70, t=70, pad=7),
+            margin={'l':70, 'r':70, 'b':70, 't':70, 'pad':7},
             xaxis_title=f"{x_label} [{self.field_unit(x_label)}]",
             yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
         )
