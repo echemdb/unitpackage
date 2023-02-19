@@ -198,7 +198,7 @@ class Database:
         return iter(
             [
                 Entry(package, bibliography=get_bibliography(package))
-                for package in sorted(self._packages, key=lambda p: p.identifier)
+                for package in sorted(self._packages, key=lambda p: p.resources[0].name)
             ]
         )
 
