@@ -73,8 +73,8 @@ class CVDatabase(Database):
         EXAMPLES::
 
             >>> database = CVDatabase.create_example()
-            >>> database.materials()
-            {'Cu', 'Ru'}
+            >>> database.materials() == {'Cu', 'Ru'}
+            True
 
         """
         import pandas as pd
@@ -97,10 +97,11 @@ class CVDatabase(Database):
         EXAMPLES::
 
             >>> database = CVDatabase.create_example()
-            >>> database.describe() # doctest: +NORMALIZE_WHITESPACE
-            {'number of references': 2,
-            'number of entries': 2,
-            'materials': {'Cu', 'Ru'}}
+            >>> database.describe() == \
+            ... {'number of references': 2,
+            ... 'number of entries': 2,
+            ... 'materials': {'Cu', 'Ru'}}
+            True
 
         """
         return {
