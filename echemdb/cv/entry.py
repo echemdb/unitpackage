@@ -167,10 +167,11 @@ class Entry:
                 ...
 
         """
-        citation = self.package['bibliography']
+        citation = self.package["bibliography"]
         from pybtex.database import parse_string
-        bibliography = parse_string(citation, 'bibtex')
-        return bibliography.entries[self.package['source']['citation key']]
+
+        bibliography = parse_string(citation, "bibtex")
+        return bibliography.entries[self.package["source"]["citation key"]]
 
     def citation(self, backend="text"):
         r"""
@@ -545,9 +546,7 @@ class Entry:
                 f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
             )
 
-        return [
-            Entry(package=package) for package in packages
-        ]
+        return [Entry(package=package) for package in packages]
 
     @classmethod
     def _digitize_example(cls, source, outdir):
@@ -568,10 +567,11 @@ class Entry:
         with FileLock(lockfile):
             if not os.path.exists(outdir):
                 from glob import glob
+
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
-                    from svgdigitizer.__main__ import digitize_cv
+                    from svgdigitizer.entrypoint import digitize_cv
                     from svgdigitizer.test.cli import invoke
 
                     invoke(

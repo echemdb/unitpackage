@@ -167,12 +167,7 @@ class Database:
         """
         from echemdb.cv.entry import Entry
 
-        return iter(
-            [
-                Entry(package)
-                for package in self._packages
-            ]
-        )
+        return iter([Entry(package) for package in self._packages])
 
     def __len__(self):
         r"""
