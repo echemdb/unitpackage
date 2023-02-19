@@ -269,17 +269,6 @@ class Entry:
             1     0.000006 -0.102158 -98.176205
             ...
 
-<<<<<<< HEAD:echemdb/entry.py
-=======
-        A rescaled entry with the original axes units of the digitized plot::
-
-            >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
-            {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
-
->>>>>>> origin/main:echemdb/cv/entry.py
         """
         from collections.abc import Mapping
 
