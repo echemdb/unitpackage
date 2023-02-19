@@ -92,7 +92,7 @@ class CVDatabase(Database):
 
     def describe(self):
         r"""
-        Returns some statistics about the database.
+        Return some statistics about the database.
 
         EXAMPLES::
 

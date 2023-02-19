@@ -6,7 +6,7 @@ These are the individual elements of a :class:`CVDatabase`.
 EXAMPLES:
 
 Data Packages containing published data,
-also contain information on the source of the data.::
+also contain information on the source of the data::
 
     >>> from echemdb.cv.cv_database import CVDatabase
     >>> db = CVDatabase.create_example()
