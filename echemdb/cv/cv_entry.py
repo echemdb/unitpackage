@@ -6,7 +6,7 @@ These are the individual elements of a :class:`CVDatabase`.
 EXAMPLES:
 
 Data Packages containing published data,
-also contain information on the source of the data.::
+also contain information on the source of the data::
 
     >>> from echemdb.cv.cv_database import CVDatabase
     >>> db = CVDatabase.create_example()
@@ -182,7 +182,7 @@ class CVEntry(Entry):
         r"""
         Return a plot of this entry.
         The default plot is a cyclic voltammogram ('j vs E').
-        When `j` is present in the data, `I` is used instead.
+        When `j` is not present in the data, `I` is used instead.
 
         EXAMPLES::
 
