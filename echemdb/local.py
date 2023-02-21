@@ -26,7 +26,7 @@ Utilities to work with local data packages.
 
 def collect_datapackages(data):
     r"""
-    Return a list of data packages defined in the directory `data2` and its
+    Return a list of data packages defined in the directory `data` and its
     subdirectories.
 
     EXAMPLES::
