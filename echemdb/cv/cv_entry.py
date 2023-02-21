@@ -81,7 +81,7 @@ class CVEntry(Entry):
             CVEntry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        return f"CVEntry({repr(self.identifier)})"
+        return f"CVEntry({self.identifier!r})"
 
     def rescale(self, units):
         r"""

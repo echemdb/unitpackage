@@ -274,7 +274,7 @@ class Entry:
 
         if not isinstance(units, Mapping):
             raise ValueError(
-                "'units' must have the format {'dimension': 'new unit'}, i.e., `{'j': 'uA / cm2', 't': 'h'}`"
+                "'units' must have the format {'dimension': 'new unit'}, e.g., `{'j': 'uA / cm2', 't': 'h'}`"
             )
 
         if not units:
