@@ -18,13 +18,13 @@ kernelspec:
 
 +++
 
-A database can be generated from a remote or a local source. 
+A database can be generated from a remote or a local source.
 
 You can create a database from the entries on [echemdb.org](https://www.echemdb.org):
 
 ```{code-cell} ipython3
-from echemdb.cv.database import Database
-db = Database()
+from echemdb.cv.cv_database import CVDatabase
+db = CVDatabase()
 ```
 
 Show statistics of the databse
@@ -39,7 +39,7 @@ You can iterate over these entries
 next(iter(db))
 ```
 
-The database can be filtered for specific descriptors, 
+The database can be filtered for specific descriptors,
 wherby a new database is created.
 
 ```{code-cell} ipython3

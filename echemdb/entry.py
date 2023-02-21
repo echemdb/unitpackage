@@ -1,14 +1,16 @@
 r"""
-A Data Package decribing a Cyclic Voltammogram.
+A Data Package describing tabulated data for which the units of the
+column names (pandas) or fields (frictionless) are known.
 
-These are the individual elements of a :class:`Database`.
+Datapackages are the individual elements of a :class:`Database` and
+are denoted as `entry`.
 
 EXAMPLES:
 
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.cv.database import Database
+    >>> from echemdb.database import Database
     >>> db = Database.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
@@ -49,23 +51,21 @@ also contain information on the source of the data.::
 import logging
 import os.path
 
-from echemdb.cv.descriptor import Descriptor
+from echemdb.descriptor import Descriptor
 
 logger = logging.getLogger("echemdb")
 
 
 class Entry:
     r"""
-    A [data packages](https://github.com/frictionlessdata/datapackage-py)
-    describing a Cyclic Voltammogram.
+    A `data packages <https://github.com/frictionlessdata/framework>`_
+    describing tabulated data.
 
     EXAMPLES:
 
-    Entries could be created directly from a datapackage that has been created
-    with svgdigitizer's `cv` command. However, they are normally obtained by
-    opening a :class:`Database` of entries::
+    Entries are normally obtained by opening a :class:`Database` of entries::
 
-        >>> from echemdb.cv.database import Database
+        >>> from echemdb.database import Database
         >>> database = Database.create_example()
         >>> entry = next(iter(database))
 
@@ -78,7 +78,7 @@ class Entry:
     @property
     def identifier(self):
         r"""
-        Return a unique identifier for this entry, i.e., its filename in the echemdb.
+        Return a unique identifier for this entry, i.e., its filename.
 
         EXAMPLES::
 
@@ -105,11 +105,11 @@ class Entry:
             '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__',
             '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__',
             '__subclasshook__', '__weakref__',
-            '_descriptor', '_digitize_example', '_normalize_field_name',
-            'bibliography', 'citation', 'create_examples', 'curation', 'data_description',
-            'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package', 'plot', 'profile', 'rescale',
-            'resources', 'source', 'system', 'thumbnail', 'version', 'yaml']
+            '_descriptor', '_digitize_example',
+            'bibliography', 'citation', 'create_examples', 'curation',
+            'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
+            'identifier', 'package',  'plot', 'profile', 'rescale', 'resources', 'source',
+            'system', 'version', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -237,7 +237,7 @@ class Entry:
         """
         return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
 
-    def rescale(self, units=None):
+    def rescale(self, units):
         r"""
         Returns a rescaled :class:`Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
@@ -269,19 +269,13 @@ class Entry:
             1     0.000006 -0.102158 -98.176205
             ...
 
-        A rescaled entry with the original axes units of the digitized plot::
-
-            >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
-            {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
-
         """
-        if units == "original":
-            units = {
-                field["name"]: field["unit"] for field in self.figure_description.fields
-            }
+        from collections.abc import Mapping
+
+        if not isinstance(units, Mapping):
+            raise ValueError(
+                "'units' must have the format {'dimension': 'new unit'}, e.g., `{'j': 'uA / cm2', 't': 'h'}`"
+            )
 
         if not units:
             units = {}
@@ -303,7 +297,7 @@ class Entry:
 
         package.get_resource("echemdb").data = df.to_csv(index=False).encode()
 
-        return Entry(package=package, bibliography=self.bibliography)
+        return type(self)(package=package, bibliography=self.bibliography)
 
     @property
     def df(self):
@@ -346,141 +340,6 @@ class Entry:
         """
         return f"Entry({repr(self.identifier)})"
 
-    def _normalize_field_name(self, field_name):
-        r"""
-        Return a field name when it exists in the `echemdb` resource's field names.
-
-        If 'j' is requested and does not exists in the resource's field names,
-        'I' will be returned instead.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry._normalize_field_name('j')
-            'j'
-            >>> entry._normalize_field_name('x')
-            Traceback (most recent call last):
-            ...
-            ValueError: No axis named 'x' found.
-
-        """
-        if field_name in self.package.get_resource("echemdb").schema.field_names:
-            return field_name
-        if field_name == "j":
-            return self._normalize_field_name("I")
-        raise ValueError(f"No axis named '{field_name}' found.")
-
-    def thumbnail(self, width=96, height=72, dpi=72, **kwds):
-        r"""
-        Return a thumbnail of the entry's curve as a PNG byte stream.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.thumbnail()
-            b'\x89PNG...'
-
-        The PNG's ``width`` and ``height`` can be specified in pixels.
-        Additional keyword arguments are passed to the data frame plotting
-        method::
-
-            >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
-            b"\x89PNG..."
-
-        """
-        kwds.setdefault("color", "b")
-        kwds.setdefault("linewidth", 1)
-        kwds.setdefault("legend", False)
-
-        import matplotlib.pyplot
-
-        # A reasonable DPI setting that should work for most screens is the default value of 72.
-        fig, axis = matplotlib.pyplot.subplots(
-            1, 1, figsize=[width / dpi, height / dpi], dpi=dpi
-        )
-        self.df.plot(
-            "E",
-            self._normalize_field_name("j"),
-            ax=axis,
-            **kwds,
-        )
-
-        matplotlib.pyplot.axis("off")
-        matplotlib.pyplot.close(fig)
-
-        import io
-
-        buffer = io.BytesIO()
-        fig.savefig(buffer, format="png", transparent=True, dpi=dpi)
-
-        buffer.seek(0)
-        return buffer.read()
-
-    def plot(self, x_label="E", y_label="j"):
-        r"""
-        Return a plot of this entry.
-        The default plot is a cyclic voltammogram ('j vs E').
-        When `j` is not defined `I` is used instead.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.plot()
-            Figure(...)
-
-        The plot can also be returned with custom axis units available in the resource::
-
-            >>> entry.plot(x_label='t', y_label='E')
-            Figure(...)
-
-        The plot with axis units of the original figure can be obtained by first rescaling the entry::
-
-            >>> rescaled_entry = entry.rescale('original')
-            >>> rescaled_entry.plot()
-            Figure(...)
-
-        """
-        import plotly.graph_objects
-
-        x_label = self._normalize_field_name(x_label)
-        y_label = self._normalize_field_name(y_label)
-
-        fig = plotly.graph_objects.Figure()
-
-        fig.add_trace(
-            plotly.graph_objects.Scatter(
-                x=self.df[x_label],
-                y=self.df[y_label],
-                mode="lines",
-                name=f"Fig. {self.source.figure}: {self.source.curve}",
-            )
-        )
-
-        def reference(label):
-            if label == "E":
-                return f" vs. {self.package.get_resource('echemdb').schema.get_field(label)['reference']}"
-
-            return ""
-
-        def axis_label(label):
-            return f"{label} [{self.field_unit(label)}{reference(label)}]"
-
-        fig.update_layout(
-            template="simple_white",
-            showlegend=True,
-            autosize=True,
-            width=600,
-            height=400,
-            margin={"l": 70, "r": 70, "b": 70, "t": 70, "pad": 7},
-            xaxis_title=axis_label(x_label),
-            yaxis_title=axis_label(y_label),
-        )
-
-        fig.update_xaxes(showline=True, mirror=True)
-        fig.update_yaxes(showline=True, mirror=True)
-
-        return fig
-
     @classmethod
     def create_examples(cls, name="alves_2011_electrochemistry_6010"):
         r"""
@@ -494,7 +353,7 @@ class Entry:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
         """
-        source = os.path.join(os.path.dirname(__file__), "..", "..", "examples", name)
+        source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
 
         if not os.path.exists(source):
             raise ValueError(
@@ -503,7 +362,6 @@ class Entry:
 
         outdir = os.path.join(
             os.path.dirname(__file__),
-            "..",
             "..",
             "..",
             "data",
@@ -529,9 +387,7 @@ class Entry:
                 f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
             )
 
-        return [
-            Entry(package=package, bibliography=bibliography) for package in packages
-        ]
+        return [cls(package=package, bibliography=bibliography) for package in packages]
 
     @classmethod
     def _digitize_example(cls, source, outdir):
@@ -577,3 +433,53 @@ class Entry:
                 assert any(
                     os.scandir(outdir)
                 ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
+
+    def plot(self, x_label=None, y_label=None, name=None):
+        r"""
+        Return a plot of this entry.
+
+        The default plot is constructed from the first two columns of the dataframne.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.plot()
+            Figure(...)
+
+        The plot can also be returned with custom axis units available in the resource::
+
+            >>> entry.plot(x_label='j', y_label='E')
+            Figure(...)
+
+        """
+        import plotly.graph_objects
+
+        x_label = x_label or self.df.columns[0]
+        y_label = y_label or self.df.columns[1]
+
+        fig = plotly.graph_objects.Figure()
+
+        fig.add_trace(
+            plotly.graph_objects.Scatter(
+                x=self.df[x_label],
+                y=self.df[y_label],
+                mode="lines",
+                name=name or self.identifier,
+            )
+        )
+
+        fig.update_layout(
+            template="simple_white",
+            showlegend=True,
+            autosize=True,
+            width=600,
+            height=400,
+            margin={"l": 70, "r": 70, "b": 70, "t": 70, "pad": 7},
+            xaxis_title=f"{x_label} [{self.field_unit(x_label)}]",
+            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+        )
+
+        fig.update_xaxes(showline=True, mirror=True)
+        fig.update_yaxes(showline=True, mirror=True)
+
+        return fig
