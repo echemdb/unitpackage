@@ -412,7 +412,7 @@ class Entry:
                 for yaml in glob(os.path.join(source, "*.yaml")):
                     svg = os.path.splitext(yaml)[0] + ".svg"
 
-                    from svgdigitizer.__main__ import digitize_cv
+                    from svgdigitizer.entrypoint import digitize_cv
                     from svgdigitizer.test.cli import invoke
 
                     invoke(
