@@ -62,10 +62,9 @@ source:
   citation key: engstfeld_2018_polycrystalline_17743
   url: https://doi.org/10.1002/chem.201803418
   techniques:
-  - XPS 
+  - XPS
   - STM
   version: 1
-version: 1
 curation:
   version: 1
   process:
