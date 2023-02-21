@@ -58,7 +58,7 @@ logger = logging.getLogger("echemdb")
 
 class Entry:
     r"""
-    A [data packages](https://github.com/frictionlessdata/datapackage-py)
+    A `data packages <https://github.com/frictionlessdata/framework>`_
     describing tabulated data.
 
     EXAMPLES:

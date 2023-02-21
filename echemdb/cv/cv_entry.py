@@ -55,7 +55,7 @@ logger = logging.getLogger("echemdb")
 
 class CVEntry(Entry):
     r"""
-    A [data package](https://github.com/frictionlessdata/datapackage-py)
+    A `data packages <https://github.com/frictionlessdata/framework>`_
     describing a Cyclic Voltammogram.
 
     EXAMPLES:

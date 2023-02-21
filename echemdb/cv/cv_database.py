@@ -48,7 +48,7 @@ logger = logging.getLogger("echemdb")
 
 class CVDatabase(Database):
     r"""
-    A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
+    A collection of `data packages <https://github.com/frictionlessdata/framework>`_.
 
     Essentially this is just a list of data packages with some additional
     convenience wrap for use in the echemdb.
