@@ -364,7 +364,7 @@ class Entry:
             os.path.dirname(__file__),
             "..",
             "..",
-            "data",
+            "examples",
             "generated",
             "svgdigitizer",
             name,
