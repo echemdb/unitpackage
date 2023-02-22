@@ -97,7 +97,7 @@ class CVEntry(Entry):
             >>> rescaled_entry = entry.rescale(units='original')
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
         """

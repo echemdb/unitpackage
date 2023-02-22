@@ -235,7 +235,7 @@ class Entry:
             'V'
 
         """
-        return self.package.get_resource("echemdb").schema.get_field(field_name)["unit"]
+        return self.package.get_resource("echemdb").schema.get_field(field_name).custom["unit"]
 
     def rescale(self, units):
         r"""
@@ -248,17 +248,17 @@ class Entry:
         The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.package.get_resource('echemdb').schema.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.package.get_resource('echemdb').schema.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
 
         The values in the data frame are scaled to match the new units::
@@ -280,22 +280,28 @@ class Entry:
         if not units:
             units = {}
 
-        from copy import deepcopy
-
         from astropy import units as u
 
-        package = deepcopy(self.package)
+        from frictionless import Package, Resource
+
+        package = Package(self.package.to_dict())
         fields = self.package.get_resource("echemdb").schema.fields
         df = self.df.copy()
 
         for idx, field in enumerate(fields):
             if field.name in units:
-                df[field.name] *= u.Unit(field["unit"]).to(u.Unit(units[field.name]))
-                package.get_resource("echemdb")["schema"]["fields"][idx][
-                    "unit"
-                ] = units[field["name"]]
+                df[field.name] *= u.Unit(field.custom["unit"]).to(u.Unit(units[field.name]))
+                # package.get_resource("echemdb").schema.fields[idx].custom[
+                #     "unit"
+                # ] = units[field.custom["name"]]
+                package.get_resource("echemdb").schema.update_field(field.name, {'unit': units[field.name]})
 
-        package.get_resource("echemdb").data = df.to_csv(index=False).encode()
+
+
+        df_resource = Resource(df)
+        df_resource.infer()
+
+        package.get_resource("echemdb").data = df_resource.data
 
         return type(self)(package=package, bibliography=self.bibliography)
 
@@ -317,15 +323,11 @@ class Entry:
 
             >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        from io import BytesIO
-
-        import pandas as pd
-
-        return pd.read_csv(BytesIO(self.package.get_resource("echemdb").data))
+        return self.package.get_resource('echemdb').data
 
     def __repr__(self):
         r"""
