@@ -363,7 +363,6 @@ class Entry:
         outdir = os.path.join(
             os.path.dirname(__file__),
             "..",
-            "..",
             "examples",
             "generated",
             "svgdigitizer",
