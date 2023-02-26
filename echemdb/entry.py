@@ -236,7 +236,11 @@ class Entry:
             'V'
 
         """
-        return self.package.get_resource("echemdb").schema.get_field(field_name).custom["unit"]
+        return (
+            self.package.get_resource("echemdb")
+            .schema.get_field(field_name)
+            .custom["unit"]
+        )
 
     def rescale(self, units):
         r"""
@@ -282,22 +286,20 @@ class Entry:
             units = {}
 
         from astropy import units as u
-
         from frictionless import Package, Resource
 
         package = Package(self.package.to_dict())
         fields = self.package.get_resource("echemdb").schema.fields
         df = self.df.copy()
 
-        for idx, field in enumerate(fields):
+        for field in fields:
             if field.name in units:
-                df[field.name] *= u.Unit(field.custom["unit"]).to(u.Unit(units[field.name]))
-                # package.get_resource("echemdb").schema.fields[idx].custom[
-                #     "unit"
-                # ] = units[field.custom["name"]]
-                package.get_resource("echemdb").schema.update_field(field.name, {'unit': units[field.name]})
-
-
+                df[field.name] *= u.Unit(field.custom["unit"]).to(
+                    u.Unit(units[field.name])
+                )
+                package.get_resource("echemdb").schema.update_field(
+                    field.name, {"unit": units[field.name]}
+                )
 
         df_resource = Resource(df)
         df_resource.infer()
@@ -328,7 +330,7 @@ class Entry:
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        return self.package.get_resource('echemdb').data
+        return self.package.get_resource("echemdb").data
 
     def __repr__(self):
         r"""

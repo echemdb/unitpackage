@@ -220,7 +220,9 @@ class CVEntry(Entry):
         def reference(label):
             if not label == "E":
                 return ""
-            field = self.package.get_resource("echemdb").schema.get_field(label).to_dict()
+            field = (
+                self.package.get_resource("echemdb").schema.get_field(label).to_dict()
+            )
             if "reference" not in field:
                 return ""
             return f" vs. {field['reference']}"
