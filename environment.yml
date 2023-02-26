@@ -23,7 +23,7 @@ dependencies:
   - pytest-remotedata
   - python>=3.9
   - sphinx>=4.3,<5
-  - svgdigitizer>=0.5.0,<0.6.0
+  - svgdigitizer>=0.7.0,<0.8.0
   - pip:
     - linkchecker
     - sphinx_rtd_theme>=1,<2
