@@ -34,7 +34,7 @@ setup(
     install_requires=[
       "astropy>=5,<6",
       "filelock>=3,<4",
-      "frictionless>=5.8.3,<6",
+      "frictionless>=5.10.1,<6",
       "matplotlib>=3.5.0,<4",
       "pandas>=1,<2",
       "plotly>=5,<6",
