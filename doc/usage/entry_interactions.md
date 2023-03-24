@@ -16,10 +16,10 @@ kernelspec:
 # Entry interactions
 
 Each entry consists of
+
 1. descriptors describing the data in the datapackage.
 2. a bibliography reference (see [Bibliography](bibliography.md)).
 3. functions for descriptor representation, data manipulation and data visualization.
-
 
 ## Basic interactions
 
@@ -59,6 +59,7 @@ entry.system.electrodes.working_electrode.material
 ## Data
 
 The datapackage consists of two resources.
+
 * The first resource has the entry's identifier as name. It describes the data in the CSV.
 * The second resource is named "echemdb". It contains the data used by the echemdb module.
 
@@ -80,7 +81,7 @@ entry.df.head()
 The units (and possible reference potentials) of the data are included in the resource schema.
 
 ```{code-cell} ipython3
-entry.package.get_resource('echemdb')['schema']
+entry.package.get_resource('echemdb').schema
 ```
 
 The units of the dataframe can be rescaled.
@@ -98,8 +99,14 @@ rescaled_entry.field_unit('E')
 
 The dataframe can be restored to the original figure axes' units of the published figure.
 
-```{code-cell} ipython3
+<!--
+The following line shoudl read
 original_entry = rescaled_entry.rescale('original')
+
+However, the conversion does not seem to work, when the entry was rescaled before. (see #53)
+-->
+```{code-cell} ipython3
+original_entry = entry.rescale('original')
 original_entry.df.head()
 ```
 
