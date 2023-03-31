@@ -1,5 +1,5 @@
 r"""
-A Database of Cyclic Voltammograms.
+A collection of datapackages with units.
 
 EXAMPLES:
 
@@ -60,6 +60,10 @@ class Database:
         0
 
     """
+    from echemdb.entry import Entry
+
+    # Entries of this database are created from this type. Subclasses can replace this with a specialized entry type.
+    Entry = Entry
 
     def __init__(self, data_packages=None):
         if data_packages is None:
@@ -84,13 +88,12 @@ class Database:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from echemdb.cv.entry import Entry
 
-        entries = Entry.create_examples(
+        entries = cls.Entry.create_examples(
             "alves_2011_electrochemistry_6010"
-        ) + Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+        ) + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
 
-        return Database(
+        return cls(
             [entry.package for entry in entries],
         )
 
@@ -136,7 +139,7 @@ class Database:
         entries in the database. If a property is missing the element is
         removed from the database::
 
-            >>> database.filter(lambda entry: entry.non.existant.property)
+            >>> database.filter(lambda entry: entry.non.existing.property)
             []
 
         """
@@ -148,7 +151,7 @@ class Database:
                 logger.debug(f"Filter removed entry {entry} due to error: {e}")
                 return False
 
-        return Database(
+        return type(self)(
             data_packages=[
                 entry.package for entry in self if catching_predicate(entry)
             ],
@@ -165,9 +168,16 @@ class Database:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        from echemdb.cv.entry import Entry
-
-        return iter([Entry(package) for package in self._packages])
+        # Return the entries sorted by their identifier. There's a small cost
+        # associated with the sorting but we do not expect to be managing
+        # millions of identifiers and having them show in sorted order is very
+        # convenient, e.g., when doctesting.
+        return iter(
+            [
+                self.Entry(package)
+                for package in sorted(self._packages, key=lambda p: p.resources[0].name)
+            ]
+        )
 
     def __len__(self):
         r"""
@@ -219,46 +229,3 @@ class Database:
                 f"The database has more than one entry with identifier '{identifier}'."
             )
         return entries[0]
-
-    def materials(self):
-        r"""
-        Return the substrate materials in the database.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> database.materials()
-            ['Ru', 'Cu']
-
-        """
-        import pandas as pd
-
-        return list(
-            pd.unique(
-                pd.Series(
-                    [
-                        entry.system.electrodes.working_electrode.material
-                        for entry in self
-                    ]
-                )
-            )
-        )
-
-    def describe(self):
-        r"""
-        Returns some statistics about the database.
-
-        EXAMPLES::
-
-            >>> database = Database.create_example()
-            >>> database.describe() # doctest: +NORMALIZE_WHITESPACE
-            {'number of references': 2,
-            'number of entries': 2,
-            'materials': ['Ru', 'Cu']}
-
-        """
-        return {
-            "number of references": len(self.bibliography.entries),
-            "number of entries": len(self),
-            "materials": self.materials(),
-        }

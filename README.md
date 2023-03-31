@@ -27,7 +27,7 @@ conda install -c conda-forge echemdb
 The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
 
 ```python
->>> from echemdb.cv.database import Database
+>>> from echemdb.cv.cv_database import CVDatabase
 >>> db = Database()
 ```
 

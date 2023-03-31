@@ -14,12 +14,12 @@ kernelspec:
 
 # Bibliography
 
-The bibliography to all entries is stored as a pybtex database `db.bibliography`, 
+The bibliography to all entries is stored as a pybtex database `db.bibliography`,
 which contains bibtex entries.
 
 ```{code-cell} ipython3
-from echemdb.cv.database import Database
-db = Database()
+from echemdb.cv.cv_database import CVDatabase
+db = CVDatabase()
 ```
 
 ```{code-cell} ipython3
