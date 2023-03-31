@@ -97,7 +97,7 @@ class CVEntry(Entry):
             >>> rescaled_entry = entry.rescale(units='original')
             >>> rescaled_entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'reference': 'RHE', 'type': 'number', 'unit': 'V'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
         """
@@ -207,9 +207,9 @@ class CVEntry(Entry):
 
         def figure_name():
             if (
-                hasattr(self, "source")
-                and hasattr(self.source, "figure")
-                and hasattr(self.source, "curve")
+                hasattr(self.package, "source")
+                and hasattr(self.package.source, "figure")
+                and hasattr(self.package.source, "curve")
             ):
                 return f"Fig. {self.source.figure}: {self.source.curve}"
 
@@ -220,7 +220,9 @@ class CVEntry(Entry):
         def reference(label):
             if not label == "E":
                 return ""
-            field = self.package.get_resource("echemdb").schema.get_field(label)
+            field = (
+                self.package.get_resource("echemdb").schema.get_field(label).to_dict()
+            )
             if "reference" not in field:
                 return ""
             return f" vs. {field['reference']}"

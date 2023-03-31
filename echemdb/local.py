@@ -31,7 +31,12 @@ def collect_datapackages(data):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("data")
+        >>> packages = collect_datapackages("./examples")
+        >>> packages[0] # doctest: +NORMALIZE_WHITESPACE
+        {'$frictionless': 'package/v2',
+        'version': '1',
+        'resources': [{'name': 'alves_2011_electrochemistry_6010_f1a_solid',
+        ...
 
     """
     # Collect all datapackage descriptors, see
@@ -39,10 +44,12 @@ def collect_datapackages(data):
     import os.path
     from glob import glob
 
+    import pandas as pd
+
     descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
 
-    # Read the package descriptors (does not read the actual data CSVs)
-    from frictionless import Package
+    # Read the package descriptors and append the data as pandas dataframe in a new resource
+    from frictionless import Package, Resource, Schema
 
     packages = []
 
@@ -51,14 +58,18 @@ def collect_datapackages(data):
 
         if not package.resources:
             raise ValueError(f"package {descriptor} has no CSV resources")
-
-        package.add_resource(
-            package.resources[0].write(
-                scheme="buffer",
-                format="csv",
-                **{"name": "echemdb", "schema": package.resources[0].schema.to_dict()},
-            )
+        descriptor_path = (
+            package.resources[0].basepath + "/" + package.resources[0].path
         )
+        df = pd.read_csv(descriptor_path)
+        df_resource = Resource(df)
+        df_resource.infer()
+        df_resource.name = "echemdb"
+        package.add_resource(df_resource)
+        package.get_resource("echemdb").schema = Schema.from_descriptor(
+            package.resources[0].schema.to_dict()
+        )
+
         packages.append(package)
 
     return packages
