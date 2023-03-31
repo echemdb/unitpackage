@@ -116,13 +116,22 @@ class Database:
         """
         from pybtex.database import BibliographyData
 
-        return BibliographyData(
+        bib_data = BibliographyData(
             {
                 entry.bibliography.key: entry.bibliography
                 for entry in self
                 if entry.bibliography
             }
         )
+
+        # Remove duplicates from the bibliography
+        bib_data_ = BibliographyData()
+
+        for key, entry in bib_data.entries.items():
+            if key not in bib_data_.entries:
+                bib_data_.add_entry(key, entry)
+
+        return bib_data_
 
     def filter(self, predicate):
         r"""
