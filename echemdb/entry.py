@@ -98,10 +98,10 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> dir(entry) # doctest: +NORMALIZE_WHITESPACE
-            [..., 'bibliography', 'citation', 'create_examples', 'curation',
+            >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'profile', 'rescale', 'resources', 'source',
+            'identifier', 'package',  'plot', 'rescale', 'resources', 'source',
             'system', 'version', 'yaml']
 
 
