@@ -10,8 +10,8 @@ dependencies:
   - isort
   - jupytext>=1.13,<2
   - matplotlib-base>=3.5.0,<4
-  - myst-nb>=0.15.0,<0.18
-  - myst-parser>=0.15,<0.19
+  - myst-nb>=0.17.0,<0.18
+  - myst-parser>=0.18,<0.19
   - pandas>=1,<2
   - pip
   - plotly>=5,<6

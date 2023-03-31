@@ -100,7 +100,7 @@ rescaled_entry.field_unit('E')
 The dataframe can be restored to the original figure axes' units of the published figure.
 
 <!--
-The following line shoudl read
+The following line should read
 original_entry = rescaled_entry.rescale('original')
 
 However, the conversion does not seem to work, when the entry was rescaled before. (see #53)
