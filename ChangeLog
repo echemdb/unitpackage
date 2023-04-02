@@ -4,6 +4,30 @@ echemdb Change Log
 
 .. current developments
 
+v0.5.0
+====================
+
+**Added:**
+
+* Added installation instructions to the documentation.
+
+**Changed:**
+
+* Changed the 'echemdb' resource from 'type: buffer data' to 'type: pandas dataframe'.
+* Changed `echemdb.cv.entry.Entry` into `echemdb.cv.cv_entry.CVEntry` and moved all not CV related methods into `echemdb.entry.Entry`. Similarly `echemdb.cv.database` was split into `echemdb.cv.cv_database` and `echemdb.database`.
+
+**Fixed**
+
+* Fixed external hyperlinks in the documentation.
+
+**Fixed:**
+
+* Upgraded to work with frictionless >5.10.1.
+* Upgraded to work with svgdigitizer 0.8.0.
+* Fixed doctest of `echemdb.local.collect_datapackages`.
+
+
+
 v0.4.0
 ====================
 
