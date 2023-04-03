@@ -84,14 +84,17 @@ class Database:
 
         EXAMPLES::
 
-            >>> Database.create_example()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+            >>> Database.create_example()  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
+            Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
+            Entry('no_bibliography')]
 
         """
 
         entries = cls.Entry.create_examples(
             "alves_2011_electrochemistry_6010"
-        ) + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+        ) + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743"
+        ) + cls.Entry.create_examples("no_bibliography")
 
         return cls(
             [entry.package for entry in entries],
@@ -113,6 +116,12 @@ class Database:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
+        A database without associated bibliography entries.
+
+            >>> database = Database.create_example()["no_bibliography"]
+            >>> database.bibliography
+            ''
+
         """
         from pybtex.database import BibliographyData
 
@@ -123,6 +132,11 @@ class Database:
                 if entry.bibliography
             }
         )
+
+
+        if isinstance(bib_data, str):
+            print('The length is zero')
+            return BibliographyData({})
 
         # Remove duplicates from the bibliography
         bib_data_ = BibliographyData()
@@ -196,7 +210,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> len(database)
-            2
+            3
 
         """
         return len(self._packages)

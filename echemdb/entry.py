@@ -159,8 +159,19 @@ class Entry:
                 ('title', ...
                 ...
 
+            >>> entry_no_bib = Entry.create_examples(name="no_bibliography")[0]
+            >>> entry_no_bib.bibliography
+            ''
+
         """
-        citation = self.package.custom["bibliography"]
+        citation = self.package.custom.setdefault("bibliography","")
+
+        if not citation:
+            logger.warning(
+                f"Entry with name {self.identifier} has no bibliography."
+            )
+            return citation
+
         from pybtex.database import parse_string
 
         bibliography = parse_string(citation, "bibtex")
@@ -368,6 +379,11 @@ class Entry:
 
             >>> Entry.create_examples()
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
+
+        An entry without associated BIB file.
+
+            >>> Entry.create_examples(name="no_bibliography")
+            [Entry('no_bibliography')]
 
         """
         source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
