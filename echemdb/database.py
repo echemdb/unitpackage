@@ -21,7 +21,7 @@ Search the database for a single publication::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -91,10 +91,11 @@ class Database:
 
         """
 
-        entries = cls.Entry.create_examples(
-            "alves_2011_electrochemistry_6010"
-        ) + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743"
-        ) + cls.Entry.create_examples("no_bibliography")
+        entries = (
+            cls.Entry.create_examples("alves_2011_electrochemistry_6010")
+            + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+            + cls.Entry.create_examples("no_bibliography")
+        )
 
         return cls(
             [entry.package for entry in entries],
@@ -116,7 +117,7 @@ class Database:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
-        A database without associated bibliography entries.
+        A database with entries without bibliography.
 
             >>> database = Database.create_example()["no_bibliography"]
             >>> database.bibliography
@@ -133,9 +134,8 @@ class Database:
             }
         )
 
-
         if isinstance(bib_data, str):
-            print('The length is zero')
+            print("The length is zero")
             return BibliographyData({})
 
         # Remove duplicates from the bibliography

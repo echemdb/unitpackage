@@ -30,7 +30,7 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -164,12 +164,10 @@ class Entry:
             ''
 
         """
-        citation = self.package.custom.setdefault("bibliography","")
+        citation = self.package.custom.setdefault("bibliography", "")
 
         if not citation:
-            logger.warning(
-                f"Entry with name {self.identifier} has no bibliography."
-            )
+            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
             return citation
 
         from pybtex.database import parse_string

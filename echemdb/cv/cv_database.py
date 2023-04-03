@@ -105,7 +105,9 @@ class CVDatabase(Database):
 
         """
         return {
-            "number of references": 0 if isinstance(self.bibliography,str) else len(self.bibliography.entries),
+            "number of references": 0
+            if isinstance(self.bibliography, str)
+            else len(self.bibliography.entries),
             "number of entries": len(self),
             "materials": self.materials(),
         }
