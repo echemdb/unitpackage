@@ -135,8 +135,7 @@ class Database:
         )
 
         if isinstance(bib_data, str):
-            print("The length is zero")
-            return BibliographyData({})
+            return bib_data
 
         # Remove duplicates from the bibliography
         bib_data_ = BibliographyData()
