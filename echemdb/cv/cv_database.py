@@ -80,14 +80,7 @@ class CVDatabase(Database):
         import pandas as pd
 
         return set(
-            pd.unique(
-                pd.Series(
-                    [
-                        entry.system.electrodes.working_electrode.material
-                        for entry in self
-                    ]
-                )
-            )
+            pd.unique(pd.Series([entry.get_electrode("WE").material for entry in self]))
         )
 
     def describe(self):

@@ -100,8 +100,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'resources', 'source',
-            'system', 'version', 'yaml']
+            'identifier', 'package',  'plot', 'rescale', 'source',
+            'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -113,10 +113,12 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.source # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {'citation key': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
-            'version': 1, 'figure': '1a', 'curve': 'solid'}
+            'figure': '1a',
+            'curve': 'solid',
+            'bibdata': '@article{alves_2011_electrochemistry_6010,...}
 
         The returned descriptor can again be accessed in the same way::
 
@@ -136,14 +138,30 @@ class Entry:
             >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
             {'citation key': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
-            'version': 1, 'figure': '1a', 'curve': 'solid'}
+            'figure': '1a',
+            'curve': 'solid',
+            'bibdata': '@article{alves_2011_electrochemistry_6010,...}
 
         """
         return self._descriptor[name]
 
     @property
     def _descriptor(self):
-        return Descriptor(self.package.to_dict())
+        return Descriptor(self.package.resources[0].custom["metadata"]["echemdb"])
+
+    @property
+    def _metadata(self):
+        r"""
+        Returns the metadata of the resource named "echemdb".
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._metadata # doctest: +NORMALIZE_WHITESPACE
+            {...'source': {'citation key': 'alves_2011_electrochemistry_6010',...}
+
+        """
+        return self.package.resources[0].custom["metadata"]["echemdb"]
 
     @property
     def bibliography(self):
@@ -164,7 +182,8 @@ class Entry:
             ''
 
         """
-        citation = self.package.custom.setdefault("bibliography", "")
+        metadata = self._metadata.setdefault("source", {})
+        citation = metadata.setdefault("bibdata", "")
 
         if not citation:
             logger.warning(f"Entry with name {self.identifier} has no bibliography.")
@@ -173,7 +192,7 @@ class Entry:
         from pybtex.database import parse_string
 
         bibliography = parse_string(citation, "bibtex")
-        return bibliography.entries[self.package.custom["source"]["citation key"]]
+        return bibliography.entries[self.source.citation_key]
 
     def citation(self, backend="text"):
         r"""
@@ -446,7 +465,6 @@ class Entry:
                         digitize_cv,
                         "--sampling-interval",
                         ".001",
-                        "--package",
                         "--metadata",
                         yaml,
                         svg,
