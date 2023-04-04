@@ -9,16 +9,19 @@ experimental:
 system:
   type: electrochemical
   electrodes:
-    configuration: three
-    counter electrode:
+    - name: CE
+      function: counter electrode
       crystallographic orientation: poly
       material: Au
       shape: mesh
-    reference electrode:
+    - name: REF
+      function: reference electrode
       source:
         supplier: homemade
       type: RHE
-    working electrode:
+    - name: WE
+      function: working electrode
+      type: single crystal
       crystallographic orientation: '100'
       geometric electrolyte contact area:
         unit: 1 / cm2
@@ -57,17 +60,13 @@ system:
       unit: K
       value: 298.15
     type: aq
-  version: 1
 source:
   citation key: engstfeld_2018_polycrystalline_17743
   url: https://doi.org/10.1002/chem.201803418
   techniques:
   - XPS
   - STM
-  version: 1
-version: "1"
 curation:
-  version: 1
   process:
   - role: curator
     name: Albert Engstfeld
