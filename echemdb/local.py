@@ -33,7 +33,7 @@ def collect_datapackages(data):
 
         >>> packages = collect_datapackages("./examples")
         >>> packages[0] # doctest: +NORMALIZE_WHITESPACE
-        {'resources': [{'name': 'alves_2011_electrochemistry_6010_f1a_solid',
+        {'resources': [{'name':
         ...
 
     """
