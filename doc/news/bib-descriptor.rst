@@ -8,4 +8,4 @@
 
 **Fixed:**
 
-* Upgraded to svgdigitizer 0.9.1.
+* Upgraded to svgdigitizer 0.10.0.
