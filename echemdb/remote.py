@@ -4,7 +4,7 @@ Utilities to work with remote data packages.
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C)      2021 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -83,36 +83,3 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
     import echemdb.local
 
     return echemdb.local.collect_datapackages(os.path.join(outdir, data))
-
-
-@cache
-def collect_bibliography(data=".", url=ECHEMDB_DATABASE_URL, outdir=None):
-    r"""
-    Return a list of bibliography files (bibtex) in a remote location.
-
-    The default is to download the bibliography currently available on echemdb and
-    extract them to a temporary directory.
-
-    EXAMPLES::
-
-        >>> packages = collect_bibliography()  # doctest: +REMOTE_DATA
-
-    """
-    if outdir is None:
-        import atexit
-        import shutil
-        import tempfile
-
-        outdir = tempfile.mkdtemp()
-        atexit.register(shutil.rmtree, outdir)
-
-    compressed = collect_zipfile_from_url(url)
-
-    compressed.extractall(
-        outdir,
-        members=[name for name in compressed.namelist() if name.endswith(".bib")],
-    )
-
-    import echemdb.local
-
-    return echemdb.local.collect_bibliography(os.path.join(outdir, data))

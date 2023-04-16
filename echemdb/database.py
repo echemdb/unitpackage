@@ -21,7 +21,7 @@ Search the database for a single publication::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -65,7 +65,7 @@ class Database:
     # Entries of this database are created from this type. Subclasses can replace this with a specialized entry type.
     Entry = Entry
 
-    def __init__(self, data_packages=None, bibliography=None):
+    def __init__(self, data_packages=None):
         if data_packages is None:
             import os.path
 
@@ -75,25 +75,7 @@ class Database:
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
 
-            if bibliography is None:
-                bibliography = echemdb.remote.collect_bibliography(
-                    os.path.join("website-gh-pages", "data", "generated")
-                )
-
-        if bibliography is None:
-            bibliography = []
-
-        from collections.abc import Iterable
-
-        if isinstance(bibliography, Iterable):
-            from pybtex.database import BibliographyData
-
-            bibliography = BibliographyData(
-                entries={entry.key: entry for entry in bibliography}
-            )
-
         self._packages = data_packages
-        self._bibliography = bibliography
 
     @classmethod
     def create_example(cls):
@@ -102,18 +84,21 @@ class Database:
 
         EXAMPLES::
 
-            >>> Database.create_example()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+            >>> Database.create_example()  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
+            Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
+            Entry('no_bibliography')]
 
         """
 
-        entries = cls.Entry.create_examples(
-            "alves_2011_electrochemistry_6010"
-        ) + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+        entries = (
+            cls.Entry.create_examples("alves_2011_electrochemistry_6010")
+            + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
+            + cls.Entry.create_examples("no_bibliography")
+        )
 
         return cls(
             [entry.package for entry in entries],
-            [entry.bibliography for entry in entries],
         )
 
     @property
@@ -132,16 +117,34 @@ class Database:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
+        A database with entries without bibliography.
+
+            >>> database = Database.create_example()["no_bibliography"]
+            >>> database.bibliography
+            ''
+
         """
         from pybtex.database import BibliographyData
 
-        return BibliographyData(
+        bib_data = BibliographyData(
             {
                 entry.bibliography.key: entry.bibliography
                 for entry in self
                 if entry.bibliography
             }
         )
+
+        if isinstance(bib_data, str):
+            return bib_data
+
+        # Remove duplicates from the bibliography
+        bib_data_ = BibliographyData()
+
+        for key, entry in bib_data.entries.items():
+            if key not in bib_data_.entries:
+                bib_data_.add_entry(key, entry)
+
+        return bib_data_
 
     def filter(self, predicate):
         r"""
@@ -174,7 +177,6 @@ class Database:
             data_packages=[
                 entry.package for entry in self if catching_predicate(entry)
             ],
-            bibliography=self._bibliography,
         )
 
     def __iter__(self):
@@ -188,24 +190,13 @@ class Database:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-
-        def get_bibliography(package):
-            if len(self._bibliography.entries) == 0:
-                return None
-            try:
-                bib = self.Entry(package, bibliography=None).source.citation_key
-            except AttributeError:
-                return None
-
-            return self._bibliography.entries.get(bib, None)
-
         # Return the entries sorted by their identifier. There's a small cost
         # associated with the sorting but we do not expect to be managing
         # millions of identifiers and having them show in sorted order is very
         # convenient, e.g., when doctesting.
         return iter(
             [
-                self.Entry(package, bibliography=get_bibliography(package))
+                self.Entry(package)
                 for package in sorted(self._packages, key=lambda p: p.resources[0].name)
             ]
         )
@@ -218,7 +209,7 @@ class Database:
 
             >>> database = Database.create_example()
             >>> len(database)
-            2
+            3
 
         """
         return len(self._packages)

@@ -99,13 +99,15 @@ class CVDatabase(Database):
             >>> database = CVDatabase.create_example()
             >>> database.describe() == \
             ... {'number of references': 2,
-            ... 'number of entries': 2,
+            ... 'number of entries': 3,
             ... 'materials': {'Cu', 'Ru'}}
             True
 
         """
         return {
-            "number of references": len(self.bibliography.entries),
+            "number of references": 0
+            if isinstance(self.bibliography, str)
+            else len(self.bibliography.entries),
             "number of entries": len(self),
             "materials": self.materials(),
         }

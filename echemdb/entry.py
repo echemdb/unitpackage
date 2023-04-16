@@ -30,7 +30,7 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -71,9 +71,8 @@ class Entry:
 
     """
 
-    def __init__(self, package, bibliography):
+    def __init__(self, package):
         self.package = package
-        self.bibliography = bibliography
 
     @property
     def identifier(self):
@@ -103,7 +102,6 @@ class Entry:
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
             'identifier', 'package',  'plot', 'rescale', 'resources', 'source',
             'system', 'version', 'yaml']
-
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -146,6 +144,36 @@ class Entry:
     @property
     def _descriptor(self):
         return Descriptor(self.package.to_dict())
+
+    @property
+    def bibliography(self):
+        r"""
+        Return a pybtex bibliography object.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
+            Entry('article',
+            fields=[
+                ('title', ...
+                ...
+
+            >>> entry_no_bib = Entry.create_examples(name="no_bibliography")[0]
+            >>> entry_no_bib.bibliography
+            ''
+
+        """
+        citation = self.package.custom.setdefault("bibliography", "")
+
+        if not citation:
+            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
+            return citation
+
+        from pybtex.database import parse_string
+
+        bibliography = parse_string(citation, "bibtex")
+        return bibliography.entries[self.package.custom["source"]["citation key"]]
 
     def citation(self, backend="text"):
         r"""
@@ -299,7 +327,7 @@ class Entry:
 
         package.get_resource("echemdb").data = df_resource.data
 
-        return type(self)(package=package, bibliography=self.bibliography)
+        return type(self)(package=package)
 
     @property
     def df(self):
@@ -350,6 +378,11 @@ class Entry:
             >>> Entry.create_examples()
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
+        An entry without associated BIB file.
+
+            >>> Entry.create_examples(name="no_bibliography")
+            [Entry('no_bibliography')]
+
         """
         source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
 
@@ -369,12 +402,9 @@ class Entry:
 
         cls._digitize_example(source=source, outdir=outdir)
 
-        from echemdb.local import collect_bibliography, collect_datapackages
+        from echemdb.local import collect_datapackages
 
         packages = collect_datapackages(outdir)
-        bibliography = collect_bibliography(source)
-        assert len(bibliography) == 1, f"No bibliography found for {name}."
-        bibliography = next(iter(bibliography))
 
         if len(packages) == 0:
             from glob import glob
@@ -384,7 +414,7 @@ class Entry:
                 f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
             )
 
-        return [cls(package=package, bibliography=bibliography) for package in packages]
+        return [cls(package=package) for package in packages]
 
     @classmethod
     def _digitize_example(cls, source, outdir):
@@ -422,6 +452,7 @@ class Entry:
                         svg,
                         "--outdir",
                         outdir,
+                        "--bibliography",
                         "--si-units",
                     )
 

@@ -19,7 +19,7 @@ which contains bibtex entries.
 
 ```{code-cell} ipython3
 from echemdb.cv.cv_database import CVDatabase
-db = CVDatabase()
+db = CVDatabase().create_example()
 ```
 
 ```{code-cell} ipython3

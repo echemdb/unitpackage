@@ -4,7 +4,7 @@ Utilities to work with local data packages.
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C)      2021 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -73,25 +73,3 @@ def collect_datapackages(data):
         packages.append(package)
 
     return packages
-
-
-def collect_bibliography(bibfiles):
-    r"""
-    Return a list of bibliography data (pybtex) parsed from the bibtex files
-    in the directory `bibfiles` and its subdirectories.
-
-    EXAMPLES::
-
-        >>> bibfiles = collect_bibliography(".")
-
-    """
-    import os.path
-    from glob import glob
-
-    from pybtex.database import parse_file
-
-    return [
-        entry
-        for file in glob(os.path.join(bibfiles, "**", "*.bib"), recursive=True)
-        for entry in parse_file(file, bib_format="bibtex").entries.values()
-    ]
