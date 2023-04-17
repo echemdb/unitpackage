@@ -4,6 +4,28 @@ echemdb Change Log
 
 .. current developments
 
+v0.6.0
+====================
+
+**Added:**
+
+* Added method `get_electrode(name)` in `CVEntry`.
+* Added property `_metadata` in `Entry`.
+
+**Changed:**
+
+* Adapted to a new echemdb datapackge metadata schema. The metadata describing the data is now part of the resource and no longer a top level key of the datapackage. The `electrodes` key used for electrochemical systems is now a `list`` instead of a `dict`. The bibtex bibliography key is now part of the `source` key.
+
+**Removed:**
+
+* Removed 'collect_bibliography'. The bibliography should now be part of the datapackage and stored in a key named `bibliography`.
+
+**Fixed:**
+
+* Upgraded to svgdigitizer 0.10.0.
+
+
+
 v0.5.0
 ====================
 
