@@ -49,7 +49,7 @@ entry.source.citation_key
 Specific information can be retrieved by selecting the desired descriptor
 
 ```{code-cell} ipython3
-entry.system.electrodes.working_electrode.material
+entry.system.electrodes[0].material
 ```
 
 `entry.package` provides a full list of available descriptors including the `echemdb` resource ([see below](#data)).

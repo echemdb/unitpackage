@@ -33,9 +33,7 @@ def collect_datapackages(data):
 
         >>> packages = collect_datapackages("./examples")
         >>> packages[0] # doctest: +NORMALIZE_WHITESPACE
-        {'$frictionless': 'package/v2',
-        'version': '1',
-        'resources': [{'name': 'alves_2011_electrochemistry_6010_f1a_solid',
+        {'resources': [{'name':
         ...
 
     """

@@ -28,7 +28,7 @@ also contain information on the source of the data::
 # ********************************************************************
 #  This file is part of echemdb.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -82,6 +82,35 @@ class CVEntry(Entry):
 
         """
         return f"CVEntry({self.identifier!r})"
+
+    def get_electrode(self, name):
+        r"""
+        Returns an electrode with the specified name.
+
+        EXAMPLES::
+
+            >>> entry = CVEntry.create_examples()[0]
+            >>> entry.get_electrode('WE') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'WE', 'function': 'working electrode', 'type': 'single crystal',
+            'crystallographic orientation': '0001', 'material': 'Ru',
+            'preparation procedure': 'Sputtering and flash annealing under UHV
+            conditions with repeated cycles of oxygen adsorption and desorption.',
+            'shape': {'height': {'unit': 'mm', 'value': 2}, 'type': 'hat shaped'},
+            'source': {'supplier': 'Mateck'}}
+
+        TESTS::
+
+            >>> entry.get_electrode('foo') # doctest: +NORMALIZE_WHITESPACE
+            Traceback (most recent call last):
+            ...
+            KeyError: "Electrode with name 'foo' does not exist"
+
+        """
+        for electrode in self.system.electrodes:
+            if electrode["name"] == name:
+                return electrode
+
+        raise KeyError(f"Electrode with name '{name}' does not exist")
 
     def rescale(self, units):
         r"""
