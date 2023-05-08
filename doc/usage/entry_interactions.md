@@ -28,7 +28,7 @@ where name is the respective descriptor. Alternatively you can write `entry.name
 where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
-from echemdb.cv.cv_database import CVDatabase
+from unitpackage.cv.cv_database import CVDatabase
 db = CVDatabase()
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
@@ -61,11 +61,11 @@ entry.system.electrodes[0].material
 The datapackage consists of two resources.
 
 * The first resource has the entry's identifier as name. It describes the data in the CSV.
-* The second resource is named "echemdb". It contains the data used by the echemdb module.
+* The second resource is named "echemdb". It contains the data used by the unitpackage module.
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the echemdb module are only applied to the `echemdb` resource.
+Changes to the data with the unitpackage module are only applied to the `echemdb` resource.
 ```
 
 ```{code-cell} ipython3

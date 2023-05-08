@@ -5,7 +5,7 @@ EXAMPLES:
 
 Create a database from local data packages in the `data/` directory::
 
-    >>> from echemdb.local import collect_datapackages
+    >>> from unitpackage.local import collect_datapackages
     >>> database = Database(collect_datapackages('data/'))
 
 Create a database from the data packages published in the echemdb::
@@ -19,37 +19,34 @@ Search the database for a single publication::
 
 """
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
 #        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
 #
-#  echemdb is free software: you can redistribute it and/or modify
+#  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  echemdb is distributed in the hope that it will be useful,
+#  unitpackage is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+#  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
 
-logger = logging.getLogger("echemdb")
+logger = logging.getLogger("unitpackage")
 
 
 class Database:
     r"""
     A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
-
-    Essentially this is just a list of data packages with some additional
-    convenience wrap for use in the echemdb.
 
     EXAMPLES:
 
@@ -60,7 +57,7 @@ class Database:
         0
 
     """
-    from echemdb.entry import Entry
+    from unitpackage.entry import Entry
 
     # Entries of this database are created from this type. Subclasses can replace this with a specialized entry type.
     Entry = Entry
@@ -69,9 +66,9 @@ class Database:
         if data_packages is None:
             import os.path
 
-            import echemdb.remote
+            import unitpackage.remote
 
-            data_packages = echemdb.remote.collect_datapackages(
+            data_packages = unitpackage.remote.collect_datapackages(
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
 

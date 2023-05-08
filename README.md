@@ -1,7 +1,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-The echemdb Python package can interact with a database of
+The unitpackage Python package can interact with a database of
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
@@ -9,17 +9,18 @@ or from local files.
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local database creation, are provided in our
-[documentation](https://echemdb.github.io/echemdb/).
+[documentation](https://echemdb.github.io/unitpackage/).
 
 # Installation instructions
 
-Install the latest stable version of echemdb from PyPI or conda.
+Install the latest stable version of unitpackage from PyPI or conda.
+
 ```
-pip install echemdb
+pip install unitpackage
 ```
 
 ```
-conda install -c conda-forge echemdb
+conda install -c conda-forge unitpackage
 ```
 
 # Python API
@@ -27,7 +28,7 @@ conda install -c conda-forge echemdb
 The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
 
 ```python
->>> from echemdb.cv.cv_database import CVDatabase
+>>> from unitpackage.cv.cv_database import CVDatabase
 >>> db = Database()
 ```
 
@@ -91,7 +92,7 @@ The data can be visualized in a plotly figure:
 ```python
 >>> entry.plot()
 ```
-<img src=https://raw.githubusercontent.com/echemdb/echemdb/main/doc/images/readme_demo_plot.png style="width:400px">
+<img src=https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/images/readme_demo_plot.png style="width:400px">
 
 # License
 

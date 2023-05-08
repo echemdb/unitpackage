@@ -10,7 +10,7 @@ EXAMPLES:
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.database import Database
+    >>> from unitpackage.database import Database
     >>> db = Database.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
@@ -28,32 +28,32 @@ also contain information on the source of the data.::
 
 """
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
 #        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
 #
-#  echemdb is free software: you can redistribute it and/or modify
+#  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  echemdb is distributed in the hope that it will be useful,
+#  unitpackage is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+#  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
 import os.path
 
-from echemdb.descriptor import Descriptor
+from unitpackage.descriptor import Descriptor
 
-logger = logging.getLogger("echemdb")
+logger = logging.getLogger("unitpackage")
 
 
 class Entry:
@@ -65,7 +65,7 @@ class Entry:
 
     Entries are normally obtained by opening a :class:`Database` of entries::
 
-        >>> from echemdb.database import Database
+        >>> from unitpackage.database import Database
         >>> database = Database.create_example()
         >>> entry = next(iter(database))
 
@@ -390,7 +390,7 @@ class Entry:
         r"""
         Return some example entries for use in automated tests.
 
-        The examples are built on-demand from data in echemdb's examples directory.
+        The examples are built on-demand from data in unitpackage's examples directory.
 
         EXAMPLES::
 
@@ -421,7 +421,7 @@ class Entry:
 
         cls._digitize_example(source=source, outdir=outdir)
 
-        from echemdb.local import collect_datapackages
+        from unitpackage.local import collect_datapackages
 
         packages = collect_datapackages(outdir)
 

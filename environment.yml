@@ -1,4 +1,4 @@
-name: echemdb
+name: unitpackage
 channels:
   - conda-forge
   - defaults

@@ -18,7 +18,7 @@ The bibliography to all entries is stored as a pybtex database `db.bibliography`
 which contains bibtex entries.
 
 ```{code-cell} ipython3
-from echemdb.cv.cv_database import CVDatabase
+from unitpackage.cv.cv_database import CVDatabase
 db = CVDatabase()
 ```
 
@@ -33,7 +33,7 @@ entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry.citation(backend='text') # other available backends: 'latex' or 'markdown'. 'text' is default.
 ```
 
-Individual `db.bibliography` entries can be accessed with the citation key associated with an echemdb entry.
+Individual `db.bibliography` entries can be accessed with the citation key associated with an unitpackage entry.
 
 ```{code-cell} ipython3
 bibtex_key = entry.source.citation_key

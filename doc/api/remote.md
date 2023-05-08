@@ -1,9 +1,9 @@
 ---
-github_url: https://github.com/echemdb/echemdb/blob/master/echemdb/remote.py
+github_url: https://github.com/echemdb/unitpackage/blob/master/unitpackage/remote.py
 ---
 
-# `echemdb.remote`
+# `unitpackage.remote`
 ```{eval-rst}
-.. automodule:: echemdb.remote
+.. automodule:: unitpackage.remote
    :members:
 ```

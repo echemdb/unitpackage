@@ -8,7 +8,7 @@ EXAMPLES:
 Data Packages containing published data,
 also contain information on the source of the data::
 
-    >>> from echemdb.cv.cv_database import CVDatabase
+    >>> from unitpackage.cv.cv_database import CVDatabase
     >>> db = CVDatabase.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
@@ -26,31 +26,31 @@ also contain information on the source of the data::
 
 """
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
 #        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
 #
-#  echemdb is free software: you can redistribute it and/or modify
+#  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  echemdb is distributed in the hope that it will be useful,
+#  unitpackage is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+#  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
 
-from echemdb.entry import Entry
+from unitpackage.entry import Entry
 
-logger = logging.getLogger("echemdb")
+logger = logging.getLogger("unitpackage")
 
 
 class CVEntry(Entry):
@@ -64,7 +64,7 @@ class CVEntry(Entry):
     with svgdigitizer's `cv` command. However, entries are normally obtained by
     opening a :class:`CVDatabase` of entries::
 
-        >>> from echemdb.cv.cv_database import CVDatabase
+        >>> from unitpackage.cv.cv_database import CVDatabase
         >>> database = CVDatabase.create_example()
         >>> entry = next(iter(database))
 
@@ -116,7 +116,7 @@ class CVEntry(Entry):
         r"""
         Return a rescaled :class:`CVEntry` with axes in the specified ``units``.
 
-        Usage is essentially the same as for :meth:`echemdb.entry.Entry.rescale', i.e.,
+        Usage is essentially the same as for :meth:`unitpackage.entry.Entry.rescale', i.e.,
         new units are expected as dict, where the key is the axis name and the value
         the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
 
@@ -139,7 +139,7 @@ class CVEntry(Entry):
 
     def _normalize_field_name(self, field_name):
         r"""
-        Return the name of a field name of the `echemdb` resource.
+        Return the name of a field name of the `unitpackage` resource.
 
         If 'j' is requested but is not present in the resource,
         'I' is returned instead.

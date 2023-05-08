@@ -1,4 +1,4 @@
-name: echemdb
+name: unitpackage
 channels:
   - conda-forge
   - defaults
@@ -9,4 +9,4 @@ dependencies:
   - pip
   - python>=3.9,<3.11
   - pip:
-    - echemdb==0.6.0
+    - unitpackage==0.6.0

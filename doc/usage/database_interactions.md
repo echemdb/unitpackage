@@ -23,7 +23,7 @@ A database can be generated from a remote or a local source.
 You can create a database from the entries on [echemdb.org](https://www.echemdb.org):
 
 ```{code-cell} ipython3
-from echemdb.cv.cv_database import CVDatabase
+from unitpackage.cv.cv_database import CVDatabase
 db = CVDatabase()
 ```
 

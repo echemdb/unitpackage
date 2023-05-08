@@ -12,12 +12,12 @@ kernelspec:
   name: python3
 ---
 
-Welcome to echemdb's documentation!
+Welcome to unitpackage's documentation!
 ========================================
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-This echemdb module provides a Python library to interact with a database of
+This module provides a Python library to interact with a database of
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
@@ -29,7 +29,7 @@ Examples
 The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
 
 ```{code-cell} ipython3
-from echemdb.cv.cv_database import CVDatabase
+from unitpackage.cv.cv_database import CVDatabase
 db = CVDatabase()
 db.describe()
 ```
@@ -84,15 +84,16 @@ original_entry.plot()
 Installation
 ============
 
-This package is available on [PiPY](https://pypi.org/project/echemdb/) and can be installed with pip:
+This package is available on [PiPY](https://pypi.org/project/unitpackage/) and can be installed with pip:
 
 ```sh .noeval
-pip install echemdb
+pip install unitpackage
 ```
-The package is also available on [conda-forge](https://github.com/conda-forge/echemdb-feedstock) an can be installed with conda:
+
+The package is also available on [conda-forge](https://github.com/conda-forge/unitpackage-feedstock) an can be installed with conda:
 
 ```sh .noeval
-conda install -c conda-forge echemdb
+conda install -c conda-forge unitpackage
 ```
 
 See the [installation instructions](installation.md) for further details.

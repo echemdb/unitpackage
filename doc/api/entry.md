@@ -1,9 +1,9 @@
 ---
-github_url: https://github.com/echemdb/echemdb/blob/master/echemdb/entry.py
+github_url: https://github.com/echemdb/unitpackage/blob/master/unitpackage/entry.py
 ---
 
-# `echemdb.entry`
+# `unitpackage.entry`
 ```{eval-rst}
-.. automodule:: echemdb.entry
+.. automodule:: unitpackage.entry
    :members:
 ```
