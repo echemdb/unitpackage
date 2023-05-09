@@ -1,0 +1,48 @@
+{
+    "resources": [
+        {
+            "name": "demo_package_cv",
+            "type": "table",
+            "path": "demo_package_cv.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "E",
+                        "type": "number",
+                        "unit": "V",
+						"reference": "RHE"
+                    },
+                    {
+                        "name": "j",
+                        "type": "number",
+                        "unit": "A / m2"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "description": "Sample data for the unitpackage module",
+                    "curation": {
+                        "process": [
+                            {
+                                "role": "experimentalist",
+                                "name": "Albert Engstfeld",
+                                "orcid": "https://orcid.org/0000-0002-9686-3948",
+                                "date": "2021-07-09"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

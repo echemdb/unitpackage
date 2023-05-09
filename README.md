@@ -2,10 +2,97 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
 The unitpackage Python package can interact with a collection of
-[frictionless datapackages](https://frictionlessdata.io/)
-containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a collection can be generated from the data on [echemdb.org](https://www.echemdb.org)
-or from local files.
+[frictionless datapackages](https://frictionlessdata.io/).
+To use the full potential of unitpackage, the resource within a datapackage should contain:
+
+* metadata nested within a list of metadata.
+* a key `units` whose value is a string representation of an [astropy unit](https://docs.astropy.org/en/stable/units/index.html).
+
+A short version of such a datapackage can be found [here](https://github.com/echemdb/echemdb/tree/main/doc/files/) and looks as follows
+
+```json
+{
+    "resources": [
+        {
+            "name": "demo_package",
+            "type": "table",
+            "path": "demo_package.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "j",
+                        "type": "number",
+                        "unit": "A / m2"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "description": "Sample data for the unitpackage module.",
+                    "curation": {
+                        "process": [
+                            {
+                                "role": "experimentalist",
+                                "name": "Joh Doe",
+                                "laboratory": "Institute of Good Scientific Practice",
+                                "date": "2021-07-09"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
+```
+
+The metadata of an entries' resource in a collection is accessible from the python API.
+
+```python
+>>> from unitpackage.collection import Collection
+>>> from unitpackage.local import collect_datapackages
+>>> db = Collection(data_packages=collect_datapackages('./doc/files'))
+>>> entry = db['demo_package_cv']
+>>> entry.description
+'Sample data for the unitpackage module.'
+```
+
+From the API also a simple 2D plot can be drawn.
+
+```python
+>>> entry.plot()
+```
+<img src=https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/images/readme_demo_plot.png style="width:400px">
+
+Ultimately, the `unitpackage` allows for simple transformation of data within a resource into different units.
+
+```python
+>>> entry.get_unit('j')
+'A / m2'
+>>> entry.df
+          t         E        j
+0  0.000000	-0.196962 0.043009
+1  0.011368	-0.196393 0.051408
+...
+>>> entry.rescale({'E' : 'mV', 'j' : 'uA / m2'}).df
+          t           E             j
+0  0.000000 -196.961730  43008.842162
+1  0.011368 -196.393321  51408.199892
+...
+```
+
+Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection`
+
+Collections can be generated from or from local files or data published in repositories such as on [echemdb.org](https://www.echemdb.org)
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local collection creation, are provided in our
@@ -13,86 +100,26 @@ local collection creation, are provided in our
 
 # Installation instructions
 
-Install the latest stable version of unitpackage from PyPI or conda.
+This package is available on [PiPY](https://pypi.org/project/unitpackage/) and can be installed with pip:
 
-```
+```sh .noeval
 pip install unitpackage
 ```
 
-```
+The package is also available on [conda-forge](https://github.com/conda-forge/unitpackage-feedstock) an can be installed with conda
+
+```sh .noeval
 conda install -c conda-forge unitpackage
 ```
 
-# Python API
+or mamba
 
-The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a collection.
-
-```python
->>> from unitpackage.cv.cv_collection import CVCollection
->>> db = CVCollection()
+```sh .noeval
+mamba install -c conda-forge unitpackage
 ```
 
-Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
-
-```python
->>> db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
-```
-
-A single entry can be retrieved with the identifiers provided on the website
-(see for example [engstfeld_2018_polycrystalline_17743_f4b_1](https://echemdb.github.io/website/cv/entries/engstfeld_2018_polycrystalline_17743_f4b_1/))
-
-```python
->>> entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-```
-
-Each entry has a set of descriptors such as its ``source`` or the electrochemical ``system``.
-
-```python
->>> entry.source # or entry['source']
-{'citation key': 'engstfeld_2018_polycrystalline_17743', 'curve': 1, 'url': 'https://doi.org/10.1002/chem.201803418', 'figure': '4b', 'version': 1}
-```
-
-The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units).
-
-```python
->>> entry.df
-           t	        E	       j
-0	0.000000	-0.196962	0.043009
-1	0.011368	-0.196393	0.051408
-...
-```
-
-The dataframe can be returned with custom or original figure axes' units by rescaling the entry.
-
-```python
->>> entry.rescale({'E' : 'mV', 'j' : 'uA / m2'}).df
-          t           E             j
-0  0.000000 -196.961730  43008.842162
-1  0.011368 -196.393321  51408.199892
-...
->>> entry.rescale('original').df
-          t         E         j
-0  0.000000 -0.196962  4.300884
-1  0.011368 -0.196393  5.140820
-...
-```
-
-The units and reference electrodes can be found in the resource schema. The units are updated upon rescaling an entry.
-
-```python
->>> entry.package.get_resource('echemdb')['schema']
-{'fields':
-[{'name': 't', 'unit': 's', 'type': 'number'},
-{'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-{'name': 'j', 'unit': 'A / m2', 'type': 'number'}]}
-```
-
-The data can be visualized in a plotly figure:
-
-```python
->>> entry.plot()
-```
-<img src=https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/images/readme_demo_plot.png style="width:400px">
+Please consult our [documentation](https://echemdb.github.io/unitpackage/) for
+more detailed [installation instructions](https://echemdb.github.io/unitpackage/installation.html).
 
 # License
 

@@ -1,0 +1,42 @@
+{
+    "resources": [
+        {
+            "name": "demo_package",
+            "type": "table",
+            "path": "demo_package.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "j",
+                        "type": "number",
+                        "unit": "A / m2"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "description": "Sample data for the unitpackage module.",
+                    "curation": {
+                        "process": [
+                            {
+                                "role": "experimentalist",
+                                "name": "Joh Doe",
+                                "laboratory": "Institute of Good Scientific Practice",
+                                "date": "2021-07-09"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
