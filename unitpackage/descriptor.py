@@ -2,7 +2,7 @@ r"""
 Wrappers for a Data Package's metadata stored in the descriptor property.
 
 These wrappers are automatically applied to all metadata of each :class:`Entry`
-in our :class:`Database`.
+in our :class:`Collection`.
 
 Metadata in data packages is stored as a JSON object. In Python, such a nested
 JSON object gets turned into a hierarchy of dictionaries and lists. Such raw

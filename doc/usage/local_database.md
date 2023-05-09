@@ -12,8 +12,8 @@ kernelspec:
   name: python3
 ---
 
-# Create database locally
+# Create collection locally
 
 ```{todo}
-* describe how to create a local database.
+* describe how to create a local collection.
 ```

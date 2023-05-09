@@ -28,8 +28,8 @@ where name is the respective descriptor. Alternatively you can write `entry.name
 where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
-from unitpackage.cv.cv_database import CVDatabase
-db = CVDatabase()
+from unitpackage.cv.cv_collection import CVCollection
+db = CVCollection()
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```

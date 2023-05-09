@@ -3,18 +3,18 @@ A collection of datapackages with units.
 
 EXAMPLES:
 
-Create a database from local data packages in the `data/` directory::
+Create a collection from local data packages in the `data/` directory::
 
     >>> from unitpackage.local import collect_datapackages
-    >>> database = Database(collect_datapackages('data/'))
+    >>> collection = Collection(collect_datapackages('data/'))
 
-Create a database from the data packages published in the echemdb::
+Create a collection from the data packages published in the echemdb::
 
-    >>> database = Database()  # doctest: +REMOTE_DATA
+    >>> collection = Collection()  # doctest: +REMOTE_DATA
 
-Search the database for a single publication::
+Search the collection for a single publication::
 
-    >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+    >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
@@ -44,22 +44,22 @@ import logging
 logger = logging.getLogger("unitpackage")
 
 
-class Database:
+class Collection:
     r"""
     A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
 
     EXAMPLES:
 
-    An empty database::
+    An empty collection::
 
-        >>> database = Database([])
-        >>> len(database)
+        >>> collection = Collection([])
+        >>> len(collection)
         0
 
     """
     from unitpackage.entry import Entry
 
-    # Entries of this database are created from this type. Subclasses can replace this with a specialized entry type.
+    # Entries of this collection are created from this type. Subclasses can replace this with a specialized entry type.
     Entry = Entry
 
     def __init__(self, data_packages=None):
@@ -77,11 +77,11 @@ class Database:
     @classmethod
     def create_example(cls):
         r"""
-        Return a sample database for use in automated tests.
+        Return a sample collection for use in automated tests.
 
         EXAMPLES::
 
-            >>> Database.create_example()  # doctest: +NORMALIZE_WHITESPACE
+            >>> Collection.create_example()  # doctest: +NORMALIZE_WHITESPACE
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
             Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
             Entry('no_bibliography')]
@@ -105,8 +105,8 @@ class Database:
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
-            >>> database.bibliography
+            >>> collection = Collection.create_example()
+            >>> collection.bibliography
             BibliographyData(
               entries=OrderedCaseInsensitiveDict([
                 ('alves_2011_electrochemistry_6010', Entry('article',
@@ -114,10 +114,10 @@ class Database:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
-        A database with entries without bibliography.
+        A collection with entries without bibliography.
 
-            >>> database = Database.create_example()["no_bibliography"]
-            >>> database.bibliography
+            >>> collection = Collection.create_example()["no_bibliography"]
+            >>> collection.bibliography
             ''
 
         """
@@ -145,20 +145,20 @@ class Database:
 
     def filter(self, predicate):
         r"""
-        Return the subset of the database that satisfies predicate.
+        Return the subset of the collection that satisfies predicate.
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
-            >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
+            >>> collection = Collection.create_example()
+            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
 
         The filter predicate can use properties that are not present on all
-        entries in the database. If a property is missing the element is
-        removed from the database::
+        entries in the collection. If a property is missing the element is
+        removed from the collection::
 
-            >>> database.filter(lambda entry: entry.non.existing.property)
+            >>> collection.filter(lambda entry: entry.non.existing.property)
             []
 
         """
@@ -178,12 +178,12 @@ class Database:
 
     def __iter__(self):
         r"""
-        Return an iterator over the entries in this database.
+        Return an iterator over the entries in this collection.
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
-            >>> next(iter(database))
+            >>> collection = Collection.create_example()
+            >>> next(iter(collection))
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
@@ -200,12 +200,12 @@ class Database:
 
     def __len__(self):
         r"""
-        Return the number of entries in this database.
+        Return the number of entries in this collection.
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
-            >>> len(database)
+            >>> collection = Collection.create_example()
+            >>> len(collection)
             3
 
         """
@@ -213,11 +213,11 @@ class Database:
 
     def __repr__(self):
         r"""
-        Return a printable representation of this database.
+        Return a printable representation of this collection.
 
         EXAMPLES::
 
-            >>> Database([])
+            >>> Collection([])
             []
 
         """
@@ -229,22 +229,22 @@ class Database:
 
         EXAMPLES::
 
-            >>> database = Database.create_example()
-            >>> database['alves_2011_electrochemistry_6010_f1a_solid']
+            >>> collection = Collection.create_example()
+            >>> collection['alves_2011_electrochemistry_6010_f1a_solid']
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
-            >>> database['invalid_key']
+            >>> collection['invalid_key']
             Traceback (most recent call last):
             ...
-            KeyError: "No database entry with identifier 'invalid_key'."
+            KeyError: "No collection entry with identifier 'invalid_key'."
 
         """
         entries = [entry for entry in self if entry.identifier == identifier]
 
         if len(entries) == 0:
-            raise KeyError(f"No database entry with identifier '{identifier}'.")
+            raise KeyError(f"No collection entry with identifier '{identifier}'.")
         if len(entries) > 1:
             raise KeyError(
-                f"The database has more than one entry with identifier '{identifier}'."
+                f"The collection has more than one entry with identifier '{identifier}'."
             )
         return entries[0]

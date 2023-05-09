@@ -17,24 +17,24 @@ Welcome to unitpackage's documentation!
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-This module provides a Python library to interact with a database of
+This module provides a Python library to interact with a collection of
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
+Such a collection can be generated from the data on [echemdb.org](https://www.echemdb.org)
 or from local files.
 
 Examples
 ========
 
-The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
+The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a collection.
 
 ```{code-cell} ipython3
-from unitpackage.cv.cv_database import CVDatabase
-db = CVDatabase()
+from unitpackage.cv.cv_collection import CVCollection
+db = CVCollection()
 db.describe()
 ```
 
-Filtering the database for entries having specific properties, e.g., containing Pt as working electrode material, returns a new database.
+Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
 
 ```{code-cell} ipython3
 db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
@@ -111,9 +111,9 @@ License v3.0](https://www.gnu.org/licenses/gpl-3.0.html) or, at your option, any
 :caption: "Contents:"
 :hidden:
 installation.md
-usage/database_interactions.md
+usage/collection_interactions.md
 usage/entry_interactions.md
 usage/bibliography.md
-usage/local_database.md
+usage/local_collection.md
 api.md
 ```

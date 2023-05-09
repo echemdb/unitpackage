@@ -14,17 +14,17 @@ kernelspec:
 
 +++ {"tags": []}
 
-# Database interaction
+# Collection interaction
 
 +++
 
-A database can be generated from a remote or a local source.
+A collection can be generated from a remote or a local source.
 
-You can create a database from the entries on [echemdb.org](https://www.echemdb.org):
+You can create a collection from the entries on [echemdb.org](https://www.echemdb.org):
 
 ```{code-cell} ipython3
-from unitpackage.cv.cv_database import CVDatabase
-db = CVDatabase()
+from unitpackage.cv.cv_collection import CVCollection
+db = CVCollection()
 ```
 
 Show statistics of the databse
@@ -39,8 +39,8 @@ You can iterate over these entries
 next(iter(db))
 ```
 
-The database can be filtered for specific descriptors,
-wherby a new database is created.
+The collection can be filtered for specific descriptors,
+wherby a new collection is created.
 
 ```{code-cell} ipython3
 db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')

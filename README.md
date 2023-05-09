@@ -1,14 +1,14 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-The unitpackage Python package can interact with a database of
+The unitpackage Python package can interact with a collection of
 [frictionless datapackages](https://frictionlessdata.io/)
 containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
+Such a collection can be generated from the data on [echemdb.org](https://www.echemdb.org)
 or from local files.
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
-local database creation, are provided in our
+local collection creation, are provided in our
 [documentation](https://echemdb.github.io/unitpackage/).
 
 # Installation instructions
@@ -25,14 +25,14 @@ conda install -c conda-forge unitpackage
 
 # Python API
 
-The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
+The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a collection.
 
 ```python
->>> from unitpackage.cv.cv_database import CVDatabase
->>> db = Database()
+>>> from unitpackage.cv.cv_collection import CVCollection
+>>> db = CVCollection()
 ```
 
-Filtering the database for entries having specific properties, e.g., containing Pt as working electrode material, returns a new database.
+Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
 
 ```python
 >>> db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')

@@ -1,20 +1,20 @@
 r"""
-A Database of Cyclic Voltammograms.
+A Collection of Cyclic Voltammograms.
 
 EXAMPLES:
 
-Create a database from local data packages in the `data/` directory::
+Create a collection from local data packages in the `data/` directory::
 
     >>> from unitpackage.local import collect_datapackages
-    >>> database = CVDatabase(collect_datapackages('data/'))
+    >>> collection = CVCollection(collect_datapackages('data/'))
 
-Create a database from the data packages published in the echemdb::
+Create a collection from the data packages published in the echemdb::
 
-    >>> database = CVDatabase()  # doctest: +REMOTE_DATA
+    >>> collection = CVCollection()  # doctest: +REMOTE_DATA
 
-Search the database for a single publication::
+Search the collection for a single publication::
 
-    >>> database.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+    >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
@@ -41,12 +41,12 @@ Search the database for a single publication::
 # ********************************************************************
 import logging
 
-from unitpackage.database import Database
+from unitpackage.collection import Collection
 
 logger = logging.getLogger("unitpackage")
 
 
-class CVDatabase(Database):
+class CVCollection(Collection):
     r"""
     A collection of `data packages <https://github.com/frictionlessdata/framework>`_.
 
@@ -55,10 +55,10 @@ class CVDatabase(Database):
 
     EXAMPLES:
 
-    An empty database::
+    An empty collection::
 
-        >>> database = CVDatabase([])
-        >>> len(database)
+        >>> collection = CVCollection([])
+        >>> len(collection)
         0
 
     """
@@ -68,12 +68,12 @@ class CVDatabase(Database):
 
     def materials(self):
         r"""
-        Return the substrate materials in the database.
+        Return the substrate materials in the collection.
 
         EXAMPLES::
 
-            >>> database = CVDatabase.create_example()
-            >>> database.materials() == {'Cu', 'Ru'}
+            >>> collection = CVCollection.create_example()
+            >>> collection.materials() == {'Cu', 'Ru'}
             True
 
         """
@@ -85,12 +85,12 @@ class CVDatabase(Database):
 
     def describe(self):
         r"""
-        Return some statistics about the database.
+        Return some statistics about the collection.
 
         EXAMPLES::
 
-            >>> database = CVDatabase.create_example()
-            >>> database.describe() == \
+            >>> collection = CVCollection.create_example()
+            >>> collection.describe() == \
             ... {'number of references': 2,
             ... 'number of entries': 3,
             ... 'materials': {'Cu', 'Ru'}}

@@ -2,7 +2,7 @@ r"""
 A Data Package describing tabulated data for which the units of the
 column names (pandas) or fields (frictionless) are known.
 
-Datapackages are the individual elements of a :class:`Database` and
+Datapackages are the individual elements of a :class:`Collection` and
 are denoted as `entry`.
 
 EXAMPLES:
@@ -10,8 +10,8 @@ EXAMPLES:
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from unitpackage.database import Database
-    >>> db = Database.create_example()
+    >>> from unitpackage.collection import Collection
+    >>> db = Collection.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
@@ -63,11 +63,11 @@ class Entry:
 
     EXAMPLES:
 
-    Entries are normally obtained by opening a :class:`Database` of entries::
+    Entries are normally obtained by opening a :class:`Collection` of entries::
 
-        >>> from unitpackage.database import Database
-        >>> database = Database.create_example()
-        >>> entry = next(iter(database))
+        >>> from unitpackage.collection import Collection
+        >>> collection = Collection.create_example()
+        >>> entry = next(iter(collection))
 
     """
 

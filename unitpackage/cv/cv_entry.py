@@ -1,15 +1,15 @@
 r"""
 A Data Package describing a Cyclic Voltammogram.
 
-These are the individual elements of a :class:`CVDatabase`.
+These are the individual elements of a :class:`CVCollection`.
 
 EXAMPLES:
 
 Data Packages containing published data,
 also contain information on the source of the data::
 
-    >>> from unitpackage.cv.cv_database import CVDatabase
-    >>> db = CVDatabase.create_example()
+    >>> from unitpackage.cv.cv_collection import CVCollection
+    >>> db = CVCollection.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
@@ -62,11 +62,11 @@ class CVEntry(Entry):
 
     An entry can be created directly from a datapackage that has been created
     with svgdigitizer's `cv` command. However, entries are normally obtained by
-    opening a :class:`CVDatabase` of entries::
+    opening a :class:`CVCollection` of entries::
 
-        >>> from unitpackage.cv.cv_database import CVDatabase
-        >>> database = CVDatabase.create_example()
-        >>> entry = next(iter(database))
+        >>> from unitpackage.cv.cv_collection import CVCollection
+        >>> collection = CVCollection.create_example()
+        >>> entry = next(iter(collection))
 
     """
 
