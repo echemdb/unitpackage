@@ -3,16 +3,17 @@ A collection of datapackages with units.
 
 EXAMPLES:
 
-Create a collection from local data packages in the `data/` directory::
+Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`_
+in the `data/` directory::
 
     >>> from unitpackage.local import collect_datapackages
     >>> collection = Collection(collect_datapackages('data/'))
 
-Create a collection from the data packages published in the echemdb::
+Create a collection from the data packages published in the on `echemdb <https://www.echemdb.org>`_::
 
     >>> collection = Collection()  # doctest: +REMOTE_DATA
 
-Search the collection for a single publication::
+Search the collection for entries from a single publication::
 
     >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
@@ -46,7 +47,7 @@ logger = logging.getLogger("unitpackage")
 
 class Collection:
     r"""
-    A collection of [data packages](https://github.com/frictionlessdata/datapackage-py).
+    A collection of [frictionless data packages](https://github.com/frictionlessdata/datapackage-py).
 
     EXAMPLES:
 

@@ -1,5 +1,7 @@
 r"""
-A Data Package describing a Cyclic Voltammogram.
+A Data Package describing a Cyclic Voltammogram. It provides additional functionalities compared to
+the :class:`Entry` specific to Cyclic Voltammograms and electrochemical data.
+
 
 These are the individual elements of a :class:`CVCollection`.
 
@@ -55,14 +57,14 @@ logger = logging.getLogger("unitpackage")
 
 class CVEntry(Entry):
     r"""
-    A `data packages <https://github.com/frictionlessdata/framework>`_
+    A `frictionless data packages <https://github.com/frictionlessdata/framework>`_
     describing a Cyclic Voltammogram.
 
     EXAMPLES:
 
     An entry can be created directly from a datapackage that has been created
-    with svgdigitizer's `cv` command. However, entries are normally obtained by
-    opening a :class:`CVCollection` of entries::
+    with `svgdigitizer's <https://echemdb.github.io/svgdigitizer/>`_ `cv` command.
+    However, entries are normally obtained by opening a :class:`CVCollection` of entries::
 
         >>> from unitpackage.cv.cv_collection import CVCollection
         >>> collection = CVCollection.create_example()
@@ -210,7 +212,7 @@ class CVEntry(Entry):
     def plot(self, x_label="E", y_label="j", name=None):
         r"""
         Return a plot of this entry.
-        The default plot is a cyclic voltammogram ('j vs E').
+        The default plot is a Cyclic Voltammogram ('j vs E').
         When `j` is not present in the data, `I` is used instead.
 
         EXAMPLES::
