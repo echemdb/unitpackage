@@ -1,4 +1,4 @@
-# Sphinx Documentation svgdigitizer
+# Sphinx Documentation of unitpackage
 
 This documentation is automatically built and uploaded to GitHub Pages.
 

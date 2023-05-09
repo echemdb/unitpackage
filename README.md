@@ -1,14 +1,10 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-The unitpackage Python package can interact with a collection of
-[frictionless datapackages](https://frictionlessdata.io/).
-To use the full potential of unitpackage, the resource within a datapackage should contain:
-
-* metadata nested within a list of metadata.
-* a key `units` for each field of the schema, whose value is a string representation of an [astropy unit](https://docs.astropy.org/en/stable/units/index.html).
-
-A short version of such a datapackage can be found [here](https://github.com/echemdb/echemdb/tree/main/doc/files/) and looks as follows
+This module provides a Python library to interact with a collection of
+[frictionless datapackages](https://frictionlessdata.io/). Such datapackages consist of a CSV (data) file which is annotated with a JSON file.
+This allows storing additional information such as units used in the columns of a CSV or store metadata describing the underlying data.
+Example datapackages can be found [here](https://github.com/echemdb/unitpackage/tree/main/doc/files/) and a JSON could be structured as follows
 
 ```json
 {
@@ -42,7 +38,7 @@ A short version of such a datapackage can be found [here](https://github.com/ech
                         "process": [
                             {
                                 "role": "experimentalist",
-                                "name": "Joh Doe",
+                                "name": "John Doe",
                                 "laboratory": "Institute of Good Scientific Practice",
                                 "date": "2021-07-09"
                             }
@@ -92,7 +88,7 @@ Ultimately, the `unitpackage` allows for simple transformation of data within a 
 
 Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection`
 
-Collections can be generated from or from local files or data published in repositories such as on [echemdb.org](https://www.echemdb.org)
+Collections can be generated from local files or data published in repositories such as on [echemdb.org](https://www.echemdb.org)
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local collection creation, are provided in our
