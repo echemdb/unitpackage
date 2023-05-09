@@ -14,14 +14,14 @@ kernelspec:
 
 Welcome to unitpackage's documentation!
 ========================================
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
 This module provides a Python library to interact with a collection of
-[frictionless datapackages](https://frictionlessdata.io/)
-containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a collection can be generated from the data on [echemdb.org](https://www.echemdb.org)
-or from local files.
+[frictionless datapackages](https://frictionlessdata.io/). Such datapackages consist of a CSV (data) file which is annotated with a JSON file.
+This allows storing additional information such as units used in the columns of a CSV or store metadata describing the underlying (scientific) data. With these information the data become machine readable, searchable and interoperable with other systems. An example demonstrating the usage of a collection of datapackages along with the `unitpackage` Python library is [echemdb.org](https://www.echemdb.org), which shows a collection of electrochemical data following following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
+
+A collection of datapackages can be generated from the data on [echemdb.org](https://www.echemdb.org) or from local files. To illustrate the usage of `unitpackage` we use in the following examples data available on [echemdb.org](https://www.echemdb.org).
 
 Examples
 ========
@@ -33,6 +33,14 @@ from unitpackage.cv.cv_collection import CVCollection
 db = CVCollection()
 db.describe()
 ```
+
+````{note}
+A collection of any kind of data is usually invoked via.
+```python
+from unitpackage.collection import Collection
+```
+`CVCollection` class has functionalities specific for cyclic voltammetry data.
+````
 
 Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
 
@@ -90,10 +98,16 @@ This package is available on [PiPY](https://pypi.org/project/unitpackage/) and c
 pip install unitpackage
 ```
 
-The package is also available on [conda-forge](https://github.com/conda-forge/unitpackage-feedstock) an can be installed with conda:
+The package is also available on [conda-forge](https://github.com/conda-forge/unitpackage-feedstock) an can be installed with conda
 
 ```sh .noeval
 conda install -c conda-forge unitpackage
+```
+
+or mamba
+
+```sh .noeval
+mamba install -c conda-forge unitpackage
 ```
 
 See the [installation instructions](installation.md) for further details.
