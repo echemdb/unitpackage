@@ -81,7 +81,14 @@ unreleased version of the unitpackage:
 git clone https://github.com/echemdb/unitpackage.git
 ```
 
-Create an [editable](https://pip.pypa.io/en/stable/cli/pip_install/#editable-installs) install of the unitpackageechemdb:
+Move to the directory and install the dependencies
+
+```sh
+conda activate unitpackage
+conda env create --file environment.yaml
+```
+
+Create an [editable](https://pip.pypa.io/en/stable/cli/pip_install/#editable-installs) install of the unitpackage:
 
 ```sh
 pip install -e unitpackage

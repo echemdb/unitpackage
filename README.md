@@ -13,15 +13,26 @@ local collection creation, are provided in our
 
 # Installation instructions
 
-Install the latest stable version of unitpackage from PyPI or conda.
+This package is available on [PiPY](https://pypi.org/project/unitpackage/) and can be installed with pip:
 
-```
+```sh .noeval
 pip install unitpackage
 ```
 
-```
+The package is also available on [conda-forge](https://github.com/conda-forge/unitpackage-feedstock) an can be installed with conda
+
+```sh .noeval
 conda install -c conda-forge unitpackage
 ```
+
+or mamba
+
+```sh .noeval
+mamba install -c conda-forge unitpackage
+```
+
+Please consult our [documentation](https://echemdb.github.io/unitpackage/) for
+more detailed [installation instructions](https://echemdb.github.io/unitpackage/installation.html).
 
 # Python API
 
