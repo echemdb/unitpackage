@@ -1,18 +1,20 @@
 r"""
-A Collection of Cyclic Voltammograms.
+A Collection of Cyclic Voltammograms. It provides additional functionalities compared to
+the :class:`Collection` specific to Cyclic Voltammograms and electrochemical data.
 
 EXAMPLES:
 
-Create a collection from local data packages in the `data/` directory::
+Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`_
+in the `data/` directory::
 
     >>> from unitpackage.local import collect_datapackages
     >>> collection = CVCollection(collect_datapackages('data/'))
 
-Create a collection from the data packages published in the echemdb::
+Create a collection from the data packages published in the `echemdb <https://www.echemdb.org>`_::
 
     >>> collection = CVCollection()  # doctest: +REMOTE_DATA
 
-Search the collection for a single publication::
+Search the collection for entries from a single publication::
 
     >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), ...
@@ -21,7 +23,7 @@ Search the collection for a single publication::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2022 Albert Engstfeld
+#        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -48,10 +50,10 @@ logger = logging.getLogger("unitpackage")
 
 class CVCollection(Collection):
     r"""
-    A collection of `data packages <https://github.com/frictionlessdata/framework>`_.
+    A collection of `frictionless data packages <https://github.com/frictionlessdata/framework>`_.
 
     Essentially this is just a list of data packages with some additional
-    convenience wrap for use in the echemdb.
+    convenience wrap for use in the `echemdb <https://www.echemdb.org>`_.
 
     EXAMPLES:
 

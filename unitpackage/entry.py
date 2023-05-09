@@ -1,6 +1,7 @@
 r"""
 A Data Package describing tabulated data for which the units of the
-column names (pandas) or fields (frictionless) are known.
+column names (`pandas <https://pandas.pydata.org/>`_)
+or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known.
 
 Datapackages are the individual elements of a :class:`Collection` and
 are denoted as `entry`.
@@ -58,7 +59,7 @@ logger = logging.getLogger("unitpackage")
 
 class Entry:
     r"""
-    A `data packages <https://github.com/frictionlessdata/framework>`_
+    A `frictionless data package <https://github.com/frictionlessdata/framework>`_
     describing tabulated data.
 
     EXAMPLES:
@@ -152,7 +153,7 @@ class Entry:
     @property
     def _metadata(self):
         r"""
-        Returns the metadata of the resource named "echemdb".
+        Returns the metadata named "echemdb" nested within a resource named "echemdb".
 
         EXAMPLES::
 
@@ -483,7 +484,7 @@ class Entry:
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
-        Return a plot of this entry.
+        Return a 2D plot of this entry.
 
         The default plot is constructed from the first two columns of the dataframne.
 
@@ -493,7 +494,7 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
-        The plot can also be returned with custom axis units available in the resource::
+        The 2D plot can also be returned with custom axis units available in the resource::
 
             >>> entry.plot(x_label='j', y_label='E')
             Figure(...)

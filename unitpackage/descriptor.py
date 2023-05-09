@@ -1,5 +1,6 @@
 r"""
-Wrappers for a Data Package's metadata stored in the descriptor property.
+Wrappers for a Data Package's metadata stored within the metadata descriptor
+property of a resource.
 
 These wrappers are automatically applied to all metadata of each :class:`Entry`
 in our :class:`Collection`.
@@ -43,10 +44,10 @@ Extra methods are added if the descriptor satisfies a certain interface::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021 Albert Engstfeld
-#        Copyright (C) 2021 Johannes Hermann
-#        Copyright (C) 2021 Julian Rüth
-#        Copyright (C) 2021 Nicolas Hörmann
+#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021             Johannes Hermann
+#        Copyright (C) 2021             Julian Rüth
+#        Copyright (C) 2021             Nicolas Hörmann
 #
 #  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -179,7 +180,7 @@ class QuantityDescriptor(GenericDescriptor):
     @property
     def quantity(self):
         r"""
-        This quantity as an astropy quantity.
+        This quantity as an `astropy quantity <https://docs.astropy.org/en/stable/_modules/astropy/units/quantity.html>`_.
 
         EXAMPLES::
 
