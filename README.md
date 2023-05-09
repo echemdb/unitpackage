@@ -1,7 +1,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-**NOTE**: We are currently migrating the [echemdb]() module to `unitpackage`. The installation instructions and documentation are currently being updated and will be available in version 0.7.0.
+**NOTE**: We are currently migrating the [echemdb](https://github.com/echemdb/echemdb) module to `unitpackage`. The installation instructions and documentation are currently being updated and will be available in version 0.7.0.
 
 The echemdb Python package can interact with a database of
 [frictionless datapackages](https://frictionlessdata.io/)
