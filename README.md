@@ -6,7 +6,7 @@ The unitpackage Python package can interact with a collection of
 To use the full potential of unitpackage, the resource within a datapackage should contain:
 
 * metadata nested within a list of metadata.
-* a key `units` whose value is a string representation of an [astropy unit](https://docs.astropy.org/en/stable/units/index.html).
+* a key `units` for each field of the schema, whose value is a string representation of an [astropy unit](https://docs.astropy.org/en/stable/units/index.html).
 
 A short version of such a datapackage can be found [here](https://github.com/echemdb/echemdb/tree/main/doc/files/) and looks as follows
 
