@@ -4,7 +4,7 @@ the :class:`Collection` specific to Cyclic Voltammograms and electrochemical dat
 
 EXAMPLES:
 
-Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`_
+Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`__
 in the `data/` directory::
 
     >>> from unitpackage.local import collect_datapackages
@@ -50,7 +50,7 @@ logger = logging.getLogger("unitpackage")
 
 class CVCollection(Collection):
     r"""
-    A collection of `frictionless data packages <https://github.com/frictionlessdata/framework>`_.
+    A collection of `frictionless data packages <https://github.com/frictionlessdata/framework>`__.
 
     Essentially this is just a list of data packages with some additional
     convenience wrap for use in the `echemdb <https://www.echemdb.org>`_.

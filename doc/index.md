@@ -26,7 +26,7 @@ A collection of datapackages can be generated from the data on [echemdb.org](htt
 Examples
 ========
 
-The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a collection.
+The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a collection. Information on how to load local datapackages can be found [here](usage/local_collection.md).
 
 ```{code-cell} ipython3
 from unitpackage.cv.cv_collection import CVCollection
@@ -35,7 +35,7 @@ db.describe()
 ```
 
 ````{note}
-A collection of any kind of data is usually invoked via.
+A collection of any kind of data is usually invoked via
 ```python
 from unitpackage.collection import Collection
 ```
@@ -45,7 +45,7 @@ from unitpackage.collection import Collection
 Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
 
 ```{code-cell} ipython3
-db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
+db_filtered = db.filter(lambda entry: entry.get_electrode('WE').material == 'Pt')
 db_filtered.describe()
 ```
 

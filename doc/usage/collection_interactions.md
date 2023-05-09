@@ -43,7 +43,7 @@ The collection can be filtered for specific descriptors,
 wherby a new collection is created.
 
 ```{code-cell} ipython3
-db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
+db_filtered = db.filter(lambda entry: entry.get_electrode('WE').material == 'Pt')
 db_filtered.describe()
 ```
 
