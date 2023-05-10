@@ -1,0 +1,53 @@
+{
+    "resources": [
+        {
+            "name": "demo_package_metadata",
+            "type": "table",
+            "path": "demo_package_metadta.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "string",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "U",
+                        "type": "integer",
+                        "unit": "mV"
+                    },
+                    {
+                        "name": "I",
+                        "type": "number",
+                        "unit": "uA"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "description": "Sample data for the unitpackage module.",
+                    "curation": {
+                        "process": [
+                            {
+                                "role": "experimentalist",
+                                "name": "John Doe",
+                                "laboratory": "Institute of Good Scientific Practice",
+                                "date": "2021-07-09"
+                            }
+                        ]
+                    }
+                },
+                "generic": {
+                    "description": "Sample data for the unitpackage module.",
+                    "experimentalist": "John Doe",
+                    "laboratory": "Institute of Good Scientific Practice",
+                    "date recorded": "2021-07-09"
+                }
+            }
+        }
+    ]
+}
