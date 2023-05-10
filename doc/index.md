@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.8
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -21,26 +21,62 @@ This module provides a Python library to interact with a collection of
 [frictionless datapackages](https://frictionlessdata.io/). Such datapackages consist of a CSV (data) file which is annotated with a JSON file.
 This allows storing additional information such as units used in the columns of a CSV or store metadata describing the underlying (scientific) data. With these information the data become machine readable, searchable and interoperable with other systems. An example demonstrating the usage of a collection of datapackages along with the `unitpackage` Python library is [echemdb.org](https://www.echemdb.org), which shows a collection of electrochemical data following following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 
-A collection of datapackages can be generated from the data on [echemdb.org](https://www.echemdb.org) or from local files. To illustrate the usage of `unitpackage` we use in the following examples data available on [echemdb.org](https://www.echemdb.org).
-
 Examples
 ========
 
-The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a collection. Information on how to load local datapackages can be found [here](usage/local_collection.md).
+A collection of datapackages can be generated from [local files](usage/local_collection.md) or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we use in the following examples the data available on [echemdb.org](https://www.echemdb.org). The data will be downloaded by default when the `Collection` class does not receive the argument `data_packages=collect_datapackages('./files_folder)`.
+
+```{note}
+We denote the collection as `db` (database), even thought it is not a database in that sense.
+```
+
+```{code-cell} ipython3
+from unitpackage.collection import Collection
+db = Collection()
+```
+
+A single entry can be retrieved with an identifiers available in the database
+
+```{code-cell} ipython3
+entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
+```
+
+The metadata of the datapackage is available from `entry.package`.
+
+The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe.
+
+```{code-cell} ipython3
+entry.df.head()
+```
+
+The units of the columns can be retrieved.
+
+```{code-cell} ipython3
+entry.field_unit('j')
+```
+
+The values in the dataframe can be changed to other compatible units.
+
+```{code-cell} ipython3
+rescaled_entry = entry.rescale({'E' : 'mV', 'j' : 'uA / m2'})
+rescaled_entry.df.head()
+```
+
+The data can be visualized in a plotly figure:
+
+```{code-cell} ipython3
+entry.plot('E', 'j')
+```
+
+## Specific Collections
+
+For certain datasets, unitpackage can be extended by additional modules. Such a module is the `CVCollection` class which loads a collection of packages containing cyclic voltammograms which are stored according to the echemdb metadata schema. Such data is usually found in the field of electrochemistry as illustrated on [echemdb.or](https://www.echemdb.org).
 
 ```{code-cell} ipython3
 from unitpackage.cv.cv_collection import CVCollection
 db = CVCollection()
 db.describe()
 ```
-
-````{note}
-A collection of any kind of data is usually invoked via
-```python
-from unitpackage.collection import Collection
-```
-`CVCollection` class has functionalities specific for cyclic voltammetry data.
-````
 
 Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
 
@@ -49,44 +85,8 @@ db_filtered = db.filter(lambda entry: entry.get_electrode('WE').material == 'Pt'
 db_filtered.describe()
 ```
 
-A single entry can be retrieved with the identifiers provided on the website
-(see for example [engstfeld_2018_polycrystalline_17743_f4b_1](https://echemdb.github.io/website/cv/entries/engstfeld_2018_polycrystalline_17743_f4b_1/))
-
-```{code-cell} ipython3
-entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-```
-
-Each entry has a set of descriptors such as its ``source`` or the electrochemical ``system``.
-
-```{code-cell} ipython3
-entry.source # or entry['source']
-```
-
-The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units).
-
-```{code-cell} ipython3
-entry.df.head()
-```
-
-```{code-cell} ipython3
-entry.field_unit('E')
-```
-
-The dataframe can be returned with custom or original figure axes' units by rescaling the entry.
-
-```{code-cell} ipython3
-entry.rescale({'E' : 'mV', 'j' : 'uA / m2'}).df.head()
-```
-
-```{code-cell} ipython3
-original_entry = entry.rescale('original')
-original_entry.df.head()
-```
-
-The data can be visualized in a plotly figure:
-
-```{code-cell} ipython3
-original_entry.plot()
+```{note}
+The filtering method is also available to the base class `Collection`.
 ```
 
 Installation
