@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.13.8
+    jupytext_version: 1.14.5
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -104,7 +104,7 @@ A frictionless datapackage can have multiple resources.
 
 Tabular Scientific data are often so called time series data, where one or more properties are recorded over a certain time scale, such as the temperature $T$ or pressure $p$ in a laboratory. It some cases one variable is changed with time and one or more variables are recorded based on the induced changes, such as measuring the change in current $I$ in a load by varying a voltage $V$.
 
-A CVS contains the underlying data but unfortunately often not the units.
+A CVS contains the underlying data.
 
 ```csv
 t,U,I
@@ -112,10 +112,14 @@ t,U,I
 3,4.5
 ```
 
+```{warning}
+The `unitpackage` currently only supports CSV files with a single header line. CSV files with headers, including additional information must be converted before.
+```
+
 The units are at this point usually unknown, but they can be included in the datapackage in the resource schema.
 
 ```{note}
-The units should be provided as following the [astropy unit](https://docs.astropy.org/en/stable/units/index.html) notation.
+The units should be provided following the [astropy unit](https://docs.astropy.org/en/stable/units/index.html) notation.
 ```
 
 ```json
@@ -151,15 +155,15 @@ The units should be provided as following the [astropy unit](https://docs.astrop
 }
 ```
 
-Additional metadata describing the underlying data or its origin is stored in the resource `metadata` key. The `metadata` can contain a list with metadata objects following different kinds of metadata schemas.
+Additional metadata describing the underlying data or its origin is stored in the resource `metadata` key. The `metadata` can contain a list with metadata items following different kinds of metadata schemas.
 
 ```json
 {
     "resources": [
         {
-            "name": "demo_package",
+            "name": "demo_package_metadata",
             "type": "table",
-            "path": "demo_package.csv",
+            "path": "demo_package_metadata.csv",
             "scheme": "file",
             "format": "csv",
             "mediatype": "text/csv",
@@ -210,7 +214,7 @@ Additional metadata describing the underlying data or its origin is stored in th
 ```
 
 ```{warning}
-The `unitpackage` module currently provides direct access to metadata stored within the key `echemdb`.
+The `unitpackage` module currently only provides direct access to the resource metadata stored within the key `echemdb`.
 ```
 
 The above example can be found [here](https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/files) names `demo_package_metadata`. To demonstrate how the different properties of the datapackage can be accessed we load the specific entry.
@@ -218,7 +222,46 @@ The above example can be found [here](https://raw.githubusercontent.com/echemdb/
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
 from unitpackage.local import collect_datapackages
-db = Collection(data_packages=collect_datapackages('./doc/files'))
+db = Collection(data_packages=collect_datapackages('../files/'))
 entry = db['demo_package_metadata']
 entry
+```
+
+The keys within the `echemdb` metadata are directly accessible as properties from the main `entry`.
+
+```{code-cell} ipython3
+entry.curation
+```
+
+Other metadata schemas are currently only accessible via the frictionless framework.
+
+```{code-cell} ipython3
+entry.package.get_resource("demo_package_metadata").custom["metadata"]["generic"]
+```
+
+## Unitpackage Interface
+
+Upon closer inspection of the entry created with `unitpackage` you notice that it actually contains two resources.
+
+```{code-cell} ipython3
+entry.package
+```
+
+One resource is named according to the CSV filename. The units provided in that resource are describing the data within that CSV.
+
+The second resource is called `echemdb`. It is created upon loading a datapackage and stores the data of the CSV as a pandas dataframe. The dataframe is directly accessible from the entry and shows the data from the `echemdb` resource.
+
+```{code-cell} ipython3
+entry.df.head(3)
+```
+
+The reason for the separation into two resources is as follows. With unitpackage we can transform the values within the dataframe to new units. This process leaves the data in CSV unchanged. The pandas dataframe in turn is adapted, as well as the units of the different fields.
+
+```{code-cell} ipython3
+rescaled_entry = entry.rescale({'U': 'V', 'I': 'mA'})
+rescaled_entry.df.head(3)
+```
+
+```{code-cell} ipython3
+rescaled_entry.package.get_resource('echemdb')
 ```

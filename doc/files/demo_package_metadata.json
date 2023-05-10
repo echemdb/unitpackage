@@ -3,7 +3,7 @@
         {
             "name": "demo_package_metadata",
             "type": "table",
-            "path": "demo_package_metadta.csv",
+            "path": "demo_package_metadata.csv",
             "scheme": "file",
             "format": "csv",
             "mediatype": "text/csv",
@@ -12,12 +12,12 @@
                 "fields": [
                     {
                         "name": "t",
-                        "type": "string",
+                        "type": "number",
                         "unit": "s"
                     },
                     {
                         "name": "U",
-                        "type": "integer",
+                        "type": "number",
                         "unit": "mV"
                     },
                     {

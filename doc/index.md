@@ -62,6 +62,10 @@ rescaled_entry = entry.rescale({'E' : 'mV', 'j' : 'uA / m2'})
 rescaled_entry.df.head()
 ```
 
+```{code-cell} ipython3
+rescaled_entry.package.custom
+```
+
 The data can be visualized in a plotly figure:
 
 ```{code-cell} ipython3
