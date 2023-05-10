@@ -342,12 +342,23 @@ class Entry:
                     field.name, {"unit": units[field.name]}
                 )
 
+        # create a new dataframe resource
         df_resource = Resource(df)
         df_resource.infer()
+        # update units in the schema of the df resource
+        df_resource.schema = package.get_resource("echemdb").schema
 
-        package.get_resource("echemdb").data = df_resource.data
+        df_resource.name = "echemdb"
 
-        return type(self)(package=package)
+        # Remove the original echemdb resource and
+        # add a new echemdb resource to the new entr
+        package.remove_resource("echemdb")
+
+        entry = type(self)(package=package)
+
+        entry.package.add_resource(df_resource)
+
+        return entry
 
     @property
     def df(self):
