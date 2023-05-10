@@ -18,7 +18,7 @@ Welcome to unitpackage's documentation!
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
 Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated, or who performed the experiment. Such information can be stored, by creating [frictionless datapackages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON file.
-The `unitpackage` module provides a Python library to interact with such datapackages which have a very [specific structure](unitpackage.md).
+The `unitpackage` module provides a Python library to interact with such datapackages which have a very [specific structure](usage/unitpackage.md).
 An example demonstrating the usage of a collection of datapackages along with the `unitpackage` Python library is found on [echemdb.org](https://www.echemdb.org). The website shows a collection of electrochemical data, stored following the [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 
 Examples

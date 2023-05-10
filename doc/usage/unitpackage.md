@@ -29,7 +29,7 @@ datapackage.json
 
 The CSV file contains some data, where we focus on data which can have a unit. Such data is usually found in natural sciences.
 
-```csv
+```
 var1,var2,var3
 1,2.1
 3,4.5
@@ -82,7 +82,9 @@ A frictionless datapackage can have multiple resources.
       "profile": "tabular-data-resource",
       "schema": {
         "fields": [
-          ...
+            {
+          "...":"..."
+            }
         ]
       }
     },
@@ -92,7 +94,9 @@ A frictionless datapackage can have multiple resources.
       "profile": "tabular-data-resource",
       "schema": {
         "fields": [
-          ...
+            {
+          "...":"..."
+            }
         ]
       }
     }
@@ -106,7 +110,7 @@ Tabular Scientific data are often so called time series data, where one or more 
 
 A CVS contains the underlying data.
 
-```csv
+```
 t,U,I
 1,2.1
 3,4.5

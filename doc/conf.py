@@ -1,5 +1,5 @@
 project = 'unitpackage'
-copyright = '2022, the unitpackage authors'
+copyright = '2022-2023, the unitpackage authors'
 author = 'the unitpackage authors'
 
 release = '0.6.0'
@@ -11,6 +11,8 @@ source_suffix = [".rst", ".md"]
 templates_path = ['_templates']
 
 exclude_patterns = ['generated', 'Thumbs.db', '.DS_Store', 'README.md', 'news', '.ipynb_checkpoints', '*.ipynb', '**/*.ipynb']
+
+myst_enable_extensions = ["amsmath", "dollarmath"]
 
 todo_include_todos = True
 
