@@ -1,12 +1,35 @@
 r"""
 A Data Package describing tabulated data for which the units of the
 column names (`pandas <https://pandas.pydata.org/>`_)
-or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known.
+or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known
+and the resource has additional  metadata describing the underlying data.
+
+A description of such datapackags can be found in the documentation
+in :doc:`/usage/unitpackage`.
 
 Datapackages are the individual elements of a :class:`Collection` and
-are denoted as `entry`.
+are denoted as ``entry``.
 
 EXAMPLES:
+
+Metadata included in an entries resource is accessible as an attribute::
+
+    >>> entry = Entry.create_examples()[0]
+    >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {'citation key': 'alves_2011_electrochemistry_6010',
+    'url': 'https://doi.org/10.1039/C0CP01001D',
+    'figure': '1a',
+    'curve': 'solid',
+    'bibdata': '@article{alves_2011_electrochemistry_6010,...}
+
+The data of the resource can be called as a pandas dataframe::
+
+    >>> entry = Entry.create_examples()[0]
+    >>> entry.df
+                  t         E         j
+    0      0.000000 -0.103158 -0.998277
+    1      0.020000 -0.102158 -0.981762
+    ...
 
 Data Packages containing published data,
 also contain information on the source of the data.::

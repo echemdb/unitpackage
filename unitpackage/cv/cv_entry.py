@@ -1,30 +1,25 @@
 r"""
-A Data Package describing a Cyclic Voltammogram. It provides additional functionalities compared to
-the :class:`Entry` specific to Cyclic Voltammograms and electrochemical data.
-
+A Data Package describing a Cyclic Voltammogram found in the field of electrochemistry.
+It provides additional functionalities compared to the class :class:`Entry`.
 
 These are the individual elements of a :class:`CVCollection`.
 
 EXAMPLES:
 
-Data Packages containing published data,
-also contain information on the source of the data::
+We can directly access the material of an electrode used in the experiment,
+such as WE, CE or REF::
 
     >>> from unitpackage.cv.cv_collection import CVCollection
     >>> db = CVCollection.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    Entry('article',
-      fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
-        ('journal', 'Physical Chemistry Chemical Physics'),
-        ('volume', '13'),
-        ('number', '13'),
-        ('pages', '6010--6021'),
-        ('year', '2011'),
-        ('publisher', 'Royal Society of Chemistry'),
-        ('abstract', 'We investigated ...')],
-      persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
+    >>> entry.get_electrode('WE').material
+    'Ru'
+
+The :meth:`plot` creates a typical representation of a Cyclic Voltammogram,
+where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
+
+    >>> entry.plot()
+    Figure(...)
 
 """
 # ********************************************************************
@@ -118,11 +113,13 @@ class CVEntry(Entry):
         r"""
         Return a rescaled :class:`CVEntry` with axes in the specified ``units``.
 
-        Usage is essentially the same as for :meth:`unitpackage.entry.Entry.rescale', i.e.,
+        Usage is essentially the same as for :meth:`unitpackage.entry.Entry.rescale`, i.e.,
         new units are expected as dict, where the key is the axis name and the value
-        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
+        the new unit, such as ``{'j': 'uA / cm2', 't': 'h'}``.
 
-        Additionally, the entry can be rescaled to the axes' units of the original datapackage::
+        Additionally, the entry can be rescaled to the axes' units of the original data.
+        These units must be defined in the metadata of the resource,
+        within the key ``figure_description.fields``::
 
             >>> entry = CVEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
