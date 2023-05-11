@@ -1,18 +1,18 @@
 API
 ===
 
-```{todo}
-* Refer to the documentation below for details.
-* Move the API documentation from the README.md to the very top of the actual .py modules as examples.
-```
+This API allows interacting with a collection of
+[frictionless datapackages](https://frictionlessdata.io/), stored in a [specific format](unitpackage.md), explore the content of its entries and visualize the underlying data.
+
+A [`Collection`](api/collection.md) of datapackages, denoted as [`entries`](api/entry.md) can be created from [local](api/local.md) files or a [remote](api/remote.md) repository. For collections containing a certain type of data, collections with specific methods can be created, such as [`CVCollection`](api/cv/cv_collection.md). In a same way specific types of entries can be created, such as the [`CVEntry`](api/cv/cv_entry.md)
 
 ```{toctree}
 :caption: "Modules:"
-api/cv/cv_collection.md
-api/cv/cv_entry.md
 api/collection.md
 api/entry.md
 api/descriptor.md
+api/cv/cv_collection.md
+api/cv/cv_entry.md
 api/remote.md
 api/local.md
 ```
