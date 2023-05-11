@@ -10,7 +10,7 @@ in the `data/` directory::
     >>> from unitpackage.local import collect_datapackages
     >>> collection = CVCollection(collect_datapackages('data/'))
 
-Create a collection from the data packages published in the `echemdb <https://www.echemdb.org>`_::
+Create a collection from the data packages published in the `echemdb <https://www.echemdb.org/cv>`_::
 
     >>> collection = CVCollection()  # doctest: +REMOTE_DATA
 
@@ -53,7 +53,7 @@ class CVCollection(Collection):
     A collection of `frictionless data packages <https://github.com/frictionlessdata/framework>`__.
 
     Essentially this is just a list of data packages with some additional
-    convenience wrap for use in the `echemdb <https://www.echemdb.org>`_.
+    convenience wrap for use in the `echemdb <https://www.echemdb.org/cv>`_.
 
     EXAMPLES:
 

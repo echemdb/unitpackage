@@ -53,7 +53,7 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
     r"""
     Return a list of data packages defined in a remote location.
 
-    The default is to download the packages currently available on `echemdb <https://www.echemdb.org>`_
+    The default is to download the packages currently available on `echemdb <https://www.echemdb.org/cv>`_
     and extract them to a temporary directory.
 
     EXAMPLES::

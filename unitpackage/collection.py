@@ -9,7 +9,7 @@ in the `data/` directory::
     >>> from unitpackage.local import collect_datapackages
     >>> collection = Collection(collect_datapackages('data/'))
 
-Create a collection from the data packages published in the on `echemdb <https://www.echemdb.org>`_::
+Create a collection from the data packages published in the on `echemdb <https://www.echemdb.org/cv>`_::
 
     >>> collection = Collection()  # doctest: +REMOTE_DATA
 
