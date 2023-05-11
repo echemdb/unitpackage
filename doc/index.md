@@ -17,7 +17,7 @@ Welcome to unitpackage's documentation!
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated, or who performed the experiment. Such information can be stored, by creating [frictionless datapackages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON file.
+Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated, or who performed the experiment. Such information can be stored in [frictionless datapackages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON file.
 The `unitpackage` module provides a Python library to interact with such datapackages which have a very [specific structure](usage/unitpackage.md).
 An example demonstrating the usage of a collection of datapackages along with the `unitpackage` Python library is found on [echemdb.org](https://www.echemdb.org). The website shows a collection of electrochemical data, stored following the [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 
@@ -92,6 +92,13 @@ db_filtered.describe()
 ```{note}
 The filtering method is also available to the base class `Collection`.
 ```
+
+# Further Usage
+
+Frictionless datapackages or unitpackges are perfectly machine readable making the underling data and metadata reusable in many ways.
+
+* The `unitpackage` API can be used to filter collections of similar data for certain properties, thus allowing for simple comparison of different data sets. For example, you could think of comparing local files recorded in the laboratory with data published in a repository.
+* The content of datapackages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on [echemdb.org](https://www.echemdb.org). The datapackages could also be published with the [frictionless Livemark](https://livemark.frictionlessdata.io/) data presentation framework.
 
 Installation
 ============
