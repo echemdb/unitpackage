@@ -24,10 +24,10 @@ db = Collection(data_packages=collect_datapackages("../files"))
 db
 ```
 
-All functionalities to operate with a [collection](collection_interactions.md) or specific [entries](entry_interactions.md) within the collection are now availble to your local files.
+All functionalities to interact with a collection or specific entries within the collection are now available to your local files (see [usage section](unitpackage_usage.md)).
 
 ```{note}
-Without providing the argument `data_packages=collect_datapackages("../packages_folder")` to the `Collection` class, the data from [echemdb.org](https:///www.echemdb.org) will be downloaded and stored as collection instead.
+Without providing the argument `data_packages=collect_datapackages("../packages_folder")` to the `Collection` class, the data from [echemdb.org](https:///www.echemdb.org/cv) will be downloaded and stored as collection instead.
 ```
 
 In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection, such as

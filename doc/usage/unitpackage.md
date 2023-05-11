@@ -1,6 +1,6 @@
 ---
 jupytext:
-  formats: ipynb,md:myst
+  formats: md:myst,ipynb
   text_representation:
     extension: .md
     format_name: myst
@@ -18,18 +18,18 @@ To create a `unitpackage` entry or a `unitpackage` collection, the frictionless 
 
 ## Frictionless Datapackage
 
-To understand the unitpackage structure (not the module), we briefly highlight key properties of the frictionless datapackage, based on adapted examples found in the frictionless documentation.
+The key description of the frictionless datapackage is based on adapted examples found in the [frictionless documentation](https://specs.frictionlessdata.io/tabular-data-package/#language).
 
 A minimal datapackage in your file system consists of two files:
 
-```sh
+```sh .noeval
 data.csv
 datapackage.json
 ```
 
-The CSV file contains some data, where we focus on data which can have a unit. Such data is usually found in natural sciences.
+The CSV file contains some data. Here we focus on CSV files containing numbers. Such data is usually found in natural sciences.
 
-```
+```sh .noeval
 var1,var2,var3
 1,2.1
 3,4.5
@@ -106,11 +106,11 @@ A frictionless datapackage can have multiple resources.
 
 ## Requirements for Scientific Data
 
-Tabular Scientific data are often so called time series data, where one or more properties are recorded over a certain time scale, such as the temperature $T$ or pressure $p$ in a laboratory. It some cases one variable is changed with time and one or more variables are recorded based on the induced changes, such as measuring the change in current $I$ in a load by varying a voltage $V$.
+Tabular scientific data are often so called time series data, where one or more properties are recorded over a certain time scale, such as the temperature $T$ or pressure $p$ in a laboratory. In some cases one variable is changed with time and one or more variables are recorded based on the induced changes, such as measuring the change in current $I$ in a load by varying a voltage $V$.
 
 A CVS contains the underlying data.
 
-```
+```sh .noeval
 t,U,I
 1,2.1
 3,4.5
@@ -159,7 +159,7 @@ The units should be provided following the [astropy unit](https://docs.astropy.o
 }
 ```
 
-Additional metadata describing the underlying data or its origin is stored in the resource `metadata` key. The `metadata` can contain a list with metadata items following different kinds of metadata schemas.
+Additional metadata describing the underlying data or its origin is stored in the resource `metadata` descriptor. The `metadata` can contain a list with metadata descriptors following different kinds of metadata schemas.
 
 ```json
 {
@@ -218,10 +218,10 @@ Additional metadata describing the underlying data or its origin is stored in th
 ```
 
 ```{warning}
-The `unitpackage` module currently only provides direct access to the resource metadata stored within the key `echemdb`.
+The `unitpackage` module currently only provides direct access to the resource metadata stored within the `echemdb` descriptor.
 ```
 
-The above example can be found [here](https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/files) names `demo_package_metadata`. To demonstrate how the different properties of the datapackage can be accessed we load the specific entry.
+The above example can be found [here](https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/files) named `demo_package_metadata`. To demonstrate how the different properties of the datapackage can be accessed we load the specific entry.
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
@@ -253,13 +253,13 @@ entry.package
 
 One resource is named according to the CSV filename. The units provided in that resource are describing the data within that CSV.
 
-The second resource is called `echemdb`. It is created upon loading a datapackage and stores the data of the CSV as a pandas dataframe. The dataframe is directly accessible from the entry and shows the data from the `echemdb` resource.
+The second resource is called `echemdb`. It is created upon loading a datapackage with the `unitpackage` module and stores the data of the CSV as a pandas dataframe. The dataframe is directly accessible from the entry and shows the data from the `echemdb` resource. Upon loading the data, both the numbers and units in the CSV and pandas dataframe are identical.
 
 ```{code-cell} ipython3
 entry.df.head(3)
 ```
 
-The reason for the separation into two resources is as follows. With unitpackage we can transform the values within the dataframe to new units. This process leaves the data in CSV unchanged. The pandas dataframe in turn is adapted, as well as the units of the different fields.
+The reason for the separation into two resources is as follows. With unitpackage we can transform the values within the dataframe to new units. This process leaves the data in CSV unchanged. The pandas dataframe in turn is adapted, as well as the units of the different fields of the `echemdb` resource.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'U': 'V', 'I': 'mA'})
@@ -269,3 +269,5 @@ rescaled_entry.df.head(3)
 ```{code-cell} ipython3
 rescaled_entry.package.get_resource('echemdb')
 ```
+
+More information on the possibilities of `unitpackage` refer to the [usage section](unitpackage_usage.md).

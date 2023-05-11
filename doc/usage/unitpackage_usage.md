@@ -14,13 +14,13 @@ kernelspec:
 
 # Usage
 
-Here we present the interaction of collections and entries created with `unitpackage` from specifically designed [datapackages](unitpackage.md).
+The `unitpackage` module allows interacting with collections and entries from specifically designed frictionless [datapackages](unitpackage.md).
 
-## Collection Interaction
+## Collection
 
 A collection can be generated from a [remote](../api/remote.md) or a [local](../api/local.md) source.
 
-To illustrate the usage of `unitpackage`, we create a collection from the entries on [echemdb.org](https://www.echemdb.org):
+To illustrate the usage of `unitpackage`, we create a collection from the entries on [echemdb.org](https://www.echemdb.org/cv):
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
@@ -47,11 +47,11 @@ filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
 len(filtered_db)
 ```
 
-## Entry Interaction
+## Entry
 
-Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](bibliography.md)). The entry also has additional methods for descriptor representation, data manipulation and data visualization.
+Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)). The entry also has additional methods for descriptor representation, data manipulation and data visualization.
 
-### Entry Creation
+### Creation
 
 An entry can be created from a local package:
 
@@ -62,14 +62,14 @@ local_entry = Entry(collect_datapackages('../files/')[2])
 local_entry
 ```
 
-Single entries can also be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org) for each entry.
+Single entries can also be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org/cv) for each entry.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```
 
-### Accessing Resource Metadata
+### Resource Metadata
 
 The metadata associated with the resource is located in `db.package.get_resource('echemdb').custom['metadata']`.
 From an `entry` such information can be retrieved by `entry['name']`,
@@ -108,16 +108,16 @@ entry.figure_description.scan_rate.unit
 ```
 
 (data)=
-### Accessing Data
+### Data
 
 The datapackage consists of two resources.
 
-* The first resource has the entry's identifier as name. It describes the data in the CSV.
-* The second resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.
+* One resource is named according to the entry's identifier. It describes the data in the CSV.
+* One resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the unitpackage module are only applied to the `echemdb` resource.
+Changes to the data with the `unitpackage` module are only applied to the `echemdb` resource.
 ```
 
 ```{code-cell} ipython3
@@ -130,7 +130,7 @@ The data can be returned as a pandas dataframe.
 entry.df.head()
 ```
 
-The description of the fields (column names) including units and/or other infromation are included in the resource schema.
+The description of the fields (column names) including units and/or other information are included in the resource schema.
 
 ```{code-cell} ipython3
 entry.package.get_resource('echemdb').schema
@@ -175,7 +175,7 @@ A plot with rescaled axis is obtained by rescaling the entry first.
 entry.rescale({'E':'mV', 'j':'uA / cm2'}).plot(x_label='t', y_label='j')
 ```
 
-## Bibliography interaction
+## Bibliography
 
 An entry can be associated with bibliography data. The bibliography must must be prvided as abibtex string nested in source.bib_data. The bibliography to all entries is stored as a [pybtex database](https://docs.pybtex.org/api) `db.bibliography`,
 which contains bibtex entries.
