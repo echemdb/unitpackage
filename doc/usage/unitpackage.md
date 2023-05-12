@@ -14,11 +14,12 @@ kernelspec:
 
 # Unitpackage Structure
 
-To create a `unitpackage` entry or a `unitpackage` collection, the frictionless datapackages must have a certain structure or follow a certain schema. We briefly illustrate the structure of the frictionless datapackages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the datapackage for use with `unitpackage`.
+The `unitpackage` extends the Python API of the [frictionless framework](https://framework.frictionlessdata.io/).
+To create a `unitpackage` entry or a `unitpackage` collection a frictionless datapackages must have a certain structure or follow a certain schema. We briefly illustrate the structure of the frictionless datapackages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the datapackage for use with `unitpackage`.
 
 ## Frictionless Datapackage
 
-The key description of the frictionless datapackage is based on adapted examples found in the [frictionless documentation](https://specs.frictionlessdata.io/tabular-data-package/#language).
+The description of the frictionless datapackage presented here, is based on adapted examples found in the [frictionless documentation](https://specs.frictionlessdata.io/tabular-data-package/#language).
 
 A minimal datapackage in your file system consists of two files:
 
@@ -27,7 +28,7 @@ data.csv
 datapackage.json
 ```
 
-The CSV file contains some data. Here we focus on CSV files containing numbers. Such data is usually found in natural sciences.
+The CSV file contains some data. For the unitpackge we focus on CSV files which contain numbers. Such data is usually found in natural sciences.
 
 ```sh .noeval
 var1,var2,var3
@@ -35,7 +36,7 @@ var1,var2,var3
 3,4.5
 ```
 
-The corresponding JSON file, describes the data in the CSV.
+In the corresponding JSON file the data in the CSV is described in a resource.
 
 ```json
 {
@@ -106,7 +107,7 @@ A frictionless datapackage can have multiple resources.
 
 ## Requirements for Scientific Data
 
-Tabular scientific data are often so called time series data, where one or more properties are recorded over a certain time scale, such as the temperature $T$ or pressure $p$ in a laboratory. In some cases one variable is changed with time and one or more variables are recorded based on the induced changes, such as measuring the change in current $I$ in a load by varying a voltage $V$.
+Tabular scientific data are often time series data, where one or more properties are recorded over a certain time scale, such as the temperature $T$ or pressure $p$ in a laboratory. In some cases one variable is changed with time and one or more variables are recorded to observe the change induced to a system. This could, for example, be the change in current $I$ in a load by varying a voltage $V$.
 
 A CVS contains the underlying data.
 
@@ -117,13 +118,13 @@ t,U,I
 ```
 
 ```{warning}
-The `unitpackage` currently only supports CSV files with a single header line. CSV files with headers, including additional information must be converted before.
+The `unitpackage` currently only supports CSV files with a single header line. CSV files with headers, including additional information must be converted before. (see #23)
 ```
 
-The units are at this point usually unknown, but they can be included in the datapackage in the resource schema.
+The units are often not included in the filed/column names. These can be included in the datapackage in the resource schema.
 
 ```{note}
-The units should be provided following the [astropy unit](https://docs.astropy.org/en/stable/units/index.html) notation.
+We suggest providing the units according to the [astropy unit](https://docs.astropy.org/en/stable/units/index.html) notation.
 ```
 
 ```json
@@ -159,7 +160,7 @@ The units should be provided following the [astropy unit](https://docs.astropy.o
 }
 ```
 
-Additional metadata describing the underlying data or its origin is stored in the resource `metadata` descriptor. The `metadata` can contain a list with metadata descriptors following different kinds of metadata schemas.
+Additional metadata describing the underlying data or its origin is stored in the resource `metadata` descriptor. The `metadata` can contain a list with metadata descriptors following different kinds of metadata schemas. This allows storing metadata in different formats or from different sources.
 
 ```json
 {
@@ -218,7 +219,7 @@ Additional metadata describing the underlying data or its origin is stored in th
 ```
 
 ```{warning}
-The `unitpackage` module currently only provides direct access to the resource metadata stored within the `echemdb` descriptor.
+The `unitpackage` module currently only provides direct access to the resource metadata stored within the `echemdb` descriptor. (see #20)
 ```
 
 The above example can be found [here](https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/files) named `demo_package_metadata`. To demonstrate how the different properties of the datapackage can be accessed we load the specific entry.
@@ -231,7 +232,7 @@ entry = db['demo_package_metadata']
 entry
 ```
 
-The keys within the `echemdb` metadata are directly accessible as properties from the main `entry`.
+The keys within the `echemdb` metadata descriptor are directly accessible as properties from the main `entry`.
 
 ```{code-cell} ipython3
 entry.curation
@@ -270,4 +271,4 @@ rescaled_entry.df.head(3)
 rescaled_entry.package.get_resource('echemdb')
 ```
 
-More information on the possibilities of `unitpackage` refer to the [usage section](unitpackage_usage.md).
+Refer to the [usage section](unitpackage_usage.md) for a more detail description of the `unitpackage` API.
