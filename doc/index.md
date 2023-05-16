@@ -95,7 +95,7 @@ Frictionless datapackages or unitpackges are perfectly machine readable making t
 * The `unitpackage` API can be used to filter collections of similar data for certain properties, thus allowing for simple comparison of different data sets. For example, you could think of comparing local files recorded in the laboratory with data published in a repository.
 * The content of datapackages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on [echemdb.org](https://www.echemdb.org/cv). The datapackages could also be published with the [frictionless Livemark](https://livemark.frictionlessdata.io/) data presentation framework.
 
-You can cite this project as described [on our zenodo page](https://zenodo.org/record/7942320).
+You can cite this project as described [on our zenodo page](https://zenodo.org/badge/latestdoi/637997870).
 
 ## Installation
 
