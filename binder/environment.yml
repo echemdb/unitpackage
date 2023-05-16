@@ -9,4 +9,4 @@ dependencies:
   - pip
   - python>=3.9,<3.11
   - pip:
-    - unitpackage==0.6.0
+    - unitpackage==0.7.0

@@ -4,7 +4,17 @@ echemdb Change Log
 
 .. current developments
 
-Older versions
+
+=======
+v0.7.0
+====================
+
+**Fixed:**
+
+* Fixed `entry.rescale` which returned an erroneous entry.
+
+
+Older Versions
 ==============
 
 For versions older than 0.7.0 please refer to [echemdb](https://github.com/echemdb/echemdb), which was used the original repository's name.
