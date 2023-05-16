@@ -7,151 +7,15 @@ echemdb Change Log
 v0.7.0
 ====================
 
-**Added:**
-
-* Added <news item>.
-
-**Changed:**
-
-* Changed <news item>.
-
-**Deprecated:**
-
-* Deprecated <news item>.
-
-**Removed:**
-
-* Removed <news item>.
-
 **Fixed:**
 
 * Fixed `entry.rescale` which returned an erroneous entry.
 
-**Performance:**
-
-* Improved <news item>.
 
 
+Older Versions
+==============
 
-v0.6.0
-====================
-
-**Added:**
-
-* Added method `get_electrode(name)` in `CVEntry`.
-* Added property `_metadata` in `Entry`.
-
-**Changed:**
-
-* Adapted to a new echemdb datapackge metadata schema. The metadata describing the data is now part of the resource and no longer a top level key of the datapackage. The `electrodes` key used for electrochemical systems is now a `list`` instead of a `dict`. The bibtex bibliography key is now part of the `source` key.
-
-**Removed:**
-
-* Removed 'collect_bibliography'. The bibliography should now be part of the datapackage and stored in a key named `bibliography`.
-
-**Fixed:**
-
-* Upgraded to svgdigitizer 0.10.0.
-
-
-
-v0.5.0
-====================
-
-**Added:**
-
-* Added installation instructions to the documentation.
-
-**Changed:**
-
-* Changed the 'echemdb' resource from 'type: buffer data' to 'type: pandas dataframe'.
-* Changed `echemdb.cv.entry.Entry` into `echemdb.cv.cv_entry.CVEntry` and moved all not CV related methods into `echemdb.entry.Entry`. Similarly `echemdb.cv.database` was split into `echemdb.cv.cv_database` and `echemdb.database`.
-
-**Fixed**
-
-* Fixed external hyperlinks in the documentation.
-
-**Fixed:**
-
-* Upgraded to work with frictionless >5.10.1.
-* Upgraded to work with svgdigitizer 0.8.0.
-* Fixed doctest of `echemdb.local.collect_datapackages`.
-
-
-
-v0.4.0
-====================
-
-**Changed:**
-
-* Changed ``Entry.thumbnails()`` to accept width/height in pixels and return a thumbnail with transparent background.
-
-
-
-v0.3.0
-====================
-
-**Added:**
-
-* Added content to the main page of the documentation.
-* Added `echemdb.cv.entry.Entry.thumbnail()` which returns a thumbnail as bytes of the entry without axis.
-
-
-
-v0.2.0
-====================
-
-**Added:**
-
-* Added links to the API in the documentation.
-* Added `cv.database.describe` showing some basic stats of the database.
-* Added `cv.database.materials` showing a list of materials currently in the database.
-
-**Changed:**
-
-* Changed the usage examples of `database.bibliography` in the documentation.
-
-**Fixed:**
-
-* Fixed an erronoues command line text in the readme on how to build the documentation locally.
-* Fixed version pattern for binder in rever deployment script.
-* Added Python version 3.9 as a requirement to setup.py and environment.yaml.
-* Fixed rendering of plotly plots in the documentation.
-
-
-
-v0.1.3
-====================
-
-**Changed:**
-
-* Changed binder configuration to use conda.
-
-
-
-v0.1.2
-====================
-
-**Added:**
-
-* Added Binder links to the documentation.
-
-**Fixed:**
-
-* Fixed dependencies of echemdb package. We do not require the svgdigitizer to use echemdb.
-
-
-
-v0.1.1
-====================
-
-**Changed:**
-
-* Changed link of the image in the readme to render the image on PyPi.
-
-
-
-v0.1.0
-====================
+For versions older than 0.7.0 please refer to [echemdb](https://github.com/echemdb/echemdb).
 
 
