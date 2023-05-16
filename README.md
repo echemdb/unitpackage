@@ -1,97 +1,121 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.6.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6502901.svg)](https://doi.org/10.5281/zenodo.6502901)
 
-The echemdb Python package can interact with a database of
-[frictionless datapackages](https://frictionlessdata.io/)
-containing electrochemical data following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
-Such a database can be generated from the data on [echemdb.org](https://www.echemdb.org)
-or from local files.
+This module provides a Python library to interact with a collection of
+[frictionless datapackages](https://frictionlessdata.io/). Such datapackages consist of a CSV (data) file which is annotated with a JSON file.
+This allows storing additional information such as units used in the columns of a CSV or store metadata describing the underlying data.
+Example datapackages can be found [here](https://github.com/echemdb/unitpackage/tree/main/doc/files/) and a JSON could be structured as follows
 
-Detailed installation instructions, description of the modules, advanced usage examples, including
-local database creation, are provided in our
-[documentation](https://echemdb.github.io/echemdb/).
-
-# Installation instructions
-
-Install the latest stable version of echemdb from PyPI or conda.
+```json
+{
+    "resources": [
+        {
+            "name": "demo_package",
+            "type": "table",
+            "path": "demo_package.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "j",
+                        "type": "number",
+                        "unit": "A / m2"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "description": "Sample data for the unitpackage module.",
+                    "curation": {
+                        "process": [
+                            {
+                                "role": "experimentalist",
+                                "name": "John Doe",
+                                "laboratory": "Institute of Good Scientific Practice",
+                                "date": "2021-07-09"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
 ```
-pip install echemdb
-```
 
-```
-conda install -c conda-forge echemdb
-```
-
-# Python API
-
-The currently available data shown on [echemdb.org](https://www.echemdb.org) can be downloaded and stored in a database.
+The metadata of an entries' resource in a collection is accessible from the python API.
 
 ```python
->>> from echemdb.cv.cv_database import CVDatabase
->>> db = Database()
+>>> from unitpackage.collection import Collection
+>>> from unitpackage.local import collect_datapackages
+>>> db = Collection(data_packages=collect_datapackages('./doc/files'))
+>>> entry = db['demo_package_cv']
+>>> entry.description
+'Sample data for the unitpackage module.'
 ```
 
-Filtering the database for entries having specific properties, e.g., containing Pt as working electrode material, returns a new database.
+From the API also a simple 2D plot can be drawn.
 
 ```python
->>> db_filtered = db.filter(lambda entry: entry.system.electrodes.working_electrode.material == 'Pt')
+>>> entry.plot()
 ```
+<img src=https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/images/readme_demo_plot.png style="width:400px">
 
-A single entry can be retrieved with the identifiers provided on the website
-(see for example [engstfeld_2018_polycrystalline_17743_f4b_1](https://echemdb.github.io/website/cv/entries/engstfeld_2018_polycrystalline_17743_f4b_1/))
-
-```python
->>> entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-```
-
-Each entry has a set of descriptors such as its ``source`` or the electrochemical ``system``.
+Ultimately, the `unitpackage` allows for simple transformation of data within a resource into different units.
 
 ```python
->>> entry.source # or entry['source']
-{'citation key': 'engstfeld_2018_polycrystalline_17743', 'curve': 1, 'url': 'https://doi.org/10.1002/chem.201803418', 'figure': '4b', 'version': 1}
-```
-
-The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe (values are provided in SI units).
-
-```python
+>>> entry.get_unit('j')
+'A / m2'
 >>> entry.df
-           t	        E	       j
-0	0.000000	-0.196962	0.043009
-1	0.011368	-0.196393	0.051408
+          t         E        j
+0  0.000000	-0.196962 0.043009
+1  0.011368	-0.196393 0.051408
 ...
-```
-
-The dataframe can be returned with custom or original figure axes' units by rescaling the entry.
-
-```python
 >>> entry.rescale({'E' : 'mV', 'j' : 'uA / m2'}).df
           t           E             j
 0  0.000000 -196.961730  43008.842162
 1  0.011368 -196.393321  51408.199892
 ...
->>> entry.rescale('original').df
-          t         E         j
-0  0.000000 -0.196962  4.300884
-1  0.011368 -0.196393  5.140820
-...
 ```
 
-The units and reference electrodes can be found in the resource schema. The units are updated upon rescaling an entry.
+Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection`
 
-```python
->>> entry.package.get_resource('echemdb')['schema']
-{'fields':
-[{'name': 't', 'unit': 's', 'type': 'number'},
-{'name': 'E', 'unit': 'V', 'reference': 'RHE', 'type': 'number'},
-{'name': 'j', 'unit': 'A / m2', 'type': 'number'}]}
+Collections can be generated from local files or data published in repositories such as on [echemdb.org](https://www.echemdb.org/cv)
+
+Detailed installation instructions, description of the modules, advanced usage examples, including
+local collection creation, are provided in our
+[documentation](https://echemdb.github.io/unitpackage/).
+
+# Installation instructions
+
+This package is available on [PiPY](https://pypi.org/project/unitpackage/) and can be installed with pip:
+
+```sh .noeval
+pip install unitpackage
 ```
 
-The data can be visualized in a plotly figure:
+The package is also available on [conda-forge](https://github.com/conda-forge/unitpackage-feedstock) an can be installed with conda
 
-```python
->>> entry.plot()
+```sh .noeval
+conda install -c conda-forge unitpackage
 ```
-<img src=https://raw.githubusercontent.com/echemdb/echemdb/main/doc/images/readme_demo_plot.png style="width:400px">
+
+or mamba
+
+```sh .noeval
+mamba install -c conda-forge unitpackage
+```
+
+Please consult our [documentation](https://echemdb.github.io/unitpackage/) for
+more detailed [installation instructions](https://echemdb.github.io/unitpackage/installation.html).
 
 # License
 

@@ -1,17 +1,41 @@
 r"""
 A Data Package describing tabulated data for which the units of the
-column names (pandas) or fields (frictionless) are known.
+column names (`pandas <https://pandas.pydata.org/>`_)
+or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known
+and the resource has additional  metadata describing the underlying data.
 
-Datapackages are the individual elements of a :class:`Database` and
-are denoted as `entry`.
+A description of such datapackags can be found in the documentation
+in :doc:`/usage/unitpackage`.
+
+Datapackages are the individual elements of a :class:`Collection` and
+are denoted as ``entry``.
 
 EXAMPLES:
+
+Metadata included in an entries resource is accessible as an attribute::
+
+    >>> entry = Entry.create_examples()[0]
+    >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {'citation key': 'alves_2011_electrochemistry_6010',
+    'url': 'https://doi.org/10.1039/C0CP01001D',
+    'figure': '1a',
+    'curve': 'solid',
+    'bibdata': '@article{alves_2011_electrochemistry_6010,...}
+
+The data of the resource can be called as a pandas dataframe::
+
+    >>> entry = Entry.create_examples()[0]
+    >>> entry.df
+                  t         E         j
+    0      0.000000 -0.103158 -0.998277
+    1      0.020000 -0.102158 -0.981762
+    ...
 
 Data Packages containing published data,
 also contain information on the source of the data.::
 
-    >>> from echemdb.database import Database
-    >>> db = Database.create_example()
+    >>> from unitpackage.collection import Collection
+    >>> db = Collection.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
     Entry('article',
@@ -28,46 +52,46 @@ also contain information on the source of the data.::
 
 """
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
 #        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
 #
-#  echemdb is free software: you can redistribute it and/or modify
+#  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  echemdb is distributed in the hope that it will be useful,
+#  unitpackage is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+#  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
 import os.path
 
-from echemdb.descriptor import Descriptor
+from unitpackage.descriptor import Descriptor
 
-logger = logging.getLogger("echemdb")
+logger = logging.getLogger("unitpackage")
 
 
 class Entry:
     r"""
-    A `data packages <https://github.com/frictionlessdata/framework>`_
+    A `frictionless data package <https://github.com/frictionlessdata/framework>`_
     describing tabulated data.
 
     EXAMPLES:
 
-    Entries are normally obtained by opening a :class:`Database` of entries::
+    Entries are normally obtained by opening a :class:`Collection` of entries::
 
-        >>> from echemdb.database import Database
-        >>> database = Database.create_example()
-        >>> entry = next(iter(database))
+        >>> from unitpackage.collection import Collection
+        >>> collection = Collection.create_example()
+        >>> entry = next(iter(collection))
 
     """
 
@@ -152,7 +176,7 @@ class Entry:
     @property
     def _metadata(self):
         r"""
-        Returns the metadata of the resource named "echemdb".
+        Returns the metadata named "echemdb" nested within a resource named "echemdb".
 
         EXAMPLES::
 
@@ -341,12 +365,23 @@ class Entry:
                     field.name, {"unit": units[field.name]}
                 )
 
+        # create a new dataframe resource
         df_resource = Resource(df)
         df_resource.infer()
+        # update units in the schema of the df resource
+        df_resource.schema = package.get_resource("echemdb").schema
 
-        package.get_resource("echemdb").data = df_resource.data
+        df_resource.name = "echemdb"
 
-        return type(self)(package=package)
+        # Remove the original echemdb resource and
+        # add a new echemdb resource to the new entr
+        package.remove_resource("echemdb")
+
+        entry = type(self)(package=package)
+
+        entry.package.add_resource(df_resource)
+
+        return entry
 
     @property
     def df(self):
@@ -390,7 +425,7 @@ class Entry:
         r"""
         Return some example entries for use in automated tests.
 
-        The examples are built on-demand from data in echemdb's examples directory.
+        The examples are built on-demand from data in unitpackage's examples directory.
 
         EXAMPLES::
 
@@ -421,7 +456,7 @@ class Entry:
 
         cls._digitize_example(source=source, outdir=outdir)
 
-        from echemdb.local import collect_datapackages
+        from unitpackage.local import collect_datapackages
 
         packages = collect_datapackages(outdir)
 
@@ -483,7 +518,7 @@ class Entry:
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
-        Return a plot of this entry.
+        Return a 2D plot of this entry.
 
         The default plot is constructed from the first two columns of the dataframne.
 
@@ -493,7 +528,7 @@ class Entry:
             >>> entry.plot()
             Figure(...)
 
-        The plot can also be returned with custom axis units available in the resource::
+        The 2D plot can also be returned with custom axis units available in the resource::
 
             >>> entry.plot(x_label='j', y_label='E')
             Figure(...)

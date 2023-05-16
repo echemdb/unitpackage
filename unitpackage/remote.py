@@ -2,25 +2,25 @@ r"""
 Utilities to work with remote data packages.
 """
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
 #        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
 #
-#  echemdb is free software: you can redistribute it and/or modify
+#  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  echemdb is distributed in the hope that it will be useful,
+#  unitpackage is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+#  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
 import os.path
@@ -53,8 +53,8 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
     r"""
     Return a list of data packages defined in a remote location.
 
-    The default is to download the packages currently available on echemdb and
-    extract them to a temporary directory.
+    The default is to download the packages currently available on `echemdb <https://www.echemdb.org/cv>`_
+    and extract them to a temporary directory.
 
     EXAMPLES::
 
@@ -80,6 +80,6 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
         ],
     )
 
-    import echemdb.local
+    import unitpackage.local
 
-    return echemdb.local.collect_datapackages(os.path.join(outdir, data))
+    return unitpackage.local.collect_datapackages(os.path.join(outdir, data))

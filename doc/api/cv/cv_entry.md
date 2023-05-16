@@ -1,9 +1,9 @@
 ---
-github_url: https://github.com/echemdb/echemdb/blob/master/echemdb/cv/cv_entry.py
+github_url: https://github.com/echemdb/unitpackage/blob/master/unitpackage/cv/cv_entry.py
 ---
 
-# `echemdb.cv.cv_entry`
+# `unitpackage.cv.cv_entry`
 ```{eval-rst}
-.. automodule:: echemdb.cv.cv_entry
+.. automodule:: unitpackage.cv.cv_entry
    :members:
 ```

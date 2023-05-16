@@ -1,6 +1,6 @@
-project = 'echemdb'
-copyright = '2022, the echemdb authors'
-author = 'the echemdb authors'
+project = 'unitpackage'
+copyright = '2022-2023, the unitpackage authors'
+author = 'the unitpackage authors'
 
 release = '0.6.0'
 
@@ -11,6 +11,8 @@ source_suffix = [".rst", ".md"]
 templates_path = ['_templates']
 
 exclude_patterns = ['generated', 'Thumbs.db', '.DS_Store', 'README.md', 'news', '.ipynb_checkpoints', '*.ipynb', '**/*.ipynb']
+
+myst_enable_extensions = ["amsmath", "dollarmath"]
 
 todo_include_todos = True
 
@@ -25,7 +27,7 @@ myst_heading_anchors = 2
 # a warning is raised which is treated as an error when plotly plots are rendered.
 # The plots are created even when the warning is ignored.
 # Warning, treated as error:
-# X:\github\echemdb\doc\index.md:82:skipping unknown output mime type: application/vnd.plotly.v1+json [mystnb.unknown_mime_type]
+# X:\github\unitpackage\doc\index.md:82:skipping unknown output mime type: application/vnd.plotly.v1+json [mystnb.unknown_mime_type]
 suppress_warnings = ["mystnb.unknown_mime_type"]
 
 # We render some demo notebooks as part of the documentation. These notebooks try to load plotly through RequireJS (which is how Jupyter notebooks load dependencies) so we need to ship this with our Sphinx documentation.
@@ -35,6 +37,6 @@ html_js_files = ["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/requir
 html_context = {
     'display_github': True,
     'github_user': 'echemdb',
-    'github_repo': 'echemdb',
+    'github_repo': 'unitpackage',
     'github_version': 'main/doc/',
 }

@@ -23,7 +23,7 @@ jobs:
         run: |
           mamba env update --quiet -n test -f environment.yml
           conda list
-      - name: install echemdb
+      - name: install unitpackage
         shell: bash -l {0}
         run: |
           pip install -e .
@@ -34,8 +34,8 @@ jobs:
           make html
           mv generated/html generated/html_
           mkdir generated/html
-          mv generated/html_ generated/html/echemdb
-          touch generated/html/echemdb/.nojekyll
+          mv generated/html_ generated/html/unitpackage
+          touch generated/html/unitpackage/.nojekyll
       - name: fix permissions
         shell: bash -l {0}
         run: |
@@ -46,11 +46,11 @@ jobs:
         run: |
           python -m http.server 8880 --directory doc/generated/html &
           sleep 1
-          linkchecker --check-extern http://localhost:8880/echemdb/ --no-robots --ignore mybinder.org
+          linkchecker --check-extern http://localhost:8880/unitpackage/ --no-robots --ignore mybinder.org
       - uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
-          folder: doc/generated/html/echemdb
+          folder: doc/generated/html/unitpackage
           target-folder: docs
           single-commit: true
         if: ${{ github.event_name == 'push' }}
