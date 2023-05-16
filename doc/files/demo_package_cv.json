@@ -19,7 +19,7 @@
                         "name": "E",
                         "type": "number",
                         "unit": "V",
-						"reference": "RHE"
+		        "reference": "RHE"
                     },
                     {
                         "name": "j",
