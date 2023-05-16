@@ -1,72 +1,69 @@
 r"""
-A Data Package describing a Cyclic Voltammogram.
+A Data Package describing a Cyclic Voltammogram found in the field of electrochemistry.
+It provides additional functionalities compared to the class :class:`Entry`.
 
-These are the individual elements of a :class:`CVDatabase`.
+These are the individual elements of a :class:`CVCollection`.
 
 EXAMPLES:
 
-Data Packages containing published data,
-also contain information on the source of the data::
+We can directly access the material of an electrode used in the experiment,
+such as WE, CE or REF::
 
-    >>> from echemdb.cv.cv_database import CVDatabase
-    >>> db = CVDatabase.create_example()
+    >>> from unitpackage.cv.cv_collection import CVCollection
+    >>> db = CVCollection.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    Entry('article',
-      fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
-        ('journal', 'Physical Chemistry Chemical Physics'),
-        ('volume', '13'),
-        ('number', '13'),
-        ('pages', '6010--6021'),
-        ('year', '2011'),
-        ('publisher', 'Royal Society of Chemistry'),
-        ('abstract', 'We investigated ...')],
-      persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
+    >>> entry.get_electrode('WE').material
+    'Ru'
+
+The :meth:`plot` creates a typical representation of a Cyclic Voltammogram,
+where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
+
+    >>> entry.plot()
+    Figure(...)
 
 """
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
 #        Copyright (C) 2021-2023 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
 #
-#  echemdb is free software: you can redistribute it and/or modify
+#  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation, either version 3 of the License, or
 #  (at your option) any later version.
 #
-#  echemdb is distributed in the hope that it will be useful,
+#  unitpackage is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
 #
 #  You should have received a copy of the GNU General Public License
-#  along with echemdb. If not, see <https://www.gnu.org/licenses/>.
+#  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
 
-from echemdb.entry import Entry
+from unitpackage.entry import Entry
 
-logger = logging.getLogger("echemdb")
+logger = logging.getLogger("unitpackage")
 
 
 class CVEntry(Entry):
     r"""
-    A `data packages <https://github.com/frictionlessdata/framework>`_
+    A `frictionless data packages <https://github.com/frictionlessdata/framework>`_
     describing a Cyclic Voltammogram.
 
     EXAMPLES:
 
     An entry can be created directly from a datapackage that has been created
-    with svgdigitizer's `cv` command. However, entries are normally obtained by
-    opening a :class:`CVDatabase` of entries::
+    with `svgdigitizer's <https://echemdb.github.io/svgdigitizer/>`_ `cv` command.
+    However, entries are normally obtained by opening a :class:`CVCollection` of entries::
 
-        >>> from echemdb.cv.cv_database import CVDatabase
-        >>> database = CVDatabase.create_example()
-        >>> entry = next(iter(database))
+        >>> from unitpackage.cv.cv_collection import CVCollection
+        >>> collection = CVCollection.create_example()
+        >>> entry = next(iter(collection))
 
     """
 
@@ -116,11 +113,13 @@ class CVEntry(Entry):
         r"""
         Return a rescaled :class:`CVEntry` with axes in the specified ``units``.
 
-        Usage is essentially the same as for :meth:`echemdb.entry.Entry.rescale', i.e.,
+        Usage is essentially the same as for :meth:`unitpackage.entry.Entry.rescale`, i.e.,
         new units are expected as dict, where the key is the axis name and the value
-        the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
+        the new unit, such as ``{'j': 'uA / cm2', 't': 'h'}``.
 
-        Additionally, the entry can be rescaled to the axes' units of the original datapackage::
+        Additionally, the entry can be rescaled to the axes' units of the original data.
+        These units must be defined in the metadata of the resource,
+        within the key ``figure_description.fields``::
 
             >>> entry = CVEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
@@ -139,7 +138,7 @@ class CVEntry(Entry):
 
     def _normalize_field_name(self, field_name):
         r"""
-        Return the name of a field name of the `echemdb` resource.
+        Return the name of a field name of the `unitpackage` resource.
 
         If 'j' is requested but is not present in the resource,
         'I' is returned instead.
@@ -210,7 +209,7 @@ class CVEntry(Entry):
     def plot(self, x_label="E", y_label="j", name=None):
         r"""
         Return a plot of this entry.
-        The default plot is a cyclic voltammogram ('j vs E').
+        The default plot is a Cyclic Voltammogram ('j vs E').
         When `j` is not present in the data, `I` is used instead.
 
         EXAMPLES::

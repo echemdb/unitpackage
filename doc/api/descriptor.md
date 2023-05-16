@@ -1,9 +1,9 @@
 ---
-github_url: https://github.com/echemdb/echemdb/blob/master/echemdb/descriptor.py
+github_url: https://github.com/echemdb/unitpackage/blob/master/unitpackage/descriptor.py
 ---
 
-# `echemdb.descriptor`
+# `unitpackage.descriptor`
 ```{eval-rst}
-.. automodule:: echemdb.descriptor
+.. automodule:: unitpackage.descriptor
    :members:
 ```

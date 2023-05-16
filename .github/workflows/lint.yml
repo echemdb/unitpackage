@@ -26,12 +26,12 @@ jobs:
       - name: pylint
         shell: bash -l {0}
         run: |
-          pylint echemdb
+          pylint unitpackage
       - name: black
         shell: bash -l {0}
         run: |
-          black --check --diff echemdb
+          black --check --diff unitpackage
       - name: isort
         shell: bash -l {0}
         run: |
-          isort --check --diff --profile black echemdb
+          isort --check --diff --profile black unitpackage

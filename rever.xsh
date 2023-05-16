@@ -1,10 +1,10 @@
 # ********************************************************************
-#  This file is part of echemdb.
+#  This file is part of unitpackage.
 #
-#        Copyright (C) 2022 Albert Engstfeld
-#        Copyright (C) 2022 Johannes Hermann
-#        Copyright (C) 2022 Julian Rüth
-#        Copyright (C) 2022 Nicolas Hörmann
+#        Copyright (C) 2022-2023 Albert Engstfeld
+#        Copyright (C) 2022      Johannes Hermann
+#        Copyright (C) 2022      Julian Rüth
+#        Copyright (C) 2022      Nicolas Hörmann
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -32,12 +32,12 @@ branch=$(git branch --show-current)
 if branch.strip() != "main":
   raise Exception("You must be on the main branch to release.")
 # and that it is up to date with origin/main
-git fetch https://github.com/echemdb/echemdb.git
+git fetch https://github.com/echemdb/unitpackage.git
 git reset FETCH_HEAD
 git diff --exit-code
 git diff --cached --exit-code
 
-$PROJECT = 'echemdb'
+$PROJECT = 'unitpackage'
 
 $ACTIVITIES = [
     'version_bump',
@@ -51,19 +51,19 @@ $ACTIVITIES = [
 $VERSION_BUMP_PATTERNS = [
     ('setup.py', r"    version=", r'    version="$VERSION",'),
     ('doc/conf.py', r"release = ", r"release = '$VERSION'"),
-    ('doc/index.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
-    ('README.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/echemdb/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
-    ('binder/environment.yml', r"    - echemdb==", r"    - echemdb==$VERSION"),
+    ('doc/index.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
+    ('README.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
+    ('binder/environment.yml', r"    - unitpackage==", r"    - unitpackage==$VERSION"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $CHANGELOG_NEWS = 'doc/news'
-$PUSH_TAG_REMOTE = 'git@github.com:echemdb/echemdb.git'
+$PUSH_TAG_REMOTE = 'git@github.com:echemdb/unitpackage.git'
 
 $PYPI_BUILD_COMMANDS = ['sdist', 'bdist_wheel']
 
 $GITHUB_ORG = 'echemdb'
-$GITHUB_REPO = 'echemdb'
+$GITHUB_REPO = 'unitpackage'
 
 $CHANGELOG_CATEGORIES = ('Added', 'Changed', 'Deprecated', 'Removed', 'Fixed', 'Performance')

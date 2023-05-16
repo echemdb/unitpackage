@@ -20,9 +20,9 @@ jobs:
         - os: "ubuntu-latest"
           python: "3.11"
           # This leg of the tests runs doctests against the data that is
-          # currently in the echemdb. This test might fail when substantial
-          # changes have been introduced with this run that have not been
-          # published in the echemdb yet.
+          # currently available on echemdb.org. This test might fail
+          # when substantial changes have been introduced
+          # with this run that have not been published on echemdb.org yet.
           remote-data: 'remote'
     steps:
       - name: checkout
@@ -38,11 +38,11 @@ jobs:
         run: |
           mamba env update --quiet -n test -f environment.yml
           conda list
-      - name: install echemdb
+      - name: install unitpackage
         shell: bash -l {0}
         run: |
           pip install -e .
       - name: doctest
         shell: bash -l {0}
         run: |
-          pytest -n auto --doctest-plus ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }} --doctest-modules echemdb
+          pytest -n auto --doctest-plus ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }} --doctest-modules unitpackage

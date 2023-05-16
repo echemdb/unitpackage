@@ -1,4 +1,4 @@
-# Sphinx Documentation svgdigitizer
+# Sphinx Documentation of unitpackage
 
 This documentation is automatically built and uploaded to GitHub Pages.
 
@@ -11,3 +11,6 @@ python -m http.server 8880 -b localhost --directory generated/html &
 ```
 
 Then open http://localhost:8880/ with your browser.
+
+The build requires internet access, since data is pulled from
+external repositories to evaluate the documentation content.
