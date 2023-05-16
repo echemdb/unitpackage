@@ -4,6 +4,35 @@ echemdb Change Log
 
 .. current developments
 
+v0.7.0
+====================
+
+**Added:**
+
+* Added <news item>.
+
+**Changed:**
+
+* Changed <news item>.
+
+**Deprecated:**
+
+* Deprecated <news item>.
+
+**Removed:**
+
+* Removed <news item>.
+
+**Fixed:**
+
+* Fixed `entry.rescale` which returned an erroneous entry.
+
+**Performance:**
+
+* Improved <news item>.
+
+
+
 v0.6.0
 ====================
 
