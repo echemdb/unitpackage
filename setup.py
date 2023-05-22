@@ -27,7 +27,7 @@ setup(
     version="0.7.0",
     packages=['unitpackage', 'unitpackage.cv'],
     license='GPL 3.0+',
-    description="a Python library to interact with a collection of frictionless datapackage",
+    description="a Python library to interact with a collection of frictionless datapackages",
     long_description=open('README.md', encoding="UTF-8").read(),
     long_description_content_type="text/markdown",
     include_package_data=True,
