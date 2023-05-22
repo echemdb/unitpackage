@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unitpackage Structure &mdash; unitpackage 0.7.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Usage" href="unitpackage_usage.html" />
+    <link rel="prev" title="Installation" href="../installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Unitpackage Structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#frictionless-datapackage">Frictionless Datapackage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#requirements-for-scientific-data">Requirements for Scientific Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#unitpackage-interface">Unitpackage Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="local_collection.html">Collection From Local Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Unitpackage Structure</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/usage/unitpackage.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="unitpackage-structure">
+<h1>Unitpackage Structure<a class="headerlink" href="#unitpackage-structure" title="Permalink to this headline"></a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> extends the Python API of the <a class="reference external" href="https://framework.frictionlessdata.io/">frictionless framework</a>.
+To create a <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> entry or a <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> collection a frictionless datapackages must have a certain structure or follow a certain schema. We briefly illustrate the structure of the frictionless datapackages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the datapackage for use with <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code>.</p>
+<section id="frictionless-datapackage">
+<h2>Frictionless Datapackage<a class="headerlink" href="#frictionless-datapackage" title="Permalink to this headline"></a></h2>
+<p>The description of the frictionless datapackage presented here, is based on adapted examples found in the <a class="reference external" href="https://specs.frictionlessdata.io/tabular-data-package/#language">frictionless documentation</a>.</p>
+<p>A minimal datapackage in your file system consists of two files:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>data.csv
+datapackage.json
+</pre></div>
+</div>
+<p>The CSV file contains some data. For the unitpackge we focus on CSV files which contain numbers. Such data is usually found in natural sciences.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>var1,var2,var3
+<span class="m">1</span>,2.1
+<span class="m">3</span>,4.5
+</pre></div>
+</div>
+<p>In the corresponding JSON file the data in the CSV is described in a resource.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-package&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-dataset&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// here we list the data files in this dataset</span>
+<span class="w">  </span><span class="nt">&quot;resources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-resource&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;var1&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;var2&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;var3&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>A frictionless datapackage can have multiple resources.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-package&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-dataset&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="c1">// here we list the data files in this dataset</span>
+<span class="w">  </span><span class="nt">&quot;resources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-resource&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data2.csv&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data2&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-resource&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;...&quot;</span><span class="p">:</span><span class="s2">&quot;...&quot;</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="requirements-for-scientific-data">
+<h2>Requirements for Scientific Data<a class="headerlink" href="#requirements-for-scientific-data" title="Permalink to this headline"></a></h2>
+<p>Tabular scientific data are often time series data, where one or more properties are recorded over a certain time scale, such as the temperature <span class="math notranslate nohighlight">\(T\)</span> or pressure <span class="math notranslate nohighlight">\(p\)</span> in a laboratory. In some cases one variable is changed with time and one or more variables are recorded to observe the change induced to a system. This could, for example, be the change in current <span class="math notranslate nohighlight">\(I\)</span> in a load by varying a voltage <span class="math notranslate nohighlight">\(V\)</span>.</p>
+<p>A CVS contains the underlying data.</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>t,U,I
+<span class="m">1</span>,2.1
+<span class="m">3</span>,4.5
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> currently only supports CSV files with a single header line. CSV files with headers, including additional information must be converted before. (see #23)</p>
+</div>
+<p>The units are often not included in the filed/column names. These can be included in the datapackage in the resource schema.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We suggest providing the units according to the <a class="reference external" href="https://docs.astropy.org/en/stable/units/index.html">astropy unit</a> notation.</p>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-package&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;my-dataset&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;resources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data.csv&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;data&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;profile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tabular-data-resource&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;U&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mV&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uA&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Additional metadata describing the underlying data or its origin is stored in the resource <code class="docutils literal notranslate"><span class="pre">metadata</span></code> descriptor. The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> can contain a list with metadata descriptors following different kinds of metadata schemas. This allows storing metadata in different formats or from different sources.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;resources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;demo_package_metadata&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;table&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;path&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;demo_package_metadata.csv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;scheme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;csv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;mediatype&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;text/csv&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;encoding&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;fields&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;t&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s&quot;</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;U&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;integer&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mV&quot;</span>
+<span class="w">                    </span><span class="p">},</span>
+<span class="w">                    </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;I&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;number&quot;</span><span class="p">,</span>
+<span class="w">                        </span><span class="nt">&quot;unit&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;uA&quot;</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">]</span>
+<span class="w">            </span><span class="p">},</span>
+<span class="w">            </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="nt">&quot;echemdb&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample data for the unitpackage module.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;curation&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                        </span><span class="nt">&quot;process&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                            </span><span class="p">{</span>
+<span class="w">                                </span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;experimentalist&quot;</span><span class="p">,</span>
+<span class="w">                                </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<span class="w">                                </span><span class="nt">&quot;laboratory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Institute of Good Scientific Practice&quot;</span><span class="p">,</span>
+<span class="w">                                </span><span class="nt">&quot;date&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2021-07-09&quot;</span>
+<span class="w">                            </span><span class="p">}</span>
+<span class="w">                        </span><span class="p">]</span>
+<span class="w">                    </span><span class="p">}</span>
+<span class="w">                </span><span class="p">},</span>
+<span class="w">                </span><span class="nt">&quot;generic&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sample data for the unitpackage module.&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;experimentalist&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;laboratory&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Institute of Good Scientific Practice&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="nt">&quot;date recorded&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2021-07-09&quot;</span>
+<span class="w">                </span><span class="p">}</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> module currently only provides direct access to the resource metadata stored within the <code class="docutils literal notranslate"><span class="pre">echemdb</span></code> descriptor. (see #20)</p>
+</div>
+<p>The above example can be found <a class="reference external" href="https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/files">here</a> named <code class="docutils literal notranslate"><span class="pre">demo_package_metadata</span></code>. To demonstrate how the different properties of the datapackage can be accessed we load the specific entry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">unitpackage.collection</span> <span class="kn">import</span> <span class="n">Collection</span>
+<span class="kn">from</span> <span class="nn">unitpackage.local</span> <span class="kn">import</span> <span class="n">collect_datapackages</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="p">(</span><span class="n">data_packages</span><span class="o">=</span><span class="n">collect_datapackages</span><span class="p">(</span><span class="s1">&#39;../files/&#39;</span><span class="p">))</span>
+<span class="n">entry</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;demo_package_metadata&#39;</span><span class="p">]</span>
+<span class="n">entry</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entry(&#39;demo_package_metadata&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The keys within the <code class="docutils literal notranslate"><span class="pre">echemdb</span></code> metadata descriptor are directly accessible as properties from the main <code class="docutils literal notranslate"><span class="pre">entry</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">curation</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;process&#39;: [{&#39;role&#39;: &#39;experimentalist&#39;, &#39;name&#39;: &#39;John Doe&#39;, &#39;laboratory&#39;: &#39;Institute of Good Scientific Practice&#39;, &#39;date&#39;: &#39;2021-07-09&#39;}]}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Other metadata schemas are currently only accessible via the frictionless framework.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="s2">&quot;demo_package_metadata&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">custom</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;generic&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;description&#39;: &#39;Sample data for the unitpackage module.&#39;,
+ &#39;experimentalist&#39;: &#39;John Doe&#39;,
+ &#39;laboratory&#39;: &#39;Institute of Good Scientific Practice&#39;,
+ &#39;date recorded&#39;: &#39;2021-07-09&#39;}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="unitpackage-interface">
+<h2>Unitpackage Interface<a class="headerlink" href="#unitpackage-interface" title="Permalink to this headline"></a></h2>
+<p>Upon closer inspection of the entry created with <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> you notice that it actually contains two resources.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">package</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;resources&#39;: [{&#39;name&#39;: &#39;demo_package_metadata&#39;,
+                &#39;type&#39;: &#39;table&#39;,
+                &#39;path&#39;: &#39;demo_package_metadata.csv&#39;,
+                &#39;scheme&#39;: &#39;file&#39;,
+                &#39;format&#39;: &#39;csv&#39;,
+                &#39;mediatype&#39;: &#39;text/csv&#39;,
+                &#39;encoding&#39;: &#39;utf-8&#39;,
+                &#39;schema&#39;: {&#39;fields&#39;: [{&#39;name&#39;: &#39;t&#39;,
+                                       &#39;type&#39;: &#39;number&#39;,
+                                       &#39;unit&#39;: &#39;s&#39;},
+                                      {&#39;name&#39;: &#39;U&#39;,
+                                       &#39;type&#39;: &#39;number&#39;,
+                                       &#39;unit&#39;: &#39;mV&#39;},
+                                      {&#39;name&#39;: &#39;I&#39;,
+                                       &#39;type&#39;: &#39;number&#39;,
+                                       &#39;unit&#39;: &#39;uA&#39;}]},
+                &#39;metadata&#39;: {&#39;echemdb&#39;: {&#39;description&#39;: &#39;Sample data for the &#39;
+                                                        &#39;unitpackage module.&#39;,
+                                         &#39;curation&#39;: {&#39;process&#39;: [{&#39;role&#39;: &#39;experimentalist&#39;,
+                                                                   &#39;name&#39;: &#39;John &#39;
+                                                                           &#39;Doe&#39;,
+                                                                   &#39;laboratory&#39;: &#39;Institute &#39;
+                                                                                 &#39;of &#39;
+                                                                                 &#39;Good &#39;
+                                                                                 &#39;Scientific &#39;
+                                                                                 &#39;Practice&#39;,
+                                                                   &#39;date&#39;: &#39;2021-07-09&#39;}]}},
+                             &#39;generic&#39;: {&#39;description&#39;: &#39;Sample data for the &#39;
+                                                        &#39;unitpackage module.&#39;,
+                                         &#39;experimentalist&#39;: &#39;John Doe&#39;,
+                                         &#39;laboratory&#39;: &#39;Institute of Good &#39;
+                                                       &#39;Scientific Practice&#39;,
+                                         &#39;date recorded&#39;: &#39;2021-07-09&#39;}}},
+               {&#39;name&#39;: &#39;echemdb&#39;,
+                &#39;type&#39;: &#39;table&#39;,
+                &#39;data&#39;: [],
+                &#39;format&#39;: &#39;pandas&#39;,
+                &#39;mediatype&#39;: &#39;application/pandas&#39;,
+                &#39;schema&#39;: {&#39;fields&#39;: [{&#39;name&#39;: &#39;t&#39;,
+                                       &#39;type&#39;: &#39;number&#39;,
+                                       &#39;unit&#39;: &#39;s&#39;},
+                                      {&#39;name&#39;: &#39;U&#39;,
+                                       &#39;type&#39;: &#39;number&#39;,
+                                       &#39;unit&#39;: &#39;mV&#39;},
+                                      {&#39;name&#39;: &#39;I&#39;,
+                                       &#39;type&#39;: &#39;number&#39;,
+                                       &#39;unit&#39;: &#39;uA&#39;}]}}]}
+</pre></div>
+</div>
+</div>
+</div>
+<p>One resource is named according to the CSV filename. The units provided in that resource are describing the data within that CSV.</p>
+<p>The second resource is called <code class="docutils literal notranslate"><span class="pre">echemdb</span></code>. It is created upon loading a datapackage with the <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> module and stores the data of the CSV as a pandas dataframe. The dataframe is directly accessible from the entry and shows the data from the <code class="docutils literal notranslate"><span class="pre">echemdb</span></code> resource. Upon loading the data, both the numbers and units in the CSV and pandas dataframe are identical.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>U</th>
+      <th>I</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>2</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>3</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The reason for the separation into two resources is as follows. With unitpackage we can transform the values within the dataframe to new units. This process leaves the data in CSV unchanged. The pandas dataframe in turn is adapted, as well as the units of the different fields of the <code class="docutils literal notranslate"><span class="pre">echemdb</span></code> resource.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">({</span><span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="s1">&#39;I&#39;</span><span class="p">:</span> <span class="s1">&#39;mA&#39;</span><span class="p">})</span>
+<span class="n">rescaled_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>U</th>
+      <th>I</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>0.001</td>
+      <td>0.000</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>0.002</td>
+      <td>0.001</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>0.003</td>
+      <td>0.002</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">get_resource</span><span class="p">(</span><span class="s1">&#39;echemdb&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;echemdb&#39;,
+ &#39;type&#39;: &#39;table&#39;,
+ &#39;data&#39;: [],
+ &#39;format&#39;: &#39;pandas&#39;,
+ &#39;mediatype&#39;: &#39;application/pandas&#39;,
+ &#39;schema&#39;: {&#39;fields&#39;: [{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},
+                       {&#39;name&#39;: &#39;U&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;},
+                       {&#39;name&#39;: &#39;I&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;mA&#39;}]}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Refer to the <a class="reference internal" href="unitpackage_usage.html"><span class="doc std std-doc">usage section</span></a> for a more detail description of the <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> API.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="unitpackage_usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
