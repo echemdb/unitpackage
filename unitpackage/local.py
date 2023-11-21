@@ -1,5 +1,6 @@
 r"""
-Utilities to work with local data packages.
+Utilities to work with local data packages such as
+collecting packages and creating unitpackages.
 """
 # ********************************************************************
 #  This file is part of unitpackage.
@@ -22,7 +23,12 @@ Utilities to work with local data packages.
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import os
+import os.path
+from glob import glob
 
+import pandas as pd
+from frictionless import Package, Resource, Schema
 
 def collect_datapackages(data):
     r"""
@@ -39,15 +45,10 @@ def collect_datapackages(data):
     """
     # Collect all datapackage descriptors, see
     # https://specs.frictionlessdata.io/data-package/#metadata
-    import os.path
-    from glob import glob
-
-    import pandas as pd
 
     descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
 
     # Read the package descriptors and append the data as pandas dataframe in a new resource
-    from frictionless import Package, Resource, Schema
 
     packages = []
 
@@ -71,3 +72,146 @@ def collect_datapackages(data):
         packages.append(package)
 
     return packages
+
+def create_unitpackage(csvname, outdir, metadata=None, fields={}, validate_astropy=True):
+    r"""
+    Return a data package built from a :param:`metadata` dict and tabular data
+    in :param:`csvname` str.
+
+    The :param:`fields` list must must be structured such as
+    `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`.
+    """
+
+    csv_basename = os.path.basename(csvname)
+
+    package = Package(
+        resources=[
+            Resource(
+                path=csv_basename,
+                basepath=outdir or os.path.dirname(csvname),
+            )
+        ],
+    )
+    package.infer()
+    resource = package.resources[0]
+
+    resource.custom.setdefault("metadata", {})
+    resource.custom["metadata"].setdefault("echemdb", metadata)
+
+    # Update fields in the datapackage describing the data in the CSV
+    package_schema = resource.schema
+
+    # can probably be removed since validation is performed by frictionless schema
+    if not isinstance(fields, list):
+        raise ValueError(
+            "'fields' must be a list such as \
+            [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
+            e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
+        )
+
+    # remove field if it is not a Mapping instance
+    from collections.abc import Mapping
+
+    # can probably be removed since validation is performed by frictionless schema
+    for field in fields:
+        if not isinstance(field, Mapping):
+            raise ValueError(
+                "'field' must be a dict such as {'name': '<fieldname>', 'unit':'<field unit>'},\
+                e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
+            )
+
+    provided_schema = Schema.from_descriptor(
+        {"fields": fields}, allow_invalid=True
+    )
+
+    new_fields = []
+    for name in package_schema.field_names:
+        if not name in provided_schema.field_names:
+            # Raise only a warning
+            raise KeyError(
+                f"Field with name {name} is not specified in `data_description.fields`."
+            )
+        new_fields.append(
+            provided_schema.get_field(name).to_dict()
+            | package_schema.get_field(name).to_dict()
+        )
+
+    resource.schema = Schema.from_descriptor({"fields": new_fields})
+
+    with open(
+        _outfile(csv_basename, suffix=".package.json", outdir=outdir),
+        mode="w",
+        encoding="utf-8",
+    ) as json:
+        _write_metadata(json, package.to_dict())
+
+    return package
+
+# from svgdigitizer
+def _outfile(template, suffix=None, outdir=None):
+    r"""
+    Return a file name for writing.
+
+    The file is named like `template` but with the suffix changed to `suffix`
+    if specified. The file is created in `outdir`, if specified, otherwise in
+    the directory of `template`.
+
+    EXAMPLES::
+
+        >>> from svgdigitizer.test.cli import invoke, TemporaryData
+        >>> with TemporaryData("**/xy.svg") as directory:
+        ...     outname = _outfile(os.path.join(directory, "xy.svg"), suffix=".csv")
+        ...     with open(outname, mode="wb") as csv:
+        ...         _ = csv.write(b"...")
+        ...     os.path.exists(os.path.join(directory, "xy.csv"))
+        True
+
+    ::
+
+        >>> with TemporaryData("**/xy.svg") as directory:
+        ...     outname = _outfile(os.path.join(directory, "xy.svg"), suffix=".csv", outdir=os.path.join(directory, "subdirectory"))
+        ...     with open(outname, mode="wb") as csv:
+        ...         _ = csv.write(b"...")
+        ...     os.path.exists(os.path.join(directory, "subdirectory", "xy.csv"))
+        True
+
+    """
+    if suffix is not None:
+        template = f"{os.path.splitext(template)[0]}{suffix}"
+
+    if outdir is not None:
+        template = os.path.join(outdir, os.path.basename(template))
+
+    os.makedirs(os.path.dirname(template) or ".", exist_ok=True)
+
+    return template
+
+# from svgdigitizer
+def _write_metadata(out, metadata):
+    r"""
+    Write `metadata` to the `out` stream in JSON format.
+
+    This is a helper method for :meth:`_create_outfiles`.
+    """
+
+    def defaultconverter(item):
+        r"""
+        Return `item` that Python's json package does not know how to serialize
+        in a format that Python's json package does know how to serialize.
+        """
+        from datetime import date, datetime
+
+        # The YAML standard knows about dates and times, so we might see these
+        # in the metadata. However, standard JSON does not know about these so
+        # we need to serialize them as strings explicitly.
+        if isinstance(item, (datetime, date)):
+            return str(item)
+
+        raise TypeError(f"Cannot serialize ${item} of type ${type(item)} to JSON.")
+
+    import json
+
+    json.dump(metadata, out, default=defaultconverter, ensure_ascii=False, indent=4)
+    # json.dump does not save files with a newline, which compromises the tests
+    # where the output files are compared to an expected json.
+    out.write("\n")
