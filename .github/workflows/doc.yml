@@ -46,7 +46,9 @@ jobs:
         run: |
           python -m http.server 8880 --directory doc/generated/html &
           sleep 1
-          linkchecker --check-extern http://localhost:8880/unitpackage/ --no-robots --ignore mybinder.org
+          # ignore linkchecker warnings since they raise exit code 1, which halts the CI
+          # see: https://github.com/linkchecker/linkchecker/issues/762
+          linkchecker --check-extern http://localhost:8880/unitpackage/ --no-robots --ignore mybinder.org --no-warnings
       - uses: JamesIves/github-pages-deploy-action@v4.3.3
         with:
           branch: gh-pages
