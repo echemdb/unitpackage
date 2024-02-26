@@ -39,7 +39,6 @@ setup(
       "pandas>=1,<2",
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
-      "svgdigitizer>=0.10.0,<0.11.0",
     ],
     python_requires=">=3.9",
 )
