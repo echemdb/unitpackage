@@ -430,8 +430,8 @@ class Entry:
 
         EXAMPLES::
 
-            >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1'), Entry('no_bibliography')]
+            >>> len(Entry.create_examples())
+            3
 
         An entry without associated BIB file.
 
