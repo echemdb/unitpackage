@@ -4,7 +4,7 @@ channels:
   - defaults
 dependencies:
   - astropy>=5,<6
-  - black
+  - black>=24,<25
   - filelock>=3,<4
   - frictionless>=5.10.1,<6
   - isort
@@ -16,7 +16,7 @@ dependencies:
   - pip
   - plotly>=5,<6
   - pybtex>=0.24,<0.25
-  - pylint
+  - pylint>=3,<3.1
   - pytest
   - pytest-doctestplus
   - pytest-xdist

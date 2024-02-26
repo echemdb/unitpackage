@@ -51,6 +51,7 @@ also contain information on the source of the data.::
       persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
 
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
@@ -439,7 +440,7 @@ class Entry:
             [Entry('no_bibliography')]
 
         """
-        example_dir = os.path.join(os.path.dirname(__file__), '..', 'examples', name)
+        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", name)
 
         if not os.path.exists(example_dir):
             raise ValueError(
