@@ -69,9 +69,7 @@ class Collection:
 
             import unitpackage.remote
 
-            data_packages = unitpackage.remote.collect_datapackages(
-                os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
-            )
+            data_packages = unitpackage.remote.collect_datapackages()
 
         self._packages = data_packages
 
