@@ -44,7 +44,7 @@ def collect_zipfile_from_url(url):
 
 ECHEMDB_DATABASE_URL = os.environ.get(
     "ECHEMDB_DATABASE_URL",
-    "https://github.com/echemdb/electrochemistry-data/releases/download/0.1.0-alpha.2/data-0.1.0-alpha.2.zip",
+    "https://github.com/echemdb/electrochemistry-data/releases/download/0.2.0/data-0.2.0.zip",
 )
 
 
