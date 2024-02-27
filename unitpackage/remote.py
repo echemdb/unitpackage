@@ -4,7 +4,7 @@ Utilities to work with remote data packages.
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2024 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -84,9 +84,5 @@ def collect_datapackages(data=None, url=ECHEMDB_DATABASE_URL, outdir=None):
     )
 
     import unitpackage.local
-
-    # datadir = outdir
-    # if data:
-    #     outdir = os.path.join(outdir, data)
 
     return unitpackage.local.collect_datapackages(os.path.join(outdir, data) if data else outdir)
