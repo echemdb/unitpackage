@@ -40,7 +40,7 @@ setup(
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
       "svgdigitizer>=0.10.0,<0.11.0",
-      'electrochemistry-data @ git+https://github.com/echemdb/electrochemistry-data.git',
+      "git+https://github.com/echemdb/electrochemistry-data.git",
     ],
     python_requires=">=3.9",
 )
