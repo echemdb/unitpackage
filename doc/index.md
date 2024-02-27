@@ -19,11 +19,11 @@ kernelspec:
 
 Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated, or who performed the experiment. Such information can be stored in [frictionless datapackages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON file.
 The `unitpackage` module provides a Python library to interact with such datapackages which have a very [specific structure](usage/unitpackage.md).
-An example demonstrating the usage of a collection of datapackages along with the `unitpackage` Python library is found on [echemdb.org](https://www.echemdb.org/cv). The website shows a collection of electrochemical data, stored following the [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
+An example demonstrating the usage of a collection of datapackages along with the `unitpackage` Python library is found on [echemdb.org](https://www.echemdb.org/cv). The website shows a collection of electrochemical data, stored following the [echemdb's metadata schema](https://github.com/echemdb/metadata-schema) in the [electrochemistry-data repository](https://github.com/echemdb/electrochemistry-data/).
 
 ## Examples
 
-A collection of datapackages can be generated from [local files](usage/local_collection.md) or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we use in the following examples the data available on [echemdb.org](https://www.echemdb.org/cv). The data is downloaded by default when the `Collection` class does not receive the argument `data_packages=collect_datapackages('./files_folder)`.
+A collection of datapackages can be generated from [local files](usage/local_collection.md) or from a remote repository, such as the [electrochemistry-data repository](https://github.com/echemdb/electrochemistry-data/). To illustrate the usage of `unitpackage` we use in the following examples the data available on [echemdb.org](https://www.echemdb.org/cv). The data is downloaded by default when the `Collection` class does not receive the argument `data_packages=collect_datapackages('./files_folder)`.
 
 ```{note}
 We denote the collection as `db` (database), even thought it is not a database in that sense.
