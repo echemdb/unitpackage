@@ -1,6 +1,7 @@
 r"""
 Utilities to work with local data packages.
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
@@ -44,7 +45,7 @@ def collect_datapackages(data):
 
     import pandas as pd
 
-    descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
+    descriptors = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
     # Read the package descriptors and append the data as pandas dataframe in a new resource
     from frictionless import Package, Resource, Schema
