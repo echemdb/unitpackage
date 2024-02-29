@@ -82,4 +82,6 @@ def collect_datapackages(data=None, url=ECHEMDB_DATABASE_URL, outdir=None):
 
     import unitpackage.local
 
-    return unitpackage.local.collect_datapackages(os.path.join(outdir, data) if data else outdir)
+    return unitpackage.local.collect_datapackages(
+        os.path.join(outdir, data) if data else outdir
+    )

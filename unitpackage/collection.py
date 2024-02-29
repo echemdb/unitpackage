@@ -67,7 +67,6 @@ class Collection:
 
     def __init__(self, data_packages=None):
         if data_packages is None:
-            import os.path
 
             import unitpackage.remote
 
