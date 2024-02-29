@@ -41,6 +41,7 @@ Extra methods are added if the descriptor satisfies a certain interface::
     <Quantity 4.12555093e+14 km>
 
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
@@ -175,6 +176,7 @@ class QuantityDescriptor(GenericDescriptor):
         298.15 K
 
     """
+
     markdown_template = "components/quantity.md"
 
     @property
