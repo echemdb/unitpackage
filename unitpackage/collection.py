@@ -19,6 +19,7 @@ Search the collection for entries from a single publication::
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
@@ -58,6 +59,7 @@ class Collection:
         0
 
     """
+
     from unitpackage.entry import Entry
 
     # Entries of this collection are created from this type. Subclasses can replace this with a specialized entry type.
