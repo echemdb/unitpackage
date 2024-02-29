@@ -254,7 +254,7 @@ class Collection:
 
     @property
     def identifiers(self):
-        """Return a l ist of identifiers.
+        """Return a list of identifiers.
 
         EXAMPLES::
 
