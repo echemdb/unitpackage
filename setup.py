@@ -39,7 +39,7 @@ setup(
       "pandas>=1,<2",
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
-      "echemdb-ecdata @ git+ssh://git@github.com/echemdb/electrochemistry-data.git",
+      "echemdb-ecdata @ git+https://git@github.com/echemdb/electrochemistry-data.git",
     ],
     python_requires=">=3.9",
 )
