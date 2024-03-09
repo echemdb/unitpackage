@@ -558,6 +558,7 @@ class Entry:
         ).schema.fields
         metadata.remove_resource("echemdb")
 
+        # update the identifier and filepath of the resource
         if filename:
             metadata.get_resource(self.identifier).path = filename + ".csv"
             metadata.get_resource(self.identifier).name = filename
