@@ -125,7 +125,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'source',
+            'identifier', 'package',  'plot', 'rescale', 'save', 'source',
             'system', 'yaml']
 
         """
@@ -510,3 +510,55 @@ class Entry:
         fig.update_yaxes(showline=True, mirror=True)
 
         return fig
+
+    def save(self, filename=None, outdir=None):
+        r"""
+        Creates new CSV and JSON (unitpackage) in an output directory ``outdir``.
+
+        EXAMPLES::
+
+        The output files are named according to the identifier of the original resource.
+
+            >>> import os
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.save(outdir='test/generated/')
+            >>> filename = entry.identifier
+            >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
+            True
+
+        Specify a new filename without file extension.
+        According to the firctionless specification,
+        "this MUST be lower-case and contain only alphanumeric
+        characters along with “.”, “_” or “-” characters."::
+
+            >>> import os
+            >>> entry = Entry.create_examples()[0]
+            >>> filename = 'save_filename'
+            >>> entry.save(filename='testxxx', outdir='test/generated/')
+            >>> os.path.exists('test/generated/testxxx.json') and os.path.exists('test/generated/testxxx.csv')
+            True
+
+
+        """
+        if not outdir:
+            raise ValueError(f"An output directory `outdir` must be specified.")
+
+        if not os.path.isdir(outdir):
+            os.mkdir(outdir)
+
+        filename = filename or self.identifier
+        csv_name = os.path.join(outdir, filename + '.csv')
+        json_name = os.path.join(outdir, filename + '.json')
+
+        metadata = self.package.to_copy()
+
+        # update the fields from the main resource with those from the echemdb resource
+        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource('echemdb').schema.fields
+        metadata.remove_resource('echemdb')
+
+        if filename:
+            metadata.get_resource(self.identifier).path = filename + '.csv'
+            metadata.get_resource(self.identifier).name = filename
+
+        self.df.to_csv(csv_name, index=False)
+        metadata.to_json(json_name)
