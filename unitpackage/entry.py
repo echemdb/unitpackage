@@ -534,8 +534,8 @@ class Entry:
             >>> import os
             >>> entry = Entry.create_examples()[0]
             >>> filename = 'save_filename'
-            >>> entry.save(filename='testxxx', outdir='test/generated/')
-            >>> os.path.exists('test/generated/testxxx.json') and os.path.exists('test/generated/testxxx.csv')
+            >>> entry.save(filename=filename, outdir='test/generated/')
+            >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
             True
 
 
