@@ -527,7 +527,7 @@ class Entry:
             True
 
         Specify a new filename without file extension.
-        According to the firctionless specification,
+        According to the frictionless specification,
         "this MUST be lower-case and contain only alphanumeric
         characters along with “.”, “_” or “-” characters."::
 
