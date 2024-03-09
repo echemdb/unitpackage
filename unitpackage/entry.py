@@ -541,23 +541,25 @@ class Entry:
 
         """
         if not outdir:
-            raise ValueError(f"An output directory `outdir` must be specified.")
+            raise ValueError("An output directory `outdir` must be specified.")
 
         if not os.path.isdir(outdir):
             os.mkdir(outdir)
 
         filename = filename or self.identifier
-        csv_name = os.path.join(outdir, filename + '.csv')
-        json_name = os.path.join(outdir, filename + '.json')
+        csv_name = os.path.join(outdir, filename + ".csv")
+        json_name = os.path.join(outdir, filename + ".json")
 
         metadata = self.package.to_copy()
 
         # update the fields from the main resource with those from the echemdb resource
-        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource('echemdb').schema.fields
-        metadata.remove_resource('echemdb')
+        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource(
+            "echemdb"
+        ).schema.fields
+        metadata.remove_resource("echemdb")
 
         if filename:
-            metadata.get_resource(self.identifier).path = filename + '.csv'
+            metadata.get_resource(self.identifier).path = filename + ".csv"
             metadata.get_resource(self.identifier).name = filename
 
         self.df.to_csv(csv_name, index=False)
