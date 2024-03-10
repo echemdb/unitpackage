@@ -515,9 +515,9 @@ class Entry:
         r"""
         Creates new CSV and JSON (unitpackage) in an output directory ``outdir``.
 
-        EXAMPLES::
+        EXAMPLES:
 
-        The output files are named according to the identifier of the original resource.
+        The output files are named according to the identifier of the original resource::
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
@@ -528,8 +528,8 @@ class Entry:
 
         Specify a new filename without file extension.
         According to the frictionless specification,
-        "this MUST be lower-case and contain only alphanumeric
-        characters along with “.”, “_” or “-” characters."::
+        'this MUST be lower-case and contain only alphanumeric
+        characters along with ".", "_" or "-" characters'::
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
@@ -537,7 +537,6 @@ class Entry:
             >>> entry.save(filename=filename, outdir='test/generated/')
             >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
             True
-
 
         """
         if not outdir:
