@@ -33,6 +33,24 @@ from frictionless import Package, Resource, Schema
 
 
 def create_df_resource(package, resource_name="echemdb"):
+    r"""
+    Return a pandas dataframe resource from a data packages,
+    where the first resource refers to a CSV.
+
+    EXAMPLES::
+
+        >>> from frictionless import Package
+        >>> package = Package("./examples/no_bibliography/no_bibliography.json")
+        >>> df_resource = create_df_resource(package) # doctest: +NORMALIZE_WHITESPACE
+        >>> df_resource
+        {'name': 'echemdb',
+        ...
+
+        >>> df_resource.data
+                      t         E         j
+        ...
+
+    """
     if not package.resources:
         raise ValueError(
             "dataframe resource can not be created since package has no resources"
@@ -46,6 +64,17 @@ def create_df_resource(package, resource_name="echemdb"):
 
 
 def collect_datapackage(filename):
+    r"""
+    Return data packages from a :param filename:.
+
+    EXAMPLES::
+
+        >>> package = collect_datapackage("./examples/no_bibliography/no_bibliography.json")
+        >>> package # doctest: +NORMALIZE_WHITESPACE
+        {'resources': [{'name':
+        ...
+
+    """
     package = Package(filename)
 
     package.add_resource(create_df_resource(package))

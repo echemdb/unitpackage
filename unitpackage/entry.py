@@ -513,6 +513,33 @@ class Entry:
 
     @classmethod
     def from_csv(cls, csvname, metadata=None, fields=None):
+        r"""
+        Returns an entry constructed from a CSV with a single header line.
+
+        EXAMPLES::
+
+        Units describing the fields can be provided::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', fields=fields)
+            >>> entry
+            Entry('from_csv')
+
+            >>> entry.package # doctest: +NORMALIZE_WHITESPACE
+            {'resources': [{'name':
+            ...
+
+        Metadata can be appended::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> metadata = {'user':'Max Doe'}
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', metadata=metadata, fields=fields)
+            >>> entry.user
+            'Max Doe'
+
+        """
         from frictionless import Schema
 
         from unitpackage.local import create_df_resource, create_unitpackage
