@@ -516,7 +516,7 @@ class Entry:
         r"""
         Returns an entry constructed from a CSV with a single header line.
 
-        EXAMPLES::
+        EXAMPLES:
 
         Units describing the fields can be provided::
 
