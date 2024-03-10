@@ -251,3 +251,16 @@ class Collection:
                 f"The collection has more than one entry with identifier '{identifier}'."
             )
         return entries[0]
+
+    @property
+    def identifiers(self):
+        """Return a list of identifiers.
+
+        EXAMPLES::
+
+            >>> collection = Collection.create_example()
+            >>> len(collection.identifiers)
+            3
+
+        """
+        return [entry.identifier for entry in self]
