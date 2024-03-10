@@ -113,7 +113,15 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     in :param csvname: str.
 
     The :param fields: list must must be structured such as
-    `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`.
+    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
+
+    EXAMPLES::
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields)
+        >>> package # doctest: +NORMALIZE_WHITESPACE
+        {'resources': [{'name':
+        ...
     """
 
     csv_basename = os.path.basename(csvname)
