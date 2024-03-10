@@ -125,7 +125,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'source',
+            'from_csv', 'identifier', 'package',  'plot', 'rescale', 'source',
             'system', 'yaml']
 
         """
@@ -375,7 +375,7 @@ class Entry:
         df_resource.name = "echemdb"
 
         # Remove the original echemdb resource and
-        # add a new echemdb resource to the new entr
+        # add a new echemdb resource to the new entry
         package.remove_resource("echemdb")
 
         entry = type(self)(package=package)
@@ -513,10 +513,9 @@ class Entry:
 
     @classmethod
     def from_csv(cls, csvname, metadata={}, fields=[]):
-        from unitpackage.local import create_unitpackage, create_df_resource
-        import pandas as pd
+        from frictionless import Schema
 
-        from frictionless import Package, Resource, Schema
+        from unitpackage.local import create_df_resource, create_unitpackage
 
         package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
 
@@ -527,43 +526,4 @@ class Entry:
             package.resources[0].schema.to_dict()
         )
 
-        # start code from collect package
-        # descriptor_path = (
-        #     package.resources[0].basepath + "/" + package.resources[0].path
-        # )
-        # df = pd.read_csv(descriptor_path)
-        # df_resource = Resource(df)
-        # df_resource.infer()
-        # df_resource.name = "echemdb"
-        # package.add_resource(df_resource)
-        # package.get_resource("echemdb").schema = Schema.from_descriptor(
-        #     package.resources[0].schema.to_dict()
-        # )
-        # end code from collect package
-
-        entry = cls(package=package)
-        return entry
-
-    #     _write_metadata()
-    #     def create_package(csvnam):
-    #         package = Package(csvname)
-
-    #         if not package.resources:
-    #             raise ValueError(f"package {csvname} has no CSV resources")
-
-    #         descriptor_path = (
-    #             package.resources[0].basepath + "/" + package.resources[0].path
-    #         )
-    #         df = pd.read_csv(descriptor_path)
-    #         df_resource = Resource(df)
-    #         df_resource.infer()
-    #         df_resource.name = "echemdb"
-    #         package.add_resource(df_resource)
-    #         package.get_resource("echemdb").schema = Schema.from_descriptor(
-    #             package.resources[0].schema.to_dict()
-    #         )
-
-    #         return package
-
-    #     return Entry(collect_package(outdir + csvname))
-    # package
+        return cls(package=package)
