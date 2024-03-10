@@ -20,6 +20,7 @@ Search the collection for entries from a single publication::
     [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
@@ -64,6 +65,7 @@ class CVCollection(Collection):
         0
 
     """
+
     from unitpackage.cv.cv_entry import CVEntry
 
     Entry = CVEntry
@@ -100,9 +102,11 @@ class CVCollection(Collection):
 
         """
         return {
-            "number of references": 0
-            if isinstance(self.bibliography, str)
-            else len(self.bibliography.entries),
+            "number of references": (
+                0
+                if isinstance(self.bibliography, str)
+                else len(self.bibliography.entries)
+            ),
             "number of entries": len(self),
             "materials": self.materials(),
         }

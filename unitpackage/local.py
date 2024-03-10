@@ -2,6 +2,7 @@ r"""
 Utilities to work with local data packages such as
 collecting packages and creating unitpackages.
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
@@ -76,7 +77,7 @@ def collect_datapackages(data):
     # Collect all datapackage descriptors, see
     # https://specs.frictionlessdata.io/data-package/#metadata
 
-    descriptors = glob(os.path.join(data, "**", "*.json"), recursive=True)
+    descriptors = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
 
 
