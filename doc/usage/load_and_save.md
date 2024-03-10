@@ -54,6 +54,7 @@ The approach to create unitpackages depends on the way data is acquired and whic
 * Using a programmatic approach, where you have full control over the data structure during data storage.
 * Data is produced by a proprietary software, possibly in a non standard format.
 
+<!--
 ## From CSV after data acquisition
 
 Assume we recorded data which is saved at the end of a measurement to CSV.
@@ -80,7 +81,4 @@ fields = [{'name': 't', 'unit':'s'},{'name':'U', 'unit':'mV'}]
 package = create_unitpackage(csvname=csvname, outdir=outdir, fields=fields, metadata=metadata)
 package
 ```
-
-```{code-cell} ipython3
-
-```
+-->

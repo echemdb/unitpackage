@@ -23,7 +23,7 @@ An example demonstrating the usage of a collection of datapackages along with th
 
 ## Examples
 
-A collection of datapackages can be generated from [local files](usage/local_collection.md) or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we use in the following examples the data available on [echemdb.org](https://www.echemdb.org/cv). The data is downloaded by default when the `Collection` class does not receive the argument `data_packages=collect_datapackages('./files_folder)`.
+A collection of datapackages can be generated from [local files](usage/load_and_save.md) or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we use in the following examples the data available on [echemdb.org](https://www.echemdb.org/cv). The data is downloaded by default when the `Collection` class does not receive the argument `data_packages=collect_datapackages('./files_folder)`.
 
 ```{note}
 We denote the collection as `db` (database), even thought it is not a database in that sense.
