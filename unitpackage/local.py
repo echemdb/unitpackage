@@ -80,10 +80,10 @@ def collect_datapackages(data):
 
 def create_unitpackage(csvname, metadata=None, fields=None):
     r"""
-    Return a data package built from a :param:`metadata` dict and tabular data
-    in :param:`csvname` str.
+    Return a data package built from a :param metadata: dict and tabular data
+    in :param csvname: str.
 
-    The :param:`fields` list must must be structured such as
+    The :param fields: list must must be structured such as
     `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`.
     """
 

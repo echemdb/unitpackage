@@ -134,6 +134,6 @@ installation.md
 usage/unitpackage.md
 usage/unitpackage_usage.md
 usage/echemdb_usage.md
-usage/local_collection.md
+usage/load_and_save.md
 api.md
 ```
