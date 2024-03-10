@@ -512,7 +512,7 @@ class Entry:
         return fig
 
     @classmethod
-    def from_csv(cls, csvname, metadata={}, fields=[]):
+    def from_csv(cls, csvname, metadata=None, fields=None):
         from frictionless import Schema
 
         from unitpackage.local import create_df_resource, create_unitpackage

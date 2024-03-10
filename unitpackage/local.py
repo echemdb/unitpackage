@@ -78,7 +78,7 @@ def collect_datapackages(data):
     return [collect_datapackage(descriptor) for descriptor in descriptors]
 
 
-def create_unitpackage(csvname, metadata=None, fields=[]):
+def create_unitpackage(csvname, metadata=None, fields=None):
     r"""
     Return a data package built from a :param:`metadata` dict and tabular data
     in :param:`csvname` str.
@@ -103,42 +103,42 @@ def create_unitpackage(csvname, metadata=None, fields=[]):
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)
 
-    # Update fields in the datapackage describing the data in the CSV
-    package_schema = resource.schema
-
-    # can probably be removed since validation is performed by frictionless schema
-    if not isinstance(fields, list):
-        raise ValueError(
-            "'fields' must be a list such as \
-            [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
-            e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
-        )
-
-    # remove field if it is not a Mapping instance
-    from collections.abc import Mapping
-
-    # can probably be removed since validation is performed by frictionless schema
-    for field in fields:
-        if not isinstance(field, Mapping):
+    if fields:
+        # Update fields in the datapackage describing the data in the CSV
+        package_schema = resource.schema
+        # can probably be removed since validation is performed by frictionless schema
+        if not isinstance(fields, list):
             raise ValueError(
-                "'field' must be a dict such as {'name': '<fieldname>', 'unit':'<field unit>'},\
-                e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
+                "'fields' must be a list such as \
+                [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
+                e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
             )
 
-    provided_schema = Schema.from_descriptor({"fields": fields}, allow_invalid=True)
+        # remove field if it is not a Mapping instance
+        from collections.abc import Mapping
 
-    new_fields = []
-    for name in package_schema.field_names:
-        if not name in provided_schema.field_names:
-            # Raise only a warning
-            raise KeyError(
-                f"Field with name {name} is not specified in `data_description.fields`."
+        # can probably be removed since validation is performed by frictionless schema
+        for field in fields:
+            if not isinstance(field, Mapping):
+                raise ValueError(
+                    "'field' must be a dict such as {'name': '<fieldname>', 'unit':'<field unit>'},\
+                    e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
+                )
+
+        provided_schema = Schema.from_descriptor({"fields": fields}, allow_invalid=True)
+
+        new_fields = []
+        for name in package_schema.field_names:
+            if not name in provided_schema.field_names:
+                # Raise only a warning
+                raise KeyError(
+                    f"Field with name {name} is not specified in `data_description.fields`."
+                )
+            new_fields.append(
+                provided_schema.get_field(name).to_dict()
+                | package_schema.get_field(name).to_dict()
             )
-        new_fields.append(
-            provided_schema.get_field(name).to_dict()
-            | package_schema.get_field(name).to_dict()
-        )
 
-    resource.schema = Schema.from_descriptor({"fields": new_fields})
+        resource.schema = Schema.from_descriptor({"fields": new_fields})
 
     return package
