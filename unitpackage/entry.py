@@ -125,7 +125,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'save', 'source',
+            'from_csv', 'identifier', 'package',  'plot', 'rescale', 'save', 'source',
             'system', 'yaml']
 
         """
@@ -375,7 +375,7 @@ class Entry:
         df_resource.name = "echemdb"
 
         # Remove the original echemdb resource and
-        # add a new echemdb resource to the new entr
+        # add a new echemdb resource to the new entry
         package.remove_resource("echemdb")
 
         entry = type(self)(package=package)
@@ -511,6 +511,50 @@ class Entry:
 
         return fig
 
+    @classmethod
+    def from_csv(cls, csvname, metadata=None, fields=None):
+        r"""
+        Returns an entry constructed from a CSV with a single header line.
+
+        EXAMPLES:
+
+        Units describing the fields can be provided::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', fields=fields)
+            >>> entry
+            Entry('from_csv')
+
+            >>> entry.package # doctest: +NORMALIZE_WHITESPACE
+            {'resources': [{'name':
+            ...
+
+        Metadata can be appended::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> metadata = {'user':'Max Doe'}
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', metadata=metadata, fields=fields)
+            >>> entry.user
+            'Max Doe'
+
+        """
+        from frictionless import Schema
+
+        from unitpackage.local import create_df_resource, create_unitpackage
+
+        package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
+
+        df_resource = create_df_resource(package)
+
+        package.add_resource(df_resource)
+        package.get_resource("echemdb").schema = Schema.from_descriptor(
+            package.resources[0].schema.to_dict()
+        )
+
+        return cls(package=package)
+
     def save(self, *, outdir, basename=None):
         r"""
         Create a unitpackage, i.e., a CSV file and a JSON file, in the directory ``outdir``.
@@ -521,7 +565,7 @@ class Entry:
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
-            >>> entry.save(outdir='test/generated/')
+            >>> entry.save(outdir='./test/generated')
             >>> basename = entry.identifier
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
@@ -534,13 +578,13 @@ class Entry:
             >>> import os
             >>> entry = Entry.create_examples()[0]
             >>> basename = 'save_basename'
-            >>> entry.save(basename=basename, outdir='test/generated/')
+            >>> entry.save(basename=basename, outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
         """
         if not os.path.isdir(outdir):
-            os.mkdir(outdir)
+            os.makedirs(outdir)
 
         basename = basename or self.identifier
         csv_name = os.path.join(outdir, basename + ".csv")
