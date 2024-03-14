@@ -125,7 +125,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'source',
+            'identifier', 'package',  'plot', 'rescale', 'save', 'source',
             'system', 'yaml']
 
         """
@@ -510,3 +510,54 @@ class Entry:
         fig.update_yaxes(showline=True, mirror=True)
 
         return fig
+
+    def save(self, *, outdir, basename=None):
+        r"""
+        Create a unitpackage, i.e., a CSV file and a JSON file, in the directory ``outdir``.
+
+        EXAMPLES:
+
+        The output files are named ``identifier.csv`` and ``identifier.json`` using the identifier of the original resource::
+
+            >>> import os
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.save(outdir='test/generated/')
+            >>> filename = entry.identifier
+            >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
+            True
+
+        When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
+        Note that for a valid frictionless package this base name
+        'MUST be lower-case and contain only alphanumeric
+        characters along with ".", "_" or "-" characters'::
+
+            >>> import os
+            >>> entry = Entry.create_examples()[0]
+            >>> filename = 'save_filename'
+            >>> entry.save(filename=filename, outdir='test/generated/')
+            >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
+            True
+
+        """
+        if not os.path.isdir(outdir):
+            os.mkdir(outdir)
+
+        filename = filename or self.identifier
+        csv_name = os.path.join(outdir, filename + ".csv")
+        json_name = os.path.join(outdir, filename + ".json")
+
+        metadata = self.package.to_copy()
+
+        # update the fields from the main resource with those from the echemdb resource
+        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource(
+            "echemdb"
+        ).schema.fields
+        metadata.remove_resource("echemdb")
+
+        # update the identifier and filepath of the resource
+        if filename:
+            metadata.get_resource(self.identifier).path = filename + ".csv"
+            metadata.get_resource(self.identifier).name = filename
+
+        self.df.to_csv(csv_name, index=False)
+        metadata.to_json(json_name)
