@@ -260,7 +260,7 @@ class Collection:
         EXAMPLES::
 
             >>> db = Collection.create_example()
-            >>> db.save_entries(outdir='test/generated/saved_collection/')
+            >>> db.save_entries(outdir='test/generated/saved_collection')
             >>> import glob
             >>> glob.glob('test/generated/saved_collection/**.json') # doctest: +NORMALIZE_WHITESPACE
             ['test...
