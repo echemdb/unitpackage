@@ -102,7 +102,7 @@ class Entry:
     @property
     def identifier(self):
         r"""
-        Return a unique identifier for this entry, i.e., its filename.
+        Return a unique identifier for this entry, i.e., its basename.
 
         EXAMPLES::
 
@@ -522,8 +522,8 @@ class Entry:
             >>> import os
             >>> entry = Entry.create_examples()[0]
             >>> entry.save(outdir='test/generated/')
-            >>> filename = entry.identifier
-            >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
+            >>> basename = entry.identifier
+            >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
         When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
@@ -533,18 +533,18 @@ class Entry:
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
-            >>> filename = 'save_filename'
-            >>> entry.save(filename=filename, outdir='test/generated/')
-            >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
+            >>> basename = 'save_basename'
+            >>> entry.save(basename=basename, outdir='test/generated/')
+            >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
         """
         if not os.path.isdir(outdir):
             os.mkdir(outdir)
 
-        filename = filename or self.identifier
-        csv_name = os.path.join(outdir, filename + ".csv")
-        json_name = os.path.join(outdir, filename + ".json")
+        basename = basename or self.identifier
+        csv_name = os.path.join(outdir, basename + ".csv")
+        json_name = os.path.join(outdir, basename + ".json")
 
         metadata = self.package.to_copy()
 
@@ -555,9 +555,9 @@ class Entry:
         metadata.remove_resource("echemdb")
 
         # update the identifier and filepath of the resource
-        if filename:
-            metadata.get_resource(self.identifier).path = filename + ".csv"
-            metadata.get_resource(self.identifier).name = filename
+        if basename:
+            metadata.get_resource(self.identifier).path = basename + ".csv"
+            metadata.get_resource(self.identifier).name = basename
 
         self.df.to_csv(csv_name, index=False)
         metadata.to_json(json_name)
