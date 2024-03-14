@@ -254,8 +254,8 @@ class Collection:
 
     def save_entries(self, outdir=None):
         r"""
-        Saves all entries from a Collection as datapackages (CSV and JSON)
-        to a specific output directory :param outdir:.
+        Save the entries of this collection as datapackages (CSV and JSON)
+        to the output directory :param outdir:.
 
         EXAMPLES::
 

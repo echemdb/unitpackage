@@ -511,13 +511,13 @@ class Entry:
 
         return fig
 
-    def save(self, filename=None, outdir=None):
+    def save(self, *, outdir, basename=None):
         r"""
-        Creates new CSV and JSON (unitpackage) in an output directory ``outdir``.
+        Create a unitpackage, i.e., a CSV file and a JSON file, in the directory ``outdir``.
 
         EXAMPLES:
 
-        The output files are named according to the identifier of the original resource::
+        The output files are named ``identifier.csv`` and ``identifier.json`` using the identifier of the original resource::
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
@@ -526,9 +526,9 @@ class Entry:
             >>> os.path.exists(f'test/generated/{filename}.json') and os.path.exists(f'test/generated/{filename}.csv')
             True
 
-        Specify a new filename without file extension.
-        According to the frictionless specification,
-        'this MUST be lower-case and contain only alphanumeric
+        When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
+        Note that for a valid frictionless package this base name
+        'MUST be lower-case and contain only alphanumeric
         characters along with ".", "_" or "-" characters'::
 
             >>> import os
@@ -539,9 +539,6 @@ class Entry:
             True
 
         """
-        if not outdir:
-            raise ValueError("An output directory `outdir` must be specified.")
-
         if not os.path.isdir(outdir):
             os.mkdir(outdir)
 
