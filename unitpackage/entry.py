@@ -521,7 +521,7 @@ class Entry:
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
-            >>> entry.save(outdir='test/generated/')
+            >>> entry.save(outdir='./test/generated')
             >>> basename = entry.identifier
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
@@ -534,13 +534,13 @@ class Entry:
             >>> import os
             >>> entry = Entry.create_examples()[0]
             >>> basename = 'save_basename'
-            >>> entry.save(basename=basename, outdir='test/generated/')
+            >>> entry.save(basename=basename, outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
         """
         if not os.path.isdir(outdir):
-            os.mkdir(outdir)
+            os.makedirs(outdir)
 
         basename = basename or self.identifier
         csv_name = os.path.join(outdir, basename + ".csv")
