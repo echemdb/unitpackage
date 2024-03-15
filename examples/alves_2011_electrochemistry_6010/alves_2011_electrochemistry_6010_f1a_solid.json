@@ -1,0 +1,173 @@
+{
+    "resources": [
+        {
+            "name": "alves_2011_electrochemistry_6010_f1a_solid",
+            "type": "table",
+            "path": "alves_2011_electrochemistry_6010_f1a_solid.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "E",
+                        "type": "number",
+                        "unit": "V",
+                        "reference": "RHE"
+                    },
+                    {
+                        "name": "j",
+                        "type": "number",
+                        "unit": "A / m2"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "experimental": {
+                        "tags": [
+                            "BCV",
+                            "HER"
+                        ],
+                        "instrumentation": [
+                            {
+                                "type": "potentiostat"
+                            }
+                        ]
+                    },
+                    "system": {
+                        "type": "electrochemical",
+                        "electrodes": [
+                            {
+                                "name": "REF",
+                                "function": "reference electrode",
+                                "source": {
+                                    "supplier": "homemade"
+                                },
+                                "type": "RHE"
+                            },
+                            {
+                                "name": "WE",
+                                "function": "working electrode",
+                                "type": "single crystal",
+                                "crystallographic orientation": "0001",
+                                "material": "Ru",
+                                "preparation procedure": "Sputtering and flash annealing under UHV conditions with repeated cycles of oxygen adsorption and desorption.",
+                                "shape": {
+                                    "height": {
+                                        "unit": "mm",
+                                        "value": 2
+                                    },
+                                    "type": "hat shaped"
+                                },
+                                "source": {
+                                    "supplier": "Mateck"
+                                }
+                            },
+                            {
+                                "name": "CE",
+                                "function": "counter electrode",
+                                "comment": "unknown"
+                            }
+                        ],
+                        "electrolyte": {
+                            "components": [
+                                {
+                                    "name": "H2O",
+                                    "proportion": {
+                                        "unit": "volume percent",
+                                        "value": 100
+                                    },
+                                    "source": {
+                                        "quality": "ultrapure water",
+                                        "refinement": "Millipore MilliQ"
+                                    },
+                                    "type": "solvent"
+                                },
+                                {
+                                    "concentration": {
+                                        "unit": "mol / l",
+                                        "value": 0.1
+                                    },
+                                    "name": "HClO4",
+                                    "source": {
+                                        "supplier": "Merck Suprapur"
+                                    },
+                                    "type": "acid"
+                                }
+                            ],
+                            "ph": {
+                                "value": 1
+                            },
+                            "temperature": {
+                                "unit": "K",
+                                "value": 298.15
+                            },
+                            "type": "aq"
+                        }
+                    },
+                    "source": {
+                        "citation key": "alves_2011_electrochemistry_6010",
+                        "url": "https://doi.org/10.1039/C0CP01001D",
+                        "figure": "1a",
+                        "curve": "solid",
+                        "bibdata": "@article{alves_2011_electrochemistry_6010,\n    author = {Alves, Otavio B and Hoster, Harry E and Behm, Rolf J{\\\"u}rgen},\n    title = \"Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases\",\n    journal = \"Physical Chemistry Chemical Physics\",\n    volume = \"13\",\n    number = \"13\",\n    pages = \"6010--6021\",\n    year = \"2011\",\n    publisher = \"Royal Society of Chemistry\",\n    abstract = \"We investigated the electrochemical oxidation and reduction processes on ultrahigh vacuum prepared, smooth and structurally well-characterized Ru(0001) electrodes in a CO-saturated and, for comparison, in a CO-free flowing HClO4 electrolyte by electrochemical methods and by comparison with previous structural data. Structure and reactivity of the adsorbed layers are largely governed by a critical potential of E = 0.57 V, which determines the onset of Oad formation on the COad saturated surface in the positive-going scan and of Oadreduction in the negative-going scan. Oad formation proceeds via nucleation and 2D growth of high-coverage Oad islands in a surrounding COad phase, and it is connected with COadoxidation at the interface between the two phases. In the negative-going scan, mixed (COad + Oad) phases, most likely a (2 $\\times$ 2)-(CO + 2O) and a (2$\\times$2)-(2CO + O), are proposed to form at E $<$ 0.57 V by reduction of the Oad-rich islands and CO adsorption into the resulting lower-density Oad structures. CO bulk oxidation rates in the potential range E $>$ 0.57 V are low, but significantly higher than those observed during oxidation of pre-adsorbed CO in the CO-free electrolyte. We relate this to high local COad coverages due to CO adsorption in the CO-saturated electrolyte, which lowers the CO adsorption energy and thus the barrier for COadoxidation during CO bulk oxidation.\"\n}\n"
+                    },
+                    "curation": {
+                        "process": [
+                            {
+                                "role": "curator",
+                                "name": "Albert Engstfeld",
+                                "orcid": "https://orcid.org/0000-0002-9686-3948",
+                                "date": "2021-07-09"
+                            },
+                            {
+                                "role": "reviewer",
+                                "name": "Albert Engstfeld",
+                                "orcid": "https://orcid.org/0000-0002-9686-3948",
+                                "date": "2022-01-21"
+                            }
+                        ]
+                    },
+                    "figure description": {
+                        "version": 1,
+                        "type": "digitized",
+                        "simultaneous measurements": [],
+                        "measurement type": "CV",
+                        "fields": [
+                            {
+                                "name": "E",
+                                "type": "number",
+                                "unit": "V",
+                                "orientation": "x",
+                                "reference": "RHE"
+                            },
+                            {
+                                "name": "j",
+                                "type": "number",
+                                "unit": "mA / cm2",
+                                "orientation": "y"
+                            }
+                        ],
+                        "comment": "",
+                        "scan rate": {
+                            "value": 0.05,
+                            "unit": "V / s"
+                        }
+                    },
+                    "data description": {
+                        "version": 1,
+                        "type": "digitized",
+                        "measurement type": "CV"
+                    }
+                }
+            }
+        }
+    ]
+}

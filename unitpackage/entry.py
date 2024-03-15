@@ -51,10 +51,11 @@ also contain information on the source of the data.::
       persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
 
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2024 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -101,7 +102,7 @@ class Entry:
     @property
     def identifier(self):
         r"""
-        Return a unique identifier for this entry, i.e., its filename.
+        Return a unique identifier for this entry, i.e., its basename.
 
         EXAMPLES::
 
@@ -124,7 +125,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'source',
+            'identifier', 'package',  'plot', 'rescale', 'save', 'source',
             'system', 'yaml']
 
         """
@@ -421,16 +422,17 @@ class Entry:
         return f"Entry({repr(self.identifier)})"
 
     @classmethod
-    def create_examples(cls, name="alves_2011_electrochemistry_6010"):
+    def create_examples(cls, name=""):
         r"""
         Return some example entries for use in automated tests.
 
-        The examples are built on-demand from data in unitpackage's examples directory.
+        The examples are created from datapackages in the unitpackage's examples directory.
+        These are only available from the development environment.
 
         EXAMPLES::
 
             >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1'), Entry('no_bibliography')]
 
         An entry without associated BIB file.
 
@@ -438,83 +440,26 @@ class Entry:
             [Entry('no_bibliography')]
 
         """
-        source = os.path.join(os.path.dirname(__file__), "..", "examples", name)
+        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", name)
 
-        if not os.path.exists(source):
+        if not os.path.exists(example_dir):
             raise ValueError(
-                f"No subdirectory in examples/ for {name}, i.e., could not find {source}."
+                f"No subdirectory in examples/ for {name}, i.e., could not find {example_dir}."
             )
-
-        outdir = os.path.join(
-            os.path.dirname(__file__),
-            "..",
-            "examples",
-            "generated",
-            "svgdigitizer",
-            name,
-        )
-
-        cls._digitize_example(source=source, outdir=outdir)
 
         from unitpackage.local import collect_datapackages
 
-        packages = collect_datapackages(outdir)
+        packages = collect_datapackages(example_dir)
 
         if len(packages) == 0:
             from glob import glob
 
             raise ValueError(
-                f"No literature data found for {name}. The directory for this data {outdir} exists. But we could not find any datapackages in there. "
-                f"There is probably some outdated data in {outdir}. The contents of that directory are: { glob(os.path.join(outdir,'**')) }"
+                f"No literature data found for {name}. The directory for this data {example_dir} exists. But we could not find any datapackages in there. "
+                f"There is probably some outdated data in {example_dir}. The contents of that directory are: { glob(os.path.join(example_dir,'**')) }"
             )
 
         return [cls(package=package) for package in packages]
-
-    @classmethod
-    def _digitize_example(cls, source, outdir):
-        r"""
-        Digitize ``source`` and write the output to ``outdir``.
-
-        When running tests in parallel, this introduces a race condition that
-        we avoid with a global lock in the file system. Therefore, this method
-        not is not suitable to digitize files outside of doctesting. To
-        digitize data in bulk, have a look at the ``Makefile`` in the
-        echemdb/website project.
-        """
-        lockfile = f"{outdir}.lock"
-        os.makedirs(os.path.dirname(lockfile), exist_ok=True)
-
-        from filelock import FileLock
-
-        with FileLock(lockfile):
-            if not os.path.exists(outdir):
-                from glob import glob
-
-                for yaml in glob(os.path.join(source, "*.yaml")):
-                    svg = os.path.splitext(yaml)[0] + ".svg"
-
-                    from svgdigitizer.entrypoint import digitize_cv
-                    from svgdigitizer.test.cli import invoke
-
-                    invoke(
-                        digitize_cv,
-                        "--sampling-interval",
-                        ".001",
-                        "--metadata",
-                        yaml,
-                        svg,
-                        "--outdir",
-                        outdir,
-                        "--bibliography",
-                        "--si-units",
-                    )
-
-                assert os.path.exists(
-                    outdir
-                ), f"Ran digitizer to generate {outdir}. But directory is still missing after invoking digitizer."
-                assert any(
-                    os.scandir(outdir)
-                ), f"Ran digitizer to generate {outdir}. But the directory generated is still empty."
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
@@ -565,3 +510,54 @@ class Entry:
         fig.update_yaxes(showline=True, mirror=True)
 
         return fig
+
+    def save(self, *, outdir, basename=None):
+        r"""
+        Create a unitpackage, i.e., a CSV file and a JSON file, in the directory ``outdir``.
+
+        EXAMPLES:
+
+        The output files are named ``identifier.csv`` and ``identifier.json`` using the identifier of the original resource::
+
+            >>> import os
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.save(outdir='./test/generated')
+            >>> basename = entry.identifier
+            >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
+            True
+
+        When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
+        Note that for a valid frictionless package this base name
+        'MUST be lower-case and contain only alphanumeric
+        characters along with ".", "_" or "-" characters'::
+
+            >>> import os
+            >>> entry = Entry.create_examples()[0]
+            >>> basename = 'save_basename'
+            >>> entry.save(basename=basename, outdir='./test/generated')
+            >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
+            True
+
+        """
+        if not os.path.isdir(outdir):
+            os.makedirs(outdir)
+
+        basename = basename or self.identifier
+        csv_name = os.path.join(outdir, basename + ".csv")
+        json_name = os.path.join(outdir, basename + ".json")
+
+        metadata = self.package.to_copy()
+
+        # update the fields from the main resource with those from the echemdb resource
+        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource(
+            "echemdb"
+        ).schema.fields
+        metadata.remove_resource("echemdb")
+
+        # update the identifier and filepath of the resource
+        if basename:
+            metadata.get_resource(self.identifier).path = basename + ".csv"
+            metadata.get_resource(self.identifier).name = basename
+
+        self.df.to_csv(csv_name, index=False)
+        metadata.to_json(json_name)

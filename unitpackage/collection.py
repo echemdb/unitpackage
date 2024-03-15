@@ -19,10 +19,11 @@ Search the collection for entries from a single publication::
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
+
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2024 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -58,6 +59,7 @@ class Collection:
         0
 
     """
+
     from unitpackage.entry import Entry
 
     # Entries of this collection are created from this type. Subclasses can replace this with a specialized entry type.
@@ -249,3 +251,20 @@ class Collection:
                 f"The collection has more than one entry with identifier '{identifier}'."
             )
         return entries[0]
+
+    def save_entries(self, outdir=None):
+        r"""
+        Save the entries of this collection as datapackages (CSV and JSON)
+        to the output directory :param outdir:.
+
+        EXAMPLES::
+
+            >>> db = Collection.create_example()
+            >>> db.save_entries(outdir='test/generated/saved_collection')
+            >>> import glob
+            >>> glob.glob('test/generated/saved_collection/**.json') # doctest: +NORMALIZE_WHITESPACE
+            ['test...
+
+        """
+        for entry in self:
+            entry.save(outdir=outdir)
