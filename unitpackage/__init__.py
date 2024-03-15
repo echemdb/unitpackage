@@ -24,6 +24,7 @@ def csv_to_package(csvname, yamlname, outdir, fields=None):
 
     CSV and YAML file without a field description::
 
+        >>> import unitpackage
         >>> csvname = 'examples/from_csv/from_csv.csv'
         >>> yamlfile = 'examples/from_csv/from_csv.csv.yaml'
         >>> outdir = 'test/generated/created_packages'
