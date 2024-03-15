@@ -74,7 +74,6 @@ class Collection:
             data_packages = unitpackage.remote.collect_datapackages(
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
-
         self._packages = data_packages
 
     @classmethod
@@ -268,3 +267,59 @@ class Collection:
         """
         for entry in self:
             entry.save(outdir=outdir)
+
+    @classmethod
+    def from_local(cls, datadir):
+        r"""
+        Create a collection from local datapackages.
+
+        EXAMPLES:
+
+        Units describing the fields can be provided::
+
+            >>> from unitpackage.collection import Collection
+            >>> collection = Collection.from_local('./examples')
+            >>> collection  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
+            Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
+            Entry('no_bibliography')]
+
+        """
+        import unitpackage.local
+
+        packages =unitpackage.local.collect_datapackages(datadir)
+        return cls(data_packages=packages)
+
+    @classmethod
+    def from_remote(cls, url=None):
+        r"""
+        Create a collection from an url containing a zip.
+
+        When no url is provided a collection is created from the data packages published in the on `echemdb <https://www.echemdb.org/cv>`_::
+
+        EXAMPLES::
+
+            >>> from unitpackage.collection import Collection
+            >>> collection = Collection()  # doctest: +REMOTE_DATA
+
+        Search the collection for entries from a single publication::
+
+            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
+
+        """
+        import unitpackage.remote
+        if url is None:
+            import os.path
+
+            import unitpackage.remote
+
+            data_packages = unitpackage.remote.collect_datapackages(
+                os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
+            )
+        packages =unitpackage.remote.collect_datapackages(url)
+        return cls(data_packages=packages)
+
+
+
+           
