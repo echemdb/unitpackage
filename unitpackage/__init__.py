@@ -1,23 +1,6 @@
 import yaml
 
-import unitpackage.local
-import unitpackage.remote
-from unitpackage.collection import Collection
 from unitpackage.entry import Entry
-
-
-def from_remote(data=None, url=None, outdir=None):
-    return Collection(
-        unitpackage.remote.collect_datapackages(
-            data=data or "data",
-            url=url or unitpackage.remote.ECHEMDB_DATABASE_URL,
-            outdir=outdir,
-        )
-    )
-
-
-def from_local(data):
-    return Collection(unitpackage.local.collect_datapackages(data=data))
 
 
 def csv_to_package(csvname, yamlname, outdir, fields=None):
