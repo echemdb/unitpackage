@@ -287,7 +287,7 @@ class Collection:
         """
         import unitpackage.local
 
-        packages =unitpackage.local.collect_datapackages(datadir)
+        packages = unitpackage.local.collect_datapackages(datadir)
         return cls(data_packages=packages)
 
     @classmethod
@@ -309,6 +309,7 @@ class Collection:
 
         """
         import unitpackage.remote
+
         if url is None:
             import os.path
 
@@ -317,9 +318,6 @@ class Collection:
             data_packages = unitpackage.remote.collect_datapackages(
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
-        packages =unitpackage.remote.collect_datapackages(url)
-        return cls(data_packages=packages)
 
-
-
-           
+        data_packages = unitpackage.remote.collect_datapackages(url)
+        return cls(data_packages=data_packages)
