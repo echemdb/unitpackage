@@ -592,11 +592,13 @@ class Entry:
             outdir = tempfile.mkdtemp()
             atexit.register(shutil.rmtree, outdir)
 
-        csvname = basename + '.csv'
+        csvname = basename + ".csv"
 
         df.to_csv(os.path.join(outdir, csvname), index=False)
 
-        return cls.from_csv(os.path.join(outdir, csvname), metadata=metadata, fields=fields)
+        return cls.from_csv(
+            os.path.join(outdir, csvname), metadata=metadata, fields=fields
+        )
 
     def save(self, *, outdir, basename=None):
         r"""

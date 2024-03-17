@@ -35,6 +35,7 @@ from frictionless import Package, Resource, Schema
 
 logger = logging.getLogger("unitpackage")
 
+
 def create_df_resource(package, resource_name="echemdb"):
     r"""
     Return a pandas dataframe resource from a data packages,
@@ -178,6 +179,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         # remove field if it is not a Mapping instance
         from collections.abc import Mapping
+
         for field in fields:
             if not isinstance(field, Mapping):
                 raise ValueError(
@@ -195,10 +197,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
                     | package_schema.get_field(name).to_dict()
                 )
             else:
-                logger.warning(
-                            f"Field with name {name} is not specified."
-                        )
-
+                logger.warning(f"Field with name {name} is not specified.")
 
         resource.schema = Schema.from_descriptor({"fields": new_fields})
 
