@@ -125,8 +125,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'from_csv', 'identifier', 'package',  'plot', 'rescale', 'save', 'source',
-            'system', 'yaml']
+            'from_csv', 'from_df', 'identifier', 'package',  'plot', 'rescale', 'save',
+            'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -554,6 +554,49 @@ class Entry:
         )
 
         return cls(package=package)
+
+    @classmethod
+    def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
+        r"""
+        Returns an entry constructed from a pandas df.
+
+        EXAMPLES::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry
+            Entry('test_df')
+
+        Metadata and field descriptions can be appended::
+
+            >>> import os
+            >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
+            >>> metadata = {'user':'Max Doe'}
+            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
+            >>> entry.user
+            'Max Doe'
+
+        Save the entry::
+
+            >>> entry.save(outdir='./test/generated/from_df')
+
+        """
+
+        if outdir is None:
+            import atexit
+            import shutil
+            import tempfile
+
+            outdir = tempfile.mkdtemp()
+            atexit.register(shutil.rmtree, outdir)
+
+        csvname = basename + '.csv'
+
+        df.to_csv(os.path.join(outdir, csvname), index=False)
+
+        return cls.from_csv(os.path.join(outdir, csvname), metadata=metadata, fields=fields)
 
     def save(self, *, outdir, basename=None):
         r"""

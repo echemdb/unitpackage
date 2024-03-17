@@ -24,6 +24,8 @@ collecting packages and creating unitpackages.
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+
+import logging
 import os
 import os.path
 from glob import glob
@@ -31,6 +33,7 @@ from glob import glob
 import pandas as pd
 from frictionless import Package, Resource, Schema
 
+logger = logging.getLogger("unitpackage")
 
 def create_df_resource(package, resource_name="echemdb"):
     r"""
@@ -122,6 +125,29 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         >>> package # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
+
+    TESTS:
+
+    Fields are not valid::
+
+        >>> fields = 'not a list'
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        Traceback (most recent call last):
+        ...
+        ValueError: 'fields' must be a list such as
+        [{'name': '<fieldname>', 'unit':'<field unit>'}]`,
+        e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`
+
+    More fields than required::
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+
+    Part of the fields specified:
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}]
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+
     """
 
     csv_basename = os.path.basename(csvname)
@@ -143,7 +169,6 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     if fields:
         # Update fields in the datapackage describing the data in the CSV
         package_schema = resource.schema
-        # can probably be removed since validation is performed by frictionless schema
         if not isinstance(fields, list):
             raise ValueError(
                 "'fields' must be a list such as \
@@ -153,8 +178,6 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         # remove field if it is not a Mapping instance
         from collections.abc import Mapping
-
-        # can probably be removed since validation is performed by frictionless schema
         for field in fields:
             if not isinstance(field, Mapping):
                 raise ValueError(
@@ -166,15 +189,16 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         new_fields = []
         for name in package_schema.field_names:
-            if not name in provided_schema.field_names:
-                # Raise only a warning
-                raise KeyError(
-                    f"Field with name {name} is not specified in `data_description.fields`."
+            if name in provided_schema.field_names:
+                new_fields.append(
+                    provided_schema.get_field(name).to_dict()
+                    | package_schema.get_field(name).to_dict()
                 )
-            new_fields.append(
-                provided_schema.get_field(name).to_dict()
-                | package_schema.get_field(name).to_dict()
-            )
+            else:
+                logger.warning(
+                            f"Field with name {name} is not specified."
+                        )
+
 
         resource.schema = Schema.from_descriptor({"fields": new_fields})
 
