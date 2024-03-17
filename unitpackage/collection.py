@@ -295,7 +295,8 @@ class Collection:
         r"""
         Create a collection from an url containing a zip.
 
-        When no url is provided a collection is created from the data packages published in the on `echemdb <https://www.echemdb.org/cv>`_::
+        When no url is provided a collection is created from the data packages published
+        on `echemdb <https://www.echemdb.org/cv>`_.
 
         EXAMPLES::
 

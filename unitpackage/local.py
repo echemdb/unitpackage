@@ -129,7 +129,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
     TESTS:
 
-    Fields are not valid::
+    Invalid fields::
 
         >>> fields = 'not a list'
         >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
