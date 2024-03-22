@@ -248,3 +248,66 @@ class Collection:
                 f"The collection has more than one entry with identifier '{identifier}'."
             )
         return entries[0]
+
+    def save_entries(self, outdir=None):
+        r"""
+        Save the entries of this collection as datapackages (CSV and JSON)
+        to the output directory :param outdir:.
+
+        EXAMPLES::
+
+            >>> db = Collection.create_example()
+            >>> db.save_entries(outdir='test/generated/saved_collection')
+            >>> import glob
+            >>> glob.glob('test/generated/saved_collection/**.json') # doctest: +NORMALIZE_WHITESPACE
+            ['test...
+
+        """
+        for entry in self:
+            entry.save(outdir=outdir)
+
+    @classmethod
+    def from_local(cls, datadir):
+        r"""
+        Create a collection from local datapackages.
+
+        EXAMPLES::
+
+            >>> from unitpackage.collection import Collection
+            >>> collection = Collection.from_local('./examples')
+            >>> collection  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
+            Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
+            Entry('no_bibliography')]
+
+        """
+        import unitpackage.local
+
+        packages = unitpackage.local.collect_datapackages(datadir)
+        return cls(data_packages=packages)
+
+    @classmethod
+    def from_remote(cls, url=None, data="", outdir=""):
+        r"""
+        Create a collection from a url containing a zip.
+
+        When no url is provided a collection is created from the data packages published
+        on `echemdb <https://www.echemdb.org/cv>`_.
+
+        EXAMPLES::
+
+            >>> from unitpackage.collection import Collection
+            >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
+
+        The folder containing the data in the zip can be specified with the :param data:.
+        An output directory for the extracted data can be specified with the :param outdir:.
+        """
+        import unitpackage.remote
+
+        if url is None:
+            return cls(data_packages=unitpackage.remote.collect_datapackages())
+
+        data_packages = unitpackage.remote.collect_datapackages(
+            url=url, data=data, outdir=outdir
+        )
+        return cls(data_packages=data_packages)

@@ -96,7 +96,7 @@ local collection creation, are provided in our
 
 # Installation instructions
 
-This package is available on [PiPY](https://pypi.org/project/unitpackage/) and can be installed with pip:
+This package is available on [PyPI](https://pypi.org/project/unitpackage/) and can be installed with pip:
 
 ```sh .noeval
 pip install unitpackage

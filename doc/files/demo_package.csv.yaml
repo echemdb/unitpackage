@@ -1,0 +1,7 @@
+user: Max Doe
+figure description:
+    fields:
+      - name: t
+        unit: s
+      - name: j
+        unit: A cm-2

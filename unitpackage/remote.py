@@ -27,11 +27,13 @@ Utilities to work with remote data packages.
 import os.path
 from functools import cache
 
-from echemdb_ecdata.url import ECHEMDB_DATABASE_URL
-
+ECHEMDB_DATABASE_URL = os.environ.get(
+    "ECHEMDB_DATABASE_URL",
+    "https://github.com/echemdb/electrochemistry-data/releases/download/0.1.0-alpha.2/data-0.1.0-alpha.2.zip",
+)
 
 @cache
-def collect_zipfile_from_url(url):
+def collect_zipfile_from_url(url=ECHEMDB_DATABASE_URL):
     r"""
     Download a ZIP file from ``url`` and return it as a temporary object to
     extract contents from.

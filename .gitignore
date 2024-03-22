@@ -1,6 +1,7 @@
 # Digitized data
 /data/generated
 /examples/generated
+/doc/files/generated
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
