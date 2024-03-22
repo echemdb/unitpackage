@@ -88,7 +88,25 @@ class Entry:
 
     EXAMPLES:
 
-    Entries are normally obtained by opening a :class:`Collection` of entries::
+    Entries can be directly created::
+
+        >>> from unitpackage.local import collect_datapackage
+        >>> from unitpackage.entry import Entry
+        >>> entry = Entry(collect_datapackage('./examples/no_bibliography/no_bibliography.json'))
+        >>> entry
+        Entry('no_bibliography')
+
+    or more simply::
+
+        >>> from unitpackage.entry import Entry
+        >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry
+        Entry('no_bibliography')
+
+    Entries can also be created by other means such as,
+    a CSV ``Entry.from_csv`` or a pandas dataframe ``Entry.from_df``.
+
+    Normally, entries are obtained by opening a :class:`Collection` of entries::
 
         >>> from unitpackage.collection import Collection
         >>> collection = Collection.create_example()
@@ -125,8 +143,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'identifier', 'package',  'plot', 'rescale', 'save', 'source',
-            'system', 'yaml']
+            'from_csv', 'from_df', 'from_local', 'identifier', 'package',  'plot',
+            'rescale', 'save', 'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -375,7 +393,7 @@ class Entry:
         df_resource.name = "echemdb"
 
         # Remove the original echemdb resource and
-        # add a new echemdb resource to the new entr
+        # add a new echemdb resource to the new entry
         package.remove_resource("echemdb")
 
         entry = type(self)(package=package)
@@ -510,6 +528,112 @@ class Entry:
         fig.update_yaxes(showline=True, mirror=True)
 
         return fig
+
+    @classmethod
+    def from_csv(cls, csvname, metadata=None, fields=None):
+        r"""
+        Returns an entry constructed from a CSV with a single header line.
+
+        EXAMPLES:
+
+        Units describing the fields can be provided::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', fields=fields)
+            >>> entry
+            Entry('from_csv')
+
+            >>> entry.package # doctest: +NORMALIZE_WHITESPACE
+            {'resources': [{'name':
+            ...
+
+        Metadata can be appended::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> metadata = {'user':'Max Doe'}
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', metadata=metadata, fields=fields)
+            >>> entry.user
+            'Max Doe'
+
+        """
+        from frictionless import Schema
+
+        from unitpackage.local import create_df_resource, create_unitpackage
+
+        package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
+
+        df_resource = create_df_resource(package)
+
+        package.add_resource(df_resource)
+        package.get_resource("echemdb").schema = Schema.from_descriptor(
+            package.resources[0].schema.to_dict()
+        )
+
+        return cls(package=package)
+
+    @classmethod
+    def from_local(cls, filename):
+        r"""
+        Return an entry from a :param filename:
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+            >>> entry
+            Entry('no_bibliography')
+
+        """
+        from unitpackage.local import collect_datapackage
+
+        return cls(package=collect_datapackage(filename))
+
+    @classmethod
+    def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
+        r"""
+        Returns an entry constructed from a pandas dataframe.
+
+        EXAMPLES::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry
+            Entry('test_df')
+
+        Metadata and field descriptions can be added::
+
+            >>> import os
+            >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
+            >>> metadata = {'user':'Max Doe'}
+            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
+            >>> entry.user
+            'Max Doe'
+
+        Save the entry::
+
+            >>> entry.save(outdir='./test/generated/from_df')
+
+        """
+
+        if outdir is None:
+            import atexit
+            import shutil
+            import tempfile
+
+            outdir = tempfile.mkdtemp()
+            atexit.register(shutil.rmtree, outdir)
+
+        csvname = basename + ".csv"
+
+        df.to_csv(os.path.join(outdir, csvname), index=False)
+
+        return cls.from_csv(
+            os.path.join(outdir, csvname), metadata=metadata, fields=fields
+        )
 
     def save(self, *, outdir, basename=None):
         r"""
