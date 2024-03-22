@@ -65,7 +65,6 @@ class Collection:
     Entry = Entry
 
     def __init__(self, data_packages=None):
-
         self._packages = data_packages
 
     @classmethod
@@ -299,12 +298,7 @@ class Collection:
         import unitpackage.remote
 
         if url is None:
-            import os.path
-
-            data_packages = unitpackage.remote.collect_datapackages(
-                os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
-            )
-            return cls(data_packages=data_packages)
+            return cls(data_packages=unitpackage.remote.collect_datapackages())
 
         data_packages = unitpackage.remote.collect_datapackages(
             url=url, data=data, outdir=outdir

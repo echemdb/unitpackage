@@ -5,7 +5,7 @@ Utilities to work with remote data packages.
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2024 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -27,11 +27,15 @@ Utilities to work with remote data packages.
 import os.path
 from functools import cache
 
+ECHEMDB_DATABASE_URL = os.environ.get(
+    "ECHEMDB_DATABASE_URL",
+    "https://github.com/echemdb/electrochemistry-data/releases/download/0.1.0-alpha.2/data-0.1.0-alpha.2.zip",
+)
 
 @cache
-def collect_zipfile_from_url(url):
+def collect_zipfile_from_url(url=ECHEMDB_DATABASE_URL):
     r"""
-    Download ZIP file from ``url`` and return it as a temporary object to
+    Download a ZIP file from ``url`` and return it as a temporary object to
     extract contents from.
     """
     from urllib.request import urlopen
@@ -43,19 +47,16 @@ def collect_zipfile_from_url(url):
         return ZipFile(BytesIO(response.read()))
 
 
-ECHEMDB_DATABASE_URL = os.environ.get(
-    "ECHEMDB_DATABASE_URL",
-    "https://github.com/echemdb/website/archive/refs/heads/gh-pages.zip",
-)
-
-
 @cache
-def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
+def collect_datapackages(data=None, url=ECHEMDB_DATABASE_URL, outdir=None):
     r"""
     Return a list of data packages defined in a remote location.
 
     The default is to download the packages currently available on `echemdb <https://www.echemdb.org/cv>`_
+    which are retrieved from `the echemdb electrochemistry-data repository <https://github.com/echemdb/electrochemistry-data>`_
     and extract them to a temporary directory.
+
+    To retrieve data from a subdirectory within the zip, provide the location in ``data``.
 
     EXAMPLES::
 
@@ -83,4 +84,6 @@ def collect_datapackages(data="data", url=ECHEMDB_DATABASE_URL, outdir=None):
 
     import unitpackage.local
 
-    return unitpackage.local.collect_datapackages(os.path.join(outdir, data))
+    return unitpackage.local.collect_datapackages(
+        os.path.join(outdir, data) if data else outdir
+    )
