@@ -280,7 +280,7 @@ class Collection:
         return cls(data_packages=packages)
 
     @classmethod
-    def from_remote(cls, url=None, data="", outdir=""):
+    def from_remote(cls, url=None, data=None, outdir=None):
         r"""
         Create a collection from a url containing a zip.
 
