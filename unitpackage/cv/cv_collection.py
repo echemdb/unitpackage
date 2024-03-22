@@ -12,7 +12,7 @@ in the `data/` directory::
 
 Create a collection from the data packages published in the `echemdb <https://www.echemdb.org/cv>`_::
 
-    >>> collection = CVCollection()  # doctest: +REMOTE_DATA
+    >>> collection = CVCollection.from_remote()  # doctest: +REMOTE_DATA
 
 Search the collection for entries from a single publication::
 

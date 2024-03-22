@@ -24,7 +24,7 @@ To illustrate the usage of `unitpackage`, we create a collection from the entrie
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
-db = Collection()
+db = Collection.from_remote()
 ```
 
 Type `db` to highlight the entries within the collection or show the number of entries in the collection with.
@@ -51,23 +51,14 @@ len(filtered_db)
 
 Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)). The entry also has additional methods for descriptor representation, data manipulation and data visualization.
 
-### Creation
-
-An entry can be created from a local package:
-
-```{code-cell} ipython3
-from unitpackage.local import collect_datapackages
-from unitpackage.entry import Entry
-local_entry = Entry(collect_datapackages('../files/')[2])
-local_entry
-```
-
-Single entries can also be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org/cv) for each entry.
+Entries can be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org/cv) for each entry.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```
+
+Other approaches to create entries from CSV or pandas dataframes directly are described [here](load_and_save.md).
 
 ### Resource Metadata
 
@@ -113,7 +104,7 @@ entry.figure_description.scan_rate.unit
 The datapackage consists of two resources.
 
 * One resource is named according to the entry's identifier. It describes the data in the CSV.
-* One resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.
+* One resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.

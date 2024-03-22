@@ -6,12 +6,11 @@ EXAMPLES:
 Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`_
 in the `data/` directory::
 
-    >>> from unitpackage.local import collect_datapackages
-    >>> collection = Collection(collect_datapackages('data/'))
+    >>> collection = Collection.from_local('data/')
 
 Create a collection from the data packages published in the on `echemdb <https://www.echemdb.org/cv>`_::
 
-    >>> collection = Collection()  # doctest: +REMOTE_DATA
+    >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
 Search the collection for entries from a single publication::
 
@@ -66,14 +65,6 @@ class Collection:
     Entry = Entry
 
     def __init__(self, data_packages=None):
-        if data_packages is None:
-            import os.path
-
-            import unitpackage.remote
-
-            data_packages = unitpackage.remote.collect_datapackages(
-                os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
-            )
         self._packages = data_packages
 
     @classmethod
@@ -289,7 +280,7 @@ class Collection:
         return cls(data_packages=packages)
 
     @classmethod
-    def from_remote(cls, url=None, data="", outdir=""):
+    def from_remote(cls, url=None, data=None, outdir=None):
         r"""
         Create a collection from a url containing a zip.
 
@@ -307,12 +298,7 @@ class Collection:
         import unitpackage.remote
 
         if url is None:
-            import os.path
-
-            data_packages = unitpackage.remote.collect_datapackages(
-                os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
-            )
-            return cls(data_packages=data_packages)
+            return cls(data_packages=unitpackage.remote.collect_datapackages())
 
         data_packages = unitpackage.remote.collect_datapackages(
             url=url, data=data, outdir=outdir
