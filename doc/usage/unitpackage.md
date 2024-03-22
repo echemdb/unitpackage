@@ -226,8 +226,8 @@ The above example can be found [here](https://raw.githubusercontent.com/echemdb/
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
-from unitpackage.local import collect_datapackages
-db = Collection(data_packages=collect_datapackages('../files/'))
+
+db = Collection.from_local('../files/')
 entry = db['demo_package_metadata']
 entry
 ```

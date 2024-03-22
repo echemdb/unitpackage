@@ -23,15 +23,15 @@ An example demonstrating the usage of a collection of datapackages along with th
 
 ## Examples
 
-A collection of datapackages can be generated from [local files](usage/load_and_save.md) or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we use in the following examples the data available on [echemdb.org](https://www.echemdb.org/cv). The data is downloaded by default when the `Collection` class does not receive the argument `data_packages=collect_datapackages('./files_folder)`.
+A collection of [datapackages can be generated](usage/load_and_save.md) from local files or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we collect the data to [echemdb.org](https://www.echemdb.org/cv) from the data repository, which is downloaded by default when the method `from_remote()` does not receive a url argument.
 
 ```{note}
-We denote the collection as `db` (database), even thought it is not a database in that sense.
+For simplicity we denote the collection as `db` (database), even thought it is not a database in that sense.
 ```
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
-db = Collection()
+db = Collection.from_remote()
 ```
 
 A single entry can be retrieved with an identifiers available in the database
@@ -73,7 +73,7 @@ For certain datasets, unitpackage can be extended by additional modules. Such a 
 
 ```{code-cell} ipython3
 from unitpackage.cv.cv_collection import CVCollection
-db = CVCollection()
+db = CVCollection.from_remote()
 db.describe()
 ```
 

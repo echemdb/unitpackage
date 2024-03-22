@@ -18,7 +18,7 @@ The electrochemical data shown on the [echemdb.org](https://www.echemdb.org/cv) 
 
 ```{code-cell} ipython3
 from unitpackage.cv.cv_collection import CVCollection
-db = CVCollection()
+db = CVCollection.from_remote()
 type(db)
 ```
 
