@@ -593,7 +593,7 @@ class Entry:
     @classmethod
     def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
         r"""
-        Returns an entry constructed from a pandas df.
+        Returns an entry constructed from a pandas dataframe.
 
         EXAMPLES::
 
@@ -604,7 +604,7 @@ class Entry:
             >>> entry
             Entry('test_df')
 
-        Metadata and field descriptions can be appended::
+        Metadata and field descriptions can be added::
 
             >>> import os
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
