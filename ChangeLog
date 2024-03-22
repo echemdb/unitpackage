@@ -4,6 +4,37 @@ echemdb Change Log
 
 .. current developments
 
+v0.8.0
+====================
+
+**Added:**
+
+* Added 'entry.save' which creates a unitpackage, i.e., a CSV file and a JSON file, in the directory `outdir`.
+* Added 'collection.save_entries' saves the entries of this collection using `entry.save`.
+* Added `Collection.from_local`, creating a collection from local datapackages.
+* Added `Collection.from_remote`, creating a collection from remote datapackages collected from a url containing a ZIP.
+* Added `Entry.from_local`, loading an entry from a local datapackage.
+* Added `Entry.from_csv`, creating an entry from a CSV and optionally allows adding metadata to the entry and modifying the field properties.
+* Added `Entry.from_df`, creating an entry from a pandas dataframe and optionally allows adding metadata to the entry and modifying the field properties.
+
+**Changed:**
+
+* Changed default url to collect datapackages to assets in https://github.com/echemdb/electrochemistry-data/releases.
+* Changed loading echemdb data, using `Collection.from_remote()` instead of `Collection()`.
+* Changed `Entry.create_examples` to load pre-defined datapackages instead of generating datapackges from SVGs with the `svgdigitizer`.
+
+**Removed:**
+
+* Removed `svgdigitizer` as dependency used in automated tests.
+* Removed `Entry._digitize_example`, used to create datapackages for automated test.
+*
+
+**Fixed:**
+
+* Fixed the description of the project in the `setup.py`.
+
+
+
 v0.7.1
 ====================
 
