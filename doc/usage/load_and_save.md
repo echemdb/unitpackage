@@ -5,80 +5,150 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
   name: python3
 ---
 
-# Loading and Saving Packages
+# Load and Save
 
-```{note}
-This section is under construction.
-```
+`unitpackage` Entries and Collections can be loaded from different sources and stored as datapackages (CSV and JSON) to a specified output directory.
 
-## Collection From Local Packages
+## Load collections
 
-A local collection of datapackages can be created by collecting datapackages recursively, which are stored in a specific folder in your file system.
+### From local files
+
+A local collection of datapackages can be created by collecting datapackages recursively, which are stored in a specific folder in the file system.
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
-from unitpackage.local import collect_datapackages
 
-db = Collection(data_packages=collect_datapackages("../files"))
+db = Collection.from_local("../files")
 db
 ```
 
-All functionalities to interact with a collection or specific entries within the collection are now available to your local files (see [usage section](unitpackage_usage.md)).
-
-```{note}
-Without providing the argument `data_packages=collect_datapackages("../packages_folder")` to the `Collection` class, the data from [echemdb.org](https:///www.echemdb.org/cv) will be downloaded and stored as collection instead.
-```
-
-In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection, such as
+In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection instead, such as
 
 ```{code-cell} ipython3
 from unitpackage.cv.cv_collection import CVCollection
-from unitpackage.local import collect_datapackages
 
-cv_db = CVCollection(data_packages=collect_datapackages("../files"))
+cv_db = CVCollection.from_local("../files")
 cv_db
 ```
 
-## Create unitpackages
+```{note}
+Without providing any argument to the `Collection` class, the data from [echemdb.org](https://www.echemdb.org/cv) will be downloaded and stored as collection instead.
+```
 
-For this tutorial we consider the situation where data is generated with a data acquisition device.
-The approach to create unitpackages depends on the way data is acquired and which type of is created. Following a few use cases:
+### From URL
 
-* Using a programmatic approach, where you have full control over the data structure during data storage.
-* Data is produced by a proprietary software, possibly in a non standard format.
+A collection of datapackages can be created by collecting datapackages recursively from a url to a ZIP file. The data is extracted to a temporary directory.
 
-<!--
-## From CSV after data acquisition
+```{note}
+Without providing the argument `url` to the `from_remote` method, the data from [echemdb.org](https://www.echemdb.org/cv) will be downloaded and stored as collection instead.
+```
 
-Assume we recorded data which is saved at the end of a measurement to CSV.
+```{code-cell} ipython3
+from unitpackage.collection import Collection
+
+db = Collection.from_remote()
+db
+```
+
+Providing an output directory with the parameter `outdir` allows saving the packages in a specific output directory.
+A parameter `data` allows specifying the folder within the ZIP containing the datapackages.
+
+```{code-cell} ipython3
+from unitpackage.collection import Collection
+
+db = Collection.from_remote(data='data', outdir='generated/from_url')
+db
+```
+
+## Load entries
+
+An individual entry can be loaded from a local datapackage.
+
+```{code-cell} ipython3
+from unitpackage.entry import Entry
+
+db = Entry.from_local("../files/demo_package.json")
+db
+```
+
+Alternatively, entries can be created from CSV or pandas datframes.
+In these cases, metadata and descriptors for the columns in the CSV can be added upon evoking the entry.
+
+Metadata should be provided as Python dictionary and the fields must be a list, as illustrated in the example below.
+The individual fields must have a name.
+For a CSV
+
+```{code-cell} ipython3
+from unitpackage.entry import Entry
+
+metadata = {'user': 'Max Doe'}
+fields = [{'name': 't', 'unit':'s'},{'name': 'j', 'unit':'mA/cm²'}]
+
+csv_entry = Entry.from_csv("../files/demo_package.csv", metadata=metadata, fields=fields)
+```
+
+In a similar way an entry can be created from a pandas resource.
 
 ```{code-cell} ipython3
 import pandas as pd
+from unitpackage.entry import Entry
 
-data = {'t':[1,2,3,4], 'U':[0,5,3,8]}
+data = {'x': [1,2,3], 'v': [1,3,2]}
 df = pd.DataFrame(data)
+
+metadata = {'user': 'Max Doe'}
+fields = [{'name': 'x', 'unit':'m'},{'name': 'v', 'unit':'m/s', 'description': 'velocity'}]
+
+df_entry = Entry.from_df(df, basename='df_data', metadata=metadata, fields=fields)
 ```
+
+## Save entries
+
+Entries can be saved as JSON and CSV in a specified folder either directly from collection
 
 ```{code-cell} ipython3
-outdir = '../files/generated/'
-csvname = 'voltage_timeseries.csv'
+from unitpackage.collection import Collection
 
-df.to_csv(outdir + csvname, index=False)
+db = Collection.from_local("../files")
+db.save_entries(outdir="../generated/files")
 ```
+
+or from a single entry.
 
 ```{code-cell} ipython3
-from unitpackage.local import create_unitpackage
-metadata = {'name': 'Max Doe', 'project': 'echemdb'}
-fields = [{'name': 't', 'unit':'s'},{'name':'U', 'unit':'mV'}]
+from unitpackage.entry import Entry
 
-package = create_unitpackage(csvname=csvname, outdir=outdir, fields=fields, metadata=metadata)
-package
+entry = Entry.from_local("../files/demo_package.json")
+entry.save(outdir="../generated/files/saved_entry")
 ```
--->
+
+The basename of the entry can be modified
+
+```{code-cell} ipython3
+entry.save(basename=entry.identifier + "_r" , outdir="../generated/files/saved_entry")
+```
+
+## Create local unitpackages
+
+Local Frictionless datapackages (JSON and CSV) can be created by combining the methods to load and save entries above.
+
+Following is an example for a CSV, where the metadata and the field description are stored in a separate metadata file.
+
+```{code-cell} ipython3
+import yaml
+
+with open("../files/demo_package.csv.yaml", "rb") as f:
+    metadata = yaml.load(f, Loader=yaml.SafeLoader)
+
+fields = metadata["figure description"]["fields"]
+
+entry = Entry.from_csv(csvname="../files/demo_package.csv", metadata=metadata, fields=fields)
+entry.save(outdir="../generated/files/csv_entry/")
+```

@@ -69,7 +69,7 @@ def create_df_resource(package, resource_name="echemdb"):
 
 def collect_datapackage(filename):
     r"""
-    Return data packages from a :param filename:.
+    Return a data package from a :param filename.
 
     EXAMPLES::
 
@@ -199,6 +199,9 @@ def create_unitpackage(csvname, metadata=None, fields=None):
             else:
                 logger.warning(f"Field with name {name} is not specified.")
 
+        for name in provided_schema.field_names:
+            if name not in package_schema.field_names:
+                logger.warning(f"Field with name {name} was provided but does not appear in the field names of tabular resource {package_schema.field_names}.")
         resource.schema = Schema.from_descriptor({"fields": new_fields})
 
     return package

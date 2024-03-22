@@ -88,7 +88,25 @@ class Entry:
 
     EXAMPLES:
 
-    Entries are normally obtained by opening a :class:`Collection` of entries::
+    Entries can be directly created::
+
+        >>> from unitpackage.local import collect_datapackage
+        >>> from unitpackage.entry import Entry
+        >>> entry = Entry(collect_datapackage('./examples/no_bibliography/no_bibliography.json'))
+        >>> entry
+        Entry('no_bibliography')
+
+    or more simply::
+
+        >>> from unitpackage.entry import Entry
+        >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry
+        Entry('no_bibliography')
+
+    Entries can also be created by other means such as,
+    a CSV ``Entry.from_csv`` or a pandas dataframe ``Entry.from_df``.
+
+    Normally, entries are obtained by opening a :class:`Collection` of entries::
 
         >>> from unitpackage.collection import Collection
         >>> collection = Collection.create_example()
@@ -125,8 +143,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'from_csv', 'from_df', 'identifier', 'package',  'plot', 'rescale', 'save',
-            'source', 'system', 'yaml']
+            'from_csv', 'from_df', 'from_local', 'identifier', 'package',  'plot',
+            'rescale', 'save', 'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -554,6 +572,23 @@ class Entry:
         )
 
         return cls(package=package)
+
+    @classmethod
+    def from_local(cls, filename):
+        r"""
+        Return an entry from a :param filename:
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+            >>> entry
+            Entry('no_bibliography')
+
+        """
+        from unitpackage.local import collect_datapackage
+
+        return cls(package=collect_datapackage(filename))
 
     @classmethod
     def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):

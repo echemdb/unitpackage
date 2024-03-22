@@ -1,8 +1,0 @@
-user: Max Doe
-figure description:
-  schema:
-    fields:
-      - name: E
-        units: V
-      - name: I
-        units: A
