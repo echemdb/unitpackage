@@ -273,9 +273,7 @@ class Collection:
         r"""
         Create a collection from local datapackages.
 
-        EXAMPLES:
-
-        Units describing the fields can be provided::
+        EXAMPLES::
 
             >>> from unitpackage.collection import Collection
             >>> collection = Collection.from_local('./examples')
@@ -291,9 +289,9 @@ class Collection:
         return cls(data_packages=packages)
 
     @classmethod
-    def from_remote(cls, url=None):
+    def from_remote(cls, url=None, data="", outdir=""):
         r"""
-        Create a collection from an url containing a zip.
+        Create a collection from a url containing a zip.
 
         When no url is provided a collection is created from the data packages published
         on `echemdb <https://www.echemdb.org/cv>`_.
@@ -301,24 +299,22 @@ class Collection:
         EXAMPLES::
 
             >>> from unitpackage.collection import Collection
-            >>> collection = Collection()  # doctest: +REMOTE_DATA
+            >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
-        Search the collection for entries from a single publication::
-
-            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
-
+        The folder containing the data in the zip can be specified with the :param data:.
+        An output directory for the extracted data can be specified with the :param outdir:.
         """
         import unitpackage.remote
 
         if url is None:
             import os.path
 
-            import unitpackage.remote
-
             data_packages = unitpackage.remote.collect_datapackages(
                 os.path.join("website-gh-pages", "data", "generated", "svgdigitizer")
             )
+            return cls(data_packages=data_packages)
 
-        data_packages = unitpackage.remote.collect_datapackages(url)
+        data_packages = unitpackage.remote.collect_datapackages(
+            url=url, data=data, outdir=outdir
+        )
         return cls(data_packages=data_packages)
