@@ -55,8 +55,7 @@ The metadata of an entries' resource in a collection is accessible from the pyth
 
 ```python
 >>> from unitpackage.collection import Collection
->>> from unitpackage.local import collect_datapackages
->>> db = Collection(data_packages=collect_datapackages('./doc/files'))
+>>> db = Collection.from_local('./doc/files')
 >>> entry = db['demo_package_cv']
 >>> entry.description
 'Sample data for the unitpackage module.'
@@ -86,9 +85,7 @@ Ultimately, the `unitpackage` allows for simple transformation of data within a 
 ...
 ```
 
-Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection`
-
-Collections can be generated from local files or data published in repositories such as on [echemdb.org](https://www.echemdb.org/cv)
+Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection` and is retrieved from the [echemdb data repository](https://github.com/echemdb/electrochemistry-data).
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local collection creation, are provided in our

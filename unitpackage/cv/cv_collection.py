@@ -7,7 +7,7 @@ EXAMPLES:
 Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`__
 in the `data/` directory::
 
-    >>> from unitpackage.cv_collection import CVCollection
+    >>> from unitpackage.cv.cv_collection import CVCollection
     >>> collection = CVCollection.from_local('data/')
 
 Create a collection from the data packages published in the `echemdb <https://www.echemdb.org/cv>`_::
