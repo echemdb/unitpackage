@@ -8,6 +8,3 @@ pip install .
 
 mkdir -p ${HOME}/.jupyter/labconfig
 cp binder/labconfig/* ${HOME}/.jupyter/labconfig
-
-# Install the bash kernel
-python -m bash_kernel.install
