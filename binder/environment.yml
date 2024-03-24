@@ -8,6 +8,6 @@ dependencies:
   - notebook
   - pip
   - python>=3.9,<3.11
-  - unitpackage==0.8.0
   - pip:
+    - unitpackage==0.8.0
     - bash_kernel
