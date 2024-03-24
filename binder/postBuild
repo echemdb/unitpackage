@@ -11,3 +11,6 @@ cp binder/labconfig/* ${HOME}/.jupyter/labconfig
 
 # Create the notebook for our jupytext demo
 jupytext doc/index.md --to ipynb --update-metadata '{"jupytext":null}'
+
+# Install the bash kernel
+python -m bash_kernel.install
