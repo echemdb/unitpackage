@@ -53,7 +53,7 @@ $VERSION_BUMP_PATTERNS = [
     ('doc/conf.py', r"release = ", r"release = '$VERSION'"),
     ('doc/index.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?labpath=tree%2Fdoc%2Findex.md)"),
     ('README.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?labpath=tree%2Fdoc%2Findex.md)"),
-    ('binder/environment.yml', r"    - unitpackage==", r"    - unitpackage==$VERSION"),
+    ('binder/environment.yml', r"  - unitpackage==", r"  - unitpackage==$VERSION"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
