@@ -1,7 +1,7 @@
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2022-2023 Albert Engstfeld
+#        Copyright (C) 2022-2024 Albert Engstfeld
 #        Copyright (C) 2022      Johannes Hermann
 #        Copyright (C) 2022      Julian Rüth
 #        Copyright (C) 2022      Nicolas Hörmann
@@ -51,9 +51,9 @@ $ACTIVITIES = [
 $VERSION_BUMP_PATTERNS = [
     ('setup.py', r"    version=", r'    version="$VERSION",'),
     ('doc/conf.py', r"release = ", r"release = '$VERSION'"),
-    ('doc/index.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
-    ('README.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
-    ('binder/environment.yml', r"    - unitpackage==", r"    - unitpackage==$VERSION"),
+    ('doc/index.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?labpath=tree%2Fdoc%2Findex.md)"),
+    ('README.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?labpath=tree%2Fdoc%2Findex.md)"),
+    ('binder/environment.yml', r"  - unitpackage==", r"  - unitpackage==$VERSION"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
