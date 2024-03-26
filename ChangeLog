@@ -4,6 +4,16 @@ echemdb Change Log
 
 .. current developments
 
+v0.8.1
+====================
+
+**Fixed:**
+
+* Fixed binder configuration files and links.
+* Upgraded to pandas version 2.
+
+
+
 v0.8.0
 ====================
 
