@@ -157,7 +157,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         resources=[
             Resource(
                 path=csv_basename,
-                basepath=os.path.dirname(csvname),
+                basepath=os.path.dirname(csvname) or ".",
             )
         ],
     )
@@ -190,6 +190,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         provided_schema = Schema.from_descriptor({"fields": fields}, allow_invalid=True)
 
         new_fields = []
+        unspecified_fields = []
         for name in package_schema.field_names:
             if name in provided_schema.field_names:
                 new_fields.append(
@@ -197,13 +198,22 @@ def create_unitpackage(csvname, metadata=None, fields=None):
                     | package_schema.get_field(name).to_dict()
                 )
             else:
-                logger.warning(f"Field with name {name} is not specified.")
+                new_fields.append(package_schema.get_field(name).to_dict())
 
+        if len(unspecified_fields) != 0:
+            logger.warning(
+                f"Additional information were not provided for fields {unspecified_fields}."
+            )
+
+        unused_provided_fields = []
         for name in provided_schema.field_names:
             if name not in package_schema.field_names:
-                logger.warning(
-                    f"Field with name {name} was provided but does not appear in the field names of tabular resource {package_schema.field_names}."
-                )
+                unused_provided_fields.append(name)
+        if len(unused_provided_fields) != 0:
+            logger.warning(
+                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {package_schema.field_names}."
+            )
+
         resource.schema = Schema.from_descriptor({"fields": new_fields})
 
     return package
