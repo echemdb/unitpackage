@@ -36,7 +36,7 @@ setup(
       "filelock>=3,<4",
       "frictionless>=5.10.1,<6",
       "matplotlib>=3.5.0,<4",
-      "pandas>=1,<2",
+      "pandas>=2,<3",
       "plotly>=5,<6",
       "pybtex>=0.24,<0.25",
     ],
