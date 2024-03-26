@@ -24,7 +24,7 @@ from distutils.core import setup
 
 setup(
     name='unitpackage',
-    version="0.8.1",
+    version="0.8.2",
     packages=['unitpackage', 'unitpackage.cv'],
     license='GPL 3.0+',
     description="a Python library to interact with a collection of frictionless datapackages",
