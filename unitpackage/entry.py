@@ -617,8 +617,18 @@ class Entry:
 
             >>> entry.save(outdir='./test/generated/from_df')
 
-        """
+        TESTS
 
+        Verify that all fields are properly created even when they are not specified as fields::
+
+            >>> import os
+            >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
+            >>> metadata = {'user':'Max Doe'}
+            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
+            >>> entry.package.get_resource('echemdb').schema.fields
+            [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
+
+        """
         if outdir is None:
             import atexit
             import shutil
