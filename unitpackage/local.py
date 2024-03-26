@@ -157,7 +157,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         resources=[
             Resource(
                 path=csv_basename,
-                basepath=os.path.dirname(csvname) or '.',
+                basepath=os.path.dirname(csvname) or ".",
             )
         ],
     )
