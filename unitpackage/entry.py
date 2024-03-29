@@ -662,13 +662,29 @@ class Entry:
 
         When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
         Note that for a valid frictionless package this base name
-        'MUST be lower-case and contain only alphanumeric
+        MUST be lower-case and contain only alphanumeric
         characters along with ".", "_" or "-" characters'::
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
             >>> basename = 'save_basename'
             >>> entry.save(basename=basename, outdir='./test/generated')
+            >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
+            True
+
+        TESTS:
+
+        Save entry with metadata containing datetime format,
+        which is not natively supported by JSON.
+
+            >>> import os
+            >>> from datetime import datetime
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> basename = 'save_datetime'
+            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'current time':datetime.now()})
+            >>> entry.save(outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
@@ -694,4 +710,8 @@ class Entry:
             metadata.get_resource(self.identifier).name = basename
 
         self.df.to_csv(csv_name, index=False)
-        metadata.to_json(json_name)
+
+        with open(json_name, mode="w", encoding="utf-8") as json:
+            from unitpackage.local import write_metadata
+
+            write_metadata(json, self.package.to_dict())
