@@ -4,6 +4,15 @@ echemdb Change Log
 
 .. current developments
 
+v0.8.3
+====================
+
+**Fixed:**
+
+* Fixed saving entries with `date` and `datetime` objects.
+
+
+
 v0.8.2
 ====================
 
