@@ -217,3 +217,32 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         resource.schema = Schema.from_descriptor({"fields": new_fields})
 
     return package
+
+
+def write_metadata(out, metadata):
+    r"""
+    Write `metadata` to the `out` stream in JSON format.
+
+    """
+
+    def defaultconverter(item):
+        r"""
+        Return `item` that Python's json package does not know how to serialize
+        in a format that Python's json package does know how to serialize.
+        """
+        from datetime import date, datetime
+
+        # The YAML standard knows about dates and times, so we might see these
+        # in the metadata. However, standard JSON does not know about these so
+        # we need to serialize them as strings explicitly.
+        if isinstance(item, (datetime, date)):
+            return str(item)
+
+        raise TypeError(f"Cannot serialize ${item} of type ${type(item)} to JSON.")
+
+    import json
+
+    json.dump(metadata, out, default=defaultconverter, ensure_ascii=False, indent=4)
+    # json.dump does not save files with a newline, which compromises the tests
+    # where the output files are compared to an expected json.
+    out.write("\n")
