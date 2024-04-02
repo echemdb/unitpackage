@@ -635,7 +635,7 @@ class Entry:
             )
             field_names = {}
 
-        from frictionless import Package, Schema, Resource
+        from frictionless import Package, Resource, Schema
 
         package = Package(self.package.to_dict())
 
