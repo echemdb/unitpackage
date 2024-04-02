@@ -144,7 +144,7 @@ class Entry:
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
             'from_csv', 'from_df', 'from_local', 'identifier', 'package',  'plot',
-            'rescale', 'save', 'source', 'system', 'yaml']
+            'rename_fields', 'rescale', 'save', 'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -572,6 +572,95 @@ class Entry:
         )
 
         return cls(package=package)
+
+    @classmethod
+    def _modify_fields(cls, original, alternative, keep_original_name_as=None):
+        r"""Updates in a list of fields (original) the field names with those
+        provided in a dictionary. The original name of the fields is kept with
+        the name `original` in the updated fields.
+
+        EXAMPLES::
+
+            >>> fields = [{'name': '<E>', 'unit':'mV'},{'name': 'I', 'unit':'mA'}]
+            >>> alt_fields = {'<E>':'E'}
+            >>> Entry._modify_fields(fields, alt_fields, keep_original_name_as='original')
+            [{'name': 'E', 'unit': 'mV', 'original': '<E>'}, {'name': 'I', 'unit': 'mA'}]
+
+        """
+        for field in original:
+            for key in alternative.keys():
+                if field["name"] == key:
+                    if keep_original_name_as:
+                        field.setdefault(keep_original_name_as, key)
+                    field["name"] = alternative[key]
+
+        return original
+
+    def rename_fields(self, field_names=None, keep_original_name_as=None):
+        r"""Returns a :class:`Entry` with updated field names and dataframe
+        column names. Provide a dict, where the key is the field name and the
+        value the new name, such as ``{'t':'t_rel', 'E':'E_we'}``.
+        The original field names can be stored in a new key.
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> renamed_entry = entry.rename_fields({'t': 't_rel'}, keep_original_name_as='originalName')
+            >>> renamed_entry.df
+                      t_rel         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> renamed_entry.package.get_resource('echemdb').schema.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS:
+
+        Provide more fields than necessary::
+
+            >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
+            >>> renamed_entry.package.get_resource('echemdb').schema.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        if not field_names:
+            logger.warning(
+                "No renaming pattern was provided, such as {'t': 't_rel', 'x':'y'}."
+            )
+            field_names = {}
+
+        from frictionless import Package, Schema, Resource
+
+        package = Package(self.package.to_dict())
+
+        df = self.df.rename(columns=field_names).copy()
+
+        new_fields = self._modify_fields(
+            self.package.get_resource("echemdb").schema.to_dict()["fields"],
+            alternative=field_names,
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        df_resource = Resource(df)
+        df_resource.infer()
+        df_resource.schema = Schema.from_descriptor(
+            {"fields": new_fields}, allow_invalid=True
+        )
+
+        df_resource.name = "echemdb"
+
+        package.remove_resource("echemdb")
+
+        entry = type(self)(package=package)
+
+        entry.package.add_resource(df_resource)
+        return entry
 
     @classmethod
     def from_local(cls, filename):
