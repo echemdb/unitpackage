@@ -62,21 +62,17 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 
 ### Resource Metadata
 
-The metadata associated with the resource is located in `db.package.get_resource('echemdb').custom['metadata']`.
-From an `entry` such information can be retrieved by `entry['name']`,
-where name is the respective descriptor in the metadata descriptor. Alternatively you can write `entry.name`
+The metadata associated with the resource is included in that resource. `entry.package.get_resource('<identifier>').custom['metadata']`.
+From an `entry` descriptors from the metadata can be retrieved by `entry['name']`,
+where name is the respective descriptor name. Alternatively, you can write `entry.name`
 where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citation key']
+entry.source.citation_key # equivalent to entry['source']['citation key']
 ```
 
-```{code-cell} ipython3
-entry.source.citation_key
-```
-
-`entry.package` provides a full list of available descriptors.
+`entry.package` provides a full list of available resources and descriptors.
 
 +++
 
@@ -108,7 +104,7 @@ The datapackage consists of two resources.
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `echemdb` resource.
+Changes to the data with the `unitpackage` module are only applied to the `unitpackage_resource` resource.
 ```
 
 ```{code-cell} ipython3
@@ -124,7 +120,7 @@ entry.df.head()
 The description of the fields (column names) including units and/or other information are included in the resource schema.
 
 ```{code-cell} ipython3
-entry.package.get_resource('echemdb').schema
+entry.package.get_resource('unitpackage_resource').schema
 ```
 
 The units of the dataframe can be rescaled.
@@ -134,10 +130,10 @@ rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
 rescaled_entry.df.head()
 ```
 
-The units are updated in the package schema of the 'echemdb' resource.
+The units are updated in the package schema of the 'unitpackage' resource.
 
 ```{code-cell} ipython3
-rescaled_entry.package.get_resource('echemdb').schema
+rescaled_entry.package.get_resource('unitpackage_resource').schema
 ```
 
 The units of a specific field can be retrieved.

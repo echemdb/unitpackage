@@ -195,7 +195,7 @@ class Entry:
     @property
     def _metadata(self):
         r"""
-        Returns the metadata named "echemdb" nested within a resource named "echemdb".
+        Returns the metadata named "echemdb" from the main resource.
 
         EXAMPLES::
 
@@ -310,7 +310,7 @@ class Entry:
 
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the ``echemdb`` resource.
+        Return the unit of the ``field_name`` of the ``unitpackage_resource`` resource.
 
         EXAMPLES::
 
@@ -320,7 +320,7 @@ class Entry:
 
         """
         return (
-            self.package.get_resource("echemdb")
+            self.package.get_resource("unitpackage_resource")
             .schema.get_field(field_name)
             .custom["unit"]
         )
@@ -336,7 +336,7 @@ class Entry:
         The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.package.get_resource('echemdb').schema.fields
+            >>> entry.package.get_resource('unitpackage_resource').schema.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -344,7 +344,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields
+            >>> rescaled_entry.package.get_resource('unitpackage_resource').schema.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -372,7 +372,7 @@ class Entry:
         from frictionless import Package, Resource
 
         package = Package(self.package.to_dict())
-        fields = self.package.get_resource("echemdb").schema.fields
+        fields = self.package.get_resource("unitpackage_resource").schema.fields
         df = self.df.copy()
 
         for field in fields:
@@ -380,7 +380,7 @@ class Entry:
                 df[field.name] *= u.Unit(field.custom["unit"]).to(
                     u.Unit(units[field.name])
                 )
-                package.get_resource("echemdb").schema.update_field(
+                package.get_resource("unitpackage_resource").schema.update_field(
                     field.name, {"unit": units[field.name]}
                 )
 
@@ -388,13 +388,13 @@ class Entry:
         df_resource = Resource(df)
         df_resource.infer()
         # update units in the schema of the df resource
-        df_resource.schema = package.get_resource("echemdb").schema
+        df_resource.schema = package.get_resource("unitpackage_resource").schema
 
-        df_resource.name = "echemdb"
+        df_resource.name = "unitpackage_resource"
 
         # Remove the original echemdb resource and
         # add a new echemdb resource to the new entry
-        package.remove_resource("echemdb")
+        package.remove_resource("unitpackage_resource")
 
         entry = type(self)(package=package)
 
@@ -418,13 +418,13 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.package.get_resource('unitpackage_resource').schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        return self.package.get_resource("echemdb").data
+        return self.package.get_resource("unitpackage_resource").data
 
     def __repr__(self):
         r"""
@@ -567,7 +567,7 @@ class Entry:
         df_resource = create_df_resource(package)
 
         package.add_resource(df_resource)
-        package.get_resource("echemdb").schema = Schema.from_descriptor(
+        package.get_resource("unitpackage_resource").schema = Schema.from_descriptor(
             package.resources[0].schema.to_dict()
         )
 
@@ -625,7 +625,7 @@ class Entry:
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
             >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
-            >>> entry.package.get_resource('echemdb').schema.fields
+            >>> entry.package.get_resource('unitpackage_resource').schema.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
@@ -700,9 +700,9 @@ class Entry:
 
         # update the fields from the main resource with those from the echemdb resource
         metadata.get_resource(self.identifier).schema.fields = metadata.get_resource(
-            "echemdb"
+            "unitpackage_resource"
         ).schema.fields
-        metadata.remove_resource("echemdb")
+        metadata.remove_resource("unitpackage_resource")
 
         # update the identifier and filepath of the resource
         if basename:
