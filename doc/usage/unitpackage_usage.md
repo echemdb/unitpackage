@@ -27,7 +27,7 @@ from unitpackage.collection import Collection
 db = Collection.from_remote()
 ```
 
-Type `db` to highlight the entries within the collection or show the number of entries in the collection with.
+Type `db` to highlight the entries within the collection or show the number of entries in the collection with
 
 ```{code-cell} ipython3
 len(db)
@@ -40,7 +40,7 @@ next(iter(db))
 ```
 
 The collection can be filtered for specific descriptors,
-wherby a new collection is created.
+whereby a new collection is created.
 
 ```{code-cell} ipython3
 filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
@@ -49,7 +49,10 @@ len(filtered_db)
 
 ## Entry
 
-Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)). The entry also has additional methods for descriptor representation, data manipulation and data visualization.
+Each entry consists of descriptors describing the data in the resource of the
+datapackage. Packages describing literature data can also contain a bibliography
+reference (see [Bibliography](#bibliography)). The entry also has additional
+methods for descriptor representation, data manipulation and data visualization.
 
 Entries can be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org/cv) for each entry.
 
@@ -62,7 +65,7 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 
 ### Resource Metadata
 
-The metadata associated with the resource is included in that resource. `entry.package.get_resource('<identifier>').custom['metadata']`.
+The metadata associated with the resource is included within that resource (`entry.package.get_resource('<identifier>').custom['metadata']`).
 From an `entry` descriptors from the metadata can be retrieved by `entry['name']`,
 where name is the respective descriptor name. Alternatively, you can write `entry.name`
 where all spaces should be replaced by underscores.
@@ -99,8 +102,8 @@ entry.figure_description.scan_rate.unit
 
 The datapackage consists of two resources.
 
-* One resource is named according to the entry's identifier. It describes the data in the CSV.
-* One resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
+* The resource named based on the CSV filename describes the data in the CSV (including the description of the fields in the CSV and additional metadata).
+* One resource is named `unitpackage_resource`, containing the CSV data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
