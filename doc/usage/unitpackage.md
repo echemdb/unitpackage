@@ -254,13 +254,13 @@ entry.package
 
 One resource is named according to the CSV filename. The units provided in that resource are describing the data within that CSV.
 
-The second resource is called `echemdb`. It is created upon loading a datapackage with the `unitpackage` module and stores the data of the CSV as a pandas dataframe. The dataframe is directly accessible from the entry and shows the data from the `echemdb` resource. Upon loading the data, both the numbers and units in the CSV and pandas dataframe are identical.
+The second resource is called `unitpackage_resource`. It is created upon loading a datapackage with the `unitpackage` module and stores the data of the CSV as a pandas dataframe. The dataframe is directly accessible from the entry and shows the data from the `unitpackage_resource` resource. Upon loading the data, both the numbers and units in the CSV and pandas dataframe are identical.
 
 ```{code-cell} ipython3
 entry.df.head(3)
 ```
 
-The reason for the separation into two resources is as follows. With unitpackage we can transform the values within the dataframe to new units. This process leaves the data in CSV unchanged. The pandas dataframe in turn is adapted, as well as the units of the different fields of the `echemdb` resource.
+The reason for the separation into two resources is as follows. With unitpackage we can transform the values within the dataframe to new units. This process leaves the data in CSV unchanged. The pandas dataframe in turn is adapted, as well as the units of the different fields of the `unitpackage_resource` resource.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'U': 'V', 'I': 'mA'})
@@ -268,7 +268,7 @@ rescaled_entry.df.head(3)
 ```
 
 ```{code-cell} ipython3
-rescaled_entry.package.get_resource('echemdb')
+rescaled_entry.package.get_resource('unitpackage_resource')
 ```
 
-Refer to the [usage section](unitpackage_usage.md) for a more detail description of the `unitpackage` API.
+Refer to the [usage section](unitpackage_usage.md) for a more detailed description of the `unitpackage` API.

@@ -36,7 +36,7 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_df_resource(package, resource_name="echemdb"):
+def create_df_resource(package, resource_name="unitpackage_resource"):
     r"""
     Return a pandas dataframe resource from a data packages,
     where the first resource refers to a CSV.
@@ -47,7 +47,7 @@ def create_df_resource(package, resource_name="echemdb"):
         >>> package = Package("./examples/no_bibliography/no_bibliography.json")
         >>> df_resource = create_df_resource(package) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
-        {'name': 'echemdb',
+        {'name': 'unitpackage_resource',
         ...
 
         >>> df_resource.data
@@ -82,7 +82,7 @@ def collect_datapackage(filename):
     package = Package(filename)
 
     package.add_resource(create_df_resource(package))
-    package.get_resource("echemdb").schema = Schema.from_descriptor(
+    package.get_resource("unitpackage_resource").schema = Schema.from_descriptor(
         package.resources[0].schema.to_dict()
     )
 
