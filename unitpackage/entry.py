@@ -803,4 +803,4 @@ class Entry:
         with open(json_name, mode="w", encoding="utf-8") as json:
             from unitpackage.local import write_metadata
 
-            write_metadata(json, self.package.to_dict())
+            write_metadata(json, metadata.to_dict())
