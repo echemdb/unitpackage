@@ -32,8 +32,8 @@ The CSV file contains some data. For the unitpackge we focus on CSV files which 
 
 ```sh .noeval
 var1,var2,var3
-1,2.1
-3,4.5
+1,2,1
+3,4,5
 ```
 
 In the corresponding JSON file the data in the CSV is described in a resource.
@@ -52,7 +52,7 @@ In the corresponding JSON file the data in the CSV is described in a resource.
         "fields": [
           {
             "name": "var1",
-            "type": "string"
+            "type": "integer"
           },
           {
             "name": "var2",
@@ -113,8 +113,8 @@ A CVS contains the underlying data.
 
 ```sh .noeval
 t,U,I
-1,2.1
-3,4.5
+1,2,1
+3,4,5
 ```
 
 ```{warning}
@@ -140,7 +140,7 @@ We suggest providing the units according to the [astropy unit](https://docs.astr
         "fields": [
           {
             "name": "t",
-            "type": "string",
+            "type": "integer",
             "unit": "s"
           },
           {
@@ -150,7 +150,7 @@ We suggest providing the units according to the [astropy unit](https://docs.astr
           },
           {
             "name": "I",
-            "type": "number",
+            "type": "integer",
             "unit": "uA"
           }
         ]
@@ -177,7 +177,7 @@ Additional metadata describing the underlying data or its origin is stored in th
                 "fields": [
                     {
                         "name": "t",
-                        "type": "string",
+                        "type": "integer",
                         "unit": "s"
                     },
                     {
@@ -187,7 +187,7 @@ Additional metadata describing the underlying data or its origin is stored in th
                     },
                     {
                         "name": "I",
-                        "type": "number",
+                        "type": "integer",
                         "unit": "uA"
                     }
                 ]
