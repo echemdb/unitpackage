@@ -28,6 +28,7 @@ collecting packages and creating unitpackages.
 import logging
 import os
 import os.path
+from pathlib import Path
 from glob import glob
 
 import pandas as pd
@@ -36,7 +37,7 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_df_resource(package, resource_name="echemdb"):
+def create_df_resource(resource, resource_name="echemdb"):
     r"""
     Return a pandas dataframe resource from a data packages,
     where the first resource refers to a CSV.
@@ -44,8 +45,8 @@ def create_df_resource(package, resource_name="echemdb"):
     EXAMPLES::
 
         >>> from frictionless import Package
-        >>> package = Package("./examples/no_bibliography/no_bibliography.json")
-        >>> df_resource = create_df_resource(package) # doctest: +NORMALIZE_WHITESPACE
+        >>> resource = Package("./examples/no_bibliography/no_bibliography.json").resources[0]
+        >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
         {'name': 'echemdb',
         ...
@@ -55,11 +56,11 @@ def create_df_resource(package, resource_name="echemdb"):
         ...
 
     """
-    if not package.resources:
+    if not resource:
         raise ValueError(
             "dataframe resource can not be created since package has no resources"
         )
-    descriptor_path = package.resources[0].basepath + "/" + package.resources[0].path
+    descriptor_path = resource.basepath + "/" + resource.path
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
     df_resource.infer()
@@ -81,13 +82,29 @@ def collect_datapackage(filename):
     """
     package = Package(filename)
 
-    package.add_resource(create_df_resource(package))
-    package.get_resource("echemdb").schema = Schema.from_descriptor(
-        package.resources[0].schema.to_dict()
-    )
-
     return package
 
+# collect the resources from datapackages specified in a path?
+def collect_resources(datapackages):
+    r"""
+    Return a list of resources from a list of data packages.
+
+    EXAMPLES::
+
+        >>> packages = collect_datapackages("./examples")
+        >>> resources = collect_resources(packages)
+        >>> [resource.name for resource in resources] # doctest: +NORMALIZE_WHITESPACE
+        ['alves_2011_electrochemistry_6010_f1a_solid',
+        'engstfeld_2018_polycrystalline_17743_f4b_1',
+        'no_bibliography']
+
+    """
+    resources = []
+    for datapackage in datapackages:
+        for resource in datapackage.resources:
+            resources.append(resource)
+
+    return resources
 
 def collect_datapackages(data):
     r"""
@@ -162,7 +179,8 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         ],
     )
     package.infer()
-    resource = package.resources[0]
+    # resource = package.resources[0]
+    resource = package.get_resource(Path(csv_basename).stem)
 
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)

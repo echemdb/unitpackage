@@ -2,7 +2,7 @@ r"""
 A Data Package describing tabulated data for which the units of the
 column names (`pandas <https://pandas.pydata.org/>`_)
 or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known
-and the resource has additional  metadata describing the underlying data.
+and the resource has additional metadata describing the underlying data.
 
 A description of such datapackags can be found in the documentation
 in :doc:`/usage/unitpackage`.
@@ -77,29 +77,30 @@ import logging
 import os.path
 
 from unitpackage.descriptor import Descriptor
+# from unitpackage.collection import Collection
 
 logger = logging.getLogger("unitpackage")
 
 
 class Entry:
     r"""
-    A `frictionless data package <https://github.com/frictionlessdata/framework>`_
+    A `frictionless Resource <https://github.com/frictionlessdata/framework>`_
     describing tabulated data.
 
     EXAMPLES:
 
-    Entries can be directly created::
-
-        >>> from unitpackage.local import collect_datapackage
-        >>> from unitpackage.entry import Entry
-        >>> entry = Entry(collect_datapackage('./examples/no_bibliography/no_bibliography.json'))
-        >>> entry
-        Entry('no_bibliography')
-
-    or more simply::
+    Entries can be directly created from a frictionless datapackage containing a single resource::
 
         >>> from unitpackage.entry import Entry
         >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry
+        Entry('no_bibliography')
+
+    or directly form a frictionless resource::
+
+        >>> from unitpackage.entry import Entry
+        >>> from frictionless import Package
+        >>> entry = Entry(Package('./examples/no_bibliography/no_bibliography.json').resources[0])
         >>> entry
         Entry('no_bibliography')
 
@@ -114,8 +115,9 @@ class Entry:
 
     """
 
-    def __init__(self, package):
-        self.package = package
+    def __init__(self, resource):
+
+        self.resource = resource
 
     @property
     def identifier(self):
@@ -129,7 +131,7 @@ class Entry:
             'alves_2011_electrochemistry_6010_f1a_solid'
 
         """
-        return self.package.resources[0].name
+        return self.resource.name
 
     def __dir__(self):
         r"""
@@ -143,8 +145,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'package',  'plot',
-            'rescale', 'save', 'source', 'system', 'yaml']
+            'from_csv', 'from_df', 'from_local', 'identifier', 'internal_resource',
+            'plot', 'rescale', 'resource', 'save', 'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -190,7 +192,7 @@ class Entry:
 
     @property
     def _descriptor(self):
-        return Descriptor(self.package.resources[0].custom["metadata"]["echemdb"])
+        return Descriptor(self.resource.custom["metadata"]["echemdb"])
 
     @property
     def _metadata(self):
@@ -204,7 +206,7 @@ class Entry:
             {...'source': {'citation key': 'alves_2011_electrochemistry_6010',...}
 
         """
-        return self.package.resources[0].custom["metadata"]["echemdb"]
+        return self.resource.custom["metadata"]["echemdb"]
 
     @property
     def bibliography(self):
@@ -320,7 +322,7 @@ class Entry:
 
         """
         return (
-            self.package.get_resource("echemdb")
+            self.internal_resource
             .schema.get_field(field_name)
             .custom["unit"]
         )
@@ -336,7 +338,7 @@ class Entry:
         The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.package.get_resource('echemdb').schema.fields
+            >>> entry.resource.schema.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -344,7 +346,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields
+            >>> rescaled_entry.internal_resource.schema.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -369,10 +371,10 @@ class Entry:
             units = {}
 
         from astropy import units as u
-        from frictionless import Package, Resource
+        from frictionless import Resource
 
-        package = Package(self.package.to_dict())
-        fields = self.package.get_resource("echemdb").schema.fields
+        resource = Resource(self.resource.to_dict())
+        fields = self.internal_resource.schema.fields
         df = self.df.copy()
 
         for field in fields:
@@ -380,7 +382,7 @@ class Entry:
                 df[field.name] *= u.Unit(field.custom["unit"]).to(
                     u.Unit(units[field.name])
                 )
-                package.get_resource("echemdb").schema.update_field(
+                resource.schema.update_field(
                     field.name, {"unit": units[field.name]}
                 )
 
@@ -388,19 +390,47 @@ class Entry:
         df_resource = Resource(df)
         df_resource.infer()
         # update units in the schema of the df resource
-        df_resource.schema = package.get_resource("echemdb").schema
+        df_resource.schema = resource.schema
 
         df_resource.name = "echemdb"
 
-        # Remove the original echemdb resource and
-        # add a new echemdb resource to the new entry
-        package.remove_resource("echemdb")
+        # Update the internal resource
+        resource.custom["InternalResource"] = df_resource
 
-        entry = type(self)(package=package)
+        return type(self)(resource=resource)
 
-        entry.package.add_resource(df_resource)
+    @property
+    def internal_resource(self):
+        r"""
+        Return the data of this entry as a data frame.
 
-        return entry
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.internal_resource
+            {'name': 'echemdb',
+            'type': 'table',
+            'data': [],
+            'format': 'pandas',
+            'mediatype': 'application/pandas',
+            'schema': {'fields': [{'name': 't', 'type': 'number', 'unit': 's'},
+                                {'name': 'E',
+                                    'type': 'number',
+                                    'unit': 'V',
+                                    'reference': 'RHE'},
+                                {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]}}
+        """
+        self.resource.custom.setdefault('InternalResource','')
+
+        if not self.resource.custom["InternalResource"]:
+            from unitpackage.local import create_df_resource
+            from frictionless import Schema
+            self.resource.custom["InternalResource"] = create_df_resource(self.resource)
+            self.resource.custom["InternalResource"].schema = Schema.from_descriptor(
+        self.resource.schema.to_dict()
+    )
+
+        return self.resource.custom["InternalResource"]
 
     @property
     def df(self):
@@ -410,6 +440,11 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
+            >>> entry
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
+
+            # >>> entry.resource.InternalResource
+
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -418,13 +453,21 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            # >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.internal_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        return self.package.get_resource("echemdb").data
+        # self.resource.custom.setdefault('InternalResource','')
+
+        # if not self.resource.custom["InternalResource"]:
+        #     from unitpackage.local import create_df_resource
+        #     self.resource.custom["InternalResource"] = create_df_resource(self.resource)
+
+        # return self.resource.get_resource("echemdb").data
+        return self.internal_resource.data
 
     def __repr__(self):
         r"""
@@ -477,7 +520,9 @@ class Entry:
                 f"There is probably some outdated data in {example_dir}. The contents of that directory are: { glob(os.path.join(example_dir,'**')) }"
             )
 
-        return [cls(package=package) for package in packages]
+        from unitpackage.local import collect_resources
+        # return [cls(resource=package) for package in packages]
+        return [cls(resource=resource) for resource in collect_resources(packages)]
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
@@ -544,8 +589,8 @@ class Entry:
             >>> entry
             Entry('from_csv')
 
-            >>> entry.package # doctest: +NORMALIZE_WHITESPACE
-            {'resources': [{'name':
+            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'from_csv',
             ...
 
         Metadata can be appended::
@@ -564,14 +609,7 @@ class Entry:
 
         package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
 
-        df_resource = create_df_resource(package)
-
-        package.add_resource(df_resource)
-        package.get_resource("echemdb").schema = Schema.from_descriptor(
-            package.resources[0].schema.to_dict()
-        )
-
-        return cls(package=package)
+        return cls(resource=package.resources[0])
 
     @classmethod
     def from_local(cls, filename):
@@ -586,9 +624,20 @@ class Entry:
             Entry('no_bibliography')
 
         """
-        from unitpackage.local import collect_datapackage
+        from unitpackage.local import collect_datapackage, collect_resources
 
-        return cls(package=collect_datapackage(filename))
+        package = collect_datapackage(filename)
+        # resources = collect_resources([packages])
+
+        if len(package.resources) == 0:
+            print('no Resource')
+
+        if len(package.resources) > 1:
+            # from unitpackage.collection import Collection
+            print('More than one Resource')
+            # return Collection.from_local(packages)
+
+        return cls(resource=package.resources[0])
 
     @classmethod
     def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
@@ -625,7 +674,7 @@ class Entry:
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
             >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
-            >>> entry.package.get_resource('echemdb').schema.fields
+            >>> entry.resource.schema.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
@@ -696,22 +745,28 @@ class Entry:
         csv_name = os.path.join(outdir, basename + ".csv")
         json_name = os.path.join(outdir, basename + ".json")
 
-        metadata = self.package.to_copy()
-
-        # update the fields from the main resource with those from the echemdb resource
-        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource(
-            "echemdb"
-        ).schema.fields
-        metadata.remove_resource("echemdb")
+        self.df.to_csv(csv_name, index=False)
 
         # update the identifier and filepath of the resource
         if basename:
-            metadata.get_resource(self.identifier).path = basename + ".csv"
-            metadata.get_resource(self.identifier).name = basename
+            self.resource.path = basename + ".csv"
+            self.resource.name = basename
 
-        self.df.to_csv(csv_name, index=False)
+        resource = self.resource.to_dict()
+
+        # update the fields from the main resource with those from the echemdb resource
+        # resource.schema.fields = resource.internal_resource.schema.fields
+        resource["schema"]["fields"] = self.internal_resource.schema.fields
+        resource["schema"] = resource["InternalResource"].schema.to_dict()
+        del(resource["InternalResource"])
+
+        from frictionless import Package, Resource
+        package = Package(
+            resources=[Resource.from_descriptor(resource)
+                ],
+            )
 
         with open(json_name, mode="w", encoding="utf-8") as json:
             from unitpackage.local import write_metadata
 
-            write_metadata(json, metadata.to_dict())
+            write_metadata(json, package.to_dict())
