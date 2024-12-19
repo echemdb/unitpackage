@@ -4,6 +4,15 @@ echemdb Change Log
 
 .. current developments
 
+v0.8.4
+====================
+
+**Fixed:**
+
+* Fixed `entry.save`, where the saved datapackages contained the `echemdb` resource.
+
+
+
 v0.8.3
 ====================
 
