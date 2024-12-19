@@ -42,6 +42,8 @@ Search the collection for entries from a single publication::
 # ********************************************************************
 import logging
 
+from frictionless import Package
+
 logger = logging.getLogger("unitpackage")
 
 
@@ -64,8 +66,30 @@ class Collection:
     # Entries of this collection are created from this type. Subclasses can replace this with a specialized entry type.
     Entry = Entry
 
-    def __init__(self, data_packages=None):
-        self._packages = data_packages
+    def __init__(self, resources=None):
+        # self.resources = [Resource(resource) for resource in resources]
+        self.resources = resources
+
+    @property
+    def package(self):
+        r"""
+        Return a package for this collection.
+
+        EXAMPLES::
+
+            >>> collection = Collection.create_example()
+            >>> collection.package.resource_names  # doctest: +NORMALIZE_WHITESPACE
+            ['alves_2011_electrochemistry_6010_f1a_solid',
+            'engstfeld_2018_polycrystalline_17743_f4b_1',
+            'no_bibliography']
+
+        """
+        package = Package()
+
+        for resource in self.resources:
+            package.add_resource(resource)
+
+        return package
 
     @classmethod
     def create_example(cls):
@@ -88,7 +112,8 @@ class Collection:
         )
 
         return cls(
-            [entry.package for entry in entries],
+            [entry.resource for entry in entries],
+            # [entry.resource.to_dict() for entry in entries],
         )
 
     @property
@@ -164,9 +189,7 @@ class Collection:
                 return False
 
         return type(self)(
-            data_packages=[
-                entry.package for entry in self if catching_predicate(entry)
-            ],
+            resources=[entry.resource for entry in self if catching_predicate(entry)],
         )
 
     def __iter__(self):
@@ -186,8 +209,8 @@ class Collection:
         # convenient, e.g., when doctesting.
         return iter(
             [
-                self.Entry(package)
-                for package in sorted(self._packages, key=lambda p: p.resources[0].name)
+                self.Entry(resource)
+                for resource in sorted(self.resources, key=lambda p: p.name)
             ]
         )
 
@@ -202,7 +225,7 @@ class Collection:
             3
 
         """
-        return len(self._packages)
+        return len(self.resources)
 
     def __repr__(self):
         r"""
@@ -210,8 +233,11 @@ class Collection:
 
         EXAMPLES::
 
-            >>> Collection([])
-            []
+            >>> collection = Collection.create_example()
+            >>> collection # doctest: +NORMALIZE_WHITESPACE
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
+            Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
+            Entry('no_bibliography')]
 
         """
         return repr(list(self))
@@ -232,15 +258,10 @@ class Collection:
             KeyError: "No collection entry with identifier 'invalid_key'."
 
         """
-        entries = [entry for entry in self if entry.identifier == identifier]
-
-        if len(entries) == 0:
+        if not identifier in self.package.resource_names:
             raise KeyError(f"No collection entry with identifier '{identifier}'.")
-        if len(entries) > 1:
-            raise KeyError(
-                f"The collection has more than one entry with identifier '{identifier}'."
-            )
-        return entries[0]
+
+        return self.Entry(self.package.get_resource(identifier))
 
     def save_entries(self, outdir=None):
         r"""
@@ -250,7 +271,7 @@ class Collection:
         EXAMPLES::
 
             >>> db = Collection.create_example()
-            >>> db.save_entries(outdir='test/generated/saved_collection')
+            >>> db.save_entries(outdir='./test/generated/saved_collection')
             >>> import glob
             >>> glob.glob('test/generated/saved_collection/**.json') # doctest: +NORMALIZE_WHITESPACE
             ['test...
@@ -277,7 +298,10 @@ class Collection:
         import unitpackage.local
 
         packages = unitpackage.local.collect_datapackages(datadir)
-        return cls(data_packages=packages)
+        resources = unitpackage.local.collect_resources(packages)
+
+        # return cls(resources=[resource for resource in resources])
+        return cls(resources=resources)
 
     @classmethod
     def from_remote(cls, url=None, data=None, outdir=None):
@@ -292,15 +316,22 @@ class Collection:
             >>> from unitpackage.collection import Collection
             >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
+            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('alves_2011_electrochemistry_6010_f2_red')]
+
         The folder containing the data in the zip can be specified with the :param data:.
         An output directory for the extracted data can be specified with the :param outdir:.
         """
+        import unitpackage.local
         import unitpackage.remote
 
         if url is None:
-            return cls(data_packages=unitpackage.remote.collect_datapackages())
+            data_packages = unitpackage.remote.collect_datapackages()
+            resources = unitpackage.local.collect_resources(data_packages)
+            return cls(resources=resources)
 
         data_packages = unitpackage.remote.collect_datapackages(
             url=url, data=data, outdir=outdir
         )
-        return cls(data_packages=data_packages)
+        resources = unitpackage.local.collect_resources(data_packages)
+        return cls(resources=resources)
