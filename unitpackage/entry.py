@@ -77,6 +77,7 @@ import logging
 import os.path
 
 from unitpackage.descriptor import Descriptor
+
 # from unitpackage.collection import Collection
 
 logger = logging.getLogger("unitpackage")
@@ -321,11 +322,7 @@ class Entry:
             'V'
 
         """
-        return (
-            self.internal_resource
-            .schema.get_field(field_name)
-            .custom["unit"]
-        )
+        return self.internal_resource.schema.get_field(field_name).custom["unit"]
 
     def rescale(self, units):
         r"""
@@ -382,9 +379,7 @@ class Entry:
                 df[field.name] *= u.Unit(field.custom["unit"]).to(
                     u.Unit(units[field.name])
                 )
-                resource.schema.update_field(
-                    field.name, {"unit": units[field.name]}
-                )
+                resource.schema.update_field(field.name, {"unit": units[field.name]})
 
         # create a new dataframe resource
         df_resource = Resource(df)
@@ -420,15 +415,17 @@ class Entry:
                                     'reference': 'RHE'},
                                 {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]}}
         """
-        self.resource.custom.setdefault('InternalResource','')
+        self.resource.custom.setdefault("InternalResource", "")
 
         if not self.resource.custom["InternalResource"]:
-            from unitpackage.local import create_df_resource
             from frictionless import Schema
+
+            from unitpackage.local import create_df_resource
+
             self.resource.custom["InternalResource"] = create_df_resource(self.resource)
             self.resource.custom["InternalResource"].schema = Schema.from_descriptor(
-        self.resource.schema.to_dict()
-    )
+                self.resource.schema.to_dict()
+            )
 
         return self.resource.custom["InternalResource"]
 
@@ -514,6 +511,7 @@ class Entry:
             )
 
         from unitpackage.local import collect_resources
+
         # return [cls(resource=package) for package in packages]
         return [cls(resource=resource) for resource in collect_resources(packages)]
 
@@ -596,8 +594,6 @@ class Entry:
             'Max Doe'
 
         """
-        from frictionless import Schema
-
         from unitpackage.local import create_unitpackage
 
         package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
@@ -705,7 +701,10 @@ class Entry:
     @classmethod
     def from_local(cls, filename):
         r"""
-        Return an entry from a :param filename:
+        Return an entry from a :param filename containing a frictionless datapackage.
+        The package must contain a single resource.
+        Otherwise use `collection.from_local(filename)` to create a collection from
+        all resources within.
 
         EXAMPLES::
 
@@ -715,17 +714,17 @@ class Entry:
             Entry('no_bibliography')
 
         """
-        from unitpackage.local import collect_datapackage, collect_resources
+        from unitpackage.local import collect_datapackage
 
         package = collect_datapackage(filename)
         # resources = collect_resources([packages])
 
         if len(package.resources) == 0:
-            print('no Resource')
+            print("no Resource")
 
         if len(package.resources) > 1:
             # from unitpackage.collection import Collection
-            print('More than one Resource')
+            print("More than one Resource")
             # return Collection.from_local(packages)
 
         return cls(resource=package.resources[0])
@@ -849,13 +848,13 @@ class Entry:
         # resource.schema.fields = resource.internal_resource.schema.fields
         resource["schema"]["fields"] = self.internal_resource.schema.fields
         resource["schema"] = resource["InternalResource"].schema.to_dict()
-        del(resource["InternalResource"])
+        del resource["InternalResource"]
 
         from frictionless import Package, Resource
+
         package = Package(
-            resources=[Resource.from_descriptor(resource)
-                ],
-            )
+            resources=[Resource.from_descriptor(resource)],
+        )
 
         with open(json_name, mode="w", encoding="utf-8") as json:
             from unitpackage.local import write_metadata

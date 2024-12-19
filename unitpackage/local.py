@@ -28,8 +28,8 @@ collecting packages and creating unitpackages.
 import logging
 import os
 import os.path
-from pathlib import Path
 from glob import glob
+from pathlib import Path
 
 import pandas as pd
 from frictionless import Package, Resource, Schema
@@ -84,6 +84,7 @@ def collect_datapackage(filename):
 
     return package
 
+
 # collect the resources from datapackages specified in a path?
 def collect_resources(datapackages):
     r"""
@@ -105,6 +106,7 @@ def collect_resources(datapackages):
             resources.append(resource)
 
     return resources
+
 
 def collect_datapackages(data):
     r"""

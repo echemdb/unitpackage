@@ -41,7 +41,8 @@ Search the collection for entries from a single publication::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-from frictionless import Package, Resource
+
+from frictionless import Package
 
 logger = logging.getLogger("unitpackage")
 
@@ -83,7 +84,6 @@ class Collection:
             'no_bibliography']
 
         """
-        from frictionless import Package
         package = Package()
 
         for resource in self.resources:
@@ -189,9 +189,7 @@ class Collection:
                 return False
 
         return type(self)(
-            resources=[
-                entry.resource for entry in self if catching_predicate(entry)
-            ],
+            resources=[entry.resource for entry in self if catching_predicate(entry)],
         )
 
     def __iter__(self):
@@ -324,11 +322,11 @@ class Collection:
         The folder containing the data in the zip can be specified with the :param data:.
         An output directory for the extracted data can be specified with the :param outdir:.
         """
-        import unitpackage.remote
         import unitpackage.local
+        import unitpackage.remote
 
         if url is None:
-            data_packages=unitpackage.remote.collect_datapackages()
+            data_packages = unitpackage.remote.collect_datapackages()
             resources = unitpackage.local.collect_resources(data_packages)
             return cls(resources=resources)
 
