@@ -596,7 +596,7 @@ class Entry:
 
         return original
 
-    def rename_fields(self, field_names=None, keep_original_name_as=None):
+    def rename_fields(self, field_names, keep_original_name_as=None):
         r"""Returns a :class:`Entry` with updated field names and dataframe
         column names. Provide a dict, where the key is the field name and the
         value the new name, such as ``{'t':'t_rel', 'E':'E_we'}``.
@@ -618,7 +618,7 @@ class Entry:
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
-        TESTS:
+        TESTS::
 
         Provide more fields than necessary::
 
