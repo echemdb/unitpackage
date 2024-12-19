@@ -145,8 +145,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'internal_resource',
-            'plot', 'rescale', 'resource', 'save', 'source', 'system', 'yaml']
+            'from_csv', 'from_df', 'from_local', 'identifier', 'internal_resource',  'plot',
+            'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -460,13 +460,6 @@ class Entry:
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        # self.resource.custom.setdefault('InternalResource','')
-
-        # if not self.resource.custom["InternalResource"]:
-        #     from unitpackage.local import create_df_resource
-        #     self.resource.custom["InternalResource"] = create_df_resource(self.resource)
-
-        # return self.resource.get_resource("echemdb").data
         return self.internal_resource.data
 
     def __repr__(self):
@@ -605,11 +598,109 @@ class Entry:
         """
         from frictionless import Schema
 
-        from unitpackage.local import create_df_resource, create_unitpackage
+        from unitpackage.local import create_unitpackage
 
         package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
 
         return cls(resource=package.resources[0])
+
+    @classmethod
+    def _modify_fields(cls, original, alternative, keep_original_name_as=None):
+        r"""Updates in a list of fields (original) the field names with those
+        provided in a dictionary. The original name of the fields is kept with
+        the name `original` in the updated fields.
+
+        EXAMPLES::
+
+            >>> fields = [{'name': '<E>', 'unit':'mV'},{'name': 'I', 'unit':'mA'}]
+            >>> alt_fields = {'<E>':'E'}
+            >>> Entry._modify_fields(fields, alt_fields, keep_original_name_as='original')
+            [{'name': 'E', 'unit': 'mV', 'original': '<E>'}, {'name': 'I', 'unit': 'mA'}]
+
+        """
+        for field in original:
+            for key in alternative.keys():
+                if field["name"] == key:
+                    if keep_original_name_as:
+                        field.setdefault(keep_original_name_as, key)
+                    field["name"] = alternative[key]
+
+        return original
+
+    def rename_fields(self, field_names, keep_original_name_as=None):
+        r"""Returns a :class:`Entry` with updated field names and dataframe
+        column names. Provide a dict, where the key is the previous field name and the
+        value the new name, such as ``{'t':'t_rel', 'E':'E_we'}``.
+        The original field names can be kept in a new key.
+
+        EXAMPLES:
+
+        The original dataframe::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Dataframe with modified column names::
+
+            >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'E': 'E_we'}, keep_original_name_as='originalName')
+            >>> renamed_entry.df
+                      t_rel      E_we         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Updated fields of the internal resource::
+
+            >>> renamed_entry.internal_resource.schema.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E_we', 'type': 'number', 'unit': 'V', 'reference': 'RHE', 'originalName': 'E'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS:
+
+        Provide alternatives for non-existing fields::
+
+            >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
+            >>> renamed_entry.internal_resource.schema.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        if not field_names:
+            logger.warning(
+                "No renaming pattern was provided, such as {'t': 't_rel', 'x':'y'}."
+            )
+            field_names = {}
+
+        from frictionless import Resource, Schema
+
+        resource = Resource(self.resource.to_dict())
+
+        df = self.df.rename(columns=field_names).copy()
+
+        new_fields = self._modify_fields(
+            self.internal_resource.schema.to_dict()["fields"],
+            alternative=field_names,
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        df_resource = Resource(df)
+        df_resource.infer()
+        df_resource.schema = Schema.from_descriptor(
+            {"fields": new_fields}, allow_invalid=True
+        )
+
+        df_resource.name = "echemdb"
+
+        resource.custom["InternalResource"] = df_resource
+
+        return type(self)(resource=resource)
 
     @classmethod
     def from_local(cls, filename):
