@@ -316,7 +316,7 @@ class Collection:
             >>> from unitpackage.collection import Collection
             >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
-            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
+            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('alves_2011_electrochemistry_6010_f2_red')]
 
         The folder containing the data in the zip can be specified with the :param data:.
