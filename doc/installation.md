@@ -84,8 +84,8 @@ git clone https://github.com/echemdb/unitpackage.git
 Move to the directory and install the dependencies
 
 ```sh
-conda activate unitpackage
 conda env create --file environment.yaml
+conda activate unitpackage
 ```
 
 Create an [editable](https://pip.pypa.io/en/stable/cli/pip_install/#editable-installs) install of the unitpackage:
