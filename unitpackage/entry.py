@@ -598,9 +598,9 @@ class Entry:
 
     def rename_fields(self, field_names=None, keep_original_name_as=None):
         r"""Returns a :class:`Entry` with updated field names and dataframe
-        column names. Provide a dict, where the key is the field name and the
+        column names. Provide a dict, where the key is the previous field name and the
         value the new name, such as ``{'t':'t_rel', 'E':'E_we'}``.
-        The original field names can be stored in a new key.
+        The original field names can be kept in a new key.
 
         EXAMPLES::
 
@@ -620,7 +620,7 @@ class Entry:
 
         TESTS:
 
-        Provide more fields than necessary::
+        Provide alternatives for non-existing fields::
 
             >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
             >>> renamed_entry.package.get_resource('echemdb').schema.fields
