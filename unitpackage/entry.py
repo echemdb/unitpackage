@@ -618,7 +618,7 @@ class Entry:
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
-        TESTS::
+        TESTS:
 
         Provide alternatives for non-existing fields::
 
