@@ -1,7 +1,11 @@
 name: Lint
 on:
   push: { branches: [ "main" ] }
-  pull_request: { branches: [ "main" ] }
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 concurrency:
   group: lint-${{ github.ref }}

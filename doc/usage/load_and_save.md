@@ -64,7 +64,6 @@ A parameter `data` allows specifying the folder within the ZIP containing the da
 from unitpackage.collection import Collection
 
 db = Collection.from_remote(data='data', outdir='generated/from_url')
-db
 ```
 
 ## Load entries
@@ -151,4 +150,8 @@ fields = metadata["figure description"]["fields"]
 
 entry = Entry.from_csv(csvname="../files/demo_package.csv", metadata=metadata, fields=fields)
 entry.save(outdir="../generated/files/csv_entry/")
+```
+
+```{code-cell} ipython3
+
 ```

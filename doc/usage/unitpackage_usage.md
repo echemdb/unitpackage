@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.16.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -14,13 +14,14 @@ kernelspec:
 
 # Usage
 
-The `unitpackage` module allows interacting with collections and entries from specifically designed frictionless [datapackages](unitpackage.md).
+The `unitpackage` module allows interacting with collections and entries from specifically designed frictionless [Data Packages](unitpackage.md).
 
 ## Collection
 
 A collection can be generated from a [remote](../api/remote.md) or a [local](../api/local.md) source.
 
-To illustrate the usage of `unitpackage`, we create a collection from the entries on [echemdb.org](https://www.echemdb.org/cv):
+To illustrate the usage of `unitpackage`, we create a collection from the entries shown on [echemdb.org](https://www.echemdb.org/cv),
+which are retrieved from the [data repository](https://github.com/echemdb/electrochemistry-data):
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
@@ -47,11 +48,25 @@ filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
 len(filtered_db)
 ```
 
+Alternatively parse a custom filter.
+
+```{code-cell} ipython3
+def custom_filter(entry):
+    for component in entry.system.electrolyte.components:
+        if 'ClO4' in component.name:
+            return True
+    return False
+
+filtered_db = db.filter(custom_filter)
+len(filtered_db)
+```
+
 ## Entry
 
-Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)). The entry also has additional methods for descriptor representation, data manipulation and data visualization.
+Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)).
+The entry also has additional methods for descriptor representation, data manipulation, and data visualization.
 
-Entries can be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org/cv) for each entry.
+Entries can be selected by their identifier from a collection. For our example database, such identifiers can directly be inferred from [echemdb.org/cv](https://www.echemdb.org/cv) for each entry.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
@@ -62,10 +77,10 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 
 ### Resource Metadata
 
-The metadata associated with the resource is located in `db.package.get_resource('echemdb').custom['metadata']`.
+The metadata associated with the resource is located in `entry.resource.custom['metadata']`.
 From an `entry` such information can be retrieved by `entry['name']`,
-where name is the respective descriptor in the metadata descriptor. Alternatively you can write `entry.name`
-where all spaces should be replaced by underscores.
+where `name` is the respective descriptor in the metadata descriptor.
+Alternatively, you can write `entry.name` where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
@@ -76,7 +91,7 @@ entry['source']['citation key']
 entry.source.citation_key
 ```
 
-`entry.package` provides a full list of available descriptors.
+`entry.resource` provides a full list of available descriptors.
 
 +++
 
@@ -101,19 +116,17 @@ entry.figure_description.scan_rate.unit
 (data)=
 ### Data
 
-The datapackage consists of two resources.
+The resource is named according to the entry's identifier. It describes the data in the CSV.
 
-* One resource is named according to the entry's identifier. It describes the data in the CSV.
-* One resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
+An additional `InternalResource` is added to the loaded resource, named "echemdb".
+It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `echemdb` resource.
+Changes to the data with the `unitpackage` module are only applied to the `InternalResource`.
 ```
 
-```{code-cell} ipython3
-entry.package.resource_names
-```
++++
 
 The data can be returned as a pandas dataframe.
 
@@ -124,7 +137,7 @@ entry.df.head()
 The description of the fields (column names) including units and/or other information are included in the resource schema.
 
 ```{code-cell} ipython3
-entry.package.get_resource('echemdb').schema
+entry.resource.schema
 ```
 
 The units of the dataframe can be rescaled.
@@ -134,10 +147,10 @@ rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
 rescaled_entry.df.head()
 ```
 
-The units are updated in the package schema of the 'echemdb' resource.
+The units are updated in the schema of the 'InternalResource'.
 
 ```{code-cell} ipython3
-rescaled_entry.package.get_resource('echemdb').schema
+rescaled_entry.internal_resource
 ```
 
 The units of a specific field can be retrieved.
