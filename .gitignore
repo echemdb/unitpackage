@@ -139,3 +139,6 @@ dmypy.json
 
 # Rever
 /rever
+
+# pixi environments
+.pixi
