@@ -1,6 +1,5 @@
-# Digitized data
-/data/generated
-/examples/generated
+# generated data from tests and builds
+/test/generated
 /doc/files/generated
 
 # Byte-compiled / optimized / DLL files
