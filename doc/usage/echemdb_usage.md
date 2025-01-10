@@ -69,7 +69,8 @@ In a freshly created collection all values of in the dataframe are in SI units.
 entry.df.head(5)
 ```
 
-The original units in the published figure are stored as metadata. Note that the time axs is not included. For digitized data, the time axis is reconstructed from the scan rate
+The original units in the published figure are stored as metadata.
+For data digitized with [svgdigitizer](https://echemdb.github.io/svgdigitizer/) a time axis is only present, when a scan rate was given in the SVG.
 
 ```{code-cell} ipython3
 entry.figure_description.fields

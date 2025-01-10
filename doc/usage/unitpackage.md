@@ -16,7 +16,7 @@ kernelspec:
 
 The `unitpackage` extends the Python API of the [frictionless framework](https://framework.frictionlessdata.io/),
 allowing for exploring frictionless resources extracted from frictionless Data Packages.
-To create a `unitpackage` entry or a `unitpackage` collection, frictionless resources must have a specific structure or follow a certain schema. We briefly illustrate the structure of the frictionless datapackages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the datapackage for use with `unitpackage`.
+To create a `unitpackage` entry or a `unitpackage` collection, frictionless resources must have a specific structure or follow a certain schema. We briefly illustrate the structure of the frictionless Data Packages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the datapackage for use with `unitpackage`.
 
 ## Frictionless Datapackage
 
