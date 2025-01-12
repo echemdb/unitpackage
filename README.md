@@ -1,7 +1,7 @@
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.8.5?labpath=tree%2Fdoc%2Findex.md)
 [![DOI](https://zenodo.org/badge/637997870.svg)](https://zenodo.org/badge/latestdoi/637997870)
 
-Thi module provides a Python library to interact with a collection of
+This module provides a Python library to interact with a collection of
 [frictionless datapackages](https://frictionlessdata.io/). Such datapackages consist of a CSV (data) file which is annotated with a JSON file.
 This allows storing additional information such as units used in the columns of a CSV or store metadata describing the underlying data.
 Example datapackages can be found [here](https://github.com/echemdb/unitpackage/tree/main/doc/files/) and a JSON could be structured as follows
