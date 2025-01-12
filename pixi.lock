@@ -22930,7 +22930,7 @@ packages:
   name: unitpackage
   version: 0.8.5
   path: .
-  sha256: 0cf78a232b308bd9f445a6eeeb4d3861390eba9135581b882cd47545cbc5056d
+  sha256: eaf83f661bfc7f4968bb02c7abe02146147a69f3330e3b0a525e572bb251de19
   requires_dist:
   - astropy>=5,<=7
   - filelock>=3,<4

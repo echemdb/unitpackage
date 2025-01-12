@@ -70,6 +70,7 @@ pytest-remotedata = "*"
 
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
+doctest-remote = "pytest -n auto --doctest-modules unitpackage --remote-data"
 
 [tool.pixi.feature.lint.dependencies]
 black = ">=23,<24"
