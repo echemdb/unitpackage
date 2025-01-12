@@ -31,9 +31,9 @@ jobs:
         with:
           pixi-version: v0.28.2
       - name: doctest
-        run: |
-          pixi run -e ${{ matrix.environment }} doctest ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }}
-
-        # run: pixi run -e ${{ matrix.environment }} doctest
         # run: |
-        # pytest -n auto --doctest-plus ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }} --doctest-modules unitpackage
+        #   pixi run -e ${{ matrix.environment }} doctest ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }}
+        # shell: pixi run -e ${{ matrix.environment }} doctest
+        shell: pixi run -e ${{ matrix.environment }} bash -e {0}
+        run: |
+          pytest -n auto --doctest-plus ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }} --doctest-modules unitpackage
