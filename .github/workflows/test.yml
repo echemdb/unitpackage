@@ -32,4 +32,4 @@ jobs:
           pixi-version: v0.28.2
       - name: doctest
         run: |
-          pixi run -e ${{ matrix.environment }} ${{ matrix.remote-data == 'remote' && 'doctest-remote' || 'doctest' }}
+          pixi run -e ${{ matrix.environment }} doctest ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }}
