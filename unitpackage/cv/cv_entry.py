@@ -1,8 +1,8 @@
 r"""
 A Data Package describing a Cyclic Voltammogram found in the field of electrochemistry.
-It provides additional functionalities compared to the class :class:`Entry`.
+It provides additional functionalities compared to the class :class:`~unitpackage.entry.Entry`.
 
-These are the individual elements of a :class:`CVCollection`.
+These are the individual elements of a :class:`~unitpackage.cv.cv_collection.CVCollection`.
 
 EXAMPLES:
 
@@ -15,7 +15,7 @@ such as WE, CE or REF::
     >>> entry.get_electrode('WE').material
     'Ru'
 
-The :meth:`plot` creates a typical representation of a Cyclic Voltammogram,
+The :meth:`~unitpackage.cv.cv_entry.CVEntry.plot` creates a typical representation of a Cyclic Voltammogram,
 where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 
     >>> entry.plot()
@@ -60,7 +60,7 @@ class CVEntry(Entry):
 
     An entry can be created directly from a datapackage that has been created
     with `svgdigitizer's <https://echemdb.github.io/svgdigitizer/>`_ `cv` command.
-    However, entries are normally obtained by opening a :class:`CVCollection` of entries::
+    However, entries are normally obtained by opening a :class:`~unitpackage.cv.cv_collection.CVCollection` of entries::
 
         >>> from unitpackage.cv.cv_collection import CVCollection
         >>> collection = CVCollection.create_example()
@@ -112,9 +112,9 @@ class CVEntry(Entry):
 
     def rescale(self, units):
         r"""
-        Return a rescaled :class:`CVEntry` with axes in the specified ``units``.
+        Return a rescaled :class:`~unitpackage.cv.cv_entry.CVEntry` with axes in the specified ``units``.
 
-        Usage is essentially the same as for :meth:`unitpackage.entry.Entry.rescale`, i.e.,
+        Usage is essentially the same as for :meth:`~unitpackage.entry.Entry.rescale`, i.e.,
         new units are expected as dict, where the key is the axis name and the value
         the new unit, such as ``{'j': 'uA / cm2', 't': 'h'}``.
 
