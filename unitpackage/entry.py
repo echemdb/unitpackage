@@ -7,7 +7,7 @@ and the resource has additional  metadata describing the underlying data.
 A description of such datapackags can be found in the documentation
 in :doc:`/usage/unitpackage`.
 
-Datapackages are the individual elements of a :class:`Collection` and
+Datapackages are the individual elements of a :class:`~unitpackage.collection.Collection` and
 are denoted as ``entry``.
 
 EXAMPLES:
@@ -106,7 +106,7 @@ class Entry:
     Entries can also be created by other means such as,
     a CSV ``Entry.from_csv`` or a pandas dataframe ``Entry.from_df``.
 
-    Normally, entries are obtained by opening a :class:`Collection` of entries::
+    Normally, entries are obtained by opening a :class:`~unitpackage.collection.Collection` of entries::
 
         >>> from unitpackage.collection import Collection
         >>> collection = Collection.create_example()
@@ -327,7 +327,7 @@ class Entry:
 
     def rescale(self, units):
         r"""
-        Returns a rescaled :class:`Entry` with axes in the specified ``units``.
+        Returns a rescaled :class:`~unitpackage.entry.Entry` with axes in the specified ``units``.
         Provide a dict, where the key is the axis name and the value
         the new unit, such as `{'j': 'uA / cm2', 't': 'h'}`.
 
@@ -597,7 +597,7 @@ class Entry:
         return original
 
     def rename_fields(self, field_names, keep_original_name_as=None):
-        r"""Returns a :class:`Entry` with updated field names and dataframe
+        r"""Returns a :class:`~unitpackage.entry.Entry` with updated field names and dataframe
         column names. Provide a dict, where the key is the previous field name and the
         value the new name, such as ``{'t':'t_rel', 'E':'E_we'}``.
         The original field names can be kept in a new key.
