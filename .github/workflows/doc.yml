@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with: { submodules: recursive }
       - uses: prefix-dev/setup-pixi@v0.8.1
         with: { pixi-version: v0.40.1 }
@@ -26,7 +26,7 @@ jobs:
           mkdir generated/html
           mv generated/html_ generated/html/unitpackage
           touch generated/html/unitpackage/.nojekyll
-      - uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - uses: JamesIves/github-pages-deploy-action@v4.7.2
         with:
           branch: gh-pages
           folder: doc/generated/html/unitpackage
