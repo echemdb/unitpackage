@@ -73,6 +73,9 @@ black = "*"
 isort = "*"
 pylint = "*"
 
+[tool.pixi.feature.dev.tasks]
+test = "pixi run doctest"
+
 [tool.pixi.feature.lint.tasks]
 pylint = "pylint unitpackage"
 black = "black unitpackage"
@@ -94,3 +97,4 @@ doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
 [tool.pixi.feature.dev.dependencies]
 pip = "*"
 conda = "*"
+jupyterlab = "*"
