@@ -1,12 +1,12 @@
 r"""
-Utilities to work with local data packages such as
-collecting packages and creating unitpackages.
+Utilities to work with local frictionless Data Packages such as
+collecting Data Packages and creating unitpackages.
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2024 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C)      2021 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -39,8 +39,7 @@ logger = logging.getLogger("unitpackage")
 
 def create_df_resource(resource, resource_name="echemdb"):
     r"""
-    Return a pandas dataframe resource from a data packages,
-    where the first resource refers to a CSV.
+    Return a pandas dataframe resource for a frictionless Tabular Resource.
 
     EXAMPLES::
 
@@ -58,7 +57,7 @@ def create_df_resource(resource, resource_name="echemdb"):
     """
     if not resource:
         raise ValueError(
-            "dataframe resource can not be created since package has no resources"
+            "dataframe resource can not be created since the Data Package has no resources."
         )
     descriptor_path = resource.basepath + "/" + resource.path
     df = pd.read_csv(descriptor_path)
@@ -70,7 +69,7 @@ def create_df_resource(resource, resource_name="echemdb"):
 
 def collect_datapackage(filename):
     r"""
-    Return a data package from a :param filename.
+    Return a Data Package from a :param filename which must be a valid frictionless Data Package (JSON).
 
     EXAMPLES::
 
@@ -85,10 +84,9 @@ def collect_datapackage(filename):
     return package
 
 
-# collect the resources from datapackages specified in a path?
 def collect_resources(datapackages):
     r"""
-    Return a list of resources from a list of data packages.
+    Return a list of resources from a list of Data Packages.
 
     EXAMPLES::
 
@@ -100,12 +98,10 @@ def collect_resources(datapackages):
         'no_bibliography']
 
     """
-    resources = []
-    for datapackage in datapackages:
-        for resource in datapackage.resources:
-            resources.append(resource)
-
-    return resources
+    # TODO:: Validate for duplicates and raise a warning
+    return [
+        resource for datapackage in datapackages for resource in datapackage.resources
+    ]
 
 
 def collect_datapackages(data):
@@ -121,18 +117,14 @@ def collect_datapackages(data):
         ...
 
     """
-    # Collect all datapackage descriptors, see
-    # https://specs.frictionlessdata.io/data-package/#metadata
+    packages = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    descriptors = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
-
-    # Read the package descriptors and append the data as pandas dataframe in a new resource
-    return [collect_datapackage(descriptor) for descriptor in descriptors]
+    return [collect_datapackage(package) for package in packages]
 
 
 def create_unitpackage(csvname, metadata=None, fields=None):
     r"""
-    Return a data package built from a :param metadata: dict and tabular data
+    Return a Data Package built from a :param metadata: dict and tabular data
     in :param csvname: str.
 
     The :param fields: list must must be structured such as
@@ -188,7 +180,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     resource.custom["metadata"].setdefault("echemdb", metadata)
 
     if fields:
-        # Update fields in the datapackage describing the data in the CSV
+        # Update fields in the Data Package describing the data in the CSV
         package_schema = resource.schema
         if not isinstance(fields, list):
             raise ValueError(

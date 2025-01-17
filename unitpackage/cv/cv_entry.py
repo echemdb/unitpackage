@@ -1,5 +1,5 @@
 r"""
-A Data Package describing a Cyclic Voltammogram found in the field of electrochemistry.
+A Data Package describing a Cyclic Voltammogram (CV) found in the field of electrochemistry.
 It provides additional functionalities compared to the class :class:`~unitpackage.entry.Entry`.
 
 These are the individual elements of a :class:`~unitpackage.cv.cv_collection.CVCollection`.
@@ -7,7 +7,7 @@ These are the individual elements of a :class:`~unitpackage.cv.cv_collection.CVC
 EXAMPLES:
 
 We can directly access the material of an electrode used in the experiment,
-such as WE, CE or REF::
+such as the WE, CE or REF::
 
     >>> from unitpackage.cv.cv_collection import CVCollection
     >>> db = CVCollection.create_example()
@@ -15,7 +15,7 @@ such as WE, CE or REF::
     >>> entry.get_electrode('WE').material
     'Ru'
 
-The :meth:`~unitpackage.cv.cv_entry.CVEntry.plot` creates a typical representation of a Cyclic Voltammogram,
+The :meth:`~unitpackage.cv.cv_entry.CVEntry.plot` creates a typical representation of a CV,
 where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 
     >>> entry.plot()
@@ -26,7 +26,7 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -53,12 +53,11 @@ logger = logging.getLogger("unitpackage")
 
 class CVEntry(Entry):
     r"""
-    A `frictionless data packages <https://github.com/frictionlessdata/framework>`_
-    describing a Cyclic Voltammogram.
+    A `frictionless Data Package <https://github.com/frictionlessdata/framework>`_ describing a CV.
 
     EXAMPLES:
 
-    An entry can be created directly from a datapackage that has been created
+    An entry can be created directly from a Data Package that has been created
     with `svgdigitizer's <https://echemdb.github.io/svgdigitizer/>`_ `cv` command.
     However, entries are normally obtained by opening a :class:`~unitpackage.cv.cv_collection.CVCollection` of entries::
 

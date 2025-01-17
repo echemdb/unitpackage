@@ -4,13 +4,15 @@ the :class:`Collection` specific to Cyclic Voltammograms and electrochemical dat
 
 EXAMPLES:
 
-Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`__
+Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`__
 in the `data/` directory::
 
     >>> from unitpackage.cv.cv_collection import CVCollection
     >>> collection = CVCollection.from_local('data/')
 
-Create a collection from the data packages published in the `echemdb <https://www.echemdb.org/cv>`_::
+Create a collection from the Data Packages published in the `echemdb data repository
+<https://github.com/echemdb/electrochemistry-data>`_ displayed on the `echemdb website
+<https://www.echemdb.org/cv>`_.::
 
     >>> collection = CVCollection.from_remote()  # doctest: +REMOTE_DATA
 
@@ -24,7 +26,7 @@ Search the collection for entries from a single publication::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -51,10 +53,11 @@ logger = logging.getLogger("unitpackage")
 
 class CVCollection(Collection):
     r"""
-    A collection of `frictionless data packages <https://github.com/frictionlessdata/framework>`__.
+    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/framework>`__.
 
     Essentially this is just a list of data packages with some additional
-    convenience wrap for use in the `echemdb <https://www.echemdb.org/cv>`_.
+    convenience wrap for use in the `echemdb data repository <https://github.com/echemdb/electrochemistry-data>`_
+    displayed on the `echemdb website <https://www.echemdb.org/cv>`_.
 
     EXAMPLES:
 
