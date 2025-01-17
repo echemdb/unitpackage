@@ -105,12 +105,6 @@ The package is also available on [conda-forge](https://github.com/conda-forge/un
 conda install -c conda-forge unitpackage
 ```
 
-or mamba
-
-```sh .noeval
-mamba install -c conda-forge unitpackage
-```
-
 Please consult our [documentation](https://echemdb.github.io/unitpackage/) for
 more detailed [installation instructions](https://echemdb.github.io/unitpackage/installation.html).
 
