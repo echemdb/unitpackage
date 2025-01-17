@@ -714,15 +714,12 @@ class Entry:
         from unitpackage.local import collect_datapackage
 
         package = collect_datapackage(filename)
-        # resources = collect_resources([packages])
 
         if len(package.resources) == 0:
             print("no Resource")
 
         if len(package.resources) > 1:
-            # from unitpackage.collection import Collection
             print("More than one Resource")
-            # return Collection.from_local(packages)
 
         return cls(resource=package.resources[0])
 
