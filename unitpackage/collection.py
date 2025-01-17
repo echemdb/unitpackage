@@ -326,7 +326,7 @@ class Collection:
         import unitpackage.remote
 
         if url is None:
-            data_packages = unitpackage.remote.collect_datapackages()
+            data_packages = unitpackage.remote.collect_datapackages(data=data, outdir=outdir)
             resources = unitpackage.local.collect_resources(data_packages)
             return cls(resources=resources)
 
