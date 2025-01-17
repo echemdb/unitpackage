@@ -1,18 +1,18 @@
 r"""
-A Data Package describing tabulated data for which the units of the
+A frictionless tabular Resource describing tabulated data for which the units of the
 column names (`pandas <https://pandas.pydata.org/>`_)
 or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known
 and the resource has additional metadata describing the underlying data.
 
-A description of such datapackags can be found in the documentation
+A description of such resources can be found in the documentation
 in :doc:`/usage/unitpackage`.
 
-Data Packages are the individual elements of a :class:`~unitpackage.collection.Collection` and
+Resources are the individual elements of a :class:`~unitpackage.collection.Collection` and
 are denoted as ``entry``.
 
 EXAMPLES:
 
-Metadata included in an entries resource is accessible as an attribute::
+Metadata included in an entry is accessible as an attribute::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
@@ -22,7 +22,7 @@ Metadata included in an entries resource is accessible as an attribute::
     'curve': 'solid',
     'bibdata': '@article{alves_2011_electrochemistry_6010,...}
 
-The data of the resource can be called as a pandas dataframe::
+The data of the entry can be called as a pandas dataframe::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.df
@@ -31,7 +31,7 @@ The data of the resource can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Data Packages containing published data,
+Data Entries containing published data,
 also contain information on the source of the data.::
 
     >>> from unitpackage.collection import Collection
@@ -88,14 +88,15 @@ class Entry:
 
     EXAMPLES:
 
-    Entries can be directly created from a frictionless Data Package containing a single resource::
+    Entries can be directly created from a frictionless Data Package containing a single
+    frictionless Resource::
 
         >>> from unitpackage.entry import Entry
         >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
         >>> entry
         Entry('no_bibliography')
 
-    or directly form a frictionless resource::
+    or directly form a frictionless Resource::
 
         >>> from unitpackage.entry import Entry
         >>> from frictionless import Resource
@@ -135,7 +136,7 @@ class Entry:
         r"""
         Return the attributes of this entry.
 
-        Implement to support tab-completion into the Data Package's descriptor.
+        Implement to support tab-completion into the Resource's descriptor.
 
         EXAMPLES::
 
@@ -151,7 +152,7 @@ class Entry:
 
     def __getattr__(self, name):
         r"""
-        Return a property of the Data Package's descriptor.
+        Return a property of the Resource's descriptor.
 
         EXAMPLES::
 
@@ -173,7 +174,7 @@ class Entry:
 
     def __getitem__(self, name):
         r"""
-        Return a property of the Data Package's descriptor.
+        Return a property of the Resource's descriptor.
 
         EXAMPLES::
 
