@@ -57,8 +57,8 @@ v0.8.0
 
 **Added:**
 
-* Added 'entry.save' which creates a unitpackage, i.e., a CSV file and a JSON file, in the directory `outdir`.
-* Added 'collection.save_entries' saves the entries of this collection using `entry.save`.
+* Added `entry.save` which creates a unitpackage, i.e., a CSV file and a JSON file, in the directory `outdir`.
+* Added `collection.save_entries` saves the entries of this collection using `entry.save`.
 * Added `Collection.from_local`, creating a collection from local datapackages.
 * Added `Collection.from_remote`, creating a collection from remote datapackages collected from a url containing a ZIP.
 * Added `Entry.from_local`, loading an entry from a local datapackage.
