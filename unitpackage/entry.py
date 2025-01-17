@@ -1,18 +1,18 @@
 r"""
-A Data Package describing tabulated data for which the units of the
+A frictionless tabular Resource describing tabulated data for which the units of the
 column names (`pandas <https://pandas.pydata.org/>`_)
 or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known
 and the resource has additional metadata describing the underlying data.
 
-A description of such datapackags can be found in the documentation
+A description of such resources can be found in the documentation
 in :doc:`/usage/unitpackage`.
 
-Datapackages are the individual elements of a :class:`~unitpackage.collection.Collection` and
+Resources are the individual elements of a :class:`~unitpackage.collection.Collection` and
 are denoted as ``entry``.
 
 EXAMPLES:
 
-Metadata included in an entries resource is accessible as an attribute::
+Metadata included in an entry is accessible as an attribute::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
@@ -22,7 +22,7 @@ Metadata included in an entries resource is accessible as an attribute::
     'curve': 'solid',
     'bibdata': '@article{alves_2011_electrochemistry_6010,...}
 
-The data of the resource can be called as a pandas dataframe::
+The data of the entry can be called as a pandas dataframe::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.df
@@ -31,7 +31,7 @@ The data of the resource can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Data Packages containing published data,
+Data Entries containing published data,
 also contain information on the source of the data.::
 
     >>> from unitpackage.collection import Collection
@@ -55,7 +55,7 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2024 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -78,8 +78,6 @@ import os.path
 
 from unitpackage.descriptor import Descriptor
 
-# from unitpackage.collection import Collection
-
 logger = logging.getLogger("unitpackage")
 
 
@@ -90,18 +88,19 @@ class Entry:
 
     EXAMPLES:
 
-    Entries can be directly created from a frictionless datapackage containing a single resource::
+    Entries can be directly created from a frictionless Data Package containing a single
+    frictionless Resource::
 
         >>> from unitpackage.entry import Entry
         >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
         >>> entry
         Entry('no_bibliography')
 
-    or directly form a frictionless resource::
+    or directly form a frictionless Resource::
 
         >>> from unitpackage.entry import Entry
-        >>> from frictionless import Package
-        >>> entry = Entry(Package('./examples/no_bibliography/no_bibliography.json').resources[0])
+        >>> from frictionless import Resource
+        >>> entry = Entry(Resource('./examples/no_bibliography/no_bibliography.json'))
         >>> entry
         Entry('no_bibliography')
 
@@ -117,7 +116,6 @@ class Entry:
     """
 
     def __init__(self, resource):
-
         self.resource = resource
 
     @property
@@ -138,7 +136,7 @@ class Entry:
         r"""
         Return the attributes of this entry.
 
-        Implement to support tab-completion into the data package's descriptor.
+        Implement to support tab-completion into the Resource's descriptor.
 
         EXAMPLES::
 
@@ -154,7 +152,7 @@ class Entry:
 
     def __getattr__(self, name):
         r"""
-        Return a property of the data package's descriptor.
+        Return a property of the Resource's descriptor.
 
         EXAMPLES::
 
@@ -176,7 +174,7 @@ class Entry:
 
     def __getitem__(self, name):
         r"""
-        Return a property of the data package's descriptor.
+        Return a property of the Resource's descriptor.
 
         EXAMPLES::
 
@@ -198,7 +196,7 @@ class Entry:
     @property
     def _metadata(self):
         r"""
-        Returns the metadata named "echemdb" nested within a resource named "echemdb".
+        Returns the metadata named "echemdb" associated with this entry.
 
         EXAMPLES::
 
@@ -212,7 +210,7 @@ class Entry:
     @property
     def bibliography(self):
         r"""
-        Return a pybtex bibliography object.
+        Return a pybtex bibliography object associated with this entry.
 
         EXAMPLES::
 
@@ -313,7 +311,7 @@ class Entry:
 
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the ``echemdb`` resource.
+        Return the unit of the ``field_name`` of the ``InternalResource`` resource.
 
         EXAMPLES::
 
@@ -397,7 +395,7 @@ class Entry:
     @property
     def internal_resource(self):
         r"""
-        Return the data of this entry as a data frame.
+        Return the data of this entry's "InternalResource" as a data frame.
 
         EXAMPLES::
 
@@ -432,7 +430,7 @@ class Entry:
     @property
     def df(self):
         r"""
-        Return the data of this entry as a data frame.
+        Return the data of this entry's "InternalResource" as a data frame.
 
         EXAMPLES::
 
@@ -477,7 +475,7 @@ class Entry:
         r"""
         Return some example entries for use in automated tests.
 
-        The examples are created from datapackages in the unitpackage's examples directory.
+        The examples are created from Data Packages in the unitpackage's examples directory.
         These are only available from the development environment.
 
         EXAMPLES::
@@ -512,14 +510,13 @@ class Entry:
 
         from unitpackage.local import collect_resources
 
-        # return [cls(resource=package) for package in packages]
         return [cls(resource=resource) for resource in collect_resources(packages)]
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
         Return a 2D plot of this entry.
 
-        The default plot is constructed from the first two columns of the dataframne.
+        The default plot is constructed from the first two columns of the dataframe.
 
         EXAMPLES::
 
@@ -701,10 +698,11 @@ class Entry:
     @classmethod
     def from_local(cls, filename):
         r"""
-        Return an entry from a :param filename containing a frictionless datapackage.
-        The package must contain a single resource.
-        Otherwise use `collection.from_local(filename)` to create a collection from
-        all resources within.
+        Return an entry from a :param filename containing a frictionless Data Package.
+        The Data Package must contain a single resource.
+        :: TODO: See #62
+        Otherwise use `collection.from_local(<PackageName>)` to create a collection from
+        all resources within. (not implemented)
 
         EXAMPLES::
 
@@ -717,15 +715,12 @@ class Entry:
         from unitpackage.local import collect_datapackage
 
         package = collect_datapackage(filename)
-        # resources = collect_resources([packages])
 
         if len(package.resources) == 0:
             print("no Resource")
 
         if len(package.resources) > 1:
-            # from unitpackage.collection import Collection
             print("More than one Resource")
-            # return Collection.from_local(packages)
 
         return cls(resource=package.resources[0])
 
@@ -786,7 +781,7 @@ class Entry:
 
     def save(self, *, outdir, basename=None):
         r"""
-        Create a unitpackage, i.e., a CSV file and a JSON file, in the directory ``outdir``.
+        Create a Data Package, i.e., a CSV file and a JSON file, in the directory ``outdir``.
 
         EXAMPLES:
 
@@ -800,7 +795,7 @@ class Entry:
             True
 
         When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
-        Note that for a valid frictionless package this base name
+        Note that for a valid frictionless Data Package this base name
         MUST be lower-case and contain only alphanumeric
         characters along with ".", "_" or "-" characters'::
 
@@ -813,7 +808,7 @@ class Entry:
 
         TESTS:
 
-        Save entry with metadata containing datetime format,
+        Save the entry as Data Package with metadata containing datetime format,
         which is not natively supported by JSON.
 
             >>> import os
@@ -844,8 +839,7 @@ class Entry:
 
         resource = self.resource.to_dict()
 
-        # update the fields from the main resource with those from the echemdb resource
-        # resource.schema.fields = resource.internal_resource.schema.fields
+        # update the fields from the main resource with those from the "InternalResource"resource
         resource["schema"]["fields"] = self.internal_resource.schema.fields
         resource["schema"] = resource["InternalResource"].schema.to_dict()
         del resource["InternalResource"]

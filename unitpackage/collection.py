@@ -1,18 +1,20 @@
 r"""
-A collection of datapackages with units.
+A collection of Data Packages with units.
 
 EXAMPLES:
 
-Create a collection from local `frictionless data packages <https://framework.frictionlessdata.io/>`_
+Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`_
 in the `data/` directory::
 
     >>> collection = Collection.from_local('data/')
 
-Create a collection from the data packages published in the on `echemdb <https://www.echemdb.org/cv>`_::
+Create a collection from the Data Packages published in on the `echemdb data repository
+<https://github.com/echemdb/electrochemistry-data>`_ displayed on the `echemdb website
+<https://www.echemdb.org/cv>`_.::
 
     >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
-Search the collection for entries from a single publication::
+Search the collection for entries from a single publication providing its DOI::
 
     >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
@@ -22,7 +24,7 @@ Search the collection for entries from a single publication::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2024 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -49,7 +51,7 @@ logger = logging.getLogger("unitpackage")
 
 class Collection:
     r"""
-    A collection of [frictionless data packages](https://github.com/frictionlessdata/datapackage-py).
+    A collection of [frictionless Data Packages](https://github.com/frictionlessdata/datapackage-py).
 
     EXAMPLES:
 
@@ -63,17 +65,17 @@ class Collection:
 
     from unitpackage.entry import Entry
 
-    # Entries of this collection are created from this type. Subclasses can replace this with a specialized entry type.
+    # Entries of this collection are created from this type.
+    # Subclasses can replace this with a specialized entry type.
     Entry = Entry
 
     def __init__(self, resources=None):
-        # self.resources = [Resource(resource) for resource in resources]
         self.resources = resources
 
     @property
     def package(self):
         r"""
-        Return a package for this collection.
+        Return a frictionless Data Package for this collection.
 
         EXAMPLES::
 
@@ -113,7 +115,6 @@ class Collection:
 
         return cls(
             [entry.resource for entry in entries],
-            # [entry.resource.to_dict() for entry in entries],
         )
 
     @property
@@ -265,7 +266,7 @@ class Collection:
 
     def save_entries(self, outdir=None):
         r"""
-        Save the entries of this collection as datapackages (CSV and JSON)
+        Save the entries of this collection as Data Packages (CSV and JSON)
         to the output directory :param outdir:.
 
         EXAMPLES::
@@ -283,7 +284,7 @@ class Collection:
     @classmethod
     def from_local(cls, datadir):
         r"""
-        Create a collection from local datapackages.
+        Create a collection from local Data Packages.
 
         EXAMPLES::
 
@@ -300,7 +301,6 @@ class Collection:
         packages = unitpackage.local.collect_datapackages(datadir)
         resources = unitpackage.local.collect_resources(packages)
 
-        # return cls(resources=[resource for resource in resources])
         return cls(resources=resources)
 
     @classmethod
@@ -308,14 +308,14 @@ class Collection:
         r"""
         Create a collection from a url containing a zip.
 
-        When no url is provided a collection is created from the data packages published
-        on `echemdb <https://www.echemdb.org/cv>`_.
+        When no url is provided a collection is created from the Data Packages published
+        on the `echemdb data repository <https://github.com/echemdb/electrochemistry-data>`_
+        displayed on the `echemdb website <https://www.echemdb.org/cv>`_.
 
         EXAMPLES::
 
             >>> from unitpackage.collection import Collection
             >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
-
             >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('alves_2011_electrochemistry_6010_f2_red')]
 
@@ -326,7 +326,7 @@ class Collection:
         import unitpackage.remote
 
         if url is None:
-            data_packages = unitpackage.remote.collect_datapackages()
+            data_packages = unitpackage.remote.collect_datapackages(data=data, outdir=outdir)
             resources = unitpackage.local.collect_resources(data_packages)
             return cls(resources=resources)
 
