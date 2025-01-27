@@ -1,12 +1,12 @@
 r"""
-Utilities to work with local data packages such as
-collecting packages and creating unitpackages.
+Utilities to work with local frictionless Data Packages such as
+collecting Data Packages and creating unitpackages.
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2024 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C)      2021 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -29,6 +29,7 @@ import logging
 import os
 import os.path
 from glob import glob
+from pathlib import Path
 
 import pandas as pd
 from frictionless import Package, Resource, Schema
@@ -36,16 +37,15 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_df_resource(package, resource_name="echemdb"):
+def create_df_resource(resource, resource_name="echemdb"):
     r"""
-    Return a pandas dataframe resource from a data packages,
-    where the first resource refers to a CSV.
+    Return a pandas dataframe resource for a frictionless Tabular Resource.
 
     EXAMPLES::
 
         >>> from frictionless import Package
-        >>> package = Package("./examples/no_bibliography/no_bibliography.json")
-        >>> df_resource = create_df_resource(package) # doctest: +NORMALIZE_WHITESPACE
+        >>> resource = Package("./examples/no_bibliography/no_bibliography.json").resources[0]
+        >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
         {'name': 'echemdb',
         ...
@@ -55,11 +55,11 @@ def create_df_resource(package, resource_name="echemdb"):
         ...
 
     """
-    if not package.resources:
+    if not resource:
         raise ValueError(
-            "dataframe resource can not be created since package has no resources"
+            "dataframe resource can not be created since the Data Package has no resources."
         )
-    descriptor_path = package.resources[0].basepath + "/" + package.resources[0].path
+    descriptor_path = resource.basepath + "/" + resource.path
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
     df_resource.infer()
@@ -69,7 +69,7 @@ def create_df_resource(package, resource_name="echemdb"):
 
 def collect_datapackage(filename):
     r"""
-    Return a data package from a :param filename.
+    Return a Data Package from a :param filename which must be a valid frictionless Data Package (JSON).
 
     EXAMPLES::
 
@@ -81,12 +81,27 @@ def collect_datapackage(filename):
     """
     package = Package(filename)
 
-    package.add_resource(create_df_resource(package))
-    package.get_resource("echemdb").schema = Schema.from_descriptor(
-        package.resources[0].schema.to_dict()
-    )
-
     return package
+
+
+def collect_resources(datapackages):
+    r"""
+    Return a list of resources from a list of Data Packages.
+
+    EXAMPLES::
+
+        >>> packages = collect_datapackages("./examples")
+        >>> resources = collect_resources(packages)
+        >>> [resource.name for resource in resources] # doctest: +NORMALIZE_WHITESPACE
+        ['alves_2011_electrochemistry_6010_f1a_solid',
+        'engstfeld_2018_polycrystalline_17743_f4b_1',
+        'no_bibliography']
+
+    """
+    # TODO:: Validate for duplicates and raise a warning
+    return [
+        resource for datapackage in datapackages for resource in datapackage.resources
+    ]
 
 
 def collect_datapackages(data):
@@ -102,18 +117,14 @@ def collect_datapackages(data):
         ...
 
     """
-    # Collect all datapackage descriptors, see
-    # https://specs.frictionlessdata.io/data-package/#metadata
+    packages = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    descriptors = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
-
-    # Read the package descriptors and append the data as pandas dataframe in a new resource
-    return [collect_datapackage(descriptor) for descriptor in descriptors]
+    return [collect_datapackage(package) for package in packages]
 
 
 def create_unitpackage(csvname, metadata=None, fields=None):
     r"""
-    Return a data package built from a :param metadata: dict and tabular data
+    Return a Data Package built from a :param metadata: dict and tabular data
     in :param csvname: str.
 
     The :param fields: list must must be structured such as
@@ -162,13 +173,14 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         ],
     )
     package.infer()
-    resource = package.resources[0]
+    # resource = package.resources[0]
+    resource = package.get_resource(Path(csv_basename).stem)
 
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)
 
     if fields:
-        # Update fields in the datapackage describing the data in the CSV
+        # Update fields in the Data Package describing the data in the CSV
         package_schema = resource.schema
         if not isinstance(fields, list):
             raise ValueError(
