@@ -118,12 +118,12 @@ entry.figure_description.scan_rate.unit
 
 The resource is named according to the entry's identifier. It describes the data in the CSV.
 
-An additional `InternalResource` is added to the loaded resource, named "echemdb".
+An additional `MutableResource` is added to the loaded resource, named "echemdb".
 It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `InternalResource`.
+Changes to the data with the `unitpackage` module are only applied to the `MutableResource`.
 ```
 
 +++
@@ -147,10 +147,10 @@ rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
 rescaled_entry.df.head()
 ```
 
-The units are updated in the schema of the 'InternalResource'.
+The units are updated in the schema of the 'MutableResource'.
 
 ```{code-cell} ipython3
-rescaled_entry.internal_resource
+rescaled_entry.mutable_resource
 ```
 
 The units of a specific field can be retrieved.

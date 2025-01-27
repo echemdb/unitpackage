@@ -144,7 +144,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'internal_resource',  'plot',
+            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
             'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
 
         """
@@ -311,7 +311,7 @@ class Entry:
 
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the ``InternalResource`` resource.
+        Return the unit of the ``field_name`` of the ``MutableResource`` resource.
 
         EXAMPLES::
 
@@ -320,7 +320,7 @@ class Entry:
             'V'
 
         """
-        return self.internal_resource.schema.get_field(field_name).custom["unit"]
+        return self.mutable_resource.schema.get_field(field_name).custom["unit"]
 
     def rescale(self, units):
         r"""
@@ -341,7 +341,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.internal_resource.schema.fields
+            >>> rescaled_entry.mutable_resource.schema.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -369,7 +369,7 @@ class Entry:
         from frictionless import Resource
 
         resource = Resource(self.resource.to_dict())
-        fields = self.internal_resource.schema.fields
+        fields = self.mutable_resource.schema.fields
         df = self.df.copy()
 
         for field in fields:
@@ -388,19 +388,19 @@ class Entry:
         df_resource.name = "echemdb"
 
         # Update the internal resource
-        resource.custom["InternalResource"] = df_resource
+        resource.custom["MutableResource"] = df_resource
 
         return type(self)(resource=resource)
 
     @property
-    def internal_resource(self):
+    def mutable_resource(self):
         r"""
-        Return the data of this entry's "InternalResource" as a data frame.
+        Return the data of this entry's "MutableResource" as a data frame.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.internal_resource
+            >>> entry.mutable_resource
             {'name': 'echemdb',
             'type': 'table',
             'data': [],
@@ -413,24 +413,24 @@ class Entry:
                                     'reference': 'RHE'},
                                 {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]}}
         """
-        self.resource.custom.setdefault("InternalResource", "")
+        self.resource.custom.setdefault("MutableResource", "")
 
-        if not self.resource.custom["InternalResource"]:
+        if not self.resource.custom["MutableResource"]:
             from frictionless import Schema
 
             from unitpackage.local import create_df_resource
 
-            self.resource.custom["InternalResource"] = create_df_resource(self.resource)
-            self.resource.custom["InternalResource"].schema = Schema.from_descriptor(
+            self.resource.custom["MutableResource"] = create_df_resource(self.resource)
+            self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
                 self.resource.schema.to_dict()
             )
 
-        return self.resource.custom["InternalResource"]
+        return self.resource.custom["MutableResource"]
 
     @property
     def df(self):
         r"""
-        Return the data of this entry's "InternalResource" as a data frame.
+        Return the data of this entry's "MutableResource" as a data frame.
 
         EXAMPLES::
 
@@ -438,7 +438,7 @@ class Entry:
             >>> entry
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
-            # >>> entry.resource.InternalResource
+            # >>> entry.resource.MutableResource
 
             >>> entry.df
                           t         E         j
@@ -449,13 +449,13 @@ class Entry:
         The units and descriptions of the axes in the data frame can be recovered::
 
             # >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
-            >>> entry.internal_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        return self.internal_resource.data
+        return self.mutable_resource.data
 
     def __repr__(self):
         r"""
@@ -649,7 +649,7 @@ class Entry:
 
         Updated fields of the internal resource::
 
-            >>> renamed_entry.internal_resource.schema.fields
+            >>> renamed_entry.mutable_resource.schema.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E_we', 'type': 'number', 'unit': 'V', 'reference': 'RHE', 'originalName': 'E'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -659,7 +659,7 @@ class Entry:
         Provide alternatives for non-existing fields::
 
             >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
-            >>> renamed_entry.internal_resource.schema.fields
+            >>> renamed_entry.mutable_resource.schema.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -678,7 +678,7 @@ class Entry:
         df = self.df.rename(columns=field_names).copy()
 
         new_fields = self._modify_fields(
-            self.internal_resource.schema.to_dict()["fields"],
+            self.mutable_resource.schema.to_dict()["fields"],
             alternative=field_names,
             keep_original_name_as=keep_original_name_as,
         )
@@ -691,7 +691,7 @@ class Entry:
 
         df_resource.name = "echemdb"
 
-        resource.custom["InternalResource"] = df_resource
+        resource.custom["MutableResource"] = df_resource
 
         return type(self)(resource=resource)
 
@@ -839,10 +839,10 @@ class Entry:
 
         resource = self.resource.to_dict()
 
-        # update the fields from the main resource with those from the "InternalResource"resource
-        resource["schema"]["fields"] = self.internal_resource.schema.fields
-        resource["schema"] = resource["InternalResource"].schema.to_dict()
-        del resource["InternalResource"]
+        # update the fields from the main resource with those from the "MutableResource"resource
+        resource["schema"]["fields"] = self.mutable_resource.schema.fields
+        resource["schema"] = resource["MutableResource"].schema.to_dict()
+        del resource["MutableResource"]
 
         from frictionless import Package, Resource
 

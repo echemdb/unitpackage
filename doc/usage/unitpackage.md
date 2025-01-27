@@ -252,7 +252,7 @@ entry.resource.custom["metadata"]["generic"]
 
 A Collection consists of entries, which are resources collected from Data Packages.
 
-Upon closer inspection of the entry created with `unitpackage`, you notice that an additional resource `InternalResource` is included in the original resource.
+Upon closer inspection of the entry created with `unitpackage`, you notice that an additional resource `MutableResource` is included in the original resource.
 
 ```{code-cell} ipython3
 entry.resource
@@ -260,8 +260,8 @@ entry.resource
 
 The main resource is named according to the CSV filename. The units provided in that resource describe the data within that CSV.
 
-The included `InternalResource`, is created once the data is loaded. In case of tabular data, a pandas dataframe resource is created.
-The dataframe is directly accessible from the entry and shows the data from the `InternalResource`.
+The included `MutableResource`, is created once the data is loaded. In case of tabular data, a pandas dataframe resource is created.
+The dataframe is directly accessible from the entry and shows the data from the `MutableResource`.
 Upon loading the data, both the numbers and units in the CSV and pandas dataframe are identical.
 
 ```{code-cell} ipython3
@@ -271,7 +271,7 @@ entry.df.head(3)
 The reason for the separation into two resources is as follows.
 With unitpackage we can, for example, transform the values within the dataframe to new units.
 This process leaves the data in the original CSV unchanged.
-The pandas dataframe resource, in turn, is adapted, as well as the units of the different fields of the `InternalResource` resource.
+The pandas dataframe resource, in turn, is adapted, as well as the units of the different fields of the `MutableResource` resource.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'U': 'V', 'I': 'mA'})
@@ -279,7 +279,7 @@ rescaled_entry.df.head(3)
 ```
 
 ```{code-cell} ipython3
-rescaled_entry.internal_resource
+rescaled_entry.mutable_resource
 ```
 
 Refer to the [usage section](unitpackage_usage.md) for a more detail description of the `unitpackage` API.

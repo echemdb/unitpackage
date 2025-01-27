@@ -88,7 +88,7 @@ original_entry.df.head(5)
 ```
 
 ```{code-cell} ipython3
-original_entry.internal_resource.schema
+original_entry.mutable_resource.schema
 ```
 
 ## Plotting

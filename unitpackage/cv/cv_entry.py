@@ -123,7 +123,7 @@ class CVEntry(Entry):
 
             >>> entry = CVEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.internal_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
@@ -154,7 +154,7 @@ class CVEntry(Entry):
             ValueError: No axis with name 'x' found.
 
         """
-        if field_name in self.internal_resource.schema.field_names:
+        if field_name in self.mutable_resource.schema.field_names:
             return field_name
         if field_name == "j":
             return self._normalize_field_name("I")
@@ -248,7 +248,7 @@ class CVEntry(Entry):
         def reference(label):
             if not label == "E":
                 return ""
-            field = self.internal_resource.schema.get_field(label).to_dict()
+            field = self.mutable_resource.schema.get_field(label).to_dict()
             if "reference" not in field:
                 return ""
             return f" vs. {field['reference']}"
