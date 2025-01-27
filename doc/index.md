@@ -26,7 +26,7 @@ An example demonstrating the usage of a collection of datapackages along with th
 A collection of [datapackages can be generated](usage/load_and_save.md) from local files or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage` we collect the data to [echemdb.org](https://www.echemdb.org/cv) from the data repository, which is downloaded by default when the method `from_remote()` does not receive a url argument.
 
 ```{note}
-For simplicity we denote the collection as `db` (database), even thought it is not a database in that sense.
+For simplicity we denote the collection as `db` (database), even though it is not a database in that sense.
 ```
 
 ```{code-cell} ipython3
