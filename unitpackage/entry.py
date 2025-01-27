@@ -387,7 +387,7 @@ class Entry:
 
         df_resource.name = "echemdb"
 
-        # Update the internal resource
+        # Update the "MutableResource"
         resource.custom["MutableResource"] = df_resource
 
         return type(self)(resource=resource)
@@ -647,7 +647,7 @@ class Entry:
             1      0.020000 -0.102158 -0.981762
             ...
 
-        Updated fields of the internal resource::
+        Updated fields of the "MutableResource"::
 
             >>> renamed_entry.mutable_resource.schema.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},

@@ -175,7 +175,7 @@ class CVEntry(Entry):
         method::
 
             >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
-            b"\x89PNG..."
+            b'\x89PNG...'
 
         """
         kwds.setdefault("color", "b")
