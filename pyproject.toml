@@ -43,6 +43,11 @@ matplotlib-base = "*"
 pandas = "*"
 pybtex = "*"
 python = "*"
+pixi-kernel = ">=0.6.1,<0.7"
+ipykernel = ">=6.29.5,<7"
+pip = ">=25.0,<26"
+jupyterlab = ">=4.3.4,<5"
+jupytext = ">=1.16.6,<2"
 
 [tool.pixi.pypi-dependencies]
 unitpackage = { path = ".", editable = true }

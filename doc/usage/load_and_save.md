@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -150,8 +150,4 @@ fields = metadata["figure description"]["fields"]
 
 entry = Entry.from_csv(csvname="../files/demo_package.csv", metadata=metadata, fields=fields)
 entry.save(outdir="../generated/files/csv_entry/")
-```
-
-```{code-cell} ipython3
-
 ```
