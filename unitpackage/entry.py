@@ -491,7 +491,7 @@ class Entry:
         """
         import pandas as pd
         df_ = pd.concat([self.df, df], axis=1)
-        fields = [field.to_dict() for field in self.package.get_resource('echemdb').schema.fields]
+        fields = [field.to_dict() for field in self.mutable_resource.schema.fields]
 
         fields.extend(new_fields)
         return self.from_df(df=df_, metadata=self._metadata, basename=self.identifier, fields=fields)
