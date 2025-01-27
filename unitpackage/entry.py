@@ -1,18 +1,18 @@
 r"""
-A Data Package describing tabulated data for which the units of the
+A frictionless tabular Resource describing tabulated data for which the units of the
 column names (`pandas <https://pandas.pydata.org/>`_)
 or fields (`frictionless <https://framework.frictionlessdata.io/>`_) are known
-and the resource has additional  metadata describing the underlying data.
+and the resource has additional metadata describing the underlying data.
 
-A description of such datapackags can be found in the documentation
+A description of such resources can be found in the documentation
 in :doc:`/usage/unitpackage`.
 
-Datapackages are the individual elements of a :class:`~unitpackage.collection.Collection` and
+Resources are the individual elements of a :class:`~unitpackage.collection.Collection` and
 are denoted as ``entry``.
 
 EXAMPLES:
 
-Metadata included in an entries resource is accessible as an attribute::
+Metadata included in an entry is accessible as an attribute::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
@@ -22,7 +22,7 @@ Metadata included in an entries resource is accessible as an attribute::
     'curve': 'solid',
     'bibdata': '@article{alves_2011_electrochemistry_6010,...}
 
-The data of the resource can be called as a pandas dataframe::
+The data of the entry can be called as a pandas dataframe::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.df
@@ -31,7 +31,7 @@ The data of the resource can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Data Packages containing published data,
+Data Entries containing published data,
 also contain information on the source of the data.::
 
     >>> from unitpackage.collection import Collection
@@ -55,7 +55,7 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2024 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -83,23 +83,24 @@ logger = logging.getLogger("unitpackage")
 
 class Entry:
     r"""
-    A `frictionless data package <https://github.com/frictionlessdata/framework>`_
+    A `frictionless Resource <https://github.com/frictionlessdata/framework>`_
     describing tabulated data.
 
     EXAMPLES:
 
-    Entries can be directly created::
-
-        >>> from unitpackage.local import collect_datapackage
-        >>> from unitpackage.entry import Entry
-        >>> entry = Entry(collect_datapackage('./examples/no_bibliography/no_bibliography.json'))
-        >>> entry
-        Entry('no_bibliography')
-
-    or more simply::
+    Entries can be directly created from a frictionless Data Package containing a single
+    frictionless Resource::
 
         >>> from unitpackage.entry import Entry
         >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry
+        Entry('no_bibliography')
+
+    or directly form a frictionless Resource::
+
+        >>> from unitpackage.entry import Entry
+        >>> from frictionless import Resource
+        >>> entry = Entry(Resource('./examples/no_bibliography/no_bibliography.json'))
         >>> entry
         Entry('no_bibliography')
 
@@ -114,8 +115,8 @@ class Entry:
 
     """
 
-    def __init__(self, package):
-        self.package = package
+    def __init__(self, resource):
+        self.resource = resource
 
     @property
     def identifier(self):
@@ -129,13 +130,13 @@ class Entry:
             'alves_2011_electrochemistry_6010_f1a_solid'
 
         """
-        return self.package.resources[0].name
+        return self.resource.name
 
     def __dir__(self):
         r"""
         Return the attributes of this entry.
 
-        Implement to support tab-completion into the data package's descriptor.
+        Implement to support tab-completion into the Resource's descriptor.
 
         EXAMPLES::
 
@@ -143,15 +144,15 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'package',  'plot',
-            'rename_fields', 'rescale', 'save', 'source', 'system', 'yaml']
+            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
+            'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
 
     def __getattr__(self, name):
         r"""
-        Return a property of the data package's descriptor.
+        Return a property of the Resource's descriptor.
 
         EXAMPLES::
 
@@ -173,7 +174,7 @@ class Entry:
 
     def __getitem__(self, name):
         r"""
-        Return a property of the data package's descriptor.
+        Return a property of the Resource's descriptor.
 
         EXAMPLES::
 
@@ -190,12 +191,12 @@ class Entry:
 
     @property
     def _descriptor(self):
-        return Descriptor(self.package.resources[0].custom["metadata"]["echemdb"])
+        return Descriptor(self.resource.custom["metadata"]["echemdb"])
 
     @property
     def _metadata(self):
         r"""
-        Returns the metadata named "echemdb" nested within a resource named "echemdb".
+        Returns the metadata named "echemdb" associated with this entry.
 
         EXAMPLES::
 
@@ -204,12 +205,12 @@ class Entry:
             {...'source': {'citation key': 'alves_2011_electrochemistry_6010',...}
 
         """
-        return self.package.resources[0].custom["metadata"]["echemdb"]
+        return self.resource.custom["metadata"]["echemdb"]
 
     @property
     def bibliography(self):
         r"""
-        Return a pybtex bibliography object.
+        Return a pybtex bibliography object associated with this entry.
 
         EXAMPLES::
 
@@ -310,7 +311,7 @@ class Entry:
 
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the ``echemdb`` resource.
+        Return the unit of the ``field_name`` of the ``MutableResource`` resource.
 
         EXAMPLES::
 
@@ -319,11 +320,7 @@ class Entry:
             'V'
 
         """
-        return (
-            self.package.get_resource("echemdb")
-            .schema.get_field(field_name)
-            .custom["unit"]
-        )
+        return self.mutable_resource.schema.get_field(field_name).custom["unit"]
 
     def rescale(self, units):
         r"""
@@ -336,7 +333,7 @@ class Entry:
         The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.package.get_resource('echemdb').schema.fields
+            >>> entry.resource.schema.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -344,7 +341,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.package.get_resource('echemdb').schema.fields
+            >>> rescaled_entry.mutable_resource.schema.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -369,10 +366,10 @@ class Entry:
             units = {}
 
         from astropy import units as u
-        from frictionless import Package, Resource
+        from frictionless import Resource
 
-        package = Package(self.package.to_dict())
-        fields = self.package.get_resource("echemdb").schema.fields
+        resource = Resource(self.resource.to_dict())
+        fields = self.mutable_resource.schema.fields
         df = self.df.copy()
 
         for field in fields:
@@ -380,36 +377,69 @@ class Entry:
                 df[field.name] *= u.Unit(field.custom["unit"]).to(
                     u.Unit(units[field.name])
                 )
-                package.get_resource("echemdb").schema.update_field(
-                    field.name, {"unit": units[field.name]}
-                )
+                resource.schema.update_field(field.name, {"unit": units[field.name]})
 
         # create a new dataframe resource
         df_resource = Resource(df)
         df_resource.infer()
         # update units in the schema of the df resource
-        df_resource.schema = package.get_resource("echemdb").schema
+        df_resource.schema = resource.schema
 
         df_resource.name = "echemdb"
 
-        # Remove the original echemdb resource and
-        # add a new echemdb resource to the new entry
-        package.remove_resource("echemdb")
+        # Update the "MutableResource"
+        resource.custom["MutableResource"] = df_resource
 
-        entry = type(self)(package=package)
-
-        entry.package.add_resource(df_resource)
-
-        return entry
+        return type(self)(resource=resource)
 
     @property
-    def df(self):
+    def mutable_resource(self):
         r"""
-        Return the data of this entry as a data frame.
+        Return the data of this entry's "MutableResource" as a data frame.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
+            >>> entry.mutable_resource
+            {'name': 'echemdb',
+            'type': 'table',
+            'data': [],
+            'format': 'pandas',
+            'mediatype': 'application/pandas',
+            'schema': {'fields': [{'name': 't', 'type': 'number', 'unit': 's'},
+                                {'name': 'E',
+                                    'type': 'number',
+                                    'unit': 'V',
+                                    'reference': 'RHE'},
+                                {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]}}
+        """
+        self.resource.custom.setdefault("MutableResource", "")
+
+        if not self.resource.custom["MutableResource"]:
+            from frictionless import Schema
+
+            from unitpackage.local import create_df_resource
+
+            self.resource.custom["MutableResource"] = create_df_resource(self.resource)
+            self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
+                self.resource.schema.to_dict()
+            )
+
+        return self.resource.custom["MutableResource"]
+
+    @property
+    def df(self):
+        r"""
+        Return the data of this entry's "MutableResource" as a data frame.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
+
+            # >>> entry.resource.MutableResource
+
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -418,13 +448,14 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            # >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        return self.package.get_resource("echemdb").data
+        return self.mutable_resource.data
 
     def add_columns(self, df, new_fields):
         r"""
@@ -484,7 +515,7 @@ class Entry:
         r"""
         Return some example entries for use in automated tests.
 
-        The examples are created from datapackages in the unitpackage's examples directory.
+        The examples are created from Data Packages in the unitpackage's examples directory.
         These are only available from the development environment.
 
         EXAMPLES::
@@ -517,13 +548,15 @@ class Entry:
                 f"There is probably some outdated data in {example_dir}. The contents of that directory are: { glob(os.path.join(example_dir,'**')) }"
             )
 
-        return [cls(package=package) for package in packages]
+        from unitpackage.local import collect_resources
+
+        return [cls(resource=resource) for resource in collect_resources(packages)]
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
         Return a 2D plot of this entry.
 
-        The default plot is constructed from the first two columns of the dataframne.
+        The default plot is constructed from the first two columns of the dataframe.
 
         EXAMPLES::
 
@@ -584,8 +617,8 @@ class Entry:
             >>> entry
             Entry('from_csv')
 
-            >>> entry.package # doctest: +NORMALIZE_WHITESPACE
-            {'resources': [{'name':
+            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'from_csv',
             ...
 
         Metadata can be appended::
@@ -598,20 +631,11 @@ class Entry:
             'Max Doe'
 
         """
-        from frictionless import Schema
-
-        from unitpackage.local import create_df_resource, create_unitpackage
+        from unitpackage.local import create_unitpackage
 
         package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
 
-        df_resource = create_df_resource(package)
-
-        package.add_resource(df_resource)
-        package.get_resource("echemdb").schema = Schema.from_descriptor(
-            package.resources[0].schema.to_dict()
-        )
-
-        return cls(package=package)
+        return cls(resource=package.resources[0])
 
     @classmethod
     def _modify_fields(cls, original, alternative, keep_original_name_as=None):
@@ -642,20 +666,32 @@ class Entry:
         value the new name, such as ``{'t':'t_rel', 'E':'E_we'}``.
         The original field names can be kept in a new key.
 
-        EXAMPLES::
+        EXAMPLES:
+
+        The original dataframe::
 
             >>> from unitpackage.entry import Entry
             >>> entry = Entry.create_examples()[0]
-            >>> renamed_entry = entry.rename_fields({'t': 't_rel'}, keep_original_name_as='originalName')
-            >>> renamed_entry.df
-                      t_rel         E         j
+            >>> entry.df
+                          t         E         j
             0      0.000000 -0.103158 -0.998277
             1      0.020000 -0.102158 -0.981762
             ...
 
-            >>> renamed_entry.package.get_resource('echemdb').schema.fields
+        Dataframe with modified column names::
+
+            >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'E': 'E_we'}, keep_original_name_as='originalName')
+            >>> renamed_entry.df
+                      t_rel      E_we         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Updated fields of the "MutableResource"::
+
+            >>> renamed_entry.mutable_resource.schema.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
-            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'E_we', 'type': 'number', 'unit': 'V', 'reference': 'RHE', 'originalName': 'E'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         TESTS:
@@ -663,7 +699,7 @@ class Entry:
         Provide alternatives for non-existing fields::
 
             >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
-            >>> renamed_entry.package.get_resource('echemdb').schema.fields
+            >>> renamed_entry.mutable_resource.schema.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -675,14 +711,14 @@ class Entry:
             )
             field_names = {}
 
-        from frictionless import Package, Resource, Schema
+        from frictionless import Resource, Schema
 
-        package = Package(self.package.to_dict())
+        resource = Resource(self.resource.to_dict())
 
         df = self.df.rename(columns=field_names).copy()
 
         new_fields = self._modify_fields(
-            self.package.get_resource("echemdb").schema.to_dict()["fields"],
+            self.mutable_resource.schema.to_dict()["fields"],
             alternative=field_names,
             keep_original_name_as=keep_original_name_as,
         )
@@ -695,17 +731,18 @@ class Entry:
 
         df_resource.name = "echemdb"
 
-        package.remove_resource("echemdb")
+        resource.custom["MutableResource"] = df_resource
 
-        entry = type(self)(package=package)
-
-        entry.package.add_resource(df_resource)
-        return entry
+        return type(self)(resource=resource)
 
     @classmethod
     def from_local(cls, filename):
         r"""
-        Return an entry from a :param filename:
+        Return an entry from a :param filename containing a frictionless Data Package.
+        The Data Package must contain a single resource.
+        :: TODO: See #62
+        Otherwise use `collection.from_local(<PackageName>)` to create a collection from
+        all resources within. (not implemented)
 
         EXAMPLES::
 
@@ -717,7 +754,15 @@ class Entry:
         """
         from unitpackage.local import collect_datapackage
 
-        return cls(package=collect_datapackage(filename))
+        package = collect_datapackage(filename)
+
+        if len(package.resources) == 0:
+            print("no Resource")
+
+        if len(package.resources) > 1:
+            print("More than one Resource")
+
+        return cls(resource=package.resources[0])
 
     @classmethod
     def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
@@ -754,7 +799,7 @@ class Entry:
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
             >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
-            >>> entry.package.get_resource('echemdb').schema.fields
+            >>> entry.resource.schema.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
@@ -776,7 +821,7 @@ class Entry:
 
     def save(self, *, outdir, basename=None):
         r"""
-        Create a unitpackage, i.e., a CSV file and a JSON file, in the directory ``outdir``.
+        Create a Data Package, i.e., a CSV file and a JSON file, in the directory ``outdir``.
 
         EXAMPLES:
 
@@ -790,7 +835,7 @@ class Entry:
             True
 
         When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
-        Note that for a valid frictionless package this base name
+        Note that for a valid frictionless Data Package this base name
         MUST be lower-case and contain only alphanumeric
         characters along with ".", "_" or "-" characters'::
 
@@ -803,7 +848,7 @@ class Entry:
 
         TESTS:
 
-        Save entry with metadata containing datetime format,
+        Save the entry as Data Package with metadata containing datetime format,
         which is not natively supported by JSON.
 
             >>> import os
@@ -825,22 +870,27 @@ class Entry:
         csv_name = os.path.join(outdir, basename + ".csv")
         json_name = os.path.join(outdir, basename + ".json")
 
-        metadata = self.package.to_copy()
-
-        # update the fields from the main resource with those from the echemdb resource
-        metadata.get_resource(self.identifier).schema.fields = metadata.get_resource(
-            "echemdb"
-        ).schema.fields
-        metadata.remove_resource("echemdb")
+        self.df.to_csv(csv_name, index=False)
 
         # update the identifier and filepath of the resource
         if basename:
-            metadata.get_resource(self.identifier).path = basename + ".csv"
-            metadata.get_resource(self.identifier).name = basename
+            self.resource.path = basename + ".csv"
+            self.resource.name = basename
 
-        self.df.to_csv(csv_name, index=False)
+        resource = self.resource.to_dict()
+
+        # update the fields from the main resource with those from the "MutableResource"resource
+        resource["schema"]["fields"] = self.mutable_resource.schema.fields
+        resource["schema"] = resource["MutableResource"].schema.to_dict()
+        del resource["MutableResource"]
+
+        from frictionless import Package, Resource
+
+        package = Package(
+            resources=[Resource.from_descriptor(resource)],
+        )
 
         with open(json_name, mode="w", encoding="utf-8") as json:
             from unitpackage.local import write_metadata
 
-            write_metadata(json, metadata.to_dict())
+            write_metadata(json, package.to_dict())
