@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.1
+    jupytext_version: 1.16.6
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -64,7 +64,6 @@ A parameter `data` allows specifying the folder within the ZIP containing the da
 from unitpackage.collection import Collection
 
 db = Collection.from_remote(data='data', outdir='generated/from_url')
-db
 ```
 
 ## Load entries
