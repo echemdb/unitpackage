@@ -457,6 +457,49 @@ class Entry:
         """
         return self.mutable_resource.data
 
+    def add_columns(self, df, new_fields):
+        r"""
+        Adds a column to the dataframe with specified field properties
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        The units and descriptions of the axes in the data frame can be recovered::
+
+            >>> import pandas as pd
+            >>> import astropy.units as u
+            >>> df = pd.DataFrame()
+            >>> df['P/A'] = entry.df['E'] * entry.df['j']
+            >>> new_field_unit = u.Unit(entry.field_unit('E')) * u.Unit(entry.field_unit('j'))
+            >>> new_entry = entry.add_columns(df['P/A'], new_fields=[{'name':'P/A', 'unit': new_field_unit}])
+            >>> new_entry.df
+                          t         E         j       P/A
+            0      0.000000 -0.103158 -0.998277  0.102981
+            1      0.020000 -0.102158 -0.981762  0.100295
+            ...
+
+            >>> new_entry.field_unit('P/A')
+            Unit("A V / m2")
+
+        """
+        import pandas as pd
+
+        df_ = pd.concat([self.df, df], axis=1)
+
+        fields = [field.to_dict() for field in self.mutable_resource.schema.fields]
+
+        fields.extend(new_fields)
+        return self.from_df(
+            df=df_, metadata=self._metadata, basename=self.identifier, fields=fields
+        )
+
     def __repr__(self):
         r"""
         Return a printable representation of this entry.
