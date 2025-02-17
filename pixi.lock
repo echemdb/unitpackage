@@ -20463,7 +20463,7 @@ packages:
 - pypi: .
   name: unitpackage
   version: 0.8.5
-  sha256: 4802338a6163371f8d38db2ede889aa9e3b51891f39e94470b7c11a156ec8a4c
+  sha256: cafaeedc14aae8a1e6367325ef6257253bb785e27b5569a857583f175b9d0a3e
   requires_dist:
   - astropy>=5,<=7
   - filelock>=3,<4
