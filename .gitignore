@@ -126,6 +126,9 @@ venv.bak/
 # mkdocs documentation
 /generated
 
+# generated data from tests and builds
+/doc/usage/generated
+
 # mypy
 .mypy_cache/
 .dmypy.json
