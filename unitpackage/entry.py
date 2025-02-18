@@ -760,10 +760,12 @@ class Entry:
         package = collect_datapackage(filename)
 
         if len(package.resources) == 0:
-            print("no Resource")
+            raise ValueError(f"No resource available in '{filename}'")
 
         if len(package.resources) > 1:
-            print("More than one Resource")
+            raise ValueError(
+                f"No than one resource available in '{filename}'. Use collection.from_local()`"
+            )
 
         return cls(resource=package.resources[0])
 

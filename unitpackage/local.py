@@ -173,7 +173,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
         ],
     )
     package.infer()
-    # resource = package.resources[0]
+
     resource = package.get_resource(Path(csv_basename).stem)
 
     resource.custom.setdefault("metadata", {})
