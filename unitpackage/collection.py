@@ -303,6 +303,27 @@ class Collection:
 
         return cls(resources=resources)
 
+
+
+    @classmethod
+    def from_local_file(cls, filename):
+        r"""
+        Create a collection from a local Data Package.
+
+        EXAMPLES::
+
+            >>> from unitpackage.collection import Collection
+            >>> collection = Collection.from_local_file('./examples/engstfeld_2018_polycrystalline_17743/engstfeld_2018_polycrystalline_17743_f4b_1.json')
+            >>> collection  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+
+        """
+        from unitpackage.local import collect_datapackage
+
+        package = collect_datapackage(filename)
+
+        return cls(resources=[resource for resource in package.resources])
+
     @classmethod
     def from_remote(cls, url=None, data=None, outdir=None):
         r"""
