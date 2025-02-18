@@ -1,6 +1,5 @@
 **Added:**
 
-* Added the property `collection.package` returning a frictionless Data Package for this collection.
 * Added the property `entry.mutable_resource`, which is a virtual modifiable copy of the original resource excluding its metadata.
 * Added `unitpackage.local.collect_resources`, which collects all resources from a list of frictionless Data Packages.
 
@@ -14,7 +13,6 @@
 **Fixed:**
 
 * Fixed parsing of arguments `data` and `outdir` for `collection.from_remote` downloading data from the default remote url.
-
 
 **Performance:**
 
