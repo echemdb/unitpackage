@@ -532,7 +532,9 @@ class Entry:
             [Entry('no_bibliography')]
 
         """
-        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", "local", name)
+        example_dir = os.path.join(
+            os.path.dirname(__file__), "..", "examples", "local", name
+        )
 
         if not os.path.exists(example_dir):
             raise ValueError(

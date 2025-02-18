@@ -78,9 +78,11 @@ class Collection:
     Entry = Entry
 
     def __init__(self, resources=None):
-        from iteration_utilities import duplicates
-        from iteration_utilities import unique_everseen
-        duplicates = list(unique_everseen(duplicates([resource.name for resource in resources])))
+        from iteration_utilities import duplicates, unique_everseen
+
+        duplicates = list(
+            unique_everseen(duplicates([resource.name for resource in resources]))
+        )
 
         if duplicates:
             raise ValueError(f"Collection contains duplicate entries: {duplicates}")
@@ -318,8 +320,6 @@ class Collection:
 
         return cls(resources=resources)
 
-
-
     @classmethod
     def from_local_file(cls, filename):
         r"""
@@ -337,7 +337,7 @@ class Collection:
 
         package = collect_datapackage(filename)
 
-        return cls(resources=[resource for resource in package.resources])
+        return cls(resources=list(package.resources))
 
     @classmethod
     def from_remote(cls, url=None, data=None, outdir=None):
