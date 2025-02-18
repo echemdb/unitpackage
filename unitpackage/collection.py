@@ -51,7 +51,8 @@ logger = logging.getLogger("unitpackage")
 
 class Collection:
     r"""
-    A collection of [frictionless Data Packages](https://github.com/frictionlessdata/datapackage-py).
+    A collection of frictionless Resources,
+    that can be stored as a [frictionless Data Package](https://github.com/frictionlessdata/datapackage-py).
 
     EXAMPLES:
 
@@ -60,6 +61,13 @@ class Collection:
         >>> collection = Collection([])
         >>> len(collection)
         0
+
+    Collections must contain Resources with unique identifiers::
+
+        >>> db = Collection.from_local("./examples/duplicates")
+        Traceback (most recent call last):
+        ...
+        ValueError: Collection contains duplicate entries: ['duplicate']
 
     """
 
@@ -70,6 +78,13 @@ class Collection:
     Entry = Entry
 
     def __init__(self, resources=None):
+        from iteration_utilities import duplicates
+        from iteration_utilities import unique_everseen
+        duplicates = list(unique_everseen(duplicates([resource.name for resource in resources])))
+
+        if duplicates:
+            raise ValueError(f"Collection contains duplicate entries: {duplicates}")
+
         self.resources = resources
 
     @property
@@ -289,7 +304,7 @@ class Collection:
         EXAMPLES::
 
             >>> from unitpackage.collection import Collection
-            >>> collection = Collection.from_local('./examples')
+            >>> collection = Collection.from_local('./examples/local/')
             >>> collection  # doctest: +NORMALIZE_WHITESPACE
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
             Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
@@ -313,7 +328,7 @@ class Collection:
         EXAMPLES::
 
             >>> from unitpackage.collection import Collection
-            >>> collection = Collection.from_local_file('./examples/engstfeld_2018_polycrystalline_17743/engstfeld_2018_polycrystalline_17743_f4b_1.json')
+            >>> collection = Collection.from_local_file('./examples/local/engstfeld_2018_polycrystalline_17743/engstfeld_2018_polycrystalline_17743_f4b_1.json')
             >>> collection  # doctest: +NORMALIZE_WHITESPACE
             [Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 

@@ -44,7 +44,7 @@ def create_df_resource(resource, resource_name="echemdb"):
     EXAMPLES::
 
         >>> from frictionless import Package
-        >>> resource = Package("./examples/no_bibliography/no_bibliography.json").resources[0]
+        >>> resource = Package("./examples/local/no_bibliography/no_bibliography.json").resources[0]
         >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
         {'name': 'echemdb',
@@ -73,7 +73,7 @@ def collect_datapackage(filename):
 
     EXAMPLES::
 
-        >>> package = collect_datapackage("./examples/no_bibliography/no_bibliography.json")
+        >>> package = collect_datapackage("./examples/local/no_bibliography/no_bibliography.json")
         >>> package # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
@@ -90,7 +90,7 @@ def collect_resources(datapackages):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("./examples")
+        >>> packages = collect_datapackages("./examples/local")
         >>> resources = collect_resources(packages)
         >>> [resource.name for resource in resources] # doctest: +NORMALIZE_WHITESPACE
         ['alves_2011_electrochemistry_6010_f1a_solid',
@@ -98,7 +98,7 @@ def collect_resources(datapackages):
         'no_bibliography']
 
     """
-    # TODO:: Validate for duplicates and raise a warning
+
     return [
         resource for datapackage in datapackages for resource in datapackage.resources
     ]
@@ -111,7 +111,7 @@ def collect_datapackages(data):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("./examples")
+        >>> packages = collect_datapackages("./examples/local")
         >>> packages[0] # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
