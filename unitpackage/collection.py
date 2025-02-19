@@ -1,20 +1,24 @@
 r"""
-A collection of Data Packages with units.
+A collection of frictionless Resources that can be accessed and stored as
+    a [frictionless Data Package](https://github.com/frictionlessdata/datapackage-py).
 
 EXAMPLES:
 
-Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`_
+Create a collection from frictionless Resources stored within local
+`frictionless Data Packages <https://framework.frictionlessdata.io/>`_
 in the `data/` directory::
 
     >>> collection = Collection.from_local('data/')
 
-Create a collection from the Data Packages published in on the `echemdb data repository
-<https://github.com/echemdb/electrochemistry-data>`_ displayed on the `echemdb website
+Create a collection from the Data Packages published in the `echemdb data repository
+<https://github.com/echemdb/electrochemistry-data>`_, and
+that are displayed on the `echemdb website
 <https://www.echemdb.org/cv>`_.::
 
     >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
-Search the collection for entries from a single publication providing its DOI::
+Search the collection for entries, for example,
+from a single publication providing its DOI::
 
     >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
@@ -63,7 +67,7 @@ class Collection:
         >>> collection
         []
 
-    An example collection::
+    An example collection (only available from the development environment)::
 
         >>> collection = Collection.create_example()
         >>> collection.package.resource_names  # doctest: +NORMALIZE_WHITESPACE
@@ -87,7 +91,7 @@ class Collection:
     Entry = Entry
 
     def __init__(self, package=None):
-        if not isinstance(package) == Package:
+        if not isinstance(package, Package):
             package = Package()
 
         from iteration_utilities import duplicates, unique_everseen
@@ -102,7 +106,8 @@ class Collection:
     @classmethod
     def create_example(cls):
         r"""
-        Return a sample collection for use in automated tests.
+        Return a sample collection for use in automated tests
+        (only accessible from the development environment).
 
         EXAMPLES::
 
@@ -131,7 +136,8 @@ class Collection:
     @property
     def bibliography(self):
         r"""
-        Return a pybtex database of all bibtex bibliography files.
+        Return a pybtex database of all bibtex bibliography files,
+        associated with the entries.
 
         EXAMPLES::
 
