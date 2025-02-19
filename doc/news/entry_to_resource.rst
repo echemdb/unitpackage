@@ -6,7 +6,7 @@
 **Changed:**
 
 * Changed `unitpackage.entry.Entry` from being a frictionless Data Package into a frictionless Resource.
-* Changed `unitpackage.collection.Collection` from being a collection of frictionless Data Packages into a collection of frictionless Resources.
+* Changed `unitpackage.collection.Collection` from being a collection of frictionless Data Packages  into a collection of frictionless Resources forming a Data Package.
 * Changed the virtual `echemdb` Resource into an `entry.mutable_resource`.
 * Changed `unitpackage.local.create_df_resource` to create a resource from an actual frictionless Resource instead of a frictionless Data Package.
 

@@ -37,7 +37,7 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_df_resource(resource, resource_name="echemdb"):
+def create_df_resource(resource):
     r"""
     Return a pandas dataframe resource for a frictionless Tabular Resource.
 
@@ -47,7 +47,9 @@ def create_df_resource(resource, resource_name="echemdb"):
         >>> resource = Package("./examples/local/no_bibliography/no_bibliography.json").resources[0]
         >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
-        {'name': 'echemdb',
+        {'name': 'memory',
+        ...
+        'format': 'pandas',
         ...
 
         >>> df_resource.data
@@ -63,7 +65,7 @@ def create_df_resource(resource, resource_name="echemdb"):
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
     df_resource.infer()
-    df_resource.name = resource_name
+    
     return df_resource
 
 

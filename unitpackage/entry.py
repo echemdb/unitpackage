@@ -385,8 +385,6 @@ class Entry:
         # update units in the schema of the df resource
         df_resource.schema = resource.schema
 
-        df_resource.name = "echemdb"
-
         # Update the "MutableResource"
         resource.custom["MutableResource"] = df_resource
 
@@ -401,7 +399,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.mutable_resource
-            {'name': 'echemdb',
+            {'name': 'memory',
             'type': 'table',
             'data': [],
             'format': 'pandas',
@@ -435,11 +433,6 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry
-            Entry('alves_2011_electrochemistry_6010_f1a_solid')
-
-            # >>> entry.resource.MutableResource
-
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -448,7 +441,6 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            # >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
@@ -733,8 +725,6 @@ class Entry:
         df_resource.schema = Schema.from_descriptor(
             {"fields": new_fields}, allow_invalid=True
         )
-
-        df_resource.name = "echemdb"
 
         resource.custom["MutableResource"] = df_resource
 
