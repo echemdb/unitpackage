@@ -1,7 +1,7 @@
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2022-2024 Albert Engstfeld
+#        Copyright (C) 2022-2025 Albert Engstfeld
 #        Copyright (C) 2022      Johannes Hermann
 #        Copyright (C) 2022      Julian Rüth
 #        Copyright (C) 2022      Nicolas Hörmann
@@ -39,6 +39,15 @@ git diff --cached --exit-code
 
 $PROJECT = 'unitpackage'
 
+from rever.activities.command import command
+
+command('build', 'python -m build')
+command('twine', 'twine upload dist/unitpackage-' + $VERSION + '.tar.gz')
+# run a pixi task to update lock file
+command('update_pixi_lock', 'pixi run black')
+command('add_pixi_lock', 'git add pixi.lock')
+command('commit_pixi_lock', 'git commit -m "Update pixi.lock"')
+
 $ACTIVITIES = [
     'version_bump',
     'changelog',
@@ -60,8 +69,6 @@ $CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $CHANGELOG_NEWS = 'doc/news'
 $PUSH_TAG_REMOTE = 'git@github.com:echemdb/unitpackage.git'
-
-$PYPI_BUILD_COMMANDS = ['sdist', 'bdist_wheel']
 
 $GITHUB_ORG = 'echemdb'
 $GITHUB_REPO = 'unitpackage'
