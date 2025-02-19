@@ -65,7 +65,7 @@ def create_df_resource(resource):
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
     df_resource.infer()
-    
+
     return df_resource
 
 
