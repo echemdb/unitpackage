@@ -92,7 +92,7 @@ class Entry:
     frictionless Resource::
 
         >>> from unitpackage.entry import Entry
-        >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry = Entry.from_local('./examples/local/no_bibliography/no_bibliography.json')
         >>> entry
         Entry('no_bibliography')
 
@@ -100,7 +100,7 @@ class Entry:
 
         >>> from unitpackage.entry import Entry
         >>> from frictionless import Resource
-        >>> entry = Entry(Resource('./examples/no_bibliography/no_bibliography.json'))
+        >>> entry = Entry(Resource('./examples/local/no_bibliography/no_bibliography.json'))
         >>> entry
         Entry('no_bibliography')
 
@@ -385,8 +385,6 @@ class Entry:
         # update units in the schema of the df resource
         df_resource.schema = resource.schema
 
-        df_resource.name = "echemdb"
-
         # Update the "MutableResource"
         resource.custom["MutableResource"] = df_resource
 
@@ -401,7 +399,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.mutable_resource
-            {'name': 'echemdb',
+            {'name': 'memory',
             'type': 'table',
             'data': [],
             'format': 'pandas',
@@ -435,11 +433,6 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry
-            Entry('alves_2011_electrochemistry_6010_f1a_solid')
-
-            # >>> entry.resource.MutableResource
-
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -448,7 +441,6 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            # >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
@@ -532,7 +524,9 @@ class Entry:
             [Entry('no_bibliography')]
 
         """
-        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", name)
+        example_dir = os.path.join(
+            os.path.dirname(__file__), "..", "examples", "local", name
+        )
 
         if not os.path.exists(example_dir):
             raise ValueError(
@@ -732,8 +726,6 @@ class Entry:
             {"fields": new_fields}, allow_invalid=True
         )
 
-        df_resource.name = "echemdb"
-
         resource.custom["MutableResource"] = df_resource
 
         return type(self)(resource=resource)
@@ -743,14 +735,14 @@ class Entry:
         r"""
         Return an entry from a :param filename containing a frictionless Data Package.
         The Data Package must contain a single resource.
-        :: TODO: See #62
-        Otherwise use `collection.from_local(<PackageName>)` to create a collection from
-        all resources within. (not implemented)
+
+        Otherwise use `collection.from_local_file` to create a collection from
+        all resources within.
 
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+            >>> entry = Entry.from_local('./examples/local/no_bibliography/no_bibliography.json')
             >>> entry
             Entry('no_bibliography')
 
@@ -760,10 +752,12 @@ class Entry:
         package = collect_datapackage(filename)
 
         if len(package.resources) == 0:
-            print("no Resource")
+            raise ValueError(f"No resource available in '{filename}'")
 
         if len(package.resources) > 1:
-            print("More than one Resource")
+            raise ValueError(
+                f"No than one resource available in '{filename}'. Use collection.from_local()`"
+            )
 
         return cls(resource=package.resources[0])
 

@@ -1,20 +1,24 @@
 r"""
-A collection of Data Packages with units.
+A collection of frictionless Resources that can be accessed and stored as
+    a [frictionless Data Package](https://github.com/frictionlessdata/datapackage-py).
 
 EXAMPLES:
 
-Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`_
+Create a collection from frictionless Resources stored within local
+`frictionless Data Packages <https://framework.frictionlessdata.io/>`_
 in the `data/` directory::
 
     >>> collection = Collection.from_local('data/')
 
-Create a collection from the Data Packages published in on the `echemdb data repository
-<https://github.com/echemdb/electrochemistry-data>`_ displayed on the `echemdb website
+Create a collection from the Data Packages published in the `echemdb data repository
+<https://github.com/echemdb/electrochemistry-data>`_, and
+that are displayed on the `echemdb website
 <https://www.echemdb.org/cv>`_.::
 
     >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
 
-Search the collection for entries from a single publication providing its DOI::
+Search the collection for entries, for example,
+from a single publication providing its DOI::
 
     >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
@@ -51,15 +55,32 @@ logger = logging.getLogger("unitpackage")
 
 class Collection:
     r"""
-    A collection of [frictionless Data Packages](https://github.com/frictionlessdata/datapackage-py).
+    A collection of frictionless Resources,
+    that can be accessed and stored as
+    a [frictionless Data Package](https://github.com/frictionlessdata/datapackage-py).
 
     EXAMPLES:
 
     An empty collection::
 
         >>> collection = Collection([])
-        >>> len(collection)
-        0
+        >>> collection
+        []
+
+    An example collection (only available from the development environment)::
+
+        >>> collection = Collection.create_example()
+        >>> collection.package.resource_names  # doctest: +NORMALIZE_WHITESPACE
+        ['alves_2011_electrochemistry_6010_f1a_solid',
+        'engstfeld_2018_polycrystalline_17743_f4b_1',
+        'no_bibliography']
+
+    Collections must contain Resources with unique identifiers::
+
+        >>> db = Collection.from_local("./examples/duplicates")
+        Traceback (most recent call last):
+        ...
+        ValueError: Collection contains duplicate entries: ['duplicate']
 
     """
 
@@ -69,34 +90,24 @@ class Collection:
     # Subclasses can replace this with a specialized entry type.
     Entry = Entry
 
-    def __init__(self, resources=None):
-        self.resources = resources
+    def __init__(self, package=None):
+        if not isinstance(package, Package):
+            package = Package()
 
-    @property
-    def package(self):
-        r"""
-        Return a frictionless Data Package for this collection.
+        from iteration_utilities import duplicates, unique_everseen
 
-        EXAMPLES::
+        duplicates = list(unique_everseen(duplicates(package.resource_names)))
 
-            >>> collection = Collection.create_example()
-            >>> collection.package.resource_names  # doctest: +NORMALIZE_WHITESPACE
-            ['alves_2011_electrochemistry_6010_f1a_solid',
-            'engstfeld_2018_polycrystalline_17743_f4b_1',
-            'no_bibliography']
+        if duplicates:
+            raise ValueError(f"Collection contains duplicate entries: {duplicates}")
 
-        """
-        package = Package()
-
-        for resource in self.resources:
-            package.add_resource(resource)
-
-        return package
+        self.package = package
 
     @classmethod
     def create_example(cls):
         r"""
-        Return a sample collection for use in automated tests.
+        Return a sample collection for use in automated tests
+        (only accessible from the development environment).
 
         EXAMPLES::
 
@@ -113,14 +124,20 @@ class Collection:
             + cls.Entry.create_examples("no_bibliography")
         )
 
+        package = Package()
+
+        for entry in entries:
+            package.add_resource(entry.resource)
+
         return cls(
-            [entry.resource for entry in entries],
+            package=package,
         )
 
     @property
     def bibliography(self):
         r"""
-        Return a pybtex database of all bibtex bibliography files.
+        Return a pybtex database of all bibtex bibliography files,
+        associated with the entries.
 
         EXAMPLES::
 
@@ -189,8 +206,14 @@ class Collection:
                 logger.debug(f"Filter removed entry {entry} due to error: {e}")
                 return False
 
+        package = Package()
+
+        for entry in self:
+            if catching_predicate(entry):
+                package.add_resource(entry.resource)
+
         return type(self)(
-            resources=[entry.resource for entry in self if catching_predicate(entry)],
+            package=package,
         )
 
     def __iter__(self):
@@ -211,7 +234,7 @@ class Collection:
         return iter(
             [
                 self.Entry(resource)
-                for resource in sorted(self.resources, key=lambda p: p.name)
+                for resource in sorted(self.package.resources, key=lambda p: p.name)
             ]
         )
 
@@ -226,7 +249,7 @@ class Collection:
             3
 
         """
-        return len(self.resources)
+        return len(self.package.resources)
 
     def __repr__(self):
         r"""
@@ -289,7 +312,7 @@ class Collection:
         EXAMPLES::
 
             >>> from unitpackage.collection import Collection
-            >>> collection = Collection.from_local('./examples')
+            >>> collection = Collection.from_local('./examples/local/')
             >>> collection  # doctest: +NORMALIZE_WHITESPACE
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
             Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
@@ -300,8 +323,31 @@ class Collection:
 
         packages = unitpackage.local.collect_datapackages(datadir)
         resources = unitpackage.local.collect_resources(packages)
+        package = Package()
 
-        return cls(resources=resources)
+        for resource in resources:
+            package.add_resource(resource)
+
+        return cls(package=package)
+
+    @classmethod
+    def from_local_file(cls, filename):
+        r"""
+        Create a collection from a local Data Package.
+
+        EXAMPLES::
+
+            >>> from unitpackage.collection import Collection
+            >>> collection = Collection.from_local_file('./examples/local/engstfeld_2018_polycrystalline_17743/engstfeld_2018_polycrystalline_17743_f4b_1.json')
+            >>> collection  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+
+        """
+        from unitpackage.local import collect_datapackage
+
+        package = collect_datapackage(filename)
+
+        return cls(package=package)
 
     @classmethod
     def from_remote(cls, url=None, data=None, outdir=None):
@@ -325,15 +371,25 @@ class Collection:
         import unitpackage.local
         import unitpackage.remote
 
+        package = Package()
+
         if url is None:
             data_packages = unitpackage.remote.collect_datapackages(
                 data=data, outdir=outdir
             )
             resources = unitpackage.local.collect_resources(data_packages)
-            return cls(resources=resources)
+
+            for resource in resources:
+                package.add_resource(resource)
+
+            return cls(package=package)
 
         data_packages = unitpackage.remote.collect_datapackages(
             url=url, data=data, outdir=outdir
         )
         resources = unitpackage.local.collect_resources(data_packages)
-        return cls(resources=resources)
+
+        for resource in resources:
+            package.add_resource(resource)
+
+        return cls(package=package)
