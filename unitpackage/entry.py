@@ -92,7 +92,7 @@ class Entry:
     frictionless Resource::
 
         >>> from unitpackage.entry import Entry
-        >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry = Entry.from_local('./examples/local/no_bibliography/no_bibliography.json')
         >>> entry
         Entry('no_bibliography')
 
@@ -100,7 +100,7 @@ class Entry:
 
         >>> from unitpackage.entry import Entry
         >>> from frictionless import Resource
-        >>> entry = Entry(Resource('./examples/no_bibliography/no_bibliography.json'))
+        >>> entry = Entry(Resource('./examples/local/no_bibliography/no_bibliography.json'))
         >>> entry
         Entry('no_bibliography')
 
@@ -532,7 +532,9 @@ class Entry:
             [Entry('no_bibliography')]
 
         """
-        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", name)
+        example_dir = os.path.join(
+            os.path.dirname(__file__), "..", "examples", "local", name
+        )
 
         if not os.path.exists(example_dir):
             raise ValueError(
@@ -743,14 +745,14 @@ class Entry:
         r"""
         Return an entry from a :param filename containing a frictionless Data Package.
         The Data Package must contain a single resource.
-        :: TODO: See #62
-        Otherwise use `collection.from_local(<PackageName>)` to create a collection from
-        all resources within. (not implemented)
+
+        Otherwise use `collection.from_local_file` to create a collection from
+        all resources within.
 
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+            >>> entry = Entry.from_local('./examples/local/no_bibliography/no_bibliography.json')
             >>> entry
             Entry('no_bibliography')
 
@@ -760,10 +762,12 @@ class Entry:
         package = collect_datapackage(filename)
 
         if len(package.resources) == 0:
-            print("no Resource")
+            raise ValueError(f"No resource available in '{filename}'")
 
         if len(package.resources) > 1:
-            print("More than one Resource")
+            raise ValueError(
+                f"No than one resource available in '{filename}'. Use collection.from_local()`"
+            )
 
         return cls(resource=package.resources[0])
 

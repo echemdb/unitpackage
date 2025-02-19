@@ -309,6 +309,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py312hef9b889_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/83/e3/aba6375dc31f2a5513c3224e09f52aca989d39863395dcd763d997d7a528/iteration_utilities-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -606,6 +607,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py313hab0894d_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.6-h915ae27_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/22/8b/ef3cac00c54d7ab7aa357df4e1410ee674d6cdd37603daaee19f6049c8c6/iteration_utilities-0.13.0-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -899,6 +901,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py313h574b89f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/98/21/41fae72366afbc9c922a0c12c5d3a60ce005b21615539a1573b3ad97d5ab/iteration_utilities-0.13.0-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -1199,6 +1202,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py310ha39cb0e_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/cd/4a/d10205b62074abd18500955cbd499c3bebef837a3946e7bee4a9e9ec9743/iteration_utilities-0.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -1564,6 +1568,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py312h7122b0e_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.6-h915ae27_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ee/b5/2983f610d9f042e952b3feca5a913d5fae8714d14155f8da1a1688078291/iteration_utilities-0.13.0-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -1924,6 +1929,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py312h7606c53_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/42/af/2d83ef6f5466cfd91afb3ea4f244414f085188c9019c226df53e01647919/iteration_utilities-0.13.0-cp312-cp312-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -2161,6 +2167,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py310ha39cb0e_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/cd/4a/d10205b62074abd18500955cbd499c3bebef837a3946e7bee4a9e9ec9743/iteration_utilities-0.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -2386,6 +2393,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py310h41d873f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.6-h915ae27_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ac/bd/f991c85ab6a39a28e9a41da31812cbc9590e32a0b703db70d90ab951c858/iteration_utilities-0.13.0-cp310-cp310-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -2615,6 +2623,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py310he5e10e1_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/f3/0c/212e44691c02d0fa159d17b373590f0008ebf140f6f8b0248ae31a0b00d2/iteration_utilities-0.13.0-cp310-cp310-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -2937,6 +2946,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py311hbc35293_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/79/66/35338b38c7632a5287ddff47a2f7ce68ab266fad9ca1a9af38eeeb296295/iteration_utilities-0.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -3246,6 +3256,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py311hdf6fcd6_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.6-h915ae27_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ac/da/ace250a151259bfa667c584db8993eba884a450eb19bf95552d8ebe09473/iteration_utilities-0.13.0-cp311-cp311-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -3546,6 +3557,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py311h53056dc_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/8e/f2/796ec083203f25ddf8ede31004d29f11c725e62579c530764711d222ddc3/iteration_utilities-0.13.0-cp311-cp311-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -3869,6 +3881,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py312hef9b889_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/83/e3/aba6375dc31f2a5513c3224e09f52aca989d39863395dcd763d997d7a528/iteration_utilities-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -4179,6 +4192,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py312h7122b0e_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.6-h915ae27_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ee/b5/2983f610d9f042e952b3feca5a913d5fae8714d14155f8da1a1688078291/iteration_utilities-0.13.0-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -4482,6 +4496,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py312h7606c53_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/42/af/2d83ef6f5466cfd91afb3ea4f244414f085188c9019c226df53e01647919/iteration_utilities-0.13.0-cp312-cp312-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -4715,6 +4730,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py39h08a7858_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.6-ha6fb4c9_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/be/5b/7fc196a016f279813ffb8b8eeb36ccdd3e2f29635aeabe2d1163c08ac132/iteration_utilities-0.13.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -4939,6 +4955,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py39hc23f734_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.6-h915ae27_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4e/e6/597f496cea93902d252700a709831b21eed45a387a9b24989074e7bf48e6/iteration_utilities-0.13.0-cp39-cp39-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -5163,6 +5180,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py39h9bf74da_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.6-h0ea2cb4_0.conda
       - pypi: https://files.pythonhosted.org/packages/b9/f8/feced7779d755758a52d1f6635d990b8d98dc0a29fa568bbe0625f18fdf3/filelock-3.16.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/23/62/059f47b4ec629bb86164c5f1f436fab4dd6417fc9f9af5b8dcc14d019483/iteration_utilities-0.13.0-cp39-cp39-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/b6/cb/b86984bed139586d01532a587464b5805f12e397594f19f931c4c2fbfa61/tenacity-9.0.0-py3-none-any.whl
       - pypi: .
@@ -10031,6 +10049,132 @@ packages:
   - pkg:pypi/isort?source=hash-mapping
   size: 73545
   timestamp: 1733236278052
+- pypi: https://files.pythonhosted.org/packages/22/8b/ef3cac00c54d7ab7aa357df4e1410ee674d6cdd37603daaee19f6049c8c6/iteration_utilities-0.13.0-cp313-cp313-macosx_10_13_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: c096575da8cc5fe89863363abd2d87dd210c9c8be58fc7dbb46bc5d30d3033a4
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/23/62/059f47b4ec629bb86164c5f1f436fab4dd6417fc9f9af5b8dcc14d019483/iteration_utilities-0.13.0-cp39-cp39-win_amd64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 0c55a32f5b9130fda9e62db44ff3a7eb40d6e07183e611ce7157989c408d785c
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/42/af/2d83ef6f5466cfd91afb3ea4f244414f085188c9019c226df53e01647919/iteration_utilities-0.13.0-cp312-cp312-win_amd64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 6c15f35774f51d60012d2b351218cd090dcd98f3833910aa908587faa8572b6e
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/4e/e6/597f496cea93902d252700a709831b21eed45a387a9b24989074e7bf48e6/iteration_utilities-0.13.0-cp39-cp39-macosx_10_9_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: f5b30f37431e423a7a524df28404bf252d80c45423ab77713768bf8c403a86f9
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/79/66/35338b38c7632a5287ddff47a2f7ce68ab266fad9ca1a9af38eeeb296295/iteration_utilities-0.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 076e343d642a1cedd600b5ee9752d261df9cd327b4e68e61a1ab0399258de28c
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/83/e3/aba6375dc31f2a5513c3224e09f52aca989d39863395dcd763d997d7a528/iteration_utilities-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 8117dfa504f8a303928fdd80a37de091570e98170253905461080d667825d858
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/8e/f2/796ec083203f25ddf8ede31004d29f11c725e62579c530764711d222ddc3/iteration_utilities-0.13.0-cp311-cp311-win_amd64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 4fa67ea7ce6a0096b769aae7eb53d8794d0fdf3509a2c871604d89a3e5bcf4a4
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/98/21/41fae72366afbc9c922a0c12c5d3a60ce005b21615539a1573b3ad97d5ab/iteration_utilities-0.13.0-cp313-cp313-win_amd64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 59e29ceacdd2010f2a54455a5f89c68976b439d9e3e0c73d9cc44bfa630b4194
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/ac/bd/f991c85ab6a39a28e9a41da31812cbc9590e32a0b703db70d90ab951c858/iteration_utilities-0.13.0-cp310-cp310-macosx_10_9_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: b9c2514cc2e275836f583e5c2f3f0b19164006d1379adc5033a13ea3905342ac
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/ac/da/ace250a151259bfa667c584db8993eba884a450eb19bf95552d8ebe09473/iteration_utilities-0.13.0-cp311-cp311-macosx_10_9_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 4a89aa1a4467cc3505ece7e71b1a1974e01fba9eeeca77dc0a4f6b649f1b9ce7
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/be/5b/7fc196a016f279813ffb8b8eeb36ccdd3e2f29635aeabe2d1163c08ac132/iteration_utilities-0.13.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 18ebd13a2aff275880d1381fe3e48e59179baf07ff87dfb7809edcb46e64820d
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/cd/4a/d10205b62074abd18500955cbd499c3bebef837a3946e7bee4a9e9ec9743/iteration_utilities-0.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 62662e03ae7807bc54d61902425b5fa2bdffd7afcc79fec476dffcd8fb28d85e
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/ee/b5/2983f610d9f042e952b3feca5a913d5fae8714d14155f8da1a1688078291/iteration_utilities-0.13.0-cp312-cp312-macosx_10_13_x86_64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: ee590ddb6439e393df66e6b0be7737c4dc367abfd3b13d69ab63260a2f8e0fde
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
+- pypi: https://files.pythonhosted.org/packages/f3/0c/212e44691c02d0fa159d17b373590f0008ebf140f6f8b0248ae31a0b00d2/iteration_utilities-0.13.0-cp310-cp310-win_amd64.whl
+  name: iteration-utilities
+  version: 0.13.0
+  sha256: 68a338723cc02b994adde404d457eaab15cc8e3d5a701a31ffe2216ba5960997
+  requires_dist:
+  - sphinx>=2.2 ; extra == 'documentation'
+  - numpydoc ; extra == 'documentation'
+  - pytest ; extra == 'test'
+  requires_python: '>=3.7'
 - conda: https://conda.anaconda.org/conda-forge/noarch/jedi-0.19.2-pyhd8ed1ab_1.conda
   sha256: 92c4d217e2dc68983f724aa983cca5464dcb929c566627b26a2511159667dba8
   md5: a4f4c5dc9b80bc50e0d3dc4e6e8f1bd9
@@ -20463,11 +20607,12 @@ packages:
 - pypi: .
   name: unitpackage
   version: 0.8.5
-  sha256: cafaeedc14aae8a1e6367325ef6257253bb785e27b5569a857583f175b9d0a3e
+  sha256: a4778227f7d4e1578e4a3dacb10e44d4f4b69b313ab9d2d2c8bc7943590dae0e
   requires_dist:
   - astropy>=5,<=7
   - filelock>=3,<4
   - frictionless>=5.8.3,<6
+  - iteration-utilities>=0.13.0,<0.14.0
   - matplotlib>=3.5.0,<4
   - pandas>=1.3,<3
   - plotly>=5,<6

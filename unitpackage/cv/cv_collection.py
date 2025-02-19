@@ -61,11 +61,13 @@ class CVCollection(Collection):
 
     EXAMPLES:
 
-    An empty collection::
+    An example collection::
 
-        >>> collection = CVCollection([])
-        >>> len(collection)
-        0
+        >>> collection = Collection.create_example()
+        >>> collection.package.resource_names  # doctest: +NORMALIZE_WHITESPACE
+        ['alves_2011_electrochemistry_6010_f1a_solid',
+        'engstfeld_2018_polycrystalline_17743_f4b_1',
+        'no_bibliography']
 
     """
 
