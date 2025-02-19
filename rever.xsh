@@ -51,9 +51,13 @@ command('commit_pixi_lock', 'git commit -m "Update pixi.lock"')
 $ACTIVITIES = [
     'version_bump',
     'changelog',
+    'build',
+    'twine',
+    'update_pixi_lock',
+    'add_pixi_lock',
+    'commit_pixi_lock',
     'tag',
     'push_tag',
-    'pypi',
     'ghrelease',
 ]
 
