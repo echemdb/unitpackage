@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unitpackage.cv.cv_collection &mdash; unitpackage 0.9.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=39bb1c6d"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="unitpackage.cv.cv_entry" href="cv_entry.html" />
+    <link rel="prev" title="unitpackage.descriptor" href="../descriptor.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">unitpackage.cv.cv_collection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.cv.cv_collection.CVCollection"><code class="docutils literal notranslate"><span class="pre">CVCollection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.cv.cv_collection.CVCollection.CVEntry"><code class="docutils literal notranslate"><span class="pre">CVCollection.CVEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.cv.cv_collection.CVCollection.Entry"><code class="docutils literal notranslate"><span class="pre">CVCollection.Entry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.cv.cv_collection.CVCollection.describe"><code class="docutils literal notranslate"><span class="pre">CVCollection.describe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.cv.cv_collection.CVCollection.materials"><code class="docutils literal notranslate"><span class="pre">CVCollection.materials()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cv_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.cv.cv_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../api.html">API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">unitpackage.cv.cv_collection</span></code></li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/echemdb/unitpackage/blob/master/unitpackage/cv/cv_collection.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-unitpackage.cv.cv_collection">
+<span id="unitpackage-cv-cv-collection"></span><h1><code class="docutils literal notranslate"><span class="pre">unitpackage.cv.cv_collection</span></code><a class="headerlink" href="#module-unitpackage.cv.cv_collection" title="Link to this heading"></a></h1>
+<p>A Collection of Cyclic Voltammograms. It provides additional functionalities compared to
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code> specific to Cyclic Voltammograms and electrochemical data.</p>
+<p>EXAMPLES:</p>
+<p>Create a collection from local <a class="reference external" href="https://framework.frictionlessdata.io/">frictionless Data Packages</a>
+in the <cite>data/</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.cv.cv_collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">CVCollection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">CVCollection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s1">&#39;data/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a collection from the Data Packages published in the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a> displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">CVCollection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>  
+</pre></div>
+</div>
+<p>Search the collection for entries from a single publication:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="s1">&#39;https://doi.org/10.1039/C0CP01001D&#39;</span><span class="p">)</span>  
+<span class="go">[CVEntry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;), ...</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unitpackage.cv.cv_collection.</span></span><span class="sig-name descname"><span class="pre">CVCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection" title="Link to this definition"></a></dt>
+<dd><p>A collection of <a class="reference external" href="https://github.com/frictionlessdata/framework">frictionless Data Packages</a>.</p>
+<p>Essentially this is just a list of data packages with some additional
+convenience wrap for use in the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a>
+displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>.</p>
+<p>EXAMPLES:</p>
+<p>An example collection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">resource_names</span>  
+<span class="go">[&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;,</span>
+<span class="go">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;,</span>
+<span class="go">&#39;no_bibliography&#39;]</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.CVEntry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CVEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.CVEntry" title="Link to this definition"></a></dt>
+<dd><p>A <a class="reference external" href="https://github.com/frictionlessdata/framework">frictionless Data Package</a> describing a CV.</p>
+<p>EXAMPLES:</p>
+<p>An entry can be created directly from a Data Package that has been created
+with <a class="reference external" href="https://echemdb.github.io/svgdigitizer/">svgdigitizer’s</a> <cite>cv</cite> command.
+However, entries are normally obtained by opening a <a class="reference internal" href="#unitpackage.cv.cv_collection.CVCollection" title="unitpackage.cv.cv_collection.CVCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">CVCollection</span></code></a> of entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.cv.cv_collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">CVCollection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">CVCollection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">collection</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.CVEntry.get_electrode">
+<span class="sig-name descname"><span class="pre">get_electrode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.CVEntry.get_electrode" title="Link to this definition"></a></dt>
+<dd><p>Returns an electrode with the specified name.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">CVEntry</span><span class="o">.</span><span class="n">create_examples</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;WE&#39;</span><span class="p">)</span> 
+<span class="go">{&#39;name&#39;: &#39;WE&#39;, &#39;function&#39;: &#39;working electrode&#39;, &#39;type&#39;: &#39;single crystal&#39;,</span>
+<span class="go">&#39;crystallographic orientation&#39;: &#39;0001&#39;, &#39;material&#39;: &#39;Ru&#39;,</span>
+<span class="go">&#39;preparation procedure&#39;: &#39;Sputtering and flash annealing under UHV</span>
+<span class="go">conditions with repeated cycles of oxygen adsorption and desorption.&#39;,</span>
+<span class="go">&#39;shape&#39;: {&#39;height&#39;: {&#39;unit&#39;: &#39;mm&#39;, &#39;value&#39;: 2}, &#39;type&#39;: &#39;hat shaped&#39;},</span>
+<span class="go">&#39;source&#39;: {&#39;supplier&#39;: &#39;Mateck&#39;}}</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span> 
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">KeyError</span>: <span class="n">&quot;Electrode with name &#39;foo&#39; does not exist&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.CVEntry.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'E'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'j'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.CVEntry.plot" title="Link to this definition"></a></dt>
+<dd><p>Return a plot of this entry.
+The default plot is a Cyclic Voltammogram (‘j vs E’).
+When <cite>j</cite> is not present in the data, <cite>I</cite> is used instead.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">CVEntry</span><span class="o">.</span><span class="n">create_examples</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+<p>The plot can also be returned with custom axis dimensions (field names) available in the resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+<p>A plot resembling the original figure can be obtained by first rescaling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.CVEntry.rescale">
+<span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.CVEntry.rescale" title="Link to this definition"></a></dt>
+<dd><p>Return a rescaled <a class="reference internal" href="cv_entry.html#unitpackage.cv.cv_entry.CVEntry" title="unitpackage.cv.cv_entry.CVEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">CVEntry</span></code></a> with axes in the specified <code class="docutils literal notranslate"><span class="pre">units</span></code>.</p>
+<p>Usage is essentially the same as for <a class="reference internal" href="../entry.html#unitpackage.entry.Entry.rescale" title="unitpackage.entry.Entry.rescale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rescale()</span></code></a>, i.e.,
+new units are expected as dict, where the key is the axis name and the value
+the new unit, such as <code class="docutils literal notranslate"><span class="pre">{'j':</span> <span class="pre">'uA</span> <span class="pre">/</span> <span class="pre">cm2',</span> <span class="pre">'t':</span> <span class="pre">'h'}</span></code>.</p>
+<p>Additionally, the entry can be rescaled to the axes’ units of the original data.
+These units must be defined in the metadata of the resource,
+within the key <code class="docutils literal notranslate"><span class="pre">figure_description.fields</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">CVEntry</span><span class="o">.</span><span class="n">create_examples</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">mutable_resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">fields</span> 
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;mA / cm2&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.CVEntry.thumbnail">
+<span class="sig-name descname"><span class="pre">thumbnail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">96</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">72</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">72</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.CVEntry.thumbnail" title="Link to this definition"></a></dt>
+<dd><p>Return a thumbnail of the entry’s curve as a PNG byte stream.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">CVEntry</span><span class="o">.</span><span class="n">create_examples</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">()</span>
+<span class="go">b&#39;\x89PNG...&#39;</span>
+</pre></div>
+</div>
+<p>The PNG’s <code class="docutils literal notranslate"><span class="pre">width</span></code> and <code class="docutils literal notranslate"><span class="pre">height</span></code> can be specified in pixels.
+Additional keyword arguments are passed to the data frame plotting
+method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">b&quot;\x89PNG...&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.Entry">
+<span class="sig-name descname"><span class="pre">Entry</span></span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.Entry" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="cv_entry.html#unitpackage.cv.cv_entry.CVEntry" title="unitpackage.cv.cv_entry.CVEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">CVEntry</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.describe" title="Link to this definition"></a></dt>
+<dd><p>Return some statistics about the collection.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">CVCollection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span> <span class="o">==</span> \
+<span class="gp">... </span><span class="p">{</span><span class="s1">&#39;number of references&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span><span class="s1">&#39;number of entries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span><span class="s1">&#39;materials&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;Cu&#39;</span><span class="p">,</span> <span class="s1">&#39;Ru&#39;</span><span class="p">}}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.cv.cv_collection.CVCollection.materials">
+<span class="sig-name descname"><span class="pre">materials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.cv.cv_collection.CVCollection.materials" title="Link to this definition"></a></dt>
+<dd><p>Return the substrate materials in the collection.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">CVCollection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">materials</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;Cu&#39;</span><span class="p">,</span> <span class="s1">&#39;Ru&#39;</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../descriptor.html" class="btn btn-neutral float-left" title="unitpackage.descriptor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cv_entry.html" class="btn btn-neutral float-right" title="unitpackage.cv.cv_entry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
