@@ -44,7 +44,7 @@ from rever.activities.command import command
 command('pixi', 'pixi install --manifest-path "$PWD/pyproject.toml" -e dev')
 
 command('build', 'python -m build')
-command('twine', 'twine upload dist/unitpackage-' + $VERSION + '.tar.gz')
+command('twine', 'twine upload dist/unitpackage-' + $VERSION + '.tar.gz dist/unitpackage-' + $VERSION + '-py3-none-any.whl')
 
 $ACTIVITIES = [
     'version_bump',
