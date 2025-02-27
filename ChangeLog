@@ -9,12 +9,13 @@ v0.9.0
 
 **Added:**
 
-Added `entry.add_column` which allows adding a column to an existing pandas dataframe and extends the Data Package fields with given units.
+* Added `entry.add_column` which allows adding a column to an existing pandas dataframe and extends the Data Package fields with given units.
 * Added the property `entry.mutable_resource`, which is a virtual modifiable copy of the original resource excluding its metadata.
 * Added `unitpackage.local.collect_resources`, which collects all resources from a list of frictionless Data Packages.
 * Added `collection.from_local_file` to create a collection from the resources included in a Data Package (JSON).
 * Added validation to check for duplicate resource names upon creating a collection.
 * Added wheel upload on new release.
+* Added dependency `iteration_utilities`.
 
 **Changed:**
 
