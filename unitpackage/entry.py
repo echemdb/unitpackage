@@ -887,7 +887,7 @@ class Entry:
             >>> basename = 'Upper_Case_Save'
             >>> entry = Entry.from_df(df=df, basename=basename)
             >>> entry.save(outdir='./test/generated')
-            >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
+            >>> os.path.exists(f'test/generated/{basename.lower()}.json') and os.path.exists(f'test/generated/{basename.lower()}.csv')
             True
 
             >>> new_entry = Entry.from_local(f'test/generated/{basename.lower()}.json')
