@@ -176,7 +176,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     )
     package.infer()
 
-    resource = package.get_resource(Path(csv_basename).stem)
+    resource = package.get_resource(Path(csv_basename).stem.lower())
 
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)
