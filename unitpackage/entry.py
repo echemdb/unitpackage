@@ -627,6 +627,25 @@ class Entry:
             >>> entry.user
             'Max Doe'
 
+        .. important::
+            Upper case filenames are converted to lower case entry identifiers!
+
+        A filename containing upper case characters::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv', fields=fields)
+            >>> entry
+            Entry('uppercase')
+
+        Casing in the filename is preserved in the metadata::
+
+            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'uppercase',
+            'type': 'table',
+            'path': 'UpperCase.csv',
+            ...
+
         """
         from unitpackage.local import create_unitpackage
 
@@ -788,11 +807,23 @@ class Entry:
 
             >>> entry.save(outdir='./test/generated/from_df')
 
-        TESTS
+        .. important::
+            Basenames with upper case characters are stored with lower case characters!
+            To separate words use underscores.
+
+        The basename will always be converted to lowercase entry identifiers::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='TEST_DF')
+            >>> entry
+            Entry('test_df')
+
+        TESTS:
 
         Verify that all fields are properly created even when they are not specified as fields::
 
-            >>> import os
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
             >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
@@ -832,9 +863,13 @@ class Entry:
             True
 
         When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
-        Note that for a valid frictionless Data Package this base name
-        MUST be lower-case and contain only alphanumeric
-        characters along with ".", "_" or "-" characters'::
+
+        .. note::
+            For a valid frictionless Data Package the basename
+            MUST be lower-case and contain only alphanumeric
+            characters along with ``.``, ``_`` or ``-`` characters'
+
+        A valid basename::
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
@@ -843,10 +878,29 @@ class Entry:
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
+        Upper case characters are saved lower case::
+
+            >>> import os
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> basename = 'Upper_Case_Save'
+            >>> entry = Entry.from_df(df=df, basename=basename)
+            >>> entry.save(outdir='./test/generated')
+            >>> os.path.exists(f'test/generated/{basename.lower()}.json') and os.path.exists(f'test/generated/{basename.lower()}.csv')
+            True
+
+            >>> new_entry = Entry.from_local(f'test/generated/{basename.lower()}.json')
+            >>> new_entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'upper_case_save',
+            'type': 'table',
+            'path': 'upper_case_save.csv',
+            ...
+
         TESTS:
 
         Save the entry as Data Package with metadata containing datetime format,
-        which is not natively supported by JSON.
+        which is not natively supported by JSON.::
 
             >>> import os
             >>> from datetime import datetime
