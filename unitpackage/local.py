@@ -68,23 +68,6 @@ def create_df_resource(resource):
     return df_resource
 
 
-def collect_datapackage(filename):
-    r"""
-    Return a Data Package from a :param filename which must be a valid frictionless Data Package (JSON).
-
-    EXAMPLES::
-
-        >>> package = collect_datapackage("./examples/local/no_bibliography/no_bibliography.json")
-        >>> package # doctest: +NORMALIZE_WHITESPACE
-        {'resources': [{'name':
-        ...
-
-    """
-    package = Package(filename)
-
-    return package
-
-
 def collect_resources(datapackages):
     r"""
     Return a list of resources from a list of Data Packages.
@@ -120,7 +103,7 @@ def collect_datapackages(data):
     """
     packages = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    return [collect_datapackage(package) for package in packages]
+    return [Package(package) for package in packages]
 
 
 def create_unitpackage(csvname, metadata=None, fields=None):
