@@ -29,7 +29,6 @@ import logging
 import os
 import os.path
 from glob import glob
-from pathlib import Path
 
 import pandas as pd
 from frictionless import Package, Resource, Schema
@@ -166,24 +165,19 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
     csv_basename = os.path.basename(csvname)
 
-    package = Package(
-        resources=[
-            Resource(
-                path=csv_basename,
-                basepath=os.path.dirname(csvname) or ".",
-            )
-        ],
+    resource = Resource(
+        path=csv_basename,
+        basepath=os.path.dirname(csvname) or ".",
     )
-    package.infer()
 
-    resource = package.get_resource(Path(csv_basename).stem.lower())
+    resource.infer()
 
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)
 
     if fields:
-        # Update fields in the Data Package describing the data in the CSV
-        package_schema = resource.schema
+        # Update fields in the Resource describing the data in the CSV
+        resource_schema = resource.schema
         if not isinstance(fields, list):
             raise ValueError(
                 "'fields' must be a list such as \
@@ -205,14 +199,15 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         new_fields = []
         unspecified_fields = []
-        for name in package_schema.field_names:
+
+        for name in resource_schema.field_names:
             if name in provided_schema.field_names:
                 new_fields.append(
                     provided_schema.get_field(name).to_dict()
-                    | package_schema.get_field(name).to_dict()
+                    | resource_schema.get_field(name).to_dict()
                 )
             else:
-                new_fields.append(package_schema.get_field(name).to_dict())
+                new_fields.append(resource_schema.get_field(name).to_dict())
 
         if len(unspecified_fields) != 0:
             logger.warning(
@@ -221,14 +216,16 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         unused_provided_fields = []
         for name in provided_schema.field_names:
-            if name not in package_schema.field_names:
+            if name not in resource_schema.field_names:
                 unused_provided_fields.append(name)
         if len(unused_provided_fields) != 0:
             logger.warning(
-                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {package_schema.field_names}."
+                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {resource_schema.field_names}."
             )
 
         resource.schema = Schema.from_descriptor({"fields": new_fields})
+
+    package = Package(resources=[resource])
 
     return package
 
