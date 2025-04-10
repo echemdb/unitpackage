@@ -287,6 +287,51 @@ class Collection:
 
         return self.Entry(self.package.get_resource(identifier))
 
+    def save(self, package_name=None, outdir=None):
+        r"""
+        Save this collection as a frictionless Data Package (CSV and JSON)
+        to the output directory :param outdir: and :param package_name:.
+
+        In the following example we first generate some sample datapackages containing individual entries
+        in the specified directory. From these we generate a single Data Package, containing resources
+        for all CSV in that folder.
+
+        EXAMPLES::
+
+            >>> collection = Collection.create_example()
+            >>> collection.save_entries(outdir='./test/generated/saved_collection/entries')
+            >>> package = collection.package.to_dict()
+            >>> collection.save(outdir='./test/generated/saved_collection')
+            >>> import glob
+            >>> glob.glob('test/generated/saved_collection/datapackage.json') # doctest: +NORMALIZE_WHITESPACE
+            ['test/generated/saved_collection/datapackage.json']
+
+        """
+        if not outdir:
+            outdir = "."
+
+        if not package_name:
+            package_name = "datapackage"
+
+        import os
+
+        if not os.path.isdir(outdir):
+            os.makedirs(outdir)
+
+        json_name = os.path.join(outdir, package_name + ".json")
+
+        import copy
+        package = copy.deepcopy(self.package.to_dict())
+
+        for resource in package["resources"]:
+            del resource["MutableResource"]
+
+        from unitpackage.local import write_metadata
+
+        with open(json_name, mode="w", encoding="utf-8") as json:
+            write_metadata(json, package)
+
+
     def save_entries(self, outdir=None):
         r"""
         Save the entries of this collection as Data Packages (CSV and JSON)
@@ -295,9 +340,9 @@ class Collection:
         EXAMPLES::
 
             >>> db = Collection.create_example()
-            >>> db.save_entries(outdir='./test/generated/saved_collection')
+            >>> db.save_entries(outdir='./test/generated/saved_entries')
             >>> import glob
-            >>> glob.glob('test/generated/saved_collection/**.json') # doctest: +NORMALIZE_WHITESPACE
+            >>> glob.glob('test/generated/saved_entries/**.json') # doctest: +NORMALIZE_WHITESPACE
             ['test...
 
         """
