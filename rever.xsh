@@ -1,7 +1,7 @@
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2022-2024 Albert Engstfeld
+#        Copyright (C) 2022-2025 Albert Engstfeld
 #        Copyright (C) 2022      Johannes Hermann
 #        Copyright (C) 2022      Julian Rüth
 #        Copyright (C) 2022      Nicolas Hörmann
@@ -39,12 +39,21 @@ git diff --cached --exit-code
 
 $PROJECT = 'unitpackage'
 
+from rever.activities.command import command
+
+command('pixi', 'pixi install --manifest-path "$PWD/pyproject.toml" -e dev')
+
+command('build', 'python -m build')
+command('twine', 'twine upload dist/unitpackage-' + $VERSION + '.tar.gz dist/unitpackage-' + $VERSION + '-py3-none-any.whl')
+
 $ACTIVITIES = [
     'version_bump',
+    'pixi',
     'changelog',
     'tag',
     'push_tag',
-    'pypi',
+    'build',
+    'twine',
     'ghrelease',
 ]
 
@@ -60,8 +69,6 @@ $CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $CHANGELOG_NEWS = 'doc/news'
 $PUSH_TAG_REMOTE = 'git@github.com:echemdb/unitpackage.git'
-
-$PYPI_BUILD_COMMANDS = ['sdist', 'bdist_wheel']
 
 $GITHUB_ORG = 'echemdb'
 $GITHUB_REPO = 'unitpackage'

@@ -29,7 +29,6 @@ import logging
 import os
 import os.path
 from glob import glob
-from pathlib import Path
 
 import pandas as pd
 from frictionless import Package, Resource, Schema
@@ -37,17 +36,19 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_df_resource(resource, resource_name="echemdb"):
+def create_df_resource(resource):
     r"""
     Return a pandas dataframe resource for a frictionless Tabular Resource.
 
     EXAMPLES::
 
         >>> from frictionless import Package
-        >>> resource = Package("./examples/no_bibliography/no_bibliography.json").resources[0]
+        >>> resource = Package("./examples/local/no_bibliography/no_bibliography.json").resources[0]
         >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
-        {'name': 'echemdb',
+        {'name': 'memory',
+        ...
+        'format': 'pandas',
         ...
 
         >>> df_resource.data
@@ -63,25 +64,8 @@ def create_df_resource(resource, resource_name="echemdb"):
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
     df_resource.infer()
-    df_resource.name = resource_name
+
     return df_resource
-
-
-def collect_datapackage(filename):
-    r"""
-    Return a Data Package from a :param filename which must be a valid frictionless Data Package (JSON).
-
-    EXAMPLES::
-
-        >>> package = collect_datapackage("./examples/no_bibliography/no_bibliography.json")
-        >>> package # doctest: +NORMALIZE_WHITESPACE
-        {'resources': [{'name':
-        ...
-
-    """
-    package = Package(filename)
-
-    return package
 
 
 def collect_resources(datapackages):
@@ -90,7 +74,7 @@ def collect_resources(datapackages):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("./examples")
+        >>> packages = collect_datapackages("./examples/local")
         >>> resources = collect_resources(packages)
         >>> [resource.name for resource in resources] # doctest: +NORMALIZE_WHITESPACE
         ['alves_2011_electrochemistry_6010_f1a_solid',
@@ -98,7 +82,7 @@ def collect_resources(datapackages):
         'no_bibliography']
 
     """
-    # TODO:: Validate for duplicates and raise a warning
+
     return [
         resource for datapackage in datapackages for resource in datapackage.resources
     ]
@@ -111,7 +95,7 @@ def collect_datapackages(data):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("./examples")
+        >>> packages = collect_datapackages("./examples/local")
         >>> packages[0] # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
@@ -119,7 +103,7 @@ def collect_datapackages(data):
     """
     packages = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    return [collect_datapackage(package) for package in packages]
+    return [Package(package) for package in packages]
 
 
 def create_unitpackage(csvname, metadata=None, fields=None):
@@ -164,24 +148,19 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
     csv_basename = os.path.basename(csvname)
 
-    package = Package(
-        resources=[
-            Resource(
-                path=csv_basename,
-                basepath=os.path.dirname(csvname) or ".",
-            )
-        ],
+    resource = Resource(
+        path=csv_basename,
+        basepath=os.path.dirname(csvname) or ".",
     )
-    package.infer()
-    # resource = package.resources[0]
-    resource = package.get_resource(Path(csv_basename).stem)
+
+    resource.infer()
 
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)
 
     if fields:
-        # Update fields in the Data Package describing the data in the CSV
-        package_schema = resource.schema
+        # Update fields in the Resource describing the data in the CSV
+        resource_schema = resource.schema
         if not isinstance(fields, list):
             raise ValueError(
                 "'fields' must be a list such as \
@@ -203,14 +182,15 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         new_fields = []
         unspecified_fields = []
-        for name in package_schema.field_names:
+
+        for name in resource_schema.field_names:
             if name in provided_schema.field_names:
                 new_fields.append(
                     provided_schema.get_field(name).to_dict()
-                    | package_schema.get_field(name).to_dict()
+                    | resource_schema.get_field(name).to_dict()
                 )
             else:
-                new_fields.append(package_schema.get_field(name).to_dict())
+                new_fields.append(resource_schema.get_field(name).to_dict())
 
         if len(unspecified_fields) != 0:
             logger.warning(
@@ -219,14 +199,16 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
         unused_provided_fields = []
         for name in provided_schema.field_names:
-            if name not in package_schema.field_names:
+            if name not in resource_schema.field_names:
                 unused_provided_fields.append(name)
         if len(unused_provided_fields) != 0:
             logger.warning(
-                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {package_schema.field_names}."
+                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {resource_schema.field_names}."
             )
 
         resource.schema = Schema.from_descriptor({"fields": new_fields})
+
+    package = Package(resources=[resource])
 
     return package
 

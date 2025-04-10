@@ -4,6 +4,42 @@ echemdb Change Log
 
 .. current developments
 
+v0.9.0
+====================
+
+**Added:**
+
+* Added `entry.add_column` which allows adding a column to an existing pandas dataframe and extends the Data Package fields with given units.
+* Added the property `entry.mutable_resource`, which is a virtual modifiable copy of the original resource excluding its metadata.
+* Added `unitpackage.local.collect_resources`, which collects all resources from a list of frictionless Data Packages.
+* Added `collection.from_local_file` to create a collection from the resources included in a Data Package (JSON).
+* Added validation to check for duplicate resource names upon creating a collection.
+* Added wheel upload on new release.
+* Added dependency `iteration_utilities`.
+
+**Changed:**
+
+* Changed `unitpackage.entry.Entry` from being a frictionless Data Package into a frictionless Resource.
+* Changed `unitpackage.collection.Collection` from being a collection of frictionless Data Packages  into a collection of frictionless Resources forming a Data Package.
+* Changed the virtual `echemdb` Resource into an `entry.mutable_resource`.
+* Changed `unitpackage.local.create_df_resource` to create a resource from an actual frictionless Resource instead of a frictionless Data Package.
+* Changed packages for development to be provided by pixi instead of conda directly.
+
+**Removed:**
+
+* Removed argument `resource_name` in `unitpackage.local.create_df_resource` and all other instances where resources were named "echemdb".
+
+**Fixed:**
+
+* Fixed parsing of arguments `data` and `outdir` for `collection.from_remote` downloading data from the default remote url.
+* Fixed breaking tests on GitHub (tests should be more stable now since we switched to pixi for locked versions of dependencies.)
+
+**Performance:**
+
+* Improved loading collections via `collection.from_local` or `collection.from_remote` and entries via `entry.from_local`. In contrast to the previous version, dataframes are now only loaded when a method or property is called that requires access to the resource's data. This also increases the speed for filtering the data based on metadata predicates.
+
+
+
 v0.8.5
 ====================
 

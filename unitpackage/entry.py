@@ -92,7 +92,7 @@ class Entry:
     frictionless Resource::
 
         >>> from unitpackage.entry import Entry
-        >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+        >>> entry = Entry.from_local('./examples/local/no_bibliography/no_bibliography.json')
         >>> entry
         Entry('no_bibliography')
 
@@ -100,7 +100,7 @@ class Entry:
 
         >>> from unitpackage.entry import Entry
         >>> from frictionless import Resource
-        >>> entry = Entry(Resource('./examples/no_bibliography/no_bibliography.json'))
+        >>> entry = Entry(Resource('./examples/local/no_bibliography/no_bibliography.json'))
         >>> entry
         Entry('no_bibliography')
 
@@ -385,8 +385,6 @@ class Entry:
         # update units in the schema of the df resource
         df_resource.schema = resource.schema
 
-        df_resource.name = "echemdb"
-
         # Update the "MutableResource"
         resource.custom["MutableResource"] = df_resource
 
@@ -401,7 +399,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.mutable_resource
-            {'name': 'echemdb',
+            {'name': 'memory',
             'type': 'table',
             'data': [],
             'format': 'pandas',
@@ -435,11 +433,6 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry
-            Entry('alves_2011_electrochemistry_6010_f1a_solid')
-
-            # >>> entry.resource.MutableResource
-
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -448,7 +441,6 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            # >>> entry.package.get_resource('echemdb').schema.fields # doctest: +NORMALIZE_WHITESPACE
             >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
@@ -532,7 +524,9 @@ class Entry:
             [Entry('no_bibliography')]
 
         """
-        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", name)
+        example_dir = os.path.join(
+            os.path.dirname(__file__), "..", "examples", "local", name
+        )
 
         if not os.path.exists(example_dir):
             raise ValueError(
@@ -633,6 +627,25 @@ class Entry:
             >>> entry.user
             'Max Doe'
 
+        .. important::
+            Upper case filenames are converted to lower case entry identifiers!
+
+        A filename containing upper case characters::
+
+            >>> import os
+            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv', fields=fields)
+            >>> entry
+            Entry('uppercase')
+
+        Casing in the filename is preserved in the metadata::
+
+            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'uppercase',
+            'type': 'table',
+            'path': 'UpperCase.csv',
+            ...
+
         """
         from unitpackage.local import create_unitpackage
 
@@ -732,8 +745,6 @@ class Entry:
             {"fields": new_fields}, allow_invalid=True
         )
 
-        df_resource.name = "echemdb"
-
         resource.custom["MutableResource"] = df_resource
 
         return type(self)(resource=resource)
@@ -743,27 +754,29 @@ class Entry:
         r"""
         Return an entry from a :param filename containing a frictionless Data Package.
         The Data Package must contain a single resource.
-        :: TODO: See #62
-        Otherwise use `collection.from_local(<PackageName>)` to create a collection from
-        all resources within. (not implemented)
+
+        Otherwise use `collection.from_local_file` to create a collection from
+        all resources within.
 
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.from_local('./examples/no_bibliography/no_bibliography.json')
+            >>> entry = Entry.from_local('./examples/local/no_bibliography/no_bibliography.json')
             >>> entry
             Entry('no_bibliography')
 
         """
-        from unitpackage.local import collect_datapackage
+        from unitpackage.local import Package
 
-        package = collect_datapackage(filename)
+        package = Package(filename)
 
         if len(package.resources) == 0:
-            print("no Resource")
+            raise ValueError(f"No resource available in '{filename}'")
 
         if len(package.resources) > 1:
-            print("More than one Resource")
+            raise ValueError(
+                f"No than one resource available in '{filename}'. Use collection.from_local()`"
+            )
 
         return cls(resource=package.resources[0])
 
@@ -794,11 +807,23 @@ class Entry:
 
             >>> entry.save(outdir='./test/generated/from_df')
 
-        TESTS
+        .. important::
+            Basenames with upper case characters are stored with lower case characters!
+            To separate words use underscores.
+
+        The basename will always be converted to lowercase entry identifiers::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='TEST_DF')
+            >>> entry
+            Entry('test_df')
+
+        TESTS:
 
         Verify that all fields are properly created even when they are not specified as fields::
 
-            >>> import os
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
             >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
@@ -838,9 +863,13 @@ class Entry:
             True
 
         When a ``basename`` is set, the files are named ``basename.csv`` and ``basename.json``.
-        Note that for a valid frictionless Data Package this base name
-        MUST be lower-case and contain only alphanumeric
-        characters along with ".", "_" or "-" characters'::
+
+        .. note::
+            For a valid frictionless Data Package the basename
+            MUST be lower-case and contain only alphanumeric
+            characters along with ``.``, ``_`` or ``-`` characters'
+
+        A valid basename::
 
             >>> import os
             >>> entry = Entry.create_examples()[0]
@@ -849,10 +878,29 @@ class Entry:
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
 
+        Upper case characters are saved lower case::
+
+            >>> import os
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> basename = 'Upper_Case_Save'
+            >>> entry = Entry.from_df(df=df, basename=basename)
+            >>> entry.save(outdir='./test/generated')
+            >>> os.path.exists(f'test/generated/{basename.lower()}.json') and os.path.exists(f'test/generated/{basename.lower()}.csv')
+            True
+
+            >>> new_entry = Entry.from_local(f'test/generated/{basename.lower()}.json')
+            >>> new_entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'upper_case_save',
+            'type': 'table',
+            'path': 'upper_case_save.csv',
+            ...
+
         TESTS:
 
         Save the entry as Data Package with metadata containing datetime format,
-        which is not natively supported by JSON.
+        which is not natively supported by JSON.::
 
             >>> import os
             >>> from datetime import datetime
