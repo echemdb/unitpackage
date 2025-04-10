@@ -343,9 +343,8 @@ class Collection:
             [Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
         """
-        from unitpackage.local import collect_datapackage
 
-        package = collect_datapackage(filename)
+        package = Package(filename)
 
         return cls(package=package)
 

@@ -766,9 +766,9 @@ class Entry:
             Entry('no_bibliography')
 
         """
-        from unitpackage.local import collect_datapackage
+        from unitpackage.local import Package
 
-        package = collect_datapackage(filename)
+        package = Package(filename)
 
         if len(package.resources) == 0:
             raise ValueError(f"No resource available in '{filename}'")
