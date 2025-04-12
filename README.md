@@ -1,4 +1,4 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.9.0?labpath=tree%2Fdoc%2Findex.md)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.9.1?labpath=tree%2Fdoc%2Findex.md)
 [![DOI](https://zenodo.org/badge/637997870.svg)](https://zenodo.org/badge/latestdoi/637997870)
 
 This module provides a Python library to interact with a collection of
