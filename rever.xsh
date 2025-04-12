@@ -27,15 +27,10 @@
 
 import re
 
-# Check that we are on the main branch
-branch=$(git branch --show-current)
-if branch.strip() != "main":
-  raise Exception("You must be on the main branch to release.")
-# and that it is up to date with origin/main
-git fetch https://github.com/echemdb/unitpackage.git
-git reset FETCH_HEAD
-git diff --exit-code
-git diff --cached --exit-code
+try:
+  input("Are you sure you are on the main branch which is identical to origin/main? [ENTER]")
+except KeyboardInterrupt:
+  sys.exit(1)
 
 $PROJECT = 'unitpackage'
 
