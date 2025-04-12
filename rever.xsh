@@ -28,7 +28,7 @@
 import re
 
 try:
-  input("Are you sure you are on the master branch which is identical to origin/main? [ENTER]")
+  input("Are you sure you are on the main branch which is identical to origin/main? [ENTER]")
 except KeyboardInterrupt:
   sys.exit(1)
 
