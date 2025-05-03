@@ -10,7 +10,7 @@ description = "a Python library to interact with a collection of frictionless da
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
-    "astropy>=5,<=8",
+    "astropy>=5,<9",
     "filelock>=3,<4",
     "frictionless>=5.8.3,<6",
     "iteration_utilities>=0.13.0,<0.14.0",

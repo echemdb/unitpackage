@@ -1,4 +1,4 @@
 **Changed:**
 
-* Changed maximum astropy version to 7.x.
+* Changed upper version bound for astropy from <=7 to <=8.
 * Changed ubuntu version for build doc to 24.04.
