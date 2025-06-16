@@ -47,7 +47,7 @@
                             {
                                 "name": "CE",
                                 "function": "counter electrode",
-                                "crystallographic orientation": "poly",
+                                "crystallographicOrientation": "poly",
                                 "material": "Au",
                                 "shape": "mesh"
                             },
@@ -61,14 +61,14 @@
                             },
                             {
                                 "name": "WE",
-                                "function": "working electrode",
+                                "function": "workingElectrode",
                                 "type": "single crystal",
-                                "crystallographic orientation": "100",
-                                "geometric electrolyte contact area": {
+                                "crystallographicOrientation": "100",
+                                "geometricElectrolyteContactArea": {
                                     "unit": "1 / cm2"
                                 },
                                 "material": "Cu",
-                                "preparation procedure": "Sputter and heating under UHV conditions.",
+                                "preparationProcedure": "Sputter and heating under UHV conditions.",
                                 "shape": {
                                     "diameter": {
                                         "unit": "mm",
@@ -130,7 +130,7 @@
                         "figure": "1",
                         "curve": "1",
                         "bibdata": "",
-                        "citation key": ""
+                        "citationKey": ""
                     },
                     "curation": {
                         "process": [
@@ -148,11 +148,11 @@
                             }
                         ]
                     },
-                    "figure description": {
+                    "figureDescription": {
                         "version": 1,
                         "type": "digitized",
-                        "simultaneous measurements": [],
-                        "measurement type": "CV",
+                        "simultaneousMeasurements": [],
+                        "measurementType": "CV",
                         "fields": [
                             {
                                 "name": "E",
@@ -169,15 +169,15 @@
                             }
                         ],
                         "comment": "Small humps around 0.3 to 0.45 V are complicated to digitize.",
-                        "scan rate": {
+                        "scanRate": {
                             "value": 50.0,
                             "unit": "mV / s"
                         }
                     },
-                    "data description": {
+                    "dataDescription": {
                         "version": 1,
                         "type": "digitized",
-                        "measurement type": "CV"
+                        "measurementType": "CV"
                     }
                 }
             }
