@@ -88,9 +88,9 @@ class CVEntry(Entry):
 
             >>> entry = CVEntry.create_examples()[0]
             >>> entry.get_electrode('WE') # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'WE', 'function': 'working electrode', 'type': 'single crystal',
-            'crystallographic orientation': '0001', 'material': 'Ru',
-            'preparation procedure': 'Sputtering and flash annealing under UHV
+            {'name': 'WE', 'function': 'workingElectrode', 'type': 'single crystal',
+            'crystallographicOrientation': '0001', 'material': 'Ru',
+            'preparationProcedure': 'Sputtering and flash annealing under UHV
             conditions with repeated cycles of oxygen adsorption and desorption.',
             'shape': {'height': {'unit': 'mm', 'value': 2}, 'type': 'hat shaped'},
             'source': {'supplier': 'Mateck'}}

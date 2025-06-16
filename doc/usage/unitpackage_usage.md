@@ -84,7 +84,7 @@ Alternatively, you can write `entry.name` where all spaces should be replaced by
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citation key']
+entry['source']['citationKey']
 ```
 
 ```{code-cell} ipython3

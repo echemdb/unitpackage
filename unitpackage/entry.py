@@ -16,7 +16,7 @@ Metadata included in an entry is accessible as an attribute::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-    {'citation key': 'alves_2011_electrochemistry_6010',
+    {'citationKey': 'alves_2011_electrochemistry_6010',
     'url': 'https://doi.org/10.1039/C0CP01001D',
     'figure': '1a',
     'curve': 'solid',
@@ -158,7 +158,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            {'citation key': 'alves_2011_electrochemistry_6010',
+            {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
             'curve': 'solid',
@@ -180,7 +180,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
-            {'citation key': 'alves_2011_electrochemistry_6010',
+            {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
             'curve': 'solid',
@@ -202,7 +202,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry._metadata # doctest: +NORMALIZE_WHITESPACE
-            {...'source': {'citation key': 'alves_2011_electrochemistry_6010',...}
+            {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}
 
         """
         return self.resource.custom["metadata"]["echemdb"]
@@ -908,7 +908,7 @@ class Entry:
             >>> from unitpackage.entry import Entry
             >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
             >>> basename = 'save_datetime'
-            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'current time':datetime.now()})
+            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'currentime':datetime.now()})
             >>> entry.save(outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
