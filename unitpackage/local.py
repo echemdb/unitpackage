@@ -55,11 +55,27 @@ def create_df_resource(resource):
                       t         E         j
         ...
 
+    TESTS::
+
+        >>> data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
+        >>> df = pd.DataFrame(data)
+        >>> from unitpackage.entry import Entry
+        >>> entry = Entry.from_df(df, basename='test_parent_directory')
+        >>> entry.save(outdir=".")
+        >>> entry_ = Entry.from_local('test_parent_directory.json')
+        >>> entry_.df
+               x  y
+            0  1  4
+            1  2  5
+            2  3  6
+
     """
     if not resource:
         raise ValueError(
             "dataframe resource can not be created since the Data Package has no resources."
         )
+    if not resource.basepath:
+        resource.basepath = "."
     descriptor_path = resource.basepath + "/" + resource.path
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
