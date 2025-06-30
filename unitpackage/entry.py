@@ -908,7 +908,7 @@ class Entry:
             >>> from unitpackage.entry import Entry
             >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
             >>> basename = 'save_datetime'
-            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'currentime':datetime.now()})
+            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'currentTime':datetime.now()})
             >>> entry.save(outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
