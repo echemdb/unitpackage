@@ -74,9 +74,7 @@ def create_df_resource(resource):
         raise ValueError(
             "dataframe resource can not be created since the Data Package has no resources."
         )
-    if not resource.basepath:
-        resource.basepath = "."
-    descriptor_path = resource.basepath + "/" + resource.path
+    descriptor_path = resource.basepath + "/" + resource.path if resource.basepath else resource.path 
     df = pd.read_csv(descriptor_path)
     df_resource = Resource(df)
     df_resource.infer()
