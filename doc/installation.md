@@ -46,11 +46,11 @@ conda-forge](https://github.com/conda-forge/unitpackage-feedstock) for all
 platforms.
 
 If you don't have conda yet, we recommend to install
-[Miniforge](https://github.com/conda-forge/miniforge#miniforge3).
+[Miniforge](https://github.com/conda-forge/miniforge).
 
 Miniforge is already pre-configured for conda-forge. If you already had another
 release of conda installed, make sure the conda-forge channel is
-[configured correctly](https://conda-forge.org/docs/user/introduction.html#how-can-i-install-packages-from-conda-forge)
+[configured correctly](https://conda-forge.org/docs/user/introduction/#how-can-i-install-packages-from-conda-forge)
 
 Once your conda setup is ready, create a new `unitpackage` environment with
 the latest stable version of the unitpackage:
