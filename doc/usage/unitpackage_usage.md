@@ -100,17 +100,17 @@ entry.source.citation_key
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate
+entry.figureDescription.scanRate
 ```
 
 The unit and value can be accessed separately
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.value
+entry.figureDescription.scanRate.value
 ```
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.unit
+entry.figureDescription.scanRate.unit
 ```
 
 (data)=
