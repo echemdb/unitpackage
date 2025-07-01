@@ -90,6 +90,7 @@ lint = { depends-on = ["pylint", "black", "isort"] }
 
 [tool.pixi.feature.doc.dependencies]
 jupytext = "*"
+make = "*"
 myst-parser = "*"
 myst-nb = "*"
 sphinx = "*"
@@ -97,7 +98,6 @@ sphinx-design = "*"
 sphinx_rtd_theme = "*"
 
 [tool.pixi.feature.doc.tasks]
-doc-windows = "cd doc && sphinx-build . ./generated -W -n --keep-going"
 doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
 linkcheck = "cd doc && make linkcheck"
 
