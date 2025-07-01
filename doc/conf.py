@@ -40,3 +40,9 @@ html_context = {
     'github_repo': 'unitpackage',
     'github_version': 'main/doc/',
 }
+
+# Ignore the link to the GNU General Public License v3.0
+# This is because checking results in a timeout.
+linkcheck_ignore = [
+    "https://www.gnu.org/licenses/gpl-3.0.html*",
+]
