@@ -225,7 +225,7 @@ Additional metadata describing the underlying data or its origin is stored in th
 The `unitpackage` module only provides direct access to the resource metadata stored within the `echemdb` descriptor. (see #20)
 ```
 
-The above example can be found [here](https://raw.githubusercontent.com/echemdb/unitpackage/main/doc/files) named `demo_package_metadata`.
+The above example can be found [here](https://github.com/echemdb/unitpackage/tree/main/doc/files) named `demo_package_metadata`.
 To demonstrate how the different properties of the resource can be accessed, we load the specific entry.
 
 ```{code-cell} ipython3

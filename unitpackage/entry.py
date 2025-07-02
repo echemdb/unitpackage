@@ -83,7 +83,7 @@ logger = logging.getLogger("unitpackage")
 
 class Entry:
     r"""
-    A `frictionless Resource <https://github.com/frictionlessdata/framework>`_
+    A `frictionless Resource <https://github.com/frictionlessdata/frictionless-py>`_
     describing tabulated data.
 
     EXAMPLES:
