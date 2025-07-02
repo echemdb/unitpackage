@@ -28,7 +28,7 @@ myst_heading_anchors = 2
 # The plots are created even when the warning is ignored.
 # Warning, treated as error:
 # X:\github\unitpackage\doc\index.md:82:skipping unknown output mime type: application/vnd.plotly.v1+json [mystnb.unknown_mime_type]
-suppress_warnings = ["mystnb.unknown_mime_type"]
+suppress_warnings = ["mystnb.unknown_mime_type", "mystnb.mime_priority"]
 
 # We render some demo notebooks as part of the documentation. These notebooks try to load plotly through RequireJS (which is how Jupyter notebooks load dependencies) so we need to ship this with our Sphinx documentation.
 html_js_files = ["https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"]
@@ -40,3 +40,9 @@ html_context = {
     'github_repo': 'unitpackage',
     'github_version': 'main/doc/',
 }
+
+# Ignore the link to the GNU General Public License v3.0
+# This is because checking results in a timeout.
+linkcheck_ignore = [
+    "https://www.gnu.org/licenses/gpl-3.0.html*",
+]
