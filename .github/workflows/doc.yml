@@ -39,8 +39,5 @@ jobs:
         if: ${{ github.event_name == 'push' }}
       - name: detect broken links
         shell: pixi run -e dev bash -e {0}
-        run: |
-          python -m http.server 8880 --directory doc/generated/html &
-          sleep 1
-          linkchecker --check-extern http://localhost:8880/unitpackage/ --no-robots --ignore mybinder.org
+        run: pixi run linkcheck
 
