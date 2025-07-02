@@ -20937,7 +20937,7 @@ packages:
 - pypi: .
   name: unitpackage
   version: 0.9.2
-  sha256: 49e6d073b71fc687010ffac3e2ec741f2fa04d9373139a5d44efb212c0d382d9
+  sha256: 23456af4a02cc08776be930e16975a157352c297c5c8d659b667f3626abe558a
   requires_dist:
   - astropy>=5,<8
   - filelock>=3,<4
@@ -20945,7 +20945,7 @@ packages:
   - iteration-utilities>=0.13.0,<0.14.0
   - matplotlib>=3.5.0,<4
   - pandas>=1.3,<3
-  - plotly>=5,<6
+  - plotly>=5,<7
   - pybtex>=0.25,<0.26
   requires_python: '>=3.9'
   editable: true
