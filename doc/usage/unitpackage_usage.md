@@ -88,7 +88,7 @@ entry['source']['citationKey']
 ```
 
 ```{code-cell} ipython3
-entry.source.citation_key
+entry.source.citationKey
 ```
 
 `entry.resource` provides a full list of available descriptors.
@@ -197,7 +197,7 @@ entry.citation(backend='text') # other available backends: 'latex' or 'markdown'
 Individual `db.bibliography` entries can be accessed with the citation key associated with a unitpackage entry.
 
 ```{code-cell} ipython3
-bibtex_key = entry.source.citation_key
+bibtex_key = entry.source.citationKey
 bibtex_key
 ```
 

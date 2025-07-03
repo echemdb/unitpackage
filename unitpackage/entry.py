@@ -143,7 +143,7 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
-            'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
+            'dataDescription', 'df', 'experimental', 'field_unit', 'figureDescription',
             'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
             'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
 
@@ -236,7 +236,7 @@ class Entry:
         from pybtex.database import parse_string
 
         bibliography = parse_string(citation, "bibtex")
-        return bibliography.entries[self.source.citation_key]
+        return bibliography.entries[self.source.citationKey]
 
     def citation(self, backend="text"):
         r"""
