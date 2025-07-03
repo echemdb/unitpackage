@@ -29,7 +29,7 @@ from functools import cache
 
 ECHEMDB_DATABASE_URL = os.environ.get(
     "ECHEMDB_DATABASE_URL",
-    "https://github.com/echemdb/electrochemistry-data/actions/runs/16045253228/artifacts/3456231230",
+    "https://raw.githubusercontent.com/linuxrider/unitpackage/refs/heads/camel-case/examples/data-78.zip",
 )
 
 
