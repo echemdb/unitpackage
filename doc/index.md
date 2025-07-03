@@ -14,8 +14,8 @@ kernelspec:
 
 # Welcome to unitpackage's documentation!
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.9.2?labpath=tree%2Fdoc%2Findex.md)
-[![DOI](https://zenodo.org/badge/637997870.svg)](https://zenodo.org/badge/latestdoi/637997870)
+[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.9.2?labpath=tree%2Fdoc%2Findex.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15644101.svg)](https://zenodo.org/records/15644101)
 
 Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated or who performed the experiment. Such information can be stored in [frictionless Data Packages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON (metadata) file.
 The `unitpackage` module provides a Python library to interact with such Data Packages, which have a very [specific structure](usage/unitpackage.md).
@@ -98,7 +98,7 @@ Frictionless Data Packages or unitpackges are perfectly machine-readable, making
 * The `unitpackage` API can be used to filter collections of similar data for certain properties, thus allowing for simple comparison of different data sets. For example, you could think of comparing local files recorded in the laboratory with data published in a repository.
 * The content of datapackages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on [echemdb.org](https://www.echemdb.org/cv). The datapackages could also be published with the [frictionless Livemark](https://livemark.frictionlessdata.io/) data presentation framework.
 
-You can cite this project as described [on our zenodo page](https://zenodo.org/badge/latestdoi/637997870).
+You can cite this project as described [on our zenodo page](https://zenodo.org/records/15644101).
 
 ## Installation
 
