@@ -16,7 +16,7 @@ Metadata included in an entry is accessible as an attribute::
 
     >>> entry = Entry.create_examples()[0]
     >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-    {'citation key': 'alves_2011_electrochemistry_6010',
+    {'citationKey': 'alves_2011_electrochemistry_6010',
     'url': 'https://doi.org/10.1039/C0CP01001D',
     'figure': '1a',
     'curve': 'solid',
@@ -143,7 +143,7 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
-            'data_description', 'df', 'experimental', 'field_unit', 'figure_description',
+            'dataDescription', 'df', 'experimental', 'field_unit', 'figureDescription',
             'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
             'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
 
@@ -158,7 +158,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            {'citation key': 'alves_2011_electrochemistry_6010',
+            {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
             'curve': 'solid',
@@ -180,7 +180,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
-            {'citation key': 'alves_2011_electrochemistry_6010',
+            {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
             'curve': 'solid',
@@ -202,7 +202,7 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> entry._metadata # doctest: +NORMALIZE_WHITESPACE
-            {...'source': {'citation key': 'alves_2011_electrochemistry_6010',...}
+            {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}
 
         """
         return self.resource.custom["metadata"]["echemdb"]
@@ -236,7 +236,7 @@ class Entry:
         from pybtex.database import parse_string
 
         bibliography = parse_string(citation, "bibtex")
-        return bibliography.entries[self.source.citation_key]
+        return bibliography.entries[self.source.citationKey]
 
     def citation(self, backend="text"):
         r"""
@@ -908,7 +908,7 @@ class Entry:
             >>> from unitpackage.entry import Entry
             >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
             >>> basename = 'save_datetime'
-            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'current time':datetime.now()})
+            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'currentTime':datetime.now()})
             >>> entry.save(outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
