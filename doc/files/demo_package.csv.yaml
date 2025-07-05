@@ -1,5 +1,5 @@
 user: Max Doe
-figure description:
+figureDescription:
     fields:
       - name: t
         unit: s

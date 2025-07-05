@@ -84,11 +84,11 @@ Alternatively, you can write `entry.name` where all spaces should be replaced by
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citation key']
+entry['source']['citationKey']
 ```
 
 ```{code-cell} ipython3
-entry.source.citation_key
+entry.source.citationKey
 ```
 
 `entry.resource` provides a full list of available descriptors.
@@ -100,17 +100,17 @@ entry.source.citation_key
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate
+entry.figureDescription.scanRate
 ```
 
 The unit and value can be accessed separately
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.value
+entry.figureDescription.scanRate.value
 ```
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.unit
+entry.figureDescription.scanRate.unit
 ```
 
 (data)=
@@ -197,7 +197,7 @@ entry.citation(backend='text') # other available backends: 'latex' or 'markdown'
 Individual `db.bibliography` entries can be accessed with the citation key associated with a unitpackage entry.
 
 ```{code-cell} ipython3
-bibtex_key = entry.source.citation_key
+bibtex_key = entry.source.citationKey
 bibtex_key
 ```
 

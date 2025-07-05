@@ -73,11 +73,11 @@ The original units in the published figure are stored as metadata.
 For data digitized with [svgdigitizer](https://echemdb.github.io/svgdigitizer/) a time axis is only present, when a scan rate was given in the SVG.
 
 ```{code-cell} ipython3
-entry.figure_description.fields
+entry.figureDescription.fields
 ```
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate
+entry.figureDescription.scanRate
 ```
 
 An entry can be rescaled to these original units.
