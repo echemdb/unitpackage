@@ -1,3 +1,3 @@
 **Added:**
 
-* Testing Python 3.13.
+* Added tests for Python 3.13.
