@@ -11,7 +11,6 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "astropy>=5,<8",
-    "filelock>=3,<4",
     "frictionless>=5.8.3,<6",
     "iteration_utilities>=0.13.0,<0.14.0",
     "matplotlib>=3.5.0,<4",
