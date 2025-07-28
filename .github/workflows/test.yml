@@ -21,7 +21,7 @@ jobs:
         remote-data: [""]
         include:
         - os: "ubuntu-latest"
-          environment: "python-311"
+          environment: "python-313"
           # This leg of the tests runs doctests against the data that is
           # currently available on echemdb.org. This test might fail
           # when substantial changes have been introduced
