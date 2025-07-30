@@ -213,7 +213,7 @@ Additional metadata describing the underlying data or its origin is stored in th
                     "description": "Sample data for the unitpackage module.",
                     "experimentalist": "John Doe",
                     "laboratory": "Institute of Good Scientific Practice",
-                    "date recorded": "2021-07-09"
+                    "dateRecorded": "2021-07-09"
                 }
             }
         }

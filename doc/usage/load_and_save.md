@@ -146,7 +146,7 @@ import yaml
 with open("../files/demo_package.csv.yaml", "rb") as f:
     metadata = yaml.load(f, Loader=yaml.SafeLoader)
 
-fields = metadata["figure description"]["fields"]
+fields = metadata["figureDescription"]["fields"]
 
 entry = Entry.from_csv(csvname="../files/demo_package.csv", metadata=metadata, fields=fields)
 entry.save(outdir="../generated/files/csv_entry/")
