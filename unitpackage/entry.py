@@ -48,7 +48,7 @@ also contain information on the source of the data.::
         ('year', '2011'),
         ('publisher', 'Royal Society of Chemistry'),
         ('abstract', 'We investigated ...')],
-      persons=OrderedCaseInsensitiveDict([('author', [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')])]))
+      persons={'author': [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')]})
 
 """
 
@@ -83,7 +83,7 @@ logger = logging.getLogger("unitpackage")
 
 class Entry:
     r"""
-    A `frictionless Resource <https://github.com/frictionlessdata/framework>`_
+    A `frictionless Resource <https://github.com/frictionlessdata/frictionless-py>`_
     describing tabulated data.
 
     EXAMPLES:
