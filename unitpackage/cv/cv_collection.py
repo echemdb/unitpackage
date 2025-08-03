@@ -100,6 +100,7 @@ class CVCollection(Collection):
             True
 
         """
+        # pylint: disable=R0801
         import pandas as pd
 
         return set(
@@ -120,6 +121,7 @@ class CVCollection(Collection):
             True
 
         """
+        # pylint: disable=R0801
         return {
             "number of references": (
                 0

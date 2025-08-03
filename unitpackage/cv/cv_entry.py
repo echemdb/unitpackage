@@ -51,7 +51,6 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-
 import warnings
 
 from unitpackage.entry import Entry
@@ -122,6 +121,7 @@ class CVEntry(Entry):
             KeyError: "Electrode with name 'foo' does not exist"
 
         """
+        # pylint: disable=R0801
         for electrode in self.system.electrodes:
             if electrode["name"] == name:
                 return electrode
@@ -148,6 +148,7 @@ class CVEntry(Entry):
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
         """
+        # pylint: disable=R0801
         if units == "original":
             units = {
                 field["name"]: field["unit"] for field in self.figureDescription.fields
@@ -173,6 +174,7 @@ class CVEntry(Entry):
             ValueError: No axis with name 'x' found.
 
         """
+        # pylint: disable=R0801
         if field_name in self.mutable_resource.schema.field_names:
             return field_name
         if field_name == "j":
@@ -197,6 +199,7 @@ class CVEntry(Entry):
             b"\x89PNG..."
 
         """
+        # pylint: disable=R0801
         kwds.setdefault("color", "b")
         kwds.setdefault("linewidth", 1)
         kwds.setdefault("legend", False)
@@ -249,6 +252,7 @@ class CVEntry(Entry):
             Figure(...)
 
         """
+        # pylint: disable=R0801
         x_label = self._normalize_field_name(x_label)
         y_label = self._normalize_field_name(y_label)
 

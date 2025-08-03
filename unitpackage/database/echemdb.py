@@ -85,6 +85,7 @@ class Echemdb(Collection):
         """
         import pandas as pd
 
+        # pylint: disable=R0801
         return set(
             pd.unique(pd.Series([entry.get_electrode("WE").material for entry in self]))
         )
