@@ -52,16 +52,16 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 # ********************************************************************
 import logging
 
-from warnings import deprecated
+import warnings
 
 from unitpackage.entry import Entry
 
 logger = logging.getLogger("unitpackage")
 
 
-@deprecated(
-    "The class `CVEntry` for loading the echemdb entries has been renamed to `echemdb.echemdb_entry` and will be removed or refactored in a future version."
-)
+# @deprecated(
+#     "The class `CVEntry` for loading the echemdb entries has been renamed to `echemdb.echemdb_entry` and will be removed or refactored in a future version."
+# )
 class CVEntry(Entry):
     r"""
     A `frictionless Data Package <https://github.com/frictionlessdata/frictionless-py>`_ describing a CV.
@@ -77,6 +77,14 @@ class CVEntry(Entry):
         >>> entry = next(iter(collection))
 
     """
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            f"{self.__class__.__name__} is deprecated. Use `echemdb.echemdb_entry.EchemdbEntry` instead.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
 
     def __repr__(self):
         r"""
