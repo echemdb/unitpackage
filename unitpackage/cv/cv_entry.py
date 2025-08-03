@@ -52,9 +52,12 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 # ********************************************************************
 import logging
 
+from warnings import deprecated
+
 from unitpackage.entry import Entry
 
 logger = logging.getLogger("unitpackage")
+
 
 @deprecated(
     "The class `CVEntry` for loading the echemdb entries has been renamed to `echemdb.echemdb_entry` and will be removed or refactored in a future version."

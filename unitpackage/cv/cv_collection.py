@@ -46,16 +46,17 @@ Search the collection for entries from a single publication::
 # ********************************************************************
 import logging
 
-from warnings import deprecated
+# from warnings import deprecated
+import warnings
 
 from unitpackage.collection import Collection
 
 logger = logging.getLogger("unitpackage")
 
 
-@deprecated(
-    "The class `CVCollection` for loading the echemdb database has been renamed to `echemdb.Echemdb` and will be removed or refactored in a future version."
-)
+# @deprecated(
+#     "The class `CVCollection` for loading the echemdb database has been renamed to `echemdb.Echemdb` and will be removed or refactored in a future version."
+# )
 class CVCollection(Collection):
     r"""
     A collection of `frictionless Data Packages <https://github.com/frictionlessdata/frictionless-py>`__.
@@ -79,6 +80,14 @@ class CVCollection(Collection):
     from unitpackage.cv.cv_entry import CVEntry
 
     Entry = CVEntry
+
+    def __init__(self, *args, **kwargs):
+        warnings.warn(
+            f"{self.__class__.__name__} is deprecated. Loading the echemdb database has been moved to `echemdb.Echemdb` and will be removed or refactored in a future version.",
+            category=DeprecationWarning,
+            stacklevel=2,
+        )
+        super().__init__(*args, **kwargs)
 
     def materials(self):
         r"""
