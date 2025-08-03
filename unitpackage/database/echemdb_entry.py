@@ -110,7 +110,7 @@ class EchemdbEntry(Entry):
 
     def rescale(self, units):
         r"""
-        Return a rescaled :class:`~unitpackage.cv.cv_entry.Echemdb` with axes in the specified ``units``.
+        Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with axes in the specified ``units``.
 
         Usage is essentially the same as for :meth:`~unitpackage.entry.Entry.rescale`, i.e.,
         new units are expected as dict, where the key is the axis name and the value

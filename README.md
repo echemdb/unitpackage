@@ -85,7 +85,7 @@ Ultimately, the `unitpackage` allows for simple transformation of data within a 
 ...
 ```
 
-Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection` and is retrieved from the [echemdb data repository](https://github.com/echemdb/electrochemistry-data).
+Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in an `Echemdb` collection and is retrieved from the [echemdb data repository](https://github.com/echemdb/electrochemistry-data).
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local collection creation, are provided in our

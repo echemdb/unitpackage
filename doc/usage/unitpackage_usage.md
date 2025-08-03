@@ -78,9 +78,9 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 ### Resource Metadata
 
 The metadata associated with the resource is located in `entry.resource.custom['metadata']`.
-From an `entry` such information can be retrieved by `entry['name']`,
-where `name` is the respective descriptor in the metadata descriptor.
-Alternatively, you can write `entry.name` where all spaces should be replaced by underscores.
+From an `entry` such information can be retrieved by `entry['key']`,
+where `key` is the respective descriptor in the metadata descriptor.
+Alternatively, you can write `entry.key` where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
@@ -118,12 +118,12 @@ entry.figureDescription.scanRate.unit
 
 The resource is named according to the entry's identifier. It describes the data in the CSV.
 
-An additional `MutableResource` is added to the loaded resource, named "echemdb".
+An additional `mutableResource` is added to the loaded resource, named "echemdb".
 It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `MutableResource`.
+Changes to the data with the `unitpackage` module are only applied to the `mutableResource`.
 ```
 
 +++
