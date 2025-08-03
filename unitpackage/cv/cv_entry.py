@@ -58,9 +58,6 @@ from unitpackage.entry import Entry
 logger = logging.getLogger("unitpackage")
 
 
-# @deprecated(
-#     "The class `CVEntry` for loading the echemdb entries has been renamed to `echemdb.echemdb_entry` and will be removed or refactored in a future version."
-# )
 class CVEntry(Entry):
     r"""
     A `frictionless Data Package <https://github.com/frictionlessdata/frictionless-py>`_ describing a CV.

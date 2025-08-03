@@ -45,8 +45,6 @@ Search the collection for entries from a single publication::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-
-# from warnings import deprecated
 import warnings
 
 from unitpackage.collection import Collection
@@ -54,9 +52,6 @@ from unitpackage.collection import Collection
 logger = logging.getLogger("unitpackage")
 
 
-# @deprecated(
-#     "The class `CVCollection` for loading the echemdb database has been renamed to `echemdb.Echemdb` and will be removed or refactored in a future version."
-# )
 class CVCollection(Collection):
     r"""
     A collection of `frictionless Data Packages <https://github.com/frictionlessdata/frictionless-py>`__.
