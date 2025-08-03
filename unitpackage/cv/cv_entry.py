@@ -131,7 +131,7 @@ class CVEntry(Entry):
         """
         if units == "original":
             units = {
-                field["name"]: field["unit"] for field in self.figure_description.fields
+                field["name"]: field["unit"] for field in self.figureDescription.fields
             }
 
         return super().rescale(units)
