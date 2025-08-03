@@ -6,6 +6,12 @@ These are the individual elements of a :class:`~unitpackage.cv.cv_collection.CVC
 
 EXAMPLES:
 
+Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`__
+in the `data/` directory::
+
+    >>> from unitpackage.cv.cv_collection import CVCollection
+    >>> collection = CVCollection.from_local('data/')
+
 We can directly access the material of an electrode used in the experiment,
 such as the WE, CE or REF::
 
@@ -50,7 +56,9 @@ from unitpackage.entry import Entry
 
 logger = logging.getLogger("unitpackage")
 
-
+@deprecated(
+    "The class `CVEntry` for loading the echemdb entries has been renamed to `echemdb.echemdb_entry` and will be removed or refactored in a future version."
+)
 class CVEntry(Entry):
     r"""
     A `frictionless Data Package <https://github.com/frictionlessdata/frictionless-py>`_ describing a CV.
