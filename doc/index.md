@@ -80,7 +80,7 @@ db = Echemdb.from_remote()
 db.describe()
 ```
 
-Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode (WE)material, returns a new collection.
+Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode (WE) material, returns a new collection.
 
 ```{code-cell} ipython3
 db_filtered = db.filter(lambda entry: entry.get_electrode('WE').material == 'Pt')
