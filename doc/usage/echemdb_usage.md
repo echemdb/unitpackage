@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.17.2
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -14,17 +14,17 @@ kernelspec:
 
 # echemdb
 
-The electrochemical data shown on the [echemdb.org](https://www.echemdb.org/cv) website can be stored in a collection.
+The electrochemical data shown on the [echemdb.org](https://www.echemdb.org/cv) website can be downloaded from the [echemdb data repository](https://github.com/echemdb/electrochemistry-data) and stored in a collection.
 
 ```{code-cell} ipython3
-from unitpackage.cv.cv_collection import CVCollection
-db = CVCollection.from_remote()
+from unitpackage.database.echemdb import Echemdb
+db = Echemdb.from_remote()
 type(db)
 ```
 
 ## Collection
 
-In contrast to the `Collection` object described in the [usage section](unitpackage_usage.md), `CVCollection` provides data specific functionality.
+In contrast to the `Collection` object described in the [usage section](unitpackage_usage.md), `Echemdb` provides data specific functionality.
 All other functionalities of the base class are still applicable.
 
 For example, statistics of the collection can be shown.
@@ -73,11 +73,11 @@ The original units in the published figure are stored as metadata.
 For data digitized with [svgdigitizer](https://echemdb.github.io/svgdigitizer/) a time axis is only present, when a scan rate was given in the SVG.
 
 ```{code-cell} ipython3
-entry.figure_description.fields
+entry.figureDescription.fields
 ```
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate
+entry.figureDescription.scanRate
 ```
 
 An entry can be rescaled to these original units.
@@ -108,13 +108,13 @@ entry.plot(x_label='t', y_label='j')
 
 ## Bibliography
 
-All entries within the `CVCollection` are referenced and included in a bibtex bibliography.
+All entries within the `Echemdb` collection are referenced and included in a bibtex bibliography.
 
 ```{code-cell} ipython3
 len(db.bibliography.entries)
 ```
 
-Each entry in the echemdb collection can be cited.
+Each entry in the `Echemdb` collection can be cited.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']

@@ -213,7 +213,7 @@ Additional metadata describing the underlying data or its origin is stored in th
                     "description": "Sample data for the unitpackage module.",
                     "experimentalist": "John Doe",
                     "laboratory": "Institute of Good Scientific Practice",
-                    "date recorded": "2021-07-09"
+                    "dateRecorded": "2021-07-09"
                 }
             }
         }
@@ -255,7 +255,7 @@ A Collection consists of entries, which are resources collected from Data Packag
 Upon closer inspection of the entry created with `unitpackage`, you notice that an additional resource `MutableResource` is included in the original resource.
 
 ```{code-cell} ipython3
-entry.resource
+entry.mutable_resource
 ```
 
 The main resource is named according to the CSV filename. The units provided in that resource describe the data within that CSV.

@@ -71,16 +71,16 @@ entry.plot('E', 'j')
 
 ## Specific Collections
 
-For certain datasets, the `unitpackage` module can be extended by additional modules. Such a module is the `CVCollection` class, which loads a collection of entries containing cyclic voltammograms stored according to the echemdb metadata schema.
+For certain datasets, the `unitpackage` module can be extended by additional modules. Such a module is the `Echemdb` class, which loads a collection of entries containing cyclic voltammograms stored according to the echemdb metadata schema.
 Such data is usually found in the field of energy conversion and storage, as illustrated on [echemdb.org](https://www.echemdb.org/cv).
 
 ```{code-cell} ipython3
-from unitpackage.cv.cv_collection import CVCollection
-db = CVCollection.from_remote()
+from unitpackage.database.echemdb import Echemdb
+db = Echemdb.from_remote()
 db.describe()
 ```
 
-Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode material, returns a new collection.
+Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode (WE) material, returns a new collection.
 
 ```{code-cell} ipython3
 db_filtered = db.filter(lambda entry: entry.get_electrode('WE').material == 'Pt')
@@ -97,8 +97,6 @@ Frictionless Data Packages or unitpackges are perfectly machine-readable, making
 
 * The `unitpackage` API can be used to filter collections of similar data for certain properties, thus allowing for simple comparison of different data sets. For example, you could think of comparing local files recorded in the laboratory with data published in a repository.
 * The content of datapackages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on [echemdb.org](https://www.echemdb.org/cv). The datapackages could also be published with the [frictionless Livemark](https://livemark.frictionlessdata.io/) data presentation framework.
-
-You can cite this project as described [on our zenodo page](https://zenodo.org/records/15644101).
 
 ## Installation
 
@@ -121,6 +119,11 @@ mamba install -c conda-forge unitpackage
 ```
 
 See the [installation instructions](installation.md) for further details.
+
+### Citing
+
+You can cite this project as described [on our Zenodo page](https://zenodo.org/records/15644101),
+or use [this publication (***DSJ***, **24** (2025) 13)](https://doi.org/10.5334/dsj-2025-013) illustrating our approach.
 
 ## License
 

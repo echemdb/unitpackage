@@ -105,13 +105,13 @@ pixi run doc
 
 You can also explore unitpackage in an interactive session by launching an IPython session
 
-```
+```sh
 pixi run -e dev ipython
 ```
 
 or a Jupyter notebook
 
-```
+```sh
 pixi run -e dev jupyter lab
 ```
 

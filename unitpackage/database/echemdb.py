@@ -1,25 +1,21 @@
 r"""
-A Collection of Cyclic Voltammograms. It provides additional functionalities compared to
-the :class:`Collection` specific to Cyclic Voltammograms and electrochemical data.
+A Collection of data from the `echemdb data repository
+<https://github.com/echemdb/electrochemistry-data>`_ displayed on the `echemdb website
+<https://www.echemdb.org/cv>`_. It provides additional functionalities compared to
+the :class:`Collection` specific to the data in the echemdb repository.
 
 EXAMPLES:
-
-Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`__
-in the `data/` directory::
-
-    >>> from unitpackage.cv.cv_collection import CVCollection
-    >>> collection = CVCollection.from_local('data/')
 
 Create a collection from the Data Packages published in the `echemdb data repository
 <https://github.com/echemdb/electrochemistry-data>`_ displayed on the `echemdb website
 <https://www.echemdb.org/cv>`_.::
 
-    >>> collection = CVCollection.from_remote()  # doctest: +REMOTE_DATA
+    >>> collection = Echemdb.from_remote()  # doctest: +REMOTE_DATA
 
 Search the collection for entries from a single publication::
 
     >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
-    [CVEntry('alves_2011_electrochemistry_6010_f1a_solid'), ...
+    [Echemdb('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
 
@@ -45,16 +41,15 @@ Search the collection for entries from a single publication::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-import warnings
 
 from unitpackage.collection import Collection
 
 logger = logging.getLogger("unitpackage")
 
 
-class CVCollection(Collection):
+class Echemdb(Collection):
     r"""
-    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/frictionless-py>`__.
+    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/framework>`__.
 
     Essentially this is just a list of data packages with some additional
     convenience wrap for use in the `echemdb data repository <https://github.com/echemdb/electrochemistry-data>`_
@@ -72,17 +67,9 @@ class CVCollection(Collection):
 
     """
 
-    from unitpackage.cv.cv_entry import CVEntry
+    from unitpackage.database.echemdb_entry import EchemdbEntry
 
-    Entry = CVEntry
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            f"{self.__class__.__name__} is deprecated. Loading the echemdb database has been moved to `echemdb.Echemdb` and will be removed or refactored in a future version.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
+    Entry = EchemdbEntry
 
     def materials(self):
         r"""
@@ -90,25 +77,27 @@ class CVCollection(Collection):
 
         EXAMPLES::
 
-            >>> collection = CVCollection.create_example()
+            >>> from unitpackage.database.echemdb import Echemdb
+            >>> collection = Echemdb.create_example()
             >>> collection.materials() == {'Cu', 'Ru'}
             True
 
         """
-        # pylint: disable=R0801
         import pandas as pd
 
+        # pylint: disable=R0801
         return set(
             pd.unique(pd.Series([entry.get_electrode("WE").material for entry in self]))
         )
 
     def describe(self):
         r"""
-        Return some statistics about the collection.
+        Return some statistics about the echemdb database.
 
         EXAMPLES::
 
-            >>> collection = CVCollection.create_example()
+            >>> from unitpackage.database.echemdb import Echemdb
+            >>> collection = Echemdb.create_example()
             >>> collection.describe() == \
             ... {'number of references': 2,
             ... 'number of entries': 3,
@@ -116,7 +105,6 @@ class CVCollection(Collection):
             True
 
         """
-        # pylint: disable=R0801
         return {
             "number of references": (
                 0
