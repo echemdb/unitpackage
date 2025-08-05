@@ -4,6 +4,31 @@ echemdb Change Log
 
 .. current developments
 
+v0.10.0
+====================
+
+**Added:**
+
+* Added `unitpackage.database.echemdb_entry.CVEntry` and `unitpackage.database.echemdb.EchemdbEntry`, with specific functionalities for the echemdb data repository.
+* Added tests for Python 3.13.
+
+**Changed:**
+
+* Changed metadata example keys to use camelCase for consistency with JSON naming conventions.
+* Use electrochemistry-data release 0.5.0 for remote data tests.
+* Changed upper version bound for plotly from "<6" to "<7".
+* Changed version bound for pybtex from ">=0.24,<0.25" to ">=0.25,<0.26".
+
+**Deprecated:**
+
+* Deprecated `unitpackage.cv.cv_entry.CVEntry` and `unitpackage.cv.cv_collection.CVCollection`.
+
+**Removed:**
+
+* Removed unused dependency `filelock`.
+
+
+
 v0.9.2
 ====================
 

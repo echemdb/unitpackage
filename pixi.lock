@@ -36701,8 +36701,8 @@ packages:
   timestamp: 1736692859302
 - pypi: .
   name: unitpackage
-  version: 0.9.2
-  sha256: 44727bcc10ab9dccffece7953c363c1ebec383160e09c4f3075cd803d6581536
+  version: 0.10.0
+  sha256: 96ce066c67258808a9ea63afc15306e604ca293d92e75865d8f248945c773828
   requires_dist:
   - astropy>=5,<8
   - frictionless>=5.8.3,<6
