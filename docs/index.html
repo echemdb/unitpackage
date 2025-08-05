@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to unitpackage’s documentation! &mdash; unitpackage 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=82662543"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to unitpackage’s documentation!</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/index.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="welcome-to-unitpackage-s-documentation">
+<h1>Welcome to unitpackage’s documentation!<a class="headerlink" href="#welcome-to-unitpackage-s-documentation" title="Link to this heading"></a></h1>
+<p><a class="reference external" href="https://mybinder.org/v2/gh/echemdb/unitpackage/0.10.0?labpath=tree%2Fdoc%2Findex.md"><img alt="Binder" src="https://static.mybinder.org/badge_logo.svg" /></a>
+<a class="reference external" href="https://zenodo.org/records/15644101"><img alt="DOI" src="https://zenodo.org/badge/DOI/10.5281/zenodo.15644101.svg" /></a></p>
+<p>Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated or who performed the experiment. Such information can be stored in <a class="reference external" href="https://frictionlessdata.io/">frictionless Data Packages</a>, which consist of a CSV (data) file which is annotated with a JSON (metadata) file.
+The <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> module provides a Python library to interact with such Data Packages, which have a very <a class="reference internal" href="usage/unitpackage.html"><span class="std std-doc">specific structure</span></a>.
+An example of using a collection of datapackages containing several entries along with the <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> Python library is found on <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a>.
+The website shows a collection of electrochemical data stored following in the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data/">electrochemistry-data repository</a> according to <a class="reference external" href="https://github.com/echemdb/metadata-schema">echemdb’s metadata schema</a>.</p>
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading"></a></h2>
+<p>A collection of <a class="reference internal" href="usage/load_and_save.html"><span class="std std-doc">entries can be generated</span></a> from local files or from a remote repository, such as <a class="reference external" href="https://www.echemdb.org">echemdb.org</a>. To illustrate the usage of <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code>,
+we collect the data to <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a> from the data repository, which is downloaded by default when the method <code class="docutils literal notranslate"><span class="pre">from_remote()</span></code> does not receive a URL argument.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For simplicity, we denote the collection as <code class="docutils literal notranslate"><span class="pre">db</span></code> (database), even though it is not a database in that sense.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>A single entry can be retrieved with an identifier available in the database.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The metadata of the entry is available from <code class="docutils literal notranslate"><span class="pre">entry.resource</span></code>.</p>
+<p>The data related to an entry can be returned as a <a class="reference external" href="https://pandas.pydata.org/">pandas</a> dataframe.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>E</th>
+      <th>j</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00</td>
+      <td>-0.198005</td>
+      <td>0.036712</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.02</td>
+      <td>-0.197005</td>
+      <td>0.045084</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.04</td>
+      <td>-0.196005</td>
+      <td>0.050082</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.06</td>
+      <td>-0.195005</td>
+      <td>0.054618</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.08</td>
+      <td>-0.194005</td>
+      <td>0.058966</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The units of the columns can be retrieved.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">field_unit</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;A / m2&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>The values in the dataframe can be changed to other compatible units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">({</span><span class="s1">&#39;E&#39;</span> <span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span> <span class="p">:</span> <span class="s1">&#39;uA / m2&#39;</span><span class="p">})</span>
+<span class="n">rescaled_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>E</th>
+      <th>j</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00</td>
+      <td>-198.005384</td>
+      <td>36712.084554</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.02</td>
+      <td>-197.005384</td>
+      <td>45084.034733</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.04</td>
+      <td>-196.005384</td>
+      <td>50082.216182</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.06</td>
+      <td>-195.005384</td>
+      <td>54617.665553</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.08</td>
+      <td>-194.005384</td>
+      <td>58966.253457</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The data can be visualized in a plotly figure.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="specific-collections">
+<h2>Specific Collections<a class="headerlink" href="#specific-collections" title="Link to this heading"></a></h2>
+<p>For certain datasets, the <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> module can be extended by additional modules. Such a module is the <code class="docutils literal notranslate"><span class="pre">Echemdb</span></code> class, which loads a collection of entries containing cyclic voltammograms stored according to the echemdb metadata schema.
+Such data is usually found in the field of energy conversion and storage, as illustrated on <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+<span class="n">db</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;number of references&#39;: 44,
+ &#39;number of entries&#39;: 205,
+ &#39;materials&#39;: {&#39;Ag&#39;, &#39;Au&#39;, &#39;Cu&#39;, &#39;Pt&#39;, &#39;Ru&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Filtering the collection for entries having specific properties, e.g., containing Pt as working electrode (WE) material, returns a new collection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db_filtered</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;WE&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="s1">&#39;Pt&#39;</span><span class="p">)</span>
+<span class="n">db_filtered</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;number of references&#39;: 19, &#39;number of entries&#39;: 130, &#39;materials&#39;: {&#39;Pt&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The filtering method is also available to the base class <code class="docutils literal notranslate"><span class="pre">Collection</span></code>.</p>
+</div>
+</section>
+<section id="further-usage">
+<h2>Further Usage<a class="headerlink" href="#further-usage" title="Link to this heading"></a></h2>
+<p>Frictionless Data Packages or unitpackges are perfectly machine-readable, making the underlying data and metadata reusable in many ways.</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> API can be used to filter collections of similar data for certain properties, thus allowing for simple comparison of different data sets. For example, you could think of comparing local files recorded in the laboratory with data published in a repository.</p></li>
+<li><p>The content of datapackages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a>. The datapackages could also be published with the <a class="reference external" href="https://livemark.frictionlessdata.io/">frictionless Livemark</a> data presentation framework.</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<p>This package is available on <a class="reference external" href="https://pypi.org/project/unitpackage/">PiPY</a> and can be installed with pip:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>The package is also available on <a class="reference external" href="https://github.com/conda-forge/unitpackage-feedstock">conda-forge</a> and can be installed with conda</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>or mamba</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>mamba<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>conda-forge<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="installation.html"><span class="std std-doc">installation instructions</span></a> for further details.</p>
+<section id="citing">
+<h3>Citing<a class="headerlink" href="#citing" title="Link to this heading"></a></h3>
+<p>You can cite this project as described <a class="reference external" href="https://zenodo.org/records/15644101">on our Zenodo page</a>,
+or use <a class="reference external" href="https://doi.org/10.5334/dsj-2025-013">this publication (<em><strong>DSJ</strong></em>, <strong>24</strong> (2025) 13)</a> illustrating our approach.</p>
+</section>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p>The contents of this repository are licensed under the <a class="reference external" href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public
+License v3.0</a> or, at your option, any later version.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

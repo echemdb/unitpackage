@@ -1,0 +1,309 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Load and Save &mdash; unitpackage 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=82662543"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API" href="../api.html" />
+    <link rel="prev" title="echemdb" href="echemdb_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Load and Save</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#load-collections">Load collections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-local-files">From local files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-url">From URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#load-entries">Load entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#save-entries">Save entries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-local-unitpackages">Create local unitpackages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Load and Save</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/usage/load_and_save.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="load-and-save">
+<h1>Load and Save<a class="headerlink" href="#load-and-save" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> Entries and Collections can be loaded from different sources and stored as datapackages (CSV and JSON) to a specified output directory.</p>
+<section id="load-collections">
+<h2>Load collections<a class="headerlink" href="#load-collections" title="Link to this heading"></a></h2>
+<section id="from-local-files">
+<h3>From local files<a class="headerlink" href="#from-local-files" title="Link to this heading"></a></h3>
+<p>A local collection of datapackages can be created by collecting datapackages recursively, which are stored in a specific folder in the file system.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files&quot;</span><span class="p">)</span>
+<span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Entry(&#39;demo_package&#39;), Entry(&#39;demo_package_cv&#39;), Entry(&#39;demo_package_metadata&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<!-- We might want to reinclude this part, if we have specific examples. The CV module is now deprecated-->
+<!-- In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection instead, such as
+
+```{code-cell} ipython3
+from unitpackage.cv.cv_collection import CVCollection
+
+cv_db = CVCollection.from_local("../files")
+cv_db
+```
+
+```{note}
+Without providing any argument to the `Collection` class, the data from [echemdb.org](https://www.echemdb.org/cv) will be downloaded and stored as collection instead.
+```
+-->
+</section>
+<section id="from-url">
+<h3>From URL<a class="headerlink" href="#from-url" title="Link to this heading"></a></h3>
+<p>A collection of datapackages can be created by collecting datapackages recursively from a url to a ZIP file. The data is extracted to a temporary directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without providing the argument <code class="docutils literal notranslate"><span class="pre">url</span></code> to the <code class="docutils literal notranslate"><span class="pre">from_remote</span></code> method, the data shown on <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a> will be downloaded from the
+<a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a> and stored as collection instead.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+<span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;), Entry(&#39;alves_2011_electrochemistry_6010_f2_red&#39;), Entry(&#39;atkin_2009_afm_13266_f4a_solid&#39;), Entry(&#39;atkin_2009_afm_13266_f4b_solid&#39;), Entry(&#39;berger_2017_lithium_261_f1_black&#39;), Entry(&#39;berger_2017_lithium_261_f1_inset&#39;), Entry(&#39;berger_2017_lithium_261_f1_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_black&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_blue&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_green&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_red&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_black&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_blue&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_green&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_red&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_black&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_blue&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_green&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_red&#39;), Entry(&#39;clavilier_1980_preparation_205_f2_solid&#39;), Entry(&#39;clavilier_1990_insitu_1_f1_solid&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_10-10-9&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_110&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_554&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_775&#39;), Entry(&#39;domke_2003_determination_113_f2_dash-dot&#39;), Entry(&#39;domke_2003_determination_113_f2_dash-dot-dot&#39;), Entry(&#39;domke_2003_determination_113_f2_dashed&#39;), Entry(&#39;domke_2003_determination_113_f2_dotted&#39;), Entry(&#39;domke_2003_determination_113_f2_solid&#39;), Entry(&#39;domke_2003_determination_113_f3b_dotted&#39;), Entry(&#39;durand_1992_insitu_1977_f1a_solid&#39;), Entry(&#39;endo_1999_in-situ_19_f1_a&#39;), Entry(&#39;endo_1999_in-situ_19_f1_b&#39;), Entry(&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;), Entry(&#39;garcia_2011_enthalpic_501_f1a_black&#39;), Entry(&#39;garcia_2011_enthalpic_501_f1a_green&#39;), Entry(&#39;garcia_2011_enthalpic_501_f1a_red&#39;), Entry(&#39;gasparotto_2009_in_11140_f1_dashed&#39;), Entry(&#39;gomez-marin_2012_surface_558_f1_black&#39;), Entry(&#39;gomez-marin_2012_surface_558_f1_blue&#39;), Entry(&#39;gomez-marin_2012_surface_558_f1_red&#39;), Entry(&#39;gomez-marin_2012_surface_558_f2_blue&#39;), Entry(&#39;gomez-marin_2012_surface_558_f2_pink&#39;), Entry(&#39;gomez-marin_2012_surface_558_f2_red&#39;), Entry(&#39;gomez_1993_electrochemical_189_f1_solid&#39;), Entry(&#39;gomez_2003_effect_228_f1_dotted&#39;), Entry(&#39;gomez_2003_effect_228_f2_dotted&#39;), Entry(&#39;gomez_2003_effect_228_f3_dotted&#39;), Entry(&#39;hamad_2003_electrosorption_211_f1a_dotted&#39;), Entry(&#39;hamad_2003_electrosorption_211_f1a_solid&#39;), Entry(&#39;horswell_2004_a_10970_f1a_dashed&#39;), Entry(&#39;horswell_2004_a_10970_f1a_dotted&#39;), Entry(&#39;horswell_2004_a_10970_f1a_solid&#39;), Entry(&#39;jerkiewicz_2009_effect_12309_f1a_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f1_dashed&#39;), Entry(&#39;jovic_1999_cyclic_247_f1_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f4_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f6_dashed&#39;), Entry(&#39;jovic_1999_cyclic_247_f6_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f7_dashed&#39;), Entry(&#39;jovic_1999_cyclic_247_f7_solid&#39;), Entry(&#39;kerner_2002_measurement_2055_f2a_solid&#39;), Entry(&#39;kerner_2002_measurement_2055_f3a_thick&#39;), Entry(&#39;kerner_2002_measurement_2055_f3a_thin&#39;), Entry(&#39;kerner_2002_measurement_2055_f4a_thick&#39;), Entry(&#39;kerner_2002_measurement_2055_f4a_thin&#39;), Entry(&#39;kerner_2002_measurement_2055_f5a_thick&#39;), Entry(&#39;kerner_2002_measurement_2055_f5a_thin&#39;), Entry(&#39;kerner_2002_measurement_2055_f6a_1&#39;), Entry(&#39;kerner_2002_measurement_2055_f6a_2&#39;), Entry(&#39;kibler_2000_in-situ_73_f4a_black&#39;), Entry(&#39;kibler_2000_in-situ_73_f5a_black&#39;), Entry(&#39;kibler_2000_in-situ_73_f7a_black&#39;), Entry(&#39;kibler_2000_in-situ_73_f8a_black&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_dash-dotted&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_dashed&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_dotted&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_solid&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_br&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_cl&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_i&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_so4&#39;), Entry(&#39;mello_2018_bromide_18562_f1a_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1a_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1b_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1b_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1c_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1c_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1d_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1d_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1e_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1e_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1f_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1f_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1g_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1g_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1h_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1h_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1i_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1i_red&#39;), Entry(&#39;nakamura_2011_structure_165433_f1a_blue&#39;), Entry(&#39;nakamura_2011_structure_165433_f1a_green&#39;), Entry(&#39;nakamura_2011_structure_165433_f1a_red&#39;), Entry(&#39;nakamura_2011_structure_165433_f1b_blue&#39;), Entry(&#39;nakamura_2011_structure_165433_f1b_red&#39;), Entry(&#39;nakamura_2014_structural_22136_f1a_inset&#39;), Entry(&#39;nishihara_1994_underpotential_75_f1a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f1b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f2a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f2b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f3a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f3b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f4a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f4b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f5a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f5b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f6a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f6b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f7a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f7b_solid&#39;), Entry(&#39;ocko_1997_halide_55_f6a_solid&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1a_dotted&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1a_solid&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1b_dotted&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1b_solid&#39;), Entry(&#39;pajkossy_1996_impedance_209_f3a_a&#39;), Entry(&#39;pajkossy_1996_impedance_209_f3a_b&#39;), Entry(&#39;pajkossy_1996_impedance_209_f3a_dashed&#39;), Entry(&#39;pajkossy_1996_impedance_209_f8a_a&#39;), Entry(&#39;pajkossy_1996_impedance_209_f8a_b&#39;), Entry(&#39;pajkossy_1996_impedance_209_f8a_dashed&#39;), Entry(&#39;pajkossy_2001_double_3063_f2_inset&#39;), Entry(&#39;pajkossy_2001_double_3063_f5a_solid&#39;), Entry(&#39;pajkossy_2001_double_3063_f6a_solid&#39;), Entry(&#39;rehim_1998_electrochemical_1103_f1_solid&#39;), Entry(&#39;rudnev_2020_structural_501_f2c_1&#39;), Entry(&#39;sandbeck_2019_dissolution_2997_f1a_solid_red&#39;), Entry(&#39;sandbeck_2019_dissolution_2997_f1b_solid_blue&#39;), Entry(&#39;sandbeck_2019_dissolution_2997_f1c_solid_green&#39;), Entry(&#39;sato_2006_effect_725_f4a_red&#39;), Entry(&#39;sato_2006_effect_725_f4b_red&#39;), Entry(&#39;sato_2006_effect_725_f4c_red&#39;), Entry(&#39;sato_2006_effect_725_f4d_red&#39;), Entry(&#39;schnaidt_2017_a_4141_f2_solid&#39;), Entry(&#39;schuett_2021_electrodeposition_20461_fs1_blue&#39;), Entry(&#39;shi_1996_chloride_225_f1_dotted&#39;), Entry(&#39;shi_1996_chloride_225_f1_solid&#39;), Entry(&#39;shi_1996_chloride_225_f1a_dashed&#39;), Entry(&#39;shi_1996_chloride_225_f1a_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2a_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2b_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2c_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2d_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2e_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2f_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2g_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2h_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2i_solid&#39;), Entry(&#39;wandlowski_1996_structural_10277_f1a_dashed&#39;), Entry(&#39;wandlowski_1996_structural_10277_f1a_solid&#39;), Entry(&#39;wang_1996_ordered_6672_f1_solid&#39;), Entry(&#39;wang_1996_ordered_6672_f2a_solid&#39;), Entry(&#39;wang_1996_ordered_6672_f2b_solid&#39;), Entry(&#39;wang_1997_lateral_1_f1a_solid&#39;), Entry(&#39;wen_2015_potential-dependent_6062_f1_black&#39;), Entry(&#39;wen_2015_potential-dependent_6062_f1_blueinset&#39;), Entry(&#39;wen_2015_potential-dependent_6062_fs1_black&#39;), Entry(&#39;zei_1991_the_295_f3a_solid&#39;), Entry(&#39;zei_1991_the_295_f3b_solid&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Providing an output directory with the parameter <code class="docutils literal notranslate"><span class="pre">outdir</span></code> allows saving the packages in a specific output directory.
+A parameter <code class="docutils literal notranslate"><span class="pre">data</span></code> allows specifying the folder within the ZIP containing the datapackages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;generated/from_url&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="load-entries">
+<h2>Load entries<a class="headerlink" href="#load-entries" title="Link to this heading"></a></h2>
+<p>An individual entry can be loaded from a local datapackage.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files/demo_package.json&quot;</span><span class="p">)</span>
+<span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entry(&#39;demo_package&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternatively, entries can be created from CSV or pandas datframes.
+In these cases, metadata and descriptors for the columns in the CSV can be added upon evoking the entry.</p>
+<p>Metadata should be provided as Python dictionary and the fields must be a list, as illustrated in the example below.
+The individual fields must have a name.
+For a CSV</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;Max Doe&#39;</span><span class="p">}</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span><span class="s1">&#39;s&#39;</span><span class="p">},{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span><span class="s1">&#39;mA/cm²&#39;</span><span class="p">}]</span>
+
+<span class="n">csv_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="s2">&quot;../files/demo_package.csv&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>In a similar way an entry can be created from a pandas resource.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span> <span class="s1">&#39;Max Doe&#39;</span><span class="p">}</span>
+<span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span><span class="s1">&#39;m&#39;</span><span class="p">},{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span><span class="s1">&#39;m/s&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;velocity&#39;</span><span class="p">}]</span>
+
+<span class="n">df_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;df_data&#39;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="save-entries">
+<h2>Save entries<a class="headerlink" href="#save-entries" title="Link to this heading"></a></h2>
+<p>Entries can be saved as JSON and CSV in a specified folder either directly from collection</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">save_entries</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>or from a single entry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files/demo_package.json&quot;</span><span class="p">)</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files/saved_entry&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The basename of the entry can be modified</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">basename</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">identifier</span> <span class="o">+</span> <span class="s2">&quot;_r&quot;</span> <span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files/saved_entry&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="create-local-unitpackages">
+<h2>Create local unitpackages<a class="headerlink" href="#create-local-unitpackages" title="Link to this heading"></a></h2>
+<p>Local Frictionless datapackages (JSON and CSV) can be created by combining the methods to load and save entries above.</p>
+<p>Following is an example for a CSV, where the metadata and the field description are stored in a separate metadata file.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../files/demo_package.csv.yaml&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">SafeLoader</span><span class="p">)</span>
+
+<span class="n">fields</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">&quot;figureDescription&quot;</span><span class="p">][</span><span class="s2">&quot;fields&quot;</span><span class="p">]</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s2">&quot;../files/demo_package.csv&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files/csv_entry/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="echemdb_usage.html" class="btn btn-neutral float-left" title="echemdb" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

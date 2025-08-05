@@ -1,0 +1,443 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>echemdb &mdash; unitpackage 0.10.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=82662543"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Load and Save" href="load_and_save.html" />
+    <link rel="prev" title="Usage" href="unitpackage_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">echemdb</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#collection">Collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#metadata">Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data">Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bibliography">Bibliography</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">echemdb</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/usage/echemdb_usage.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="echemdb">
+<h1>echemdb<a class="headerlink" href="#echemdb" title="Link to this heading"></a></h1>
+<p>The electrochemical data shown on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a> website can be downloaded from the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a> and stored in a collection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unitpackage.database.echemdb.Echemdb
+</pre></div>
+</div>
+</div>
+</div>
+<section id="collection">
+<h2>Collection<a class="headerlink" href="#collection" title="Link to this heading"></a></h2>
+<p>In contrast to the <code class="docutils literal notranslate"><span class="pre">Collection</span></code> object described in the <a class="reference internal" href="unitpackage_usage.html"><span class="std std-doc">usage section</span></a>, <code class="docutils literal notranslate"><span class="pre">Echemdb</span></code> provides data specific functionality.
+All other functionalities of the base class are still applicable.</p>
+<p>For example, statistics of the collection can be shown.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;number of references&#39;: 44,
+ &#39;number of entries&#39;: 205,
+ &#39;materials&#39;: {&#39;Ag&#39;, &#39;Au&#39;, &#39;Cu&#39;, &#39;Pt&#39;, &#39;Ru&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="metadata">
+<h2>Metadata<a class="headerlink" href="#metadata" title="Link to this heading"></a></h2>
+<p>The entries have properties which allow for more convenient filtering of the collection.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">db_filtered</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;WE&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">material</span> <span class="o">==</span> <span class="s1">&#39;Pt&#39;</span><span class="p">)</span>
+<span class="n">db_filtered</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;number of references&#39;: 19, &#39;number of entries&#39;: 130, &#39;materials&#39;: {&#39;Pt&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<p>Single entries can be selected by their identifier provided on <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org/cv</a> for each entry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;</span><span class="p">]</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>unitpackage.database.echemdb_entry.EchemdbEntry
+</pre></div>
+</div>
+</div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">entry.package</span></code> provides a full list of available descriptors.</p>
+<p>As indicated above, electrodes used to record the data are listed in the <code class="docutils literal notranslate"><span class="pre">system.electrodes</span></code> descriptor and are accessible with</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;WE&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;name&#39;: &#39;WE&#39;, &#39;function&#39;: &#39;working electrode&#39;, &#39;crystallographicOrientation&#39;: &#39;100&#39;, &#39;geometricElectrolyteContactArea&#39;: {&#39;unit&#39;: &#39;1 / cm2&#39;}, &#39;material&#39;: &#39;Cu&#39;, &#39;preparationProcedure&#39;: {&#39;description&#39;: [&#39;Sputter and heating under UHV conditions.&#39;]}, &#39;shape&#39;: {&#39;diameter&#39;: {&#39;unit&#39;: &#39;mm&#39;, &#39;value&#39;: 4.4}, &#39;height&#39;: {&#39;unit&#39;: &#39;mm&#39;, &#39;value&#39;: 2}, &#39;type&#39;: &#39;head shaped&#39;}, &#39;source&#39;: {&#39;manufacturer&#39;: &#39;Mateck&#39;}}
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Usually measurements are performed in a three electrode configuration, with a working electrode <code class="docutils literal notranslate"><span class="pre">WE</span></code>, a counter electrode <code class="docutils literal notranslate"><span class="pre">CE</span></code>, and a reference electrode <code class="docutils literal notranslate"><span class="pre">REF</span></code>.</p>
+</div>
+</section>
+<section id="data">
+<h2>Data<a class="headerlink" href="#data" title="Link to this heading"></a></h2>
+<p>In a freshly created collection all values of in the dataframe are in SI units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>E</th>
+      <th>j</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00</td>
+      <td>-0.198005</td>
+      <td>0.036712</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.02</td>
+      <td>-0.197005</td>
+      <td>0.045084</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.04</td>
+      <td>-0.196005</td>
+      <td>0.050082</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.06</td>
+      <td>-0.195005</td>
+      <td>0.054618</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.08</td>
+      <td>-0.194005</td>
+      <td>0.058966</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The original units in the published figure are stored as metadata.
+For data digitized with <a class="reference external" href="https://echemdb.github.io/svgdigitizer/">svgdigitizer</a> a time axis is only present, when a scan rate was given in the SVG.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">figureDescription</span><span class="o">.</span><span class="n">fields</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;orientation&#39;: &#39;horizontal&#39;, &#39;reference&#39;: &#39;RHE&#39;},
+ {&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;uA / cm2&#39;, &#39;orientation&#39;: &#39;vertical&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">figureDescription</span><span class="o">.</span><span class="n">scanRate</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>50.0 mV / s
+</pre></div>
+</div>
+</div>
+</div>
+<p>An entry can be rescaled to these original units.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">original_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="n">original_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>E</th>
+      <th>j</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.00</td>
+      <td>-0.198005</td>
+      <td>3.671208</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.02</td>
+      <td>-0.197005</td>
+      <td>4.508403</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.04</td>
+      <td>-0.196005</td>
+      <td>5.008222</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.06</td>
+      <td>-0.195005</td>
+      <td>5.461767</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.08</td>
+      <td>-0.194005</td>
+      <td>5.896625</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">original_entry</span><span class="o">.</span><span class="n">mutable_resource</span><span class="o">.</span><span class="n">schema</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;fields&#39;: [{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},
+            {&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},
+            {&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;uA / cm2&#39;}]}
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting">
+<h2>Plotting<a class="headerlink" href="#plotting" title="Link to this heading"></a></h2>
+<p>The default plot to present the data is <code class="docutils literal notranslate"><span class="pre">j</span></code> vs. <code class="docutils literal notranslate"><span class="pre">E</span></code> (or <code class="docutils literal notranslate"><span class="pre">I</span></code> vs. <code class="docutils literal notranslate"><span class="pre">E</span></code>).
+The curve label consists of the figure number in the original publication followed by a unique identifier.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+<p>The dimensions of the axis can still be specified explicitly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;j&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+</div>
+</div>
+</section>
+<section id="bibliography">
+<h2>Bibliography<a class="headerlink" href="#bibliography" title="Link to this heading"></a></h2>
+<p>All entries within the <code class="docutils literal notranslate"><span class="pre">Echemdb</span></code> collection are referenced and included in a bibtex bibliography.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">bibliography</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>44
+</pre></div>
+</div>
+</div>
+</div>
+<p>Each entry in the <code class="docutils literal notranslate"><span class="pre">Echemdb</span></code> collection can be cited.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span> <span class="o">=</span> <span class="n">db</span><span class="p">[</span><span class="s1">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;</span><span class="p">]</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">citation</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">)</span> <span class="c1"># other available backends: &#39;latex&#39; or &#39;markdown&#39;. &#39;text&#39; is default.</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;A. K. Engstfeld et al. Polycrystalline and single-crystal Cu electrodes: influence of experimental conditions on the electrochemical properties in alkaline media. Chem.-Eur. J, 24(67):17743–17755, 2018.&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="unitpackage_usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="load_and_save.html" class="btn btn-neutral float-right" title="Load and Save" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
