@@ -23,6 +23,7 @@ dependencies = [
 packages = [
     "unitpackage",
     "unitpackage.cv",
+    "unitpackage.database",
 ]
 
 [tool.pixi.project]

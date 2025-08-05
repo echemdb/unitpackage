@@ -78,17 +78,17 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 ### Resource Metadata
 
 The metadata associated with the resource is located in `entry.resource.custom['metadata']`.
-From an `entry` such information can be retrieved by `entry['name']`,
-where `name` is the respective descriptor in the metadata descriptor.
-Alternatively, you can write `entry.name` where all spaces should be replaced by underscores.
+From an `entry` such information can be retrieved by `entry['key']`,
+where `key` is the respective descriptor in the metadata descriptor.
+Alternatively, you can write `entry.key` where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citation key']
+entry['source']['citationKey']
 ```
 
 ```{code-cell} ipython3
-entry.source.citation_key
+entry.source.citationKey
 ```
 
 `entry.resource` provides a full list of available descriptors.
@@ -100,17 +100,17 @@ entry.source.citation_key
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate
+entry.figureDescription.scanRate
 ```
 
 The unit and value can be accessed separately
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.value
+entry.figureDescription.scanRate.value
 ```
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.unit
+entry.figureDescription.scanRate.unit
 ```
 
 (data)=
@@ -118,12 +118,12 @@ entry.figure_description.scan_rate.unit
 
 The resource is named according to the entry's identifier. It describes the data in the CSV.
 
-An additional `MutableResource` is added to the loaded resource, named "echemdb".
+An additional `mutableResource` is added to the loaded resource, named "echemdb".
 It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `MutableResource`.
+Changes to the data with the `unitpackage` module are only applied to the `mutableResource`.
 ```
 
 +++
@@ -197,7 +197,7 @@ entry.citation(backend='text') # other available backends: 'latex' or 'markdown'
 Individual `db.bibliography` entries can be accessed with the citation key associated with a unitpackage entry.
 
 ```{code-cell} ipython3
-bibtex_key = entry.source.citation_key
+bibtex_key = entry.source.citationKey
 bibtex_key
 ```
 

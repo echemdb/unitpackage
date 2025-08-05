@@ -29,7 +29,8 @@ db = Collection.from_local("../files")
 db
 ```
 
-In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection instead, such as
+<!-- We might want to reinclude this part, if we have specific examples. The CV module is now deprecated-->
+<!-- In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection instead, such as
 
 ```{code-cell} ipython3
 from unitpackage.cv.cv_collection import CVCollection
@@ -41,13 +42,15 @@ cv_db
 ```{note}
 Without providing any argument to the `Collection` class, the data from [echemdb.org](https://www.echemdb.org/cv) will be downloaded and stored as collection instead.
 ```
+-->
 
 ### From URL
 
 A collection of datapackages can be created by collecting datapackages recursively from a url to a ZIP file. The data is extracted to a temporary directory.
 
 ```{note}
-Without providing the argument `url` to the `from_remote` method, the data from [echemdb.org](https://www.echemdb.org/cv) will be downloaded and stored as collection instead.
+Without providing the argument `url` to the `from_remote` method, the data shown on [echemdb.org](https://www.echemdb.org/cv) will be downloaded from the
+[echemdb data repository](https://github.com/echemdb/electrochemistry-data) and stored as collection instead.
 ```
 
 ```{code-cell} ipython3
@@ -146,7 +149,7 @@ import yaml
 with open("../files/demo_package.csv.yaml", "rb") as f:
     metadata = yaml.load(f, Loader=yaml.SafeLoader)
 
-fields = metadata["figure description"]["fields"]
+fields = metadata["figureDescription"]["fields"]
 
 entry = Entry.from_csv(csvname="../files/demo_package.csv", metadata=metadata, fields=fields)
 entry.save(outdir="../generated/files/csv_entry/")
