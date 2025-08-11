@@ -38,6 +38,6 @@ jobs:
           single-commit: true
         if: ${{ github.event_name == 'push' }}
       - name: detect broken links
-        shell: pixi run -e dev bash -e {0}
+        shell: pixi run -e doc bash -e {0}
         run: pixi run linkcheck
 
