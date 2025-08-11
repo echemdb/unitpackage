@@ -25,7 +25,6 @@ jobs:
       - name: build documentation
         run: |
           pixi run linkcheck
-          cd doc
           mv generated/html generated/html_
           mkdir generated/html
           mv generated/html_ generated/html/unitpackage
