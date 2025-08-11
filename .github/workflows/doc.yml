@@ -24,7 +24,8 @@ jobs:
         with: { pixi-version: v0.50.2 }
       - name: build documentation
         run: |
-          pixi run linkcheck
+          pixi run doc
+          cd doc
           mv generated/html generated/html_
           mkdir generated/html
           mv generated/html_ generated/html/unitpackage
@@ -36,4 +37,6 @@ jobs:
           target-folder: docs
           single-commit: true
         if: ${{ github.event_name == 'push' }}
-
+      - name: detect broken links
+        shell: pixi run -e dev bash -e {0}
+        run: pixi run linkcheck
