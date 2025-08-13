@@ -36,7 +36,8 @@ python-310 = ["test", "python-310"]
 python-311 = ["test", "python-311"]
 python-312 = ["test", "python-312"]
 python-313 = ["test", "python-313"]
-dev = ["dev", "doc", "test", "lint"]
+dev = ["dev", "test", "lint"]
+doc = ["doc"]
 
 [tool.pixi.dependencies]
 astropy = "*"
@@ -100,6 +101,9 @@ myst-nb = "*"
 sphinx = "*"
 sphinx-design = "*"
 sphinx_rtd_theme = "*"
+
+[tool.pixi.feature.doc.pypi-options.dependency-overrides]
+plotly = ">=5,<6"
 
 [tool.pixi.feature.doc.tasks]
 doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
