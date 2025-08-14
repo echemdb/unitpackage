@@ -47,6 +47,7 @@ from a single publication providing its DOI::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
+from functools import cached_property
 
 from frictionless import Package
 
@@ -133,7 +134,7 @@ class Collection:
             package=package,
         )
 
-    @property
+    @cached_property
     def bibliography(self):
         r"""
         Return a pybtex database of all bibtex bibliography files,
@@ -150,7 +151,15 @@ class Collection:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
-        A collection with entries without bibliography.
+        A derived collection includes only the bibliographic entries of the remaining entries::
+
+            >>> collection.filter(lambda entry: entry.source.citationKey != 'alves_2011_electrochemistry_6010').bibliography
+            BibliographyData(
+              entries=OrderedCaseInsensitiveDict([
+                ('engstfeld_2018_polycrystalline_17743', Entry('article',
+                ...
+
+        A collection with entries without bibliography::
 
             >>> collection = Collection.create_example()["no_bibliography"]
             >>> collection.bibliography
