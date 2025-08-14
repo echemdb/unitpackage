@@ -151,7 +151,7 @@ class Collection:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
-        A derived collection includes only the bibliographic entries of the remaining entries.
+        A derived collection includes only the bibliographic entries of the remaining entries::
 
             >>> collection.filter(lambda entry: entry.source.citationKey != 'alves_2011_electrochemistry_6010').bibliography
             BibliographyData(
@@ -159,7 +159,7 @@ class Collection:
                 ('engstfeld_2018_polycrystalline_17743', Entry('article',
                 ...
 
-        A collection with entries without bibliography.
+        A collection with entries without bibliography::
 
             >>> collection = Collection.create_example()["no_bibliography"]
             >>> collection.bibliography
