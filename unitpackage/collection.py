@@ -325,6 +325,9 @@ class Collection:
             >>> collection['alves_2011_electrochemistry_6010_f1a_solid', 'invalid_key']
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
+            >>> collection[['alves_2011_electrochemistry_6010_f1a_solid', 'invalid_key']]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
+
             >>> collection['invalid_key', 'invalid_key2']
             Traceback (most recent call last):
             ...
