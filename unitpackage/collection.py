@@ -321,6 +321,9 @@ class Collection:
             >>> collection[1:2]
             [Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
+            >>> collection[:2]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+
             >>> collection[-1:2]
             Traceback (most recent call last):
             ...
@@ -439,8 +442,15 @@ class Collection:
             Traceback (most recent call last):
             ...
             IndexError: slice(-1, 2, None) out of range for collection.
+
+            >>> new_coll = collection._get_collection_by_slice(slice(None, 2), list(collection.package.resource_names))
+            >>> [e.identifier for e in new_coll]
+            ['alves_2011_electrochemistry_6010_f1a_solid', 'engstfeld_2018_polycrystalline_17743_f4b_1']
+
         """
-        if slc.start < 0 or slc.stop > len(identifiers):
+        if slc.start is not None and slc.start < 0:
+            raise IndexError(f"{slc} out of range for collection.")
+        if slc.stop is not None and slc.stop > len(identifiers):
             raise IndexError(f"{slc} out of range for collection.")
         selected_identifiers = identifiers[slc]
         package = Package()

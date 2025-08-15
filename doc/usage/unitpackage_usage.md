@@ -5,11 +5,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python (Pixi)
+  name: python3
+  display_name: Python 3 (ipykernel)
   language: python
-  name: pixi-kernel-python3
 ---
 
 # Usage
@@ -74,7 +74,6 @@ or slices.
 sliced_db = db[:2]
 sliced_db
 ```
-
 
 ## Entry
 
