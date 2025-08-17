@@ -335,15 +335,19 @@ class Collection:
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
             >>> collection['alves_2011_electrochemistry_6010_f1a_solid', 'invalid_key']
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
+            Traceback (most recent call last):
+            ...
+            KeyError: "The provided identifiers ['invalid_key'], are invalid for this collection."
 
             >>> collection[['alves_2011_electrochemistry_6010_f1a_solid', 'invalid_key']]
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
+            Traceback (most recent call last):
+            ...
+            KeyError: "The provided identifiers ['invalid_key'], are invalid for this collection."
 
             >>> collection['invalid_key', 'invalid_key2']
             Traceback (most recent call last):
             ...
-            KeyError: "None of the provided ('invalid_key', 'invalid_key2'), are valid identifiers for this collection."
+            KeyError: "The provided identifiers ['invalid_key', 'invalid_key2'], are invalid for this collection."
 
         A new collection with entries selected by a list of indices::
 
@@ -505,25 +509,25 @@ class Collection:
             >>> new_coll_partial = collection._get_collection_by_str_list(
             ...     ['alves_2011_electrochemistry_6010_f1a_solid', 'invalid_key'],
             ...     list(collection.package.resource_names))
-            >>> [entry.identifier for entry in new_coll_partial]
-            ['alves_2011_electrochemistry_6010_f1a_solid']
+            Traceback (most recent call last):
+            ...
+            KeyError: "The provided identifiers ['invalid_key'], are invalid for this collection."
 
             >>> collection._get_collection_by_str_list(['invalid_key1', 'invalid_key2'], list(collection.package.resource_names))
             Traceback (most recent call last):
             ...
-            KeyError: "None of the provided ('invalid_key1', 'invalid_key2'), are valid identifiers for this collection."
+            KeyError: "The provided identifiers ['invalid_key1', 'invalid_key2'], are invalid for this collection."
         """
         package = Package()
-        valid = []
+        invalid = []
         for name in names:
             if name not in identifiers:
-                logger.warning(f"No collection entry with identifier '{name}'.")
+                invalid.append(name)
             else:
                 package.add_resource(self.package.get_resource(name))
-                valid.append(name)
-        if len(valid) == 0:
+        if len(invalid) != 0:
             raise KeyError(
-                f"None of the provided {tuple(names)}, are valid identifiers for this collection."
+                f"The provided identifiers {invalid}, are invalid for this collection."
             )
         return type(self)(package=package)
 
