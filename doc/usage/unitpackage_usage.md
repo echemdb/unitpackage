@@ -61,14 +61,21 @@ filtered_db = db.filter(custom_filter)
 len(filtered_db)
 ```
 
-A new collection from an existing collection can be created from a lists of selected identifiers
+A new collection from an existing collection can be created from a list of selected identifiers
 
 ```{code-cell} ipython3
 ids_db = db['engstfeld_2018_polycrystalline_17743_f4b_1','alves_2011_electrochemistry_6010_f1a_solid']
 ids_db
 ```
 
-or slices.
+a list of indices
+
+```{code-cell} ipython3
+ids_db = db[0,1]
+ids_db
+```
+
+or a slice.
 
 ```{code-cell} ipython3
 sliced_db = db[:2]

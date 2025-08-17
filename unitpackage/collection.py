@@ -347,6 +347,9 @@ class Collection:
 
         A new collection with entries selected by a list of indices::
 
+            >>> collection[0, 1]
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
+
             >>> collection[[0, 1]]
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
@@ -435,7 +438,7 @@ class Collection:
 
             >>> collection = Collection.create_example()
             >>> new_coll = collection._get_collection_by_slice(slice(1, 2), list(collection.package.resource_names))
-            >>> [e.identifier for e in new_coll]
+            >>> [entry.identifier for entry in new_coll]
             ['engstfeld_2018_polycrystalline_17743_f4b_1']
 
             >>> collection._get_collection_by_slice(slice(-1, 2), list(collection.package.resource_names))
@@ -444,7 +447,7 @@ class Collection:
             IndexError: slice(-1, 2, None) out of range for collection.
 
             >>> new_coll = collection._get_collection_by_slice(slice(None, 2), list(collection.package.resource_names))
-            >>> [e.identifier for e in new_coll]
+            >>> [entry.identifier for entry in new_coll]
             ['alves_2011_electrochemistry_6010_f1a_solid', 'engstfeld_2018_polycrystalline_17743_f4b_1']
 
         """
@@ -468,7 +471,7 @@ class Collection:
 
             >>> collection = Collection.create_example()
             >>> new_coll = collection._get_collection_by_int_list([0, 1], list(collection.package.resource_names))
-            >>> [e.identifier for e in new_coll]
+            >>> [entry.identifier for entry in new_coll]
             ['alves_2011_electrochemistry_6010_f1a_solid', 'engstfeld_2018_polycrystalline_17743_f4b_1']
 
             >>> collection._get_collection_by_int_list([-1, 0, 1], list(collection.package.resource_names))
@@ -496,13 +499,13 @@ class Collection:
             >>> new_coll = collection._get_collection_by_str_list(
             ...     ['alves_2011_electrochemistry_6010_f1a_solid', 'engstfeld_2018_polycrystalline_17743_f4b_1'],
             ...     list(collection.package.resource_names))
-            >>> [e.identifier for e in new_coll]
+            >>> [entry.identifier for entry in new_coll]
             ['alves_2011_electrochemistry_6010_f1a_solid', 'engstfeld_2018_polycrystalline_17743_f4b_1']
 
             >>> new_coll_partial = collection._get_collection_by_str_list(
             ...     ['alves_2011_electrochemistry_6010_f1a_solid', 'invalid_key'],
             ...     list(collection.package.resource_names))
-            >>> [e.identifier for e in new_coll_partial]
+            >>> [entry.identifier for entry in new_coll_partial]
             ['alves_2011_electrochemistry_6010_f1a_solid']
 
             >>> collection._get_collection_by_str_list(['invalid_key1', 'invalid_key2'], list(collection.package.resource_names))
