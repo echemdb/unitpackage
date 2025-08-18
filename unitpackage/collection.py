@@ -640,7 +640,10 @@ class Collection:
 
     @property
     def identifiers(self):
-        """Return a list of identifiers.
+        """Return a list of identifiers of the collection,
+        i.e., the names of the resources in the datapackage.
+
+        This method is basically equivalent to `package.resource_names`.
 
         EXAMPLES::
 
