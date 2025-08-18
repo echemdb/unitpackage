@@ -5,11 +5,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.17.2
 kernelspec:
-  display_name: Python (Pixi)
+  name: python3
+  display_name: Python 3 (ipykernel)
   language: python
-  name: pixi-kernel-python3
 ---
 
 # Usage
@@ -61,6 +61,27 @@ filtered_db = db.filter(custom_filter)
 len(filtered_db)
 ```
 
+A new collection from an existing collection can be created from a list of selected identifiers
+
+```{code-cell} ipython3
+ids_db = db['engstfeld_2018_polycrystalline_17743_f4b_1','alves_2011_electrochemistry_6010_f1a_solid']
+ids_db
+```
+
+a list of indices
+
+```{code-cell} ipython3
+ids_db = db[0,1]
+ids_db
+```
+
+or a slice.
+
+```{code-cell} ipython3
+sliced_db = db[:2]
+sliced_db
+```
+
 ## Entry
 
 Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)).
@@ -71,6 +92,13 @@ Entries can be selected by their identifier from a collection. For our example d
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
+```
+
+Entries can also be created from their position in the db.
+
+```{code-cell} ipython3
+entry_pos = db[0]
+entry_pos
 ```
 
 Other approaches to create entries from CSV or pandas dataframes directly are described [here](load_and_save.md).
