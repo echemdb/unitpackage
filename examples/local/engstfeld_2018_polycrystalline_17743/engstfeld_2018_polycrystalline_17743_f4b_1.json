@@ -1,9 +1,9 @@
 {
     "resources": [
         {
-            "name": "alves_2011_electrochemistry_6010_f1a_solid",
+            "name": "engstfeld_2018_polycrystalline_17743_f4b_1",
             "type": "table",
-            "path": "alves_2011_electrochemistry_6010_f1a_solid.csv",
+            "path": "engstfeld_2018_polycrystalline_17743_f4b_1.csv",
             "scheme": "file",
             "format": "csv",
             "mediatype": "text/csv",
@@ -32,11 +32,11 @@
                 "echemdb": {
                     "experimental": {
                         "tags": [
-                            "BCV",
-                            "HER"
+                            "BCV"
                         ],
                         "instrumentation": [
                             {
+                                "supplier": "Biologic",
                                 "type": "potentiostat"
                             }
                         ]
@@ -44,6 +44,13 @@
                     "system": {
                         "type": "electrochemical",
                         "electrodes": [
+                            {
+                                "name": "CE",
+                                "function": "counter electrode",
+                                "crystallographicOrientation": "poly",
+                                "material": "Au",
+                                "shape": "mesh"
+                            },
                             {
                                 "name": "REF",
                                 "function": "reference electrode",
@@ -54,32 +61,34 @@
                             },
                             {
                                 "name": "WE",
-                                "function": "working electrode",
+                                "function": "workingElectrode",
                                 "type": "single crystal",
-                                "crystallographic orientation": "0001",
-                                "material": "Ru",
-                                "preparation procedure": "Sputtering and flash annealing under UHV conditions with repeated cycles of oxygen adsorption and desorption.",
+                                "crystallographicOrientation": "100",
+                                "geometricElectrolyteContactArea": {
+                                    "unit": "1 / cm2"
+                                },
+                                "material": "Cu",
+                                "preparationProcedure": "Sputter and heating under UHV conditions.",
                                 "shape": {
+                                    "diameter": {
+                                        "unit": "mm",
+                                        "value": 4.4
+                                    },
                                     "height": {
                                         "unit": "mm",
                                         "value": 2
                                     },
-                                    "type": "hat shaped"
+                                    "type": "head shaped"
                                 },
                                 "source": {
                                     "supplier": "Mateck"
                                 }
-                            },
-                            {
-                                "name": "CE",
-                                "function": "counter electrode",
-                                "comment": "unknown"
                             }
                         ],
                         "electrolyte": {
                             "components": [
                                 {
-                                    "name": "H2O",
+                                    "name": "water",
                                     "proportion": {
                                         "unit": "volume percent",
                                         "value": 100
@@ -95,15 +104,15 @@
                                         "unit": "mol / l",
                                         "value": 0.1
                                     },
-                                    "name": "HClO4",
+                                    "name": "KOH",
                                     "source": {
                                         "supplier": "Merck Suprapur"
                                     },
-                                    "type": "acid"
+                                    "type": "base"
                                 }
                             ],
                             "ph": {
-                                "value": 1
+                                "value": 13
                             },
                             "temperature": {
                                 "unit": "K",
@@ -113,11 +122,15 @@
                         }
                     },
                     "source": {
-                        "citation key": "alves_2011_electrochemistry_6010",
-                        "url": "https://doi.org/10.1039/C0CP01001D",
-                        "figure": "1a",
-                        "curve": "solid",
-                        "bibdata": "@article{alves_2011_electrochemistry_6010,\n    author = {Alves, Otavio B and Hoster, Harry E and Behm, Rolf J{\\\"u}rgen},\n    title = \"Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases\",\n    journal = \"Physical Chemistry Chemical Physics\",\n    volume = \"13\",\n    number = \"13\",\n    pages = \"6010--6021\",\n    year = \"2011\",\n    publisher = \"Royal Society of Chemistry\",\n    abstract = \"We investigated the electrochemical oxidation and reduction processes on ultrahigh vacuum prepared, smooth and structurally well-characterized Ru(0001) electrodes in a CO-saturated and, for comparison, in a CO-free flowing HClO4 electrolyte by electrochemical methods and by comparison with previous structural data. Structure and reactivity of the adsorbed layers are largely governed by a critical potential of E = 0.57 V, which determines the onset of Oad formation on the COad saturated surface in the positive-going scan and of Oadreduction in the negative-going scan. Oad formation proceeds via nucleation and 2D growth of high-coverage Oad islands in a surrounding COad phase, and it is connected with COadoxidation at the interface between the two phases. In the negative-going scan, mixed (COad + Oad) phases, most likely a (2 $\\times$ 2)-(CO + 2O) and a (2$\\times$2)-(2CO + O), are proposed to form at E $<$ 0.57 V by reduction of the Oad-rich islands and CO adsorption into the resulting lower-density Oad structures. CO bulk oxidation rates in the potential range E $>$ 0.57 V are low, but significantly higher than those observed during oxidation of pre-adsorbed CO in the CO-free electrolyte. We relate this to high local COad coverages due to CO adsorption in the CO-saturated electrolyte, which lowers the CO adsorption energy and thus the barrier for COadoxidation during CO bulk oxidation.\"\n}\n"
+                        "citationKey": "engstfeld_2018_polycrystalline_17743",
+                        "url": "https://doi.org/10.1002/chem.201803418",
+                        "techniques": [
+                            "XPS",
+                            "STM"
+                        ],
+                        "figure": "1",
+                        "curve": "1",
+                        "bibdata": "@article{engstfeld_2018_polycrystalline_17743,\n    author = \"Engstfeld, Albert K and Maagaard, Thomas and Horch, Sebastian and Chorkendorff, Ib and Stephens, Ifan EL\",\n    title = \"Polycrystalline and single-crystal Cu electrodes: influence of experimental conditions on the electrochemical properties in alkaline media\",\n    journal = \"Chem.-Eur. J\",\n    volume = \"24\",\n    number = \"67\",\n    pages = \"17743--17755\",\n    year = \"2018\",\n    abstract = \"Single and polycrystalline Cu electrodes serve as model systems for the study of the electroreduction of CO2, CO and nitrate, or for corrosion studies; even so, there are very few reports combining electrochemical measurements with structural characterization. Herein both the electrochemical properties of polycrystalline Cu and single crystal Cu(1 0 0) electrodes in alkaline solutions (0.1 m KOH and 0.1 m NaOH) are investigated. It is demonstrated that the pre-treatment of the electrodes plays a crucial role in determining their electrochemical properties. Scanning tunneling microscopy, X-ray photoelectron spectroscopy and cyclic voltammetry are performed on Cu(1 0 0) electrodes prepared under UHV conditions; it is shown that the electrochemical properties of these atomically well-defined electrodes are distinct from electrodes prepared by other methods. Also highlighted is the significant role of residual oxygen and electrolyte convection in influencing the electrochemical properties.\"\n}\n"
                     },
                     "curation": {
                         "process": [
@@ -135,11 +148,11 @@
                             }
                         ]
                     },
-                    "figure description": {
+                    "figureDescription": {
                         "version": 1,
                         "type": "digitized",
-                        "simultaneous measurements": [],
-                        "measurement type": "CV",
+                        "simultaneousMeasurements": [],
+                        "measurementType": "CV",
                         "fields": [
                             {
                                 "name": "E",
@@ -151,20 +164,20 @@
                             {
                                 "name": "j",
                                 "type": "number",
-                                "unit": "mA / cm2",
+                                "unit": "uA / cm2",
                                 "orientation": "y"
                             }
                         ],
-                        "comment": "",
-                        "scan rate": {
-                            "value": 0.05,
-                            "unit": "V / s"
+                        "comment": "Small humps around 0.3 to 0.45 V are complicated to digitize.",
+                        "scanRate": {
+                            "value": 50.0,
+                            "unit": "mV / s"
                         }
                     },
-                    "data description": {
+                    "dataDescription": {
                         "version": 1,
                         "type": "digitized",
-                        "measurement type": "CV"
+                        "measurementType": "CV"
                     }
                 }
             }

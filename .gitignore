@@ -1,6 +1,8 @@
-# Digitized data
-/data/generated
-/examples/generated
+# generated data from tests and builds
+/test/generated
+/doc/files/generated
+test_parent_directory.*
+/test/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -126,6 +128,9 @@ venv.bak/
 # mkdocs documentation
 /generated
 
+# generated data from tests and builds
+/doc/usage/generated
+
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -139,3 +144,6 @@ dmypy.json
 
 # Rever
 /rever
+
+# pixi environments
+.pixi

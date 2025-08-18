@@ -1,7 +1,7 @@
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2022-2023 Albert Engstfeld
+#        Copyright (C) 2022-2025 Albert Engstfeld
 #        Copyright (C) 2022      Johannes Hermann
 #        Copyright (C) 2022      Julian Rüth
 #        Copyright (C) 2022      Nicolas Hörmann
@@ -27,41 +27,43 @@
 
 import re
 
-# Check that we are on the main branch
-branch=$(git branch --show-current)
-if branch.strip() != "main":
-  raise Exception("You must be on the main branch to release.")
-# and that it is up to date with origin/main
-git fetch https://github.com/echemdb/unitpackage.git
-git reset FETCH_HEAD
-git diff --exit-code
-git diff --cached --exit-code
+try:
+  input("Are you sure you are on the main branch which is identical to origin/main? [ENTER]")
+except KeyboardInterrupt:
+  sys.exit(1)
 
 $PROJECT = 'unitpackage'
 
+from rever.activities.command import command
+
+command('pixi', 'pixi install --manifest-path "$PWD/pyproject.toml" -e dev')
+
+command('build', 'python -m build')
+command('twine', 'twine upload dist/unitpackage-' + $VERSION + '.tar.gz dist/unitpackage-' + $VERSION + '-py3-none-any.whl')
+
 $ACTIVITIES = [
     'version_bump',
+    'pixi',
     'changelog',
     'tag',
     'push_tag',
-    'pypi',
+    'build',
+    'twine',
     'ghrelease',
 ]
 
 $VERSION_BUMP_PATTERNS = [
-    ('setup.py', r"    version=", r'    version="$VERSION",'),
+    ('pyproject.toml', r'version =', 'version = "$VERSION"'),
     ('doc/conf.py', r"release = ", r"release = '$VERSION'"),
-    ('doc/index.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
-    ('README.md', re.escape(r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)"),
-    ('binder/environment.yml', r"    - unitpackage==", r"    - unitpackage==$VERSION"),
+    ('doc/index.md', re.escape(r"[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?labpath=tree%2Fdoc%2Findex.md)"),
+    ('README.md', re.escape(r"[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/"), r"[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/$VERSION?labpath=tree%2Fdoc%2Findex.md)"),
+    ('binder/environment.yml', r"  - unitpackage==", r"  - unitpackage==$VERSION"),
 ]
 
 $CHANGELOG_FILENAME = 'ChangeLog'
 $CHANGELOG_TEMPLATE = 'TEMPLATE.rst'
 $CHANGELOG_NEWS = 'doc/news'
 $PUSH_TAG_REMOTE = 'git@github.com:echemdb/unitpackage.git'
-
-$PYPI_BUILD_COMMANDS = ['sdist', 'bdist_wheel']
 
 $GITHUB_ORG = 'echemdb'
 $GITHUB_REPO = 'unitpackage'

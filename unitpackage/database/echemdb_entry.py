@@ -1,27 +1,21 @@
 r"""
-A Data Package describing a Cyclic Voltammogram (CV) found in the field of electrochemistry.
+A Data Package describing an entry in the echemdb database.
 It provides additional functionalities compared to the class :class:`~unitpackage.entry.Entry`.
 
-These are the individual elements of a :class:`~unitpackage.cv.cv_collection.CVCollection`.
+These are the individual elements of a :class:`~unitpackage.database.echemdb.Echemdb`.
 
 EXAMPLES:
 
-Create a collection from local `frictionless Data Packages <https://framework.frictionlessdata.io/>`__
-in the `data/` directory::
-
-    >>> from unitpackage.cv.cv_collection import CVCollection
-    >>> collection = CVCollection.from_local('data/')
-
 We can directly access the material of an electrode used in the experiment,
-such as the WE, CE or REF::
+such as the working electrode (WE), counter electrode (CE) or reference electrode (REF)::
 
-    >>> from unitpackage.cv.cv_collection import CVCollection
-    >>> db = CVCollection.create_example()
+    >>> from unitpackage.database.echemdb import Echemdb
+    >>> db = Echemdb.create_example()
     >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
     >>> entry.get_electrode('WE').material
     'Ru'
 
-The :meth:`~unitpackage.cv.cv_entry.CVEntry.plot` creates a typical representation of a CV,
+The :meth:`~unitpackage.database.echemdb_entry.EchemdbEntry.plot` creates a typical representation of a CV,
 where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 
     >>> entry.plot()
@@ -51,36 +45,26 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-import warnings
 
 from unitpackage.entry import Entry
 
 logger = logging.getLogger("unitpackage")
 
 
-class CVEntry(Entry):
+class EchemdbEntry(Entry):
     r"""
-    A `frictionless Data Package <https://github.com/frictionlessdata/frictionless-py>`_ describing a CV.
+    A `frictionless Data Package <https://github.com/frictionlessdata/framework>`_ describing a CV.
 
     EXAMPLES:
 
-    An entry can be created directly from a Data Package that has been created
-    with `svgdigitizer's <https://echemdb.github.io/svgdigitizer/>`_ `cv` command.
-    However, entries are normally obtained by opening a :class:`~unitpackage.cv.cv_collection.CVCollection` of entries::
+    Entries are normally obtained by opening a :class:`~unitpackage.database.echemdb.Echemdb` of entries::
 
-        >>> from unitpackage.cv.cv_collection import CVCollection
-        >>> collection = CVCollection.create_example()
+        >>> from unitpackage.database.echemdb import Echemdb
+        >>> collection = Echemdb.create_example()
         >>> entry = next(iter(collection))
 
-    """
 
-    def __init__(self, *args, **kwargs):
-        warnings.warn(
-            f"{self.__class__.__name__} is deprecated. Use `echemdb.echemdb_entry.EchemdbEntry` instead.",
-            category=DeprecationWarning,
-            stacklevel=2,
-        )
-        super().__init__(*args, **kwargs)
+    """
 
     def __repr__(self):
         r"""
@@ -88,12 +72,12 @@ class CVEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_examples()[0]
             >>> entry
-            CVEntry('alves_2011_electrochemistry_6010_f1a_solid')
+            Echemdb('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        return f"CVEntry({self.identifier!r})"
+        return f"Echemdb({self.identifier!r})"
 
     def get_electrode(self, name):
         r"""
@@ -101,7 +85,7 @@ class CVEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_examples()[0]
             >>> entry.get_electrode('WE') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'WE', 'function': 'workingElectrode', 'type': 'single crystal',
             'crystallographicOrientation': '0001', 'material': 'Ru',
@@ -118,7 +102,6 @@ class CVEntry(Entry):
             KeyError: "Electrode with name 'foo' does not exist"
 
         """
-        # pylint: disable=R0801
         for electrode in self.system.electrodes:
             if electrode["name"] == name:
                 return electrode
@@ -127,7 +110,7 @@ class CVEntry(Entry):
 
     def rescale(self, units):
         r"""
-        Return a rescaled :class:`~unitpackage.cv.cv_entry.CVEntry` with axes in the specified ``units``.
+        Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with axes in the specified ``units``.
 
         Usage is essentially the same as for :meth:`~unitpackage.entry.Entry.rescale`, i.e.,
         new units are expected as dict, where the key is the axis name and the value
@@ -135,9 +118,9 @@ class CVEntry(Entry):
 
         Additionally, the entry can be rescaled to the axes' units of the original data.
         These units must be defined in the metadata of the resource,
-        within the key ``figure_description.fields``::
+        within the key ``figureDescription.fields``::
 
-            >>> entry = CVEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
             >>> rescaled_entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
@@ -145,7 +128,6 @@ class CVEntry(Entry):
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
         """
-        # pylint: disable=R0801
         if units == "original":
             units = {
                 field["name"]: field["unit"] for field in self.figureDescription.fields
@@ -162,7 +144,7 @@ class CVEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_examples()[0]
             >>> entry._normalize_field_name('j')
             'j'
             >>> entry._normalize_field_name('x')
@@ -171,7 +153,6 @@ class CVEntry(Entry):
             ValueError: No axis with name 'x' found.
 
         """
-        # pylint: disable=R0801
         if field_name in self.mutable_resource.schema.field_names:
             return field_name
         if field_name == "j":
@@ -184,7 +165,7 @@ class CVEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_examples()[0]
             >>> entry.thumbnail()
             b'\x89PNG...'
 
@@ -196,7 +177,6 @@ class CVEntry(Entry):
             b"\x89PNG..."
 
         """
-        # pylint: disable=R0801
         kwds.setdefault("color", "b")
         kwds.setdefault("linewidth", 1)
         kwds.setdefault("legend", False)
@@ -233,7 +213,7 @@ class CVEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = CVEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_examples()[0]
             >>> entry.plot()
             Figure(...)
 
@@ -249,7 +229,6 @@ class CVEntry(Entry):
             Figure(...)
 
         """
-        # pylint: disable=R0801
         x_label = self._normalize_field_name(x_label)
         y_label = self._normalize_field_name(y_label)
 

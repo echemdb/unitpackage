@@ -5,26 +5,27 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.14.5
+    jupytext_version: 1.17.2
 kernelspec:
+  name: python3
   display_name: Python 3 (ipykernel)
   language: python
-  name: python3
 ---
 
 # Usage
 
-The `unitpackage` module allows interacting with collections and entries from specifically designed frictionless [datapackages](unitpackage.md).
+The `unitpackage` module allows interacting with collections and entries from specifically designed frictionless [Data Packages](unitpackage.md).
 
 ## Collection
 
 A collection can be generated from a [remote](../api/remote.md) or a [local](../api/local.md) source.
 
-To illustrate the usage of `unitpackage`, we create a collection from the entries on [echemdb.org](https://www.echemdb.org/cv):
+To illustrate the usage of `unitpackage`, we create a collection from the entries shown on [echemdb.org](https://www.echemdb.org/cv),
+which are retrieved from the [data repository](https://github.com/echemdb/electrochemistry-data):
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
-db = Collection()
+db = Collection.from_remote()
 ```
 
 Type `db` to highlight the entries within the collection or show the number of entries in the collection with.
@@ -47,45 +48,78 @@ filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
 len(filtered_db)
 ```
 
-## Entry
-
-Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)). The entry also has additional methods for descriptor representation, data manipulation and data visualization.
-
-### Creation
-
-An entry can be created from a local package:
+Alternatively parse a custom filter.
 
 ```{code-cell} ipython3
-from unitpackage.local import collect_datapackages
-from unitpackage.entry import Entry
-local_entry = Entry(collect_datapackages('../files/')[2])
-local_entry
+def custom_filter(entry):
+    for component in entry.system.electrolyte.components:
+        if 'ClO4' in component.name:
+            return True
+    return False
+
+filtered_db = db.filter(custom_filter)
+len(filtered_db)
 ```
 
-Single entries can also be selected by their identifier from a collection. For our example database such identifiers can directly be inferred from [echemdb.org](https://www.echemdb.org/cv) for each entry.
+A new collection from an existing collection can be created from a list of selected identifiers
+
+```{code-cell} ipython3
+ids_db = db['engstfeld_2018_polycrystalline_17743_f4b_1','alves_2011_electrochemistry_6010_f1a_solid']
+ids_db
+```
+
+a list of indices
+
+```{code-cell} ipython3
+ids_db = db[0,1]
+ids_db
+```
+
+or a slice.
+
+```{code-cell} ipython3
+sliced_db = db[:2]
+sliced_db
+```
+
+## Entry
+
+Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)).
+The entry also has additional methods for descriptor representation, data manipulation, and data visualization.
+
+Entries can be selected by their identifier from a collection. For our example database, such identifiers can directly be inferred from [echemdb.org/cv](https://www.echemdb.org/cv) for each entry.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 entry
 ```
 
+Entries can also be created from their position in the db.
+
+```{code-cell} ipython3
+entry_pos = db[0]
+entry_pos
+```
+
+Other approaches to create entries from CSV or pandas dataframes directly are described [here](load_and_save.md).
+
 ### Resource Metadata
 
-The metadata associated with the resource is located in `db.package.get_resource('echemdb').custom['metadata']`.
-From an `entry` such information can be retrieved by `entry['name']`,
-where name is the respective descriptor in the metadata descriptor. Alternatively you can write `entry.name`
-where all spaces should be replaced by underscores.
+The metadata associated with the resource is located in `entry.resource.custom['metadata']`.
+From an `entry` such information can be retrieved by `entry['key']`,
+where `key` is the respective descriptor in the metadata descriptor.
+Alternatively, you can write `entry.key` where all spaces should be replaced by underscores.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citation key']
+entry['source']['citationKey']
 ```
 
 ```{code-cell} ipython3
-entry.source.citation_key
+entry.source.citationKey
 ```
 
-`entry.package` provides a full list of available descriptors.
+`entry.resource` provides a full list of available descriptors.
 
 +++
 
@@ -94,35 +128,33 @@ entry.source.citation_key
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate
+entry.figureDescription.scanRate
 ```
 
 The unit and value can be accessed separately
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.value
+entry.figureDescription.scanRate.value
 ```
 
 ```{code-cell} ipython3
-entry.figure_description.scan_rate.unit
+entry.figureDescription.scanRate.unit
 ```
 
 (data)=
 ### Data
 
-The datapackage consists of two resources.
+The resource is named according to the entry's identifier. It describes the data in the CSV.
 
-* One resource is named according to the entry's identifier. It describes the data in the CSV.
-* One resource is named "echemdb". It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.
+An additional `mutableResource` is added to the loaded resource, named "echemdb".
+It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
 
 ```{note}
 The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `echemdb` resource.
+Changes to the data with the `unitpackage` module are only applied to the `mutableResource`.
 ```
 
-```{code-cell} ipython3
-entry.package.resource_names
-```
++++
 
 The data can be returned as a pandas dataframe.
 
@@ -133,7 +165,7 @@ entry.df.head()
 The description of the fields (column names) including units and/or other information are included in the resource schema.
 
 ```{code-cell} ipython3
-entry.package.get_resource('echemdb').schema
+entry.resource.schema
 ```
 
 The units of the dataframe can be rescaled.
@@ -143,10 +175,10 @@ rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
 rescaled_entry.df.head()
 ```
 
-The units are updated in the package schema of the 'echemdb' resource.
+The units are updated in the schema of the 'MutableResource'.
 
 ```{code-cell} ipython3
-rescaled_entry.package.get_resource('echemdb').schema
+rescaled_entry.mutable_resource
 ```
 
 The units of a specific field can be retrieved.
@@ -193,7 +225,7 @@ entry.citation(backend='text') # other available backends: 'latex' or 'markdown'
 Individual `db.bibliography` entries can be accessed with the citation key associated with a unitpackage entry.
 
 ```{code-cell} ipython3
-bibtex_key = entry.source.citation_key
+bibtex_key = entry.source.citationKey
 bibtex_key
 ```
 

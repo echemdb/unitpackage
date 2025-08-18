@@ -46,17 +46,17 @@ conda-forge](https://github.com/conda-forge/unitpackage-feedstock) for all
 platforms.
 
 If you don't have conda yet, we recommend to install
-[Miniforge](https://github.com/conda-forge/miniforge#miniforge3).
+[Miniforge](https://github.com/conda-forge/miniforge).
 
 Miniforge is already pre-configured for conda-forge. If you already had another
 release of conda installed, make sure the conda-forge channel is
-[configured correctly](https://conda-forge.org/docs/user/introduction.html#how-can-i-install-packages-from-conda-forge)
+[configured correctly](https://conda-forge.org/docs/user/introduction/#how-can-i-install-packages-from-conda-forge)
 
 Once your conda setup is ready, create a new `unitpackage` environment with
 the latest stable version of the unitpackage:
 
 ```sh
-conda create -n unitpackage
+conda create -n unitpackage unitpackage
 ```
 
 To use the unitpackage, activate the `unitpackage` environment:
@@ -71,30 +71,51 @@ To install the unitpackage into an existing environment, activate that environme
 conda install unitpackage
 ```
 
-Install with pip for development
+Install with pixi for development
 --------------------------------
 
-If you want to work on the unitpackage itself, get a copy of the latest
-unreleased version of the unitpackage:
+We recommend [pixi](https://pixi.sh) for developers of unitpackage to use a
+curated list of dependencies that are tested to work on all platforms. These
+are also exactly the dependencies that are used in our CI, which makes it
+easier to test things locally.
+
+Once you installed pixi itself, get a copy of the latest unitpackage
 
 ```sh
 git clone https://github.com/echemdb/unitpackage.git
 ```
 
-Move to the directory and install the dependencies
+Once you made some changes, you can run the test suite with
 
 ```sh
-conda activate unitpackage
-conda env create --file environment.yaml
+pixi run test
 ```
 
-Create an [editable](https://pip.pypa.io/en/stable/cli/pip_install/#editable-installs) install of the unitpackage:
+or run the linters
 
 ```sh
-pip install -e unitpackage
+pixi run lint
 ```
 
-Any changes you make to the files in your local copy of the unitpackage should
-now be available in your next Python session.
+or rebuild the documentation
 
-We would love to see your contribution to the unitpackage.
+```sh
+pixi run doc
+```
+
+You can also explore unitpackage in an interactive session by launching an IPython session
+
+```sh
+pixi run -e dev ipython
+```
+
+or a Jupyter notebook
+
+```sh
+pixi run -e dev jupyter lab
+```
+
+Note that any changes you make to the files in your local copy of unitpackage
+should be immediately available when you restart your Python kernel.
+
+We would love to see your contribution to unitpackage.

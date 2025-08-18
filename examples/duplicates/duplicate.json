@@ -1,0 +1,43 @@
+{
+    "resources": [
+        {
+            "name": "duplicate",
+            "type": "table",
+            "path": "duplicate.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "number",
+                        "unit": "s"
+                    },
+                    {
+                        "name": "E",
+                        "type": "number",
+                        "unit": "V",
+                        "reference": "RHE"
+                    },
+                    {
+                        "name": "j",
+                        "type": "number",
+                        "unit": "A / m2"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": {
+                    "experimental": {
+                        "tags": [
+                            "BCV",
+                            "HER"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

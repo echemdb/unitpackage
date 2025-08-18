@@ -1,5 +1,5 @@
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.7.0?urlpath=tree%2Fdoc%2Fusage%2Fentry_interactions.md)
-[![DOI](https://zenodo.org/badge/637997870.svg)](https://zenodo.org/badge/latestdoi/637997870)
+[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.10.0?labpath=tree%2Fdoc%2Findex.md)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15644101.svg)](https://zenodo.org/records/15644101)
 
 This module provides a Python library to interact with a collection of
 [frictionless datapackages](https://frictionlessdata.io/). Such datapackages consist of a CSV (data) file which is annotated with a JSON file.
@@ -55,8 +55,7 @@ The metadata of an entries' resource in a collection is accessible from the pyth
 
 ```python
 >>> from unitpackage.collection import Collection
->>> from unitpackage.local import collect_datapackages
->>> db = Collection(data_packages=collect_datapackages('./doc/files'))
+>>> db = Collection.from_local('./doc/files')
 >>> entry = db['demo_package_cv']
 >>> entry.description
 'Sample data for the unitpackage module.'
@@ -86,9 +85,7 @@ Ultimately, the `unitpackage` allows for simple transformation of data within a 
 ...
 ```
 
-Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in a `CVCollection`
-
-Collections can be generated from local files or data published in repositories such as on [echemdb.org](https://www.echemdb.org/cv)
+Collections for specific measurement types can be created, which provide additional accessibility to the meatadata or simplify the representation of such data in common plot types. An example of such a collection can be found on [echemdb.org](https://www.echemdb.org/cv), which shows Cyclic Voltammetry data annotated following [echemdb's metadata schema](https://github.com/echemdb/metadata-schema), which can be stored in an `Echemdb` collection and is retrieved from the [echemdb data repository](https://github.com/echemdb/electrochemistry-data).
 
 Detailed installation instructions, description of the modules, advanced usage examples, including
 local collection creation, are provided in our
@@ -106,12 +103,6 @@ The package is also available on [conda-forge](https://github.com/conda-forge/un
 
 ```sh .noeval
 conda install -c conda-forge unitpackage
-```
-
-or mamba
-
-```sh .noeval
-mamba install -c conda-forge unitpackage
 ```
 
 Please consult our [documentation](https://echemdb.github.io/unitpackage/) for

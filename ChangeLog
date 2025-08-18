@@ -4,6 +4,168 @@ echemdb Change Log
 
 .. current developments
 
+v0.10.0
+====================
+
+**Added:**
+
+* Added `unitpackage.database.echemdb_entry.CVEntry` and `unitpackage.database.echemdb.EchemdbEntry`, with specific functionalities for the echemdb data repository.
+* Added tests for Python 3.13.
+
+**Changed:**
+
+* Changed metadata example keys to use camelCase for consistency with JSON naming conventions.
+* Use electrochemistry-data release 0.5.0 for remote data tests.
+* Changed upper version bound for plotly from "<6" to "<7".
+* Changed version bound for pybtex from ">=0.24,<0.25" to ">=0.25,<0.26".
+
+**Deprecated:**
+
+* Deprecated `unitpackage.cv.cv_entry.CVEntry` and `unitpackage.cv.cv_collection.CVCollection`.
+
+**Removed:**
+
+* Removed unused dependency `filelock`.
+
+
+
+v0.9.2
+====================
+
+**Changed:**
+
+* Changed upper version bound for astropy from <=7 to <8.
+
+
+
+v0.9.1
+====================
+
+**Removed:**
+
+* Removed `unitpackage.local.collect_datapackage` since it is identical to frictionless `package = Package()`.
+
+**Fixed:**
+
+* Fixed creating and saving entries containing upper case characters, which are converted to lowercase, to match the frictionless specifications.
+
+
+
+v0.9.0
+====================
+
+**Added:**
+
+* Added `entry.add_column` which allows adding a column to an existing pandas dataframe and extends the Data Package fields with given units.
+* Added the property `entry.mutable_resource`, which is a virtual modifiable copy of the original resource excluding its metadata.
+* Added `unitpackage.local.collect_resources`, which collects all resources from a list of frictionless Data Packages.
+* Added `collection.from_local_file` to create a collection from the resources included in a Data Package (JSON).
+* Added validation to check for duplicate resource names upon creating a collection.
+* Added wheel upload on new release.
+* Added dependency `iteration_utilities`.
+
+**Changed:**
+
+* Changed `unitpackage.entry.Entry` from being a frictionless Data Package into a frictionless Resource.
+* Changed `unitpackage.collection.Collection` from being a collection of frictionless Data Packages  into a collection of frictionless Resources forming a Data Package.
+* Changed the virtual `echemdb` Resource into an `entry.mutable_resource`.
+* Changed `unitpackage.local.create_df_resource` to create a resource from an actual frictionless Resource instead of a frictionless Data Package.
+* Changed packages for development to be provided by pixi instead of conda directly.
+
+**Removed:**
+
+* Removed argument `resource_name` in `unitpackage.local.create_df_resource` and all other instances where resources were named "echemdb".
+
+**Fixed:**
+
+* Fixed parsing of arguments `data` and `outdir` for `collection.from_remote` downloading data from the default remote url.
+* Fixed breaking tests on GitHub (tests should be more stable now since we switched to pixi for locked versions of dependencies.)
+
+**Performance:**
+
+* Improved loading collections via `collection.from_local` or `collection.from_remote` and entries via `entry.from_local`. In contrast to the previous version, dataframes are now only loaded when a method or property is called that requires access to the resource's data. This also increases the speed for filtering the data based on metadata predicates.
+
+
+
+v0.8.5
+====================
+
+**Added:**
+
+* Added `Entry.rename_fields`, returning an entry new with field names and dataframe column names.
+* Added the classmethod `Entry._modify_fields` that updates a list of fields, and allows keeping the original name.
+
+
+
+v0.8.4
+====================
+
+**Fixed:**
+
+* Fixed `entry.save`, where the saved datapackages contained the `echemdb` resource.
+
+
+
+v0.8.3
+====================
+
+**Fixed:**
+
+* Fixed saving entries with `date` and `datetime` objects.
+
+
+
+v0.8.2
+====================
+
+**Fixed:**
+
+* Fixed creation of fields, when not all fields were provided to `local.create_unitpackage`.
+* Fixed creating an entry from the parent directory with `Entry.from_csv`.
+
+
+
+v0.8.1
+====================
+
+**Fixed:**
+
+* Fixed binder configuration files and links.
+* Upgraded to pandas version 2.
+
+
+
+v0.8.0
+====================
+
+**Added:**
+
+* Added `entry.save` which creates a unitpackage, i.e., a CSV file and a JSON file, in the directory `outdir`.
+* Added `collection.save_entries` saves the entries of this collection using `entry.save`.
+* Added `Collection.from_local`, creating a collection from local datapackages.
+* Added `Collection.from_remote`, creating a collection from remote datapackages collected from a url containing a ZIP.
+* Added `Entry.from_local`, loading an entry from a local datapackage.
+* Added `Entry.from_csv`, creating an entry from a CSV and optionally allows adding metadata to the entry and modifying the field properties.
+* Added `Entry.from_df`, creating an entry from a pandas dataframe and optionally allows adding metadata to the entry and modifying the field properties.
+
+**Changed:**
+
+* Changed default url to collect datapackages to assets in https://github.com/echemdb/electrochemistry-data/releases.
+* Changed loading echemdb data, using `Collection.from_remote()` instead of `Collection()`.
+* Changed `Entry.create_examples` to load pre-defined datapackages instead of generating datapackges from SVGs with the `svgdigitizer`.
+
+**Removed:**
+
+* Removed `svgdigitizer` as dependency used in automated tests.
+* Removed `Entry._digitize_example`, used to create datapackages for automated test.
+*
+
+**Fixed:**
+
+* Fixed the description of the project in the `setup.py`.
+
+
+
 v0.7.1
 ====================
 

@@ -1,11 +1,12 @@
 r"""
-Utilities to work with local data packages.
+Utilities to work with local frictionless Data Packages such as
+collecting Data Packages and creating unitpackages.
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2025 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C)      2021 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -24,6 +25,85 @@ Utilities to work with local data packages.
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+import logging
+import os
+import os.path
+from glob import glob
+
+import pandas as pd
+from frictionless import Package, Resource, Schema
+
+logger = logging.getLogger("unitpackage")
+
+
+def create_df_resource(resource):
+    r"""
+    Return a pandas dataframe resource for a frictionless Tabular Resource.
+
+    EXAMPLES::
+
+        >>> from frictionless import Package
+        >>> resource = Package("./examples/local/no_bibliography/no_bibliography.json").resources[0]
+        >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
+        >>> df_resource
+        {'name': 'memory',
+        ...
+        'format': 'pandas',
+        ...
+
+        >>> df_resource.data
+                      t         E         j
+        ...
+
+    TESTS::
+
+        >>> data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
+        >>> df = pd.DataFrame(data)
+        >>> from unitpackage.entry import Entry
+        >>> entry = Entry.from_df(df, basename='test_parent_directory')
+        >>> entry.save(outdir=".")
+        >>> entry_ = Entry.from_local('test_parent_directory.json')
+        >>> entry_.df
+               x  y
+            0  1  4
+            1  2  5
+            2  3  6
+
+    """
+    if not resource:
+        raise ValueError(
+            "dataframe resource can not be created since the Data Package has no resources."
+        )
+    descriptor_path = (
+        resource.basepath + "/" + resource.path if resource.basepath else resource.path
+    )
+
+    df = pd.read_csv(descriptor_path)
+    df_resource = Resource(df)
+    df_resource.infer()
+
+    return df_resource
+
+
+def collect_resources(datapackages):
+    r"""
+    Return a list of resources from a list of Data Packages.
+
+    EXAMPLES::
+
+        >>> packages = collect_datapackages("./examples/local")
+        >>> resources = collect_resources(packages)
+        >>> [resource.name for resource in resources] # doctest: +NORMALIZE_WHITESPACE
+        ['alves_2011_electrochemistry_6010_f1a_solid',
+        'engstfeld_2018_polycrystalline_17743_f4b_1',
+        'no_bibliography']
+
+    """
+
+    return [
+        resource for datapackage in datapackages for resource in datapackage.resources
+    ]
+
 
 def collect_datapackages(data):
     r"""
@@ -32,43 +112,148 @@ def collect_datapackages(data):
 
     EXAMPLES::
 
-        >>> packages = collect_datapackages("./examples")
+        >>> packages = collect_datapackages("./examples/local")
         >>> packages[0] # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
 
     """
-    # Collect all datapackage descriptors, see
-    # https://specs.frictionlessdata.io/data-package/#metadata
-    import os.path
-    from glob import glob
+    packages = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    import pandas as pd
+    return [Package(package) for package in packages]
 
-    descriptors = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    # Read the package descriptors and append the data as pandas dataframe in a new resource
-    from frictionless import Package, Resource, Schema
+def create_unitpackage(csvname, metadata=None, fields=None):
+    r"""
+    Return a Data Package built from a :param metadata: dict and tabular data
+    in :param csvname: str.
 
-    packages = []
+    The :param fields: list must must be structured such as
+    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
 
-    for descriptor in descriptors:
-        package = Package(descriptor)
+    EXAMPLES::
 
-        if not package.resources:
-            raise ValueError(f"package {descriptor} has no CSV resources")
-        descriptor_path = (
-            package.resources[0].basepath + "/" + package.resources[0].path
-        )
-        df = pd.read_csv(descriptor_path)
-        df_resource = Resource(df)
-        df_resource.infer()
-        df_resource.name = "echemdb"
-        package.add_resource(df_resource)
-        package.get_resource("echemdb").schema = Schema.from_descriptor(
-            package.resources[0].schema.to_dict()
-        )
+        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields)
+        >>> package # doctest: +NORMALIZE_WHITESPACE
+        {'resources': [{'name':
+        ...
 
-        packages.append(package)
+    TESTS:
 
-    return packages
+    Invalid fields::
+
+        >>> fields = 'not a list'
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        Traceback (most recent call last):
+        ...
+        ValueError: 'fields' must be a list such as
+        [{'name': '<fieldname>', 'unit':'<field unit>'}]`,
+        e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`
+
+    More fields than required::
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+
+    Part of the fields specified:
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}]
+        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+
+    """
+
+    csv_basename = os.path.basename(csvname)
+
+    resource = Resource(
+        path=csv_basename,
+        basepath=os.path.dirname(csvname) or ".",
+    )
+
+    resource.infer()
+
+    resource.custom.setdefault("metadata", {})
+    resource.custom["metadata"].setdefault("echemdb", metadata)
+
+    if fields:
+        # Update fields in the Resource describing the data in the CSV
+        resource_schema = resource.schema
+        if not isinstance(fields, list):
+            raise ValueError(
+                "'fields' must be a list such as \
+                [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
+                e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
+            )
+
+        # remove field if it is not a Mapping instance
+        from collections.abc import Mapping
+
+        for field in fields:
+            if not isinstance(field, Mapping):
+                raise ValueError(
+                    "'field' must be a dict such as {'name': '<fieldname>', 'unit':'<field unit>'},\
+                    e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
+                )
+
+        provided_schema = Schema.from_descriptor({"fields": fields}, allow_invalid=True)
+
+        new_fields = []
+        unspecified_fields = []
+
+        for name in resource_schema.field_names:
+            if name in provided_schema.field_names:
+                new_fields.append(
+                    provided_schema.get_field(name).to_dict()
+                    | resource_schema.get_field(name).to_dict()
+                )
+            else:
+                new_fields.append(resource_schema.get_field(name).to_dict())
+
+        if len(unspecified_fields) != 0:
+            logger.warning(
+                f"Additional information were not provided for fields {unspecified_fields}."
+            )
+
+        unused_provided_fields = []
+        for name in provided_schema.field_names:
+            if name not in resource_schema.field_names:
+                unused_provided_fields.append(name)
+        if len(unused_provided_fields) != 0:
+            logger.warning(
+                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {resource_schema.field_names}."
+            )
+
+        resource.schema = Schema.from_descriptor({"fields": new_fields})
+
+    package = Package(resources=[resource])
+
+    return package
+
+
+def write_metadata(out, metadata):
+    r"""
+    Write `metadata` to the `out` stream in JSON format.
+
+    """
+
+    def defaultconverter(item):
+        r"""
+        Return `item` that Python's json package does not know how to serialize
+        in a format that Python's json package does know how to serialize.
+        """
+        from datetime import date, datetime
+
+        # The YAML standard knows about dates and times, so we might see these
+        # in the metadata. However, standard JSON does not know about these so
+        # we need to serialize them as strings explicitly.
+        if isinstance(item, (datetime, date)):
+            return str(item)
+
+        raise TypeError(f"Cannot serialize ${item} of type ${type(item)} to JSON.")
+
+    import json
+
+    json.dump(metadata, out, default=defaultconverter, ensure_ascii=False, indent=4)
+    # json.dump does not save files with a newline, which compromises the tests
+    # where the output files are compared to an expected json.
+    out.write("\n")
