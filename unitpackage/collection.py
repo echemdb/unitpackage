@@ -408,6 +408,7 @@ class Collection:
             raise IndexError(
                 f"Index {index} out of range for collection with {len(identifiers)} entries."
             )
+
         return self.Entry(self.package.get_resource(identifiers[index]))
 
     def _get_entry_by_str(self, identifier, identifiers):
@@ -636,3 +637,19 @@ class Collection:
             package.add_resource(resource)
 
         return cls(package=package)
+
+    @property
+    def identifiers(self):
+        """Return a list of identifiers of the collection,
+        i.e., the names of the resources in the datapackage.
+
+        This method is basically equivalent to `package.resource_names`.
+
+        EXAMPLES::
+
+            >>> collection = Collection.create_example()
+            >>> len(collection.identifiers)
+            3
+
+        """
+        return self.package.resource_names

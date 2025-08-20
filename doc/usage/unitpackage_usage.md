@@ -34,6 +34,12 @@ Type `db` to highlight the entries within the collection or show the number of e
 len(db)
 ```
 
+The identifiers can also be returned as a list.
+
+```{code-cell} ipython3
+db.identifiers[0:3]
+```
+
 You can iterate over these entries
 
 ```{code-cell} ipython3
@@ -41,7 +47,7 @@ next(iter(db))
 ```
 
 The collection can be filtered for specific descriptors,
-wherby a new collection is created.
+whereby a new collection is created.
 
 ```{code-cell} ipython3
 filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
