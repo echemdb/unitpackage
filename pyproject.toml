@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "unitpackage"
 version = "0.10.1"
-classifiers = ["License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)"]
+license = "GPL-3.0-or-later"
 description = "a Python library to interact with a collection of frictionless datapackages"
 readme = "README.md"
 requires-python = ">=3.9"
