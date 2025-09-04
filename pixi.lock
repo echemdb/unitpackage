@@ -316,9 +316,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py313h536fd9c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/c3/54/74148ae1bf6cdaceacab474354ecfe5dfd104f8fa1adbfe83caac6d3e2ca/clevercsv-0.8.3-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/3e/08/c0b5dcfb8d186c94f9f5a0b77d86ae22f368efdf43447a8e9651217ee686/iteration_utilities-0.13.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/2f/d8/7303ea38911759c1ee30cc5bc623ee85d3196b733c51fd6703c34290a8d9/regex-2025.9.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -630,9 +632,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py313h31d5739_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/6b/38/4f94b77e9ae25aa248d7d8610faadecc3026f469167bf6b463a93643e4e3/clevercsv-0.8.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/03/15/e8cb403403a57ed316e80661db0e54d7aa2efcd85cb6156f33cc18746922/regex-2025.9.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -940,9 +944,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py312h01d7ebd_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/df/6c/184e2410bc5659c12de10196afba7062ab3857c606ebc2e9d3b64a517569/clevercsv-0.8.3-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/ee/b5/2983f610d9f042e952b3feca5a913d5fae8714d14155f8da1a1688078291/iteration_utilities-0.13.0-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/b5/25/d64543fb7eb41a1024786d518cc57faf1ce64aa6e9ddba097675a0c2f1d2/regex-2025.9.1-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -1249,9 +1255,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py313h90d716c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/11/35/65b8a82794b8c7fb5fa0f86f97622b829061f8266f8ae2b7a571bd5c626b/clevercsv-0.8.3-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/16/a4/6bc7fe6760232b88b191f5cc452c14ef77108c19434525ec08bcc1c050f6/iteration_utilities-0.13.0-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c7/d8/de4a4b57215d99868f1640e062a7907e185ec7476b4b689e2345487c1ff4/regex-2025.9.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -1548,9 +1556,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py313ha7868ed_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/73/09/29fdbd498090cac1a8704dc22d34c73bbfa4f9c58fed74359f83c77f057a/clevercsv-0.8.3-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/98/21/41fae72366afbc9c922a0c12c5d3a60ce005b21615539a1573b3ad97d5ab/iteration_utilities-0.13.0-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/83/ad/931134539515eb64ce36c24457a98b83c1b2e2d45adf3254b94df3735a76/regex-2025.9.1-cp313-cp313-win_amd64.whl
       - pypi: ./
   dev:
     channels:
@@ -1956,9 +1966,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py312h66e93f0_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/a6/68/9a54452da87e547a0c421e135a20a58c1d15ce438646d93c9a92b57eb504/clevercsv-0.8.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/83/e3/aba6375dc31f2a5513c3224e09f52aca989d39863395dcd763d997d7a528/iteration_utilities-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/b2/02/5c891bb5fe0691cc1bad336e3a94b9097fbcf9707ec8ddc1dce9f0397289/regex-2025.9.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -2358,9 +2370,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py312hb2c0f52_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/f6/56/18a050eb63130e3fb8dd3f0696e2fb5e38b24dd0e708fbab0838a04890a6/clevercsv-0.8.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/0f/74/f933a607a538f785da5021acf5323961b4620972e2c2f1f39b6af4b71db7/regex-2025.9.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/_python_abi3_support-1.0-hd8ed1ab_2.conda
@@ -2738,9 +2752,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py313h63b0ddb_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/4c/49/2b7048dbe4713b73b8fd807ee597ff9cd8fd6d3b5c0c444e3889f19efc31/clevercsv-0.8.3-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/22/8b/ef3cac00c54d7ab7aa357df4e1410ee674d6cdd37603daaee19f6049c8c6/iteration_utilities-0.13.0-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/49/2e/6507a2a85f3f2be6643438b7bd976e67ad73223692d6988eb1ff444106d3/regex-2025.9.1-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/_python_abi3_support-1.0-hd8ed1ab_2.conda
@@ -3119,9 +3135,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py312hea69d52_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/55/8c/bcc2651db860667fea33e99862f77d08840cfd95f6625748b0b37f93c415/clevercsv-0.8.3-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/ab/dd/af429f5143f22cf6b5e7b778d8a3e4c21d60dbd210bbb6269e714a44147c/iteration_utilities-0.13.0-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/d8/dc/fbf31fc60be317bd9f6f87daa40a8a9669b3b392aa8fe4313df0a39d0722/regex-2025.9.1-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -3489,9 +3507,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py313ha7868ed_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/73/09/29fdbd498090cac1a8704dc22d34c73bbfa4f9c58fed74359f83c77f057a/clevercsv-0.8.3-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/98/21/41fae72366afbc9c922a0c12c5d3a60ce005b21615539a1573b3ad97d5ab/iteration_utilities-0.13.0-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/83/ad/931134539515eb64ce36c24457a98b83c1b2e2d45adf3254b94df3735a76/regex-2025.9.1-cp313-cp313-win_amd64.whl
       - pypi: ./
   doc:
     channels:
@@ -3831,8 +3851,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py313h536fd9c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/c3/54/74148ae1bf6cdaceacab474354ecfe5dfd104f8fa1adbfe83caac6d3e2ca/clevercsv-0.8.3-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/3e/08/c0b5dcfb8d186c94f9f5a0b77d86ae22f368efdf43447a8e9651217ee686/iteration_utilities-0.13.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/2f/d8/7303ea38911759c1ee30cc5bc623ee85d3196b733c51fd6703c34290a8d9/regex-2025.9.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl
       - pypi: ./
       linux-aarch64:
@@ -4167,8 +4189,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py313h31d5739_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/6b/38/4f94b77e9ae25aa248d7d8610faadecc3026f469167bf6b463a93643e4e3/clevercsv-0.8.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/03/15/e8cb403403a57ed316e80661db0e54d7aa2efcd85cb6156f33cc18746922/regex-2025.9.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl
       - pypi: ./
       osx-64:
@@ -4499,8 +4523,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py312h01d7ebd_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/df/6c/184e2410bc5659c12de10196afba7062ab3857c606ebc2e9d3b64a517569/clevercsv-0.8.3-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/ee/b5/2983f610d9f042e952b3feca5a913d5fae8714d14155f8da1a1688078291/iteration_utilities-0.13.0-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/b5/25/d64543fb7eb41a1024786d518cc57faf1ce64aa6e9ddba097675a0c2f1d2/regex-2025.9.1-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl
       - pypi: ./
       osx-arm64:
@@ -4830,8 +4856,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py313h90d716c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/11/35/65b8a82794b8c7fb5fa0f86f97622b829061f8266f8ae2b7a571bd5c626b/clevercsv-0.8.3-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/16/a4/6bc7fe6760232b88b191f5cc452c14ef77108c19434525ec08bcc1c050f6/iteration_utilities-0.13.0-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c7/d8/de4a4b57215d99868f1640e062a7907e185ec7476b4b689e2345487c1ff4/regex-2025.9.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl
       - pypi: ./
       win-64:
@@ -5150,8 +5178,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py313ha7868ed_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/73/09/29fdbd498090cac1a8704dc22d34c73bbfa4f9c58fed74359f83c77f057a/clevercsv-0.8.3-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/98/21/41fae72366afbc9c922a0c12c5d3a60ce005b21615539a1573b3ad97d5ab/iteration_utilities-0.13.0-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/ae/580600f441f6fc05218bd6c9d5794f4aef072a7d9093b291f1c50a9db8bc/plotly-5.24.1-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/83/ad/931134539515eb64ce36c24457a98b83c1b2e2d45adf3254b94df3735a76/regex-2025.9.1-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/e5/30/643397144bfbfec6f6ef821f36f33e57d35946c44a2352d3c9f0ae847619/tenacity-9.1.2-py3-none-any.whl
       - pypi: ./
   python-310:
@@ -5387,9 +5417,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py310ha75aee5_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/47/74/e948a49f25cd227412d42be2fabc1edc1731962d6fd7ea6342454441066d/clevercsv-0.8.3-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/cd/4a/d10205b62074abd18500955cbd499c3bebef837a3946e7bee4a9e9ec9743/iteration_utilities-0.13.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/9e/b3/0f9f7766e980b900df0ba9901b52871a2e4203698fb35cdebd219240d5f7/regex-2025.9.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -5617,9 +5649,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py310ha766c32_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/e7/32/173f87930fac9fee447b3e52bfe3cbdb4dff55700258db18c90b2b13b943/clevercsv-0.8.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/6e/cf/d89aecaf17e999ab11a3ef73fc9ab8b64f4e156f121250ef84340b35338d/regex-2025.9.1-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/annotated-types-0.7.0-pyhd8ed1ab_1.conda
@@ -5841,9 +5875,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py310hbb8c376_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/58/a8/82adb73bfb899ebd05aa02c444fd9fdda83e0cf2502361c856f2cae16483/clevercsv-0.8.3-cp310-cp310-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/ac/bd/f991c85ab6a39a28e9a41da31812cbc9590e32a0b703db70d90ab951c858/iteration_utilities-0.13.0-cp310-cp310-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/05/de/97957618a774c67f892609eee2fafe3e30703fbbba66de5e6b79d7196dbc/regex-2025.9.1-cp310-cp310-macosx_10_9_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/annotated-types-0.7.0-pyhd8ed1ab_1.conda
@@ -6066,9 +6102,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py310h078409c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/a0/03/81a1e51b041223c7ee56c9d5fc03d989d9f05eb3c215e53f4607b20726a3/clevercsv-0.8.3-cp310-cp310-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/3a/ae/1e3c96d1e49993b443e6a29f9bdce8102adeadc5706c4669bf397a31092a/iteration_utilities-0.13.0-cp310-cp310-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/3c/b0/441afadd0a6ffccbd58a9663e5bdd182daa237893e5f8ceec6ff9df4418a/regex-2025.9.1-cp310-cp310-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -6296,9 +6334,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py310ha8f682b_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/51/ff/3e634c330469b9e6f642617b50d3938387ac44d2f4b04edde3190deffa07/clevercsv-0.8.3-cp310-cp310-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/f3/0c/212e44691c02d0fa159d17b373590f0008ebf140f6f8b0248ae31a0b00d2/iteration_utilities-0.13.0-cp310-cp310-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/97/73/fb82faaf0375aeaa1bb675008246c79b6779fa5688585a35327610ea0e2e/regex-2025.9.1-cp310-cp310-win_amd64.whl
       - pypi: ./
   python-311:
     channels:
@@ -6627,9 +6667,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py311h9ecbd09_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/f4/ac/0791e50cd884f02b7652517fd0a2253a2edd5ce2448d2c6d3c345d1d04ec/clevercsv-0.8.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/79/66/35338b38c7632a5287ddff47a2f7ce68ab266fad9ca1a9af38eeeb296295/iteration_utilities-0.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/8a/a7/a470e7bc8259c40429afb6d6a517b40c03f2f3e455c44a01abc483a1c512/regex-2025.9.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -6952,9 +6994,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py311ha879c10_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/7d/f7/262cfe2fb8e3e104f19685da014895df5881710756f7c3c228be1046241e/clevercsv-0.8.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/d1/01/9b5c6dd394f97c8f2c12f6e8f96879c9ac27292a718903faf2e27a0c09f6/regex-2025.9.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -7270,9 +7314,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py311h4d7f069_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/b9/06/10a6c82c7bd47aac2916ac92c61560480dd39414bc67345580e4c6819039/clevercsv-0.8.3-cp311-cp311-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/ac/da/ace250a151259bfa667c584db8993eba884a450eb19bf95552d8ebe09473/iteration_utilities-0.13.0-cp311-cp311-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c2/bd/27e73e92635b6fbd51afc26a414a3133243c662949cd1cda677fe7bb09bd/regex-2025.9.1-cp311-cp311-macosx_10_9_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -7588,9 +7634,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py311h917b07b_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/69/6e/2ed8fe5e65caef26a23ffda474e95acbeb2367f3768e9baf75794efac676/clevercsv-0.8.3-cp311-cp311-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/60/1d/a19622804fab17e7cda4c742ac07282463b50428d0d08ea14d4709ecad4d/iteration_utilities-0.13.0-cp311-cp311-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/eb/7d/7dc0c6efc8bc93cd6e9b947581f5fde8a5dbaa0af7c4ec818c5729fdc807/regex-2025.9.1-cp311-cp311-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -7896,9 +7944,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py311he736701_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/e7/b8/6b1f6206a46f6a0ea91be9238711c1b208f99ee55c98db9df42dbe8d8885/clevercsv-0.8.3-cp311-cp311-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/8e/f2/796ec083203f25ddf8ede31004d29f11c725e62579c530764711d222ddc3/iteration_utilities-0.13.0-cp311-cp311-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ad/e0/8adc550d7169df1d6b9be8ff6019cda5291054a0107760c2f30788b6195f/regex-2025.9.1-cp311-cp311-win_amd64.whl
       - pypi: ./
   python-312:
     channels:
@@ -8227,9 +8277,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py312h66e93f0_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/a6/68/9a54452da87e547a0c421e135a20a58c1d15ce438646d93c9a92b57eb504/clevercsv-0.8.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/83/e3/aba6375dc31f2a5513c3224e09f52aca989d39863395dcd763d997d7a528/iteration_utilities-0.13.0-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/b2/02/5c891bb5fe0691cc1bad336e3a94b9097fbcf9707ec8ddc1dce9f0397289/regex-2025.9.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -8552,9 +8604,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py312hb2c0f52_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/f6/56/18a050eb63130e3fb8dd3f0696e2fb5e38b24dd0e708fbab0838a04890a6/clevercsv-0.8.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/0f/74/f933a607a538f785da5021acf5323961b4620972e2c2f1f39b6af4b71db7/regex-2025.9.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -8870,9 +8924,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py312h01d7ebd_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/df/6c/184e2410bc5659c12de10196afba7062ab3857c606ebc2e9d3b64a517569/clevercsv-0.8.3-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/ee/b5/2983f610d9f042e952b3feca5a913d5fae8714d14155f8da1a1688078291/iteration_utilities-0.13.0-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/b5/25/d64543fb7eb41a1024786d518cc57faf1ce64aa6e9ddba097675a0c2f1d2/regex-2025.9.1-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -9188,9 +9244,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py312hea69d52_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/55/8c/bcc2651db860667fea33e99862f77d08840cfd95f6625748b0b37f93c415/clevercsv-0.8.3-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/ab/dd/af429f5143f22cf6b5e7b778d8a3e4c21d60dbd210bbb6269e714a44147c/iteration_utilities-0.13.0-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/d8/dc/fbf31fc60be317bd9f6f87daa40a8a9669b3b392aa8fe4313df0a39d0722/regex-2025.9.1-cp312-cp312-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -9496,9 +9554,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py312h4389bb4_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/55/5b/fd3b765515300b69e4139e501af4955f8565f0fa6ceceb304b1a84b3bff6/clevercsv-0.8.3-cp312-cp312-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/42/af/2d83ef6f5466cfd91afb3ea4f244414f085188c9019c226df53e01647919/iteration_utilities-0.13.0-cp312-cp312-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/92/28/6ba31cce05b0f1ec6b787921903f83bd0acf8efde55219435572af83c350/regex-2025.9.1-cp312-cp312-win_amd64.whl
       - pypi: ./
   python-313:
     channels:
@@ -9824,9 +9884,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py313h536fd9c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/c3/54/74148ae1bf6cdaceacab474354ecfe5dfd104f8fa1adbfe83caac6d3e2ca/clevercsv-0.8.3-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/3e/08/c0b5dcfb8d186c94f9f5a0b77d86ae22f368efdf43447a8e9651217ee686/iteration_utilities-0.13.0-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/2f/d8/7303ea38911759c1ee30cc5bc623ee85d3196b733c51fd6703c34290a8d9/regex-2025.9.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -10146,9 +10208,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py313h31d5739_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/6b/38/4f94b77e9ae25aa248d7d8610faadecc3026f469167bf6b463a93643e4e3/clevercsv-0.8.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/03/15/e8cb403403a57ed316e80661db0e54d7aa2efcd85cb6156f33cc18746922/regex-2025.9.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -10463,9 +10527,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py313h63b0ddb_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/4c/49/2b7048dbe4713b73b8fd807ee597ff9cd8fd6d3b5c0c444e3889f19efc31/clevercsv-0.8.3-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/22/8b/ef3cac00c54d7ab7aa357df4e1410ee674d6cdd37603daaee19f6049c8c6/iteration_utilities-0.13.0-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/49/2e/6507a2a85f3f2be6643438b7bd976e67ad73223692d6988eb1ff444106d3/regex-2025.9.1-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/aiobotocore-2.24.0-pyhe01879c_0.conda
@@ -10780,9 +10846,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py313h90d716c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/11/35/65b8a82794b8c7fb5fa0f86f97622b829061f8266f8ae2b7a571bd5c626b/clevercsv-0.8.3-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/16/a4/6bc7fe6760232b88b191f5cc452c14ef77108c19434525ec08bcc1c050f6/iteration_utilities-0.13.0-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c7/d8/de4a4b57215d99868f1640e062a7907e185ec7476b4b689e2345487c1ff4/regex-2025.9.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -11086,9 +11154,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py313ha7868ed_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/73/09/29fdbd498090cac1a8704dc22d34c73bbfa4f9c58fed74359f83c77f057a/clevercsv-0.8.3-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/98/21/41fae72366afbc9c922a0c12c5d3a60ce005b21615539a1573b3ad97d5ab/iteration_utilities-0.13.0-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/83/ad/931134539515eb64ce36c24457a98b83c1b2e2d45adf3254b94df3735a76/regex-2025.9.1-cp313-cp313-win_amd64.whl
       - pypi: ./
   python-39:
     channels:
@@ -11325,9 +11395,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstandard-0.23.0-py39h8cd3c5a_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
+      - pypi: https://files.pythonhosted.org/packages/fa/be/f3bee7294eb62f96114ecefd8852de8c867ad142587a40bb00bfca57a3a8/clevercsv-0.8.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/be/5b/7fc196a016f279813ffb8b8eeb36ccdd3e2f29635aeabe2d1163c08ac132/iteration_utilities-0.13.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/4a/56/25480407a452198414a68d6d1f4f9920652810ba9f2c7f6279e5bd9b15ef/regex-2025.9.1-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-2_gnu.tar.bz2
@@ -11557,9 +11629,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstandard-0.23.0-py39h060674a_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-hbcf94c1_2.conda
+      - pypi: https://files.pythonhosted.org/packages/4c/d4/11537ef9e5a77cdd75e835a2f7deea177682472bec5ef6c611e9afd9e384/clevercsv-0.8.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/d4/cf/391dab93877843f7f8bae210bc9c3fa9053ac968e0e9407e5a2e1d3e3298/iteration_utilities-0.13.0.tar.gz
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/e9/6e/199003d956dac19ddaebb2ef3c068379918539a497dd4d4eb5561a1c5e3f/regex-2025.9.1-cp39-cp39-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/annotated-types-0.7.0-pyhd8ed1ab_1.conda
@@ -11783,9 +11857,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstandard-0.23.0-py39h80efdc8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h8210216_2.conda
+      - pypi: https://files.pythonhosted.org/packages/64/27/21f2da3aab37b0701e297dfa90780d03a5d8f9ba20874f5715b7fd512ee1/clevercsv-0.8.3-cp39-cp39-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/4e/e6/597f496cea93902d252700a709831b21eed45a387a9b24989074e7bf48e6/iteration_utilities-0.13.0-cp39-cp39-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/be/8d/88539f6ca5967022942ab64f2038a037b344db636c80852d2b4b147f6b1a/regex-2025.9.1-cp39-cp39-macosx_10_9_x86_64.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/noarch/annotated-types-0.7.0-pyhd8ed1ab_1.conda
@@ -12010,9 +12086,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstandard-0.23.0-py39hf3bc14e_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-h6491c7d_2.conda
+      - pypi: https://files.pythonhosted.org/packages/bb/06/e056c9ed610af5eeb66c0d138f976bffc48ec7719ab55bdd59a199186a88/clevercsv-0.8.3-cp39-cp39-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/cc/27/01a5ddb4b44af1d66628be40133cc08a7861fa7094cd65e4ffc0c7e54e8b/iteration_utilities-0.13.0-cp39-cp39-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/88/ad/0b9316cfe91d8a2917fbcd8cb7c990051745b5852f9f3088b93b4267fe68/regex-2025.9.1-cp39-cp39-macosx_11_0_arm64.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-2_gnu.conda
@@ -12242,9 +12320,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstandard-0.23.0-py39ha55e580_2.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-hbeecb71_2.conda
+      - pypi: https://files.pythonhosted.org/packages/31/45/7b80e7819f781fb06c4fe377b2e8eda1cc73d00f33dbc4a2b057fd89e4b6/clevercsv-0.8.3-cp39-cp39-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/23/62/059f47b4ec629bb86164c5f1f436fab4dd6417fc9f9af5b8dcc14d019483/iteration_utilities-0.13.0-cp39-cp39-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/a8/01/824fff6789ce92a53242d24b6f5f3a982df2f610c51020f934bf878d2a99/narwhals-2.1.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/95/a9/12e2dc726ba1ba775a2c6922d5d5b4488ad60bdab0888c337c194c8e6de8/plotly-6.3.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ff/7e/4ef3cf970b4c7ef9abee4c5a42f3405a452e5abe21095ee36f9a3a83af9d/regex-2025.9.1-cp39-cp39-win_amd64.whl
       - pypi: ./
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_libgcc_mutex-0.1-conda_forge.tar.bz2
@@ -16568,6 +16648,806 @@ packages:
   - pkg:pypi/charset-normalizer?source=hash-mapping
   size: 51033
   timestamp: 1754767444665
+- pypi: https://files.pythonhosted.org/packages/11/35/65b8a82794b8c7fb5fa0f86f97622b829061f8266f8ae2b7a571bd5c626b/clevercsv-0.8.3-cp313-cp313-macosx_11_0_arm64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: d8be2c92e6e3cb381c5a39fb6e0dc86754b9ab88cf1fde59a143b5ab0da5d3a1
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/31/45/7b80e7819f781fb06c4fe377b2e8eda1cc73d00f33dbc4a2b057fd89e4b6/clevercsv-0.8.3-cp39-cp39-win_amd64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: e27dc9ded013e3c9146d61e9a81a624b0cd92d4319780a1e2d1c8ca379a296a0
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/47/74/e948a49f25cd227412d42be2fabc1edc1731962d6fd7ea6342454441066d/clevercsv-0.8.3-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 48ca306aa79b05fcdb40e35bf457f11f643c1b8defc3972d567c9046ac42fbb0
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/4c/49/2b7048dbe4713b73b8fd807ee597ff9cd8fd6d3b5c0c444e3889f19efc31/clevercsv-0.8.3-cp313-cp313-macosx_10_13_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 132cba801749bbe075c7ee210afd1dd8910d7f196793bca9702c455bac974275
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/4c/d4/11537ef9e5a77cdd75e835a2f7deea177682472bec5ef6c611e9afd9e384/clevercsv-0.8.3-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 201f80fabeb416ada27336b48de6756047aff9ffc9acee51c0f1b6933a2a7bfd
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/51/ff/3e634c330469b9e6f642617b50d3938387ac44d2f4b04edde3190deffa07/clevercsv-0.8.3-cp310-cp310-win_amd64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 41e45142460bc67b739c044a4860ae7e6d231a5028552f32e5bbce09fdd00cfc
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/55/5b/fd3b765515300b69e4139e501af4955f8565f0fa6ceceb304b1a84b3bff6/clevercsv-0.8.3-cp312-cp312-win_amd64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 6b2a0a0c494460d2cc40c5fb6a567d1d0cfed55441acfd4df9c81ee4aa20b202
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/55/8c/bcc2651db860667fea33e99862f77d08840cfd95f6625748b0b37f93c415/clevercsv-0.8.3-cp312-cp312-macosx_11_0_arm64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: c5d449ef53806aeb07e02abaa74bbe305276766000814ae3630005b92f1af405
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/58/a8/82adb73bfb899ebd05aa02c444fd9fdda83e0cf2502361c856f2cae16483/clevercsv-0.8.3-cp310-cp310-macosx_10_9_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 67fb18834f2a9d84764c7d6df644ddd8d82241668fca4de09bbdfd1671842f5b
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/64/27/21f2da3aab37b0701e297dfa90780d03a5d8f9ba20874f5715b7fd512ee1/clevercsv-0.8.3-cp39-cp39-macosx_10_9_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 30ee9135d35f276cc5fbfa426607c8f4339a81aadf96a862df4d52411ea762ca
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/69/6e/2ed8fe5e65caef26a23ffda474e95acbeb2367f3768e9baf75794efac676/clevercsv-0.8.3-cp311-cp311-macosx_11_0_arm64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 8a5ed7071051b1a911fb1e77eb607a43b49daf0010ac5b6d76166d2f26515ba8
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/6b/38/4f94b77e9ae25aa248d7d8610faadecc3026f469167bf6b463a93643e4e3/clevercsv-0.8.3-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 3b32a45904d542ae9cbf60253530b1571b7738e4a3abce1cbeb1906f0597a322
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/73/09/29fdbd498090cac1a8704dc22d34c73bbfa4f9c58fed74359f83c77f057a/clevercsv-0.8.3-cp313-cp313-win_amd64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 2c6b0a175612744ea1f34a393feb350f850810d3b8d6245abd11d3fd5561e62d
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/7d/f7/262cfe2fb8e3e104f19685da014895df5881710756f7c3c228be1046241e/clevercsv-0.8.3-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 140bb7b429c4fbe903f8b789c8904ad7241be82b0d6205d1d0e3d599b0f5a31a
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/a0/03/81a1e51b041223c7ee56c9d5fc03d989d9f05eb3c215e53f4607b20726a3/clevercsv-0.8.3-cp310-cp310-macosx_11_0_arm64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 0f7501f2dc5e9b16bda04a600206d13b1dd3c762026182ba8c9e1b03b53f89d0
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/a6/68/9a54452da87e547a0c421e135a20a58c1d15ce438646d93c9a92b57eb504/clevercsv-0.8.3-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 4ec679edfc7fb4b915bc91f7bf9784eb61e11eedfaaa8e25f524ba75ea57eca3
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/b9/06/10a6c82c7bd47aac2916ac92c61560480dd39414bc67345580e4c6819039/clevercsv-0.8.3-cp311-cp311-macosx_10_9_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: e89cf967060f454ac267ecc173e9aee326e62b8fc3d5818e25d31d237dbb6257
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/bb/06/e056c9ed610af5eeb66c0d138f976bffc48ec7719ab55bdd59a199186a88/clevercsv-0.8.3-cp39-cp39-macosx_11_0_arm64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: f6904465372a68f0e5e62a38c8ddf3fd40aa603948843bf608eb88bff8b1e729
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/c3/54/74148ae1bf6cdaceacab474354ecfe5dfd104f8fa1adbfe83caac6d3e2ca/clevercsv-0.8.3-cp313-cp313-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 7255101d81ed86ae97e7f459d3cd57103b6f6a197ab3ae5e1501a80babfa23fa
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/df/6c/184e2410bc5659c12de10196afba7062ab3857c606ebc2e9d3b64a517569/clevercsv-0.8.3-cp312-cp312-macosx_10_13_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 114c54d1951c580fa7c8ec6f1db6fe3957fabdad5589146c775bc52803a92e43
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/e7/32/173f87930fac9fee447b3e52bfe3cbdb4dff55700258db18c90b2b13b943/clevercsv-0.8.3-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 276c4b4a28fa327a34dcd2c0f0855604afaf09453bef5fb690f26b6ae99e431e
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/e7/b8/6b1f6206a46f6a0ea91be9238711c1b208f99ee55c98db9df42dbe8d8885/clevercsv-0.8.3-cp311-cp311-win_amd64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: bb0d3c4c5b52cf65ae173a475e16ff0a16a10f9ccf45f85d40142607d03dd721
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/f4/ac/0791e50cd884f02b7652517fd0a2253a2edd5ce2448d2c6d3c345d1d04ec/clevercsv-0.8.3-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: 315fdadecee4e84268d8577dc9279142afe231f0b0bfb6a8950cca08f25e7f00
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/f6/56/18a050eb63130e3fb8dd3f0696e2fb5e38b24dd0e708fbab0838a04890a6/clevercsv-0.8.3-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: b7b6e1f0a7847ca028b84c8cf168cd71637fec25653b90a45ca47727ae113bc2
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
+- pypi: https://files.pythonhosted.org/packages/fa/be/f3bee7294eb62f96114ecefd8852de8c867ad142587a40bb00bfca57a3a8/clevercsv-0.8.3-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+  name: clevercsv
+  version: 0.8.3
+  sha256: b5b73e66aa21eac45ed0c8f2b79dc4318be725a7601146cfbb420841dae57adf
+  requires_dist:
+  - chardet>=3.0
+  - regex>=2018.11
+  - packaging>=23.0
+  - wilderness>=0.1.5 ; extra == 'full'
+  - faust-cchardet>=2.1.18 ; extra == 'full'
+  - pandas>=1.0.0 ; extra == 'full'
+  - tabview>=1.4 ; extra == 'full'
+  - sphinx ; extra == 'docs'
+  - m2r2 ; extra == 'docs'
+  - furo ; extra == 'docs'
+  - wilderness>=0.1.5 ; extra == 'tests'
+  - faust-cchardet>=2.1.18 ; extra == 'tests'
+  - pandas>=1.0.0 ; extra == 'tests'
+  - tabview>=1.4 ; extra == 'tests'
+  - sphinx ; extra == 'dev'
+  - m2r2 ; extra == 'dev'
+  - furo ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'dev'
+  - faust-cchardet>=2.1.18 ; extra == 'dev'
+  - pandas>=1.0.0 ; extra == 'dev'
+  - tabview>=1.4 ; extra == 'dev'
+  - green ; extra == 'dev'
+  - pytest>=2.6 ; extra == 'dev'
+  - termcolor ; extra == 'dev'
+  - mypy ; extra == 'dev'
+  - wilderness>=0.1.5 ; extra == 'precommit'
+  requires_python: '>=3.8.0'
 - conda: https://conda.anaconda.org/conda-forge/noarch/click-8.1.8-pyh707e725_0.conda
   sha256: c920d23cd1fcf565031c679adb62d848af60d6fbb0edc2d50ba475cea4f0d8ab
   md5: f22f4d4970e09d68a10b922cbb0408d3
@@ -35509,6 +36389,131 @@ packages:
   - pkg:pypi/referencing?source=hash-mapping
   size: 51668
   timestamp: 1737836872415
+- pypi: https://files.pythonhosted.org/packages/03/15/e8cb403403a57ed316e80661db0e54d7aa2efcd85cb6156f33cc18746922/regex-2025.9.1-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 8e3f6e3c5a5a1adc3f7ea1b5aec89abfc2f4fbfba55dafb4343cd1d084f715b2
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/05/de/97957618a774c67f892609eee2fafe3e30703fbbba66de5e6b79d7196dbc/regex-2025.9.1-cp310-cp310-macosx_10_9_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 8c2ff5c01d5e47ad5fc9d31bcd61e78c2fa0068ed00cab86b7320214446da766
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/0f/74/f933a607a538f785da5021acf5323961b4620972e2c2f1f39b6af4b71db7/regex-2025.9.1-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: e9dc5991592933a4192c166eeb67b29d9234f9c86344481173d1bc52f73a7104
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/2f/d8/7303ea38911759c1ee30cc5bc623ee85d3196b733c51fd6703c34290a8d9/regex-2025.9.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 09a41dc039e1c97d3c2ed3e26523f748e58c4de3ea7a31f95e1cf9ff973fff5a
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/3c/b0/441afadd0a6ffccbd58a9663e5bdd182daa237893e5f8ceec6ff9df4418a/regex-2025.9.1-cp310-cp310-macosx_11_0_arm64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: d49dc84e796b666181de8a9973284cad6616335f01b52bf099643253094920fc
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/49/2e/6507a2a85f3f2be6643438b7bd976e67ad73223692d6988eb1ff444106d3/regex-2025.9.1-cp313-cp313-macosx_10_13_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: c3dc05b6d579875719bccc5f3037b4dc80433d64e94681a0061845bd8863c025
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/4a/56/25480407a452198414a68d6d1f4f9920652810ba9f2c7f6279e5bd9b15ef/regex-2025.9.1-cp39-cp39-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: ff62a3022914fc19adaa76b65e03cf62bc67ea16326cbbeb170d280710a7d719
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/6e/cf/d89aecaf17e999ab11a3ef73fc9ab8b64f4e156f121250ef84340b35338d/regex-2025.9.1-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: d9914fe1040874f83c15fcea86d94ea54091b0666eab330aaab69e30d106aabe
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/83/ad/931134539515eb64ce36c24457a98b83c1b2e2d45adf3254b94df3735a76/regex-2025.9.1-cp313-cp313-win_amd64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: b38afecc10c177eb34cfae68d669d5161880849ba70c05cbfbe409f08cc939d7
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/88/ad/0b9316cfe91d8a2917fbcd8cb7c990051745b5852f9f3088b93b4267fe68/regex-2025.9.1-cp39-cp39-macosx_11_0_arm64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 0fa9a7477288717f42dbd02ff5d13057549e9a8cdb81f224c313154cc10bab52
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/8a/a7/a470e7bc8259c40429afb6d6a517b40c03f2f3e455c44a01abc483a1c512/regex-2025.9.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 91892a7a9f0a980e4c2c85dd19bc14de2b219a3a8867c4b5664b9f972dcc0c78
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/92/28/6ba31cce05b0f1ec6b787921903f83bd0acf8efde55219435572af83c350/regex-2025.9.1-cp312-cp312-win_amd64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 5aba22dfbc60cda7c0853516104724dc904caa2db55f2c3e6e984eb858d3edf3
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/97/73/fb82faaf0375aeaa1bb675008246c79b6779fa5688585a35327610ea0e2e/regex-2025.9.1-cp310-cp310-win_amd64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 94533e32dc0065eca43912ee6649c90ea0681d59f56d43c45b5bcda9a740b3dd
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/9e/b3/0f9f7766e980b900df0ba9901b52871a2e4203698fb35cdebd219240d5f7/regex-2025.9.1-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 5c3b96ed0223b32dbdc53a83149b6de7ca3acd5acd9c8e64b42a166228abe29c
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/ad/e0/8adc550d7169df1d6b9be8ff6019cda5291054a0107760c2f30788b6195f/regex-2025.9.1-cp311-cp311-win_amd64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: d34b901f6f2f02ef60f4ad3855d3a02378c65b094efc4b80388a3aeb700a5de7
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/b2/02/5c891bb5fe0691cc1bad336e3a94b9097fbcf9707ec8ddc1dce9f0397289/regex-2025.9.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 47829ffaf652f30d579534da9085fe30c171fa2a6744a93d52ef7195dc38218b
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/b5/25/d64543fb7eb41a1024786d518cc57faf1ce64aa6e9ddba097675a0c2f1d2/regex-2025.9.1-cp312-cp312-macosx_10_13_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 645e88a73861c64c1af558dd12294fb4e67b5c1eae0096a60d7d8a2143a611c7
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/be/8d/88539f6ca5967022942ab64f2038a037b344db636c80852d2b4b147f6b1a/regex-2025.9.1-cp39-cp39-macosx_10_9_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: d6b046b0a01cb713fd53ef36cb59db4b0062b343db28e83b52ac6aa01ee5b368
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/c2/bd/27e73e92635b6fbd51afc26a414a3133243c662949cd1cda677fe7bb09bd/regex-2025.9.1-cp311-cp311-macosx_10_9_x86_64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 67a0295a3c31d675a9ee0238d20238ff10a9a2fdb7a1323c798fc7029578b15c
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/c7/d8/de4a4b57215d99868f1640e062a7907e185ec7476b4b689e2345487c1ff4/regex-2025.9.1-cp313-cp313-macosx_11_0_arm64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 22213527df4c985ec4a729b055a8306272d41d2f45908d7bacb79be0fa7a75ad
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/d1/01/9b5c6dd394f97c8f2c12f6e8f96879c9ac27292a718903faf2e27a0c09f6/regex-2025.9.1-cp311-cp311-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 6aeff21de7214d15e928fb5ce757f9495214367ba62875100d4c18d293750cc1
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/d8/dc/fbf31fc60be317bd9f6f87daa40a8a9669b3b392aa8fe4313df0a39d0722/regex-2025.9.1-cp312-cp312-macosx_11_0_arm64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 10a450cba5cd5409526ee1d4449f42aad38dd83ac6948cbd6d7f71ca7018f7db
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/e9/6e/199003d956dac19ddaebb2ef3c068379918539a497dd4d4eb5561a1c5e3f/regex-2025.9.1-cp39-cp39-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: b2b3ad150c6bc01a8cd5030040675060e2adbe6cbc50aadc4da42c6d32ec266e
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/eb/7d/7dc0c6efc8bc93cd6e9b947581f5fde8a5dbaa0af7c4ec818c5729fdc807/regex-2025.9.1-cp311-cp311-macosx_11_0_arm64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: ea8267fbadc7d4bd7c1301a50e85c2ff0de293ff9452a1a9f8d82c6cafe38179
+  requires_python: '>=3.9'
+- pypi: https://files.pythonhosted.org/packages/ff/7e/4ef3cf970b4c7ef9abee4c5a42f3405a452e5abe21095ee36f9a3a83af9d/regex-2025.9.1-cp39-cp39-win_amd64.whl
+  name: regex
+  version: 2025.9.1
+  sha256: 43ebc77a7dfe36661192afd8d7df5e8be81ec32d2ad0c65b536f66ebfec3dece
+  requires_python: '>=3.9'
 - conda: https://conda.anaconda.org/conda-forge/linux-64/reproc-14.2.5.post0-hb9d3cd8_0.conda
   sha256: a1973f41a6b956f1305f9aaefdf14b2f35a8c9615cfe5f143f1784ed9aa6bf47
   md5: 69fbc0a9e42eb5fe6733d2d60d818822
@@ -38286,9 +39291,11 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.10.1
-  sha256: aaba2e34374047d37d66f0aab5aff554ce4e47bd3c6e45d7c1627893beeab52e
+  sha256: eb7080976faadbca08ccc1e944cc1e7ec4d3870e1bfb36bd23454bddfea373cb
   requires_dist:
   - astropy>=5,<8
+  - clevercsv>=0.7.0,<0.9.0
+  - click>=8,<9
   - frictionless>=5.8.3,<6
   - iteration-utilities>=0.13.0,<0.14.0
   - matplotlib>=3.5.0,<4
