@@ -1,6 +1,6 @@
 ---
 jupytext:
-  formats: md:myst,ipynb
+  formats: ipynb,md:myst
   text_representation:
     extension: .md
     format_name: myst
@@ -70,7 +70,7 @@ The delimiter of the data part is evaluated using the [`clevercsv`](https://clev
 Multiple column headers will be flattened.
 
 ```{code-cell} ipython3
-from echemdbconverters.baseloader import BaseLoader
+from unitpackage.loaders.baseloader import BaseLoader
 csv = BaseLoader(file, header_lines=6,
                  column_header_lines=2,
                  delimiters=None,
@@ -95,7 +95,7 @@ print(csv.data.read())
 The data can also be converted into frictionless Data Packages using the CLI.
 
 ```{note}
-The input and output files for and from the following commands can be found in the [test folder](https://github.com/echemdb/echemdb-converters/tree/master/test/) of the repository.
+The input and output files for and from the following commands can be found in the [test folder](https://github.com/echemdb/unitpackage/tree/master/test/loader_data/) of the repository.
 
 The CLI only works for standard CSV without header and a single column header line, and specific converters summarized above.
 ```
@@ -103,14 +103,14 @@ The CLI only works for standard CSV without header and a single column header li
 A "standard" CSV
 
 ```{code-cell} ipython3
-!echemdbconverters csv ../test/loader_data/default.csv --outdir ../test/generated
+!unitpackage csv ../../test/loader_data/default.csv --outdir ../../test/generated/loader_data
 ```
 
 A specific file type, including additional YAML metadata.
 
 ```{code-cell} ipython3
 :tags: [remove-output]
-!echemdbconverters csv ../test/loader_data/eclab_cv.mpt --device eclab --metadata ../test/loader_data/eclab_cv.mpt.metadata --outdir ../test/generated
+!unitpackage csv ../../test/loader_data/eclab_cv.mpt --device eclab --metadata ../../test/loader_data/eclab_cv.mpt.metadata --outdir ../../test/generated/loader_data/
 ```
 
 ## Further usage
@@ -119,7 +119,7 @@ Use echemdbs' `unitpackage` to browse, modify and visualize the Data Packages.
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
-db = Collection.from_local('../test/generated')
+db = Collection.from_local('../../test/generated/loader_data/')
 entry = db['eclab_cv']
 entry
 ```
