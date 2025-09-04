@@ -39177,7 +39177,7 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.10.1
-  sha256: d0d6c1f15ef5fc4bb7fc8434c78f060e9d238f530ce4d166162a193d7d86aac1
+  sha256: 6942ecf27547eb8e39cafabc5b08cab8b9850d5def4054e932593158bd546778
   requires_dist:
   - astropy>=5,<8
   - clevercsv>=0.7.0,<0.9.0

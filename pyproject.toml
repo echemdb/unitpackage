@@ -116,7 +116,7 @@ sphinx_rtd_theme = "*"
 plotly = ">=5,<6"
 
 [tool.pixi.feature.doc.tasks]
-doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
+doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"
 linkcheck = "cd doc && make linkcheck"
 
 [tool.pixi.feature.dev.dependencies]

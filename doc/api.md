@@ -16,4 +16,7 @@ api/database/echemdb.md
 api/database/echemdb_entry.md
 api/remote.md
 api/local.md
+api/baseloader.md
+api/eclabloader.md
+api/gamryloader.md
 ```
