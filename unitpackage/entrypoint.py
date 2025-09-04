@@ -1,5 +1,5 @@
 r"""
-The echemdb-converter suite.
+The unitpackage suite.
 
 EXAMPLES::
 
@@ -7,7 +7,7 @@ EXAMPLES::
     >>> invoke(cli, "--help")  # doctest: +NORMALIZE_WHITESPACE
     Usage: cli [OPTIONS] COMMAND [ARGS]...
 
-      The echemdb-converter suite
+      The unitpackage suite
 
     Options:
       --help  Show this message and exit.
