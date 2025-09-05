@@ -37,3 +37,6 @@ jobs:
       - name: doctest
         run: |
           pixi run -e ${{ matrix.environment }} doctest ${{ matrix.remote-data == 'remote' && '--remote-data' || '' }}
+      - name: cli
+        # Check that invoking the CLI works in principle. The CLI itself is tested by pytest.
+        run: pixi run -e ${{ matrix.environment }} unitpackage csv test/loader_data/default.csv

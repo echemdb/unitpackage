@@ -141,5 +141,6 @@ usage/unitpackage.md
 usage/unitpackage_usage.md
 usage/echemdb_usage.md
 usage/load_and_save.md
+usage/loaders.md
 api.md
 ```

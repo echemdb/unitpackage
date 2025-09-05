@@ -11,6 +11,8 @@ readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "astropy>=5,<8",
+    "clevercsv>=0.7.0,<0.9.0",
+    "click>=8,<9",
     "frictionless>=5.8.3,<6",
     "iteration_utilities>=0.13.0,<0.14.0",
     "matplotlib>=3.5.0,<4",
@@ -19,11 +21,16 @@ dependencies = [
     "pybtex>=0.25,<0.26",
 ]
 
+[project.scripts]
+unitpackage = "unitpackage.entrypoint:cli"
+
 [tool.setuptools]
 packages = [
     "unitpackage",
     "unitpackage.cv",
     "unitpackage.database",
+    "unitpackage.loaders",
+    "unitpackage.test",
 ]
 
 [tool.pixi.project]
@@ -51,6 +58,9 @@ ipykernel = ">=6.29.5,<7"
 pip = ">=25.0,<26"
 jupyterlab = ">=4.3.4,<5"
 jupytext = ">=1.16.6,<2"
+
+[tool.pixi.tasks]
+unitpackage = "unitpackage"
 
 [tool.pixi.pypi-dependencies]
 unitpackage = { path = ".", editable = true }
@@ -106,7 +116,7 @@ sphinx_rtd_theme = "*"
 plotly = ">=5,<6"
 
 [tool.pixi.feature.doc.tasks]
-doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
+doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"
 linkcheck = "cd doc && make linkcheck"
 
 [tool.pixi.feature.dev.dependencies]
