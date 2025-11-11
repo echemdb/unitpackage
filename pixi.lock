@@ -38286,7 +38286,7 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.10.1
-  sha256: aaba2e34374047d37d66f0aab5aff554ce4e47bd3c6e45d7c1627893beeab52e
+  sha256: 07d2239ed9a9dd0810df52812838ef23d590a68c4ce5c8d561d29c61a8c2b004
   requires_dist:
   - astropy>=5,<8
   - frictionless>=5.8.3,<6

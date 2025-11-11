@@ -261,3 +261,68 @@ class EchemdbEntry(Entry):
         )
 
         return fig
+
+    def rescale_reference(self, new_reference=None, field_name=None):
+        r"""
+        Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with potentials
+        referenced to ``new_reference`` scale.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'}
+
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> rescaled_entry = entry.rescale_reference(new_reference='AgAgCl2')
+            >>> rescaled_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'AgAgCl2'}
+
+            >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t           E         j
+            0  0.00  887.896842 -0.998277
+            1  0.02  887.897842 -0.981762
+            ...
+
+        """
+        field_name = field_name or "E"
+
+        from frictionless import Resource
+
+        resource = Resource(self.resource.to_dict())
+
+        field = self.mutable_resource.schema.get_field(field_name)
+        df = self.df.copy()
+
+        if "reference" not in field.to_dict():
+            raise ValueError(f"No Reference is associated with field '{field_name}'.")
+
+        old_reference = field.to_dict()["reference"]
+        if old_reference == new_reference:
+            return self
+
+
+        import astropy.units as u
+
+        # Implement the calculation of the potential difference here
+        potential_difference = 888 * u.Unit(field.custom["unit"])  # Placeholder value
+
+
+        df[field_name] +=  potential_difference.value
+
+        reference_unit = potential_difference.unit.to_string()
+
+        # generate new resource
+        df_resource = Resource(df)
+        df_resource.infer()
+        df_resource.schema = resource.schema
+        df_resource.schema.update_field(field.name, {"reference": new_reference, "unit": reference_unit})
+
+        resource.custom["MutableResource"] = df_resource
+
+        return type(self)(resource=resource)
