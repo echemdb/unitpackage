@@ -309,7 +309,9 @@ class EchemdbEntry(Entry):
 
         import astropy.units as u
 
+        ph = self.system.electrolyte.ph if hasattr(self.system, "electrolyte") and hasattr(self.system.electrolyte, "ph") else None
         # Implement the calculation of the potential difference here
+        # parse the pH to the reference conversion for RHE conversion
         potential_difference = 888 * u.Unit(field.custom["unit"])  # Placeholder value
 
 
