@@ -166,15 +166,17 @@ class EchemdbEntry(Entry):
         EXAMPLES::
 
             >>> entry = EchemdbEntry.create_examples()[0]
-            >>> entry.thumbnail()
-            b'\x89PNG...'
+            >>> thumb = entry.thumbnail()
+            >>> thumb.startswith(b'\x89PNG')
+            True
 
         The PNG's ``width`` and ``height`` can be specified in pixels.
         Additional keyword arguments are passed to the data frame plotting
         method::
 
-            >>> entry.thumbnail(width=4, height=2, color='red', linewidth=2)
-            b"\x89PNG..."
+            >>> thumb = entry.thumbnail(width=4, height=2, color='red', linewidth=2) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            >>> thumb.startswith(b'\x89PNG')
+            True
 
         """
         kwds.setdefault("color", "b")
