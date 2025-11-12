@@ -103,7 +103,6 @@ class Collection:
             else:
                 seen.add(name)
 
-
         if duplicates:
             raise ValueError(f"Collection contains duplicate entries: {duplicates}")
 
