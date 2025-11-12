@@ -44291,7 +44291,7 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.10.1
-  sha256: c73c854caf6d9535616090b0212eb41639d595e2e5971299a2a360710fbc9e2c
+  sha256: 853a04e2dae50f74dee2986c2411565a594f0f374d348e3c97cb00725cd56845
   requires_dist:
   - astropy>=5,<8
   - frictionless>=5.8.3,<6

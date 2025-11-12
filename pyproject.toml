@@ -114,3 +114,8 @@ conda = "*"
 jupyterlab = "*"
 twine = "*"
 rever = "*"
+
+[tool.pytest.ini_options]
+env = [
+    "MPLBACKEND=Agg"
+]
