@@ -95,9 +95,14 @@ class Collection:
         if not isinstance(package, Package):
             package = Package()
 
-        from iteration_utilities import duplicates, unique_everseen
+        seen = set()
+        duplicates = []
+        for name in package.resource_names:
+            if name in seen and name not in duplicates:
+                duplicates.append(name)
+            else:
+                seen.add(name)
 
-        duplicates = list(unique_everseen(duplicates(package.resource_names)))
 
         if duplicates:
             raise ValueError(f"Collection contains duplicate entries: {duplicates}")
