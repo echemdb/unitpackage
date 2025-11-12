@@ -16,12 +16,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        environment: ["python-39", "python-310", "python-311", "python-312", "python-313"]
+        environment: ["python-310", "python-311", "python-312", "python-313", , "python-314"]
         os: ["ubuntu-latest", "ubuntu-24.04-arm", "macos-latest", "windows-latest"]
         remote-data: [""]
         include:
         - os: "ubuntu-latest"
-          environment: "python-313"
+          environment: "python-314"
           # This leg of the tests runs doctests against the data that is
           # currently available on echemdb.org. This test might fail
           # when substantial changes have been introduced
