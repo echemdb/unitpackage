@@ -95,9 +95,13 @@ class Collection:
         if not isinstance(package, Package):
             package = Package()
 
-        from iteration_utilities import duplicates, unique_everseen
+        from collections import Counter
 
-        duplicates = list(unique_everseen(duplicates(package.resource_names)))
+        duplicates = [
+            identifier
+            for identifier, count in Counter(package.resource_names).items()
+            if count > 1
+        ]
 
         if duplicates:
             raise ValueError(f"Collection contains duplicate entries: {duplicates}")

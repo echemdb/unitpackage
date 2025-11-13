@@ -8,34 +8,40 @@ version = "0.10.1"
 license = "GPL-3.0-or-later"
 description = "a Python library to interact with a collection of frictionless datapackages"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 dependencies = [
     "astropy>=5,<8",
+    "clevercsv>=0.7.0,<0.9.0",
+    "click>=8,<9",
     "frictionless>=5.8.3,<6",
-    "iteration_utilities>=0.13.0,<0.14.0",
     "matplotlib>=3.5.0,<4",
     "pandas>=1.3,<3",
     "plotly>=5,<7",
     "pybtex>=0.25,<0.26",
 ]
 
+[project.scripts]
+unitpackage = "unitpackage.entrypoint:cli"
+
 [tool.setuptools]
 packages = [
     "unitpackage",
     "unitpackage.cv",
     "unitpackage.database",
+    "unitpackage.loaders",
+    "unitpackage.test",
 ]
 
-[tool.pixi.project]
+[tool.pixi.workspace]
 channels = ["conda-forge"]
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
 
 [tool.pixi.environments]
-python-39 = ["test", "python-39"]
 python-310 = ["test", "python-310"]
 python-311 = ["test", "python-311"]
 python-312 = ["test", "python-312"]
 python-313 = ["test", "python-313"]
+python-314 = ["test", "python-314"]
 dev = ["dev", "test", "lint"]
 doc = ["doc"]
 
@@ -52,11 +58,11 @@ pip = ">=25.0,<26"
 jupyterlab = ">=4.3.4,<5"
 jupytext = ">=1.16.6,<2"
 
+[tool.pixi.tasks]
+unitpackage = "unitpackage"
+
 [tool.pixi.pypi-dependencies]
 unitpackage = { path = ".", editable = true }
-
-[tool.pixi.feature.python-39.dependencies]
-python = "3.9.*"
 
 [tool.pixi.feature.python-310.dependencies]
 python = "3.10.*"
@@ -69,6 +75,9 @@ python = "3.12.*"
 
 [tool.pixi.feature.python-313.dependencies]
 python = "3.13.*"
+
+[tool.pixi.feature.python-314.dependencies]
+python = "3.14.*"
 
 [tool.pixi.feature.test.dependencies]
 pytest = "*"
@@ -106,7 +115,7 @@ sphinx_rtd_theme = "*"
 plotly = ">=5,<6"
 
 [tool.pixi.feature.doc.tasks]
-doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
+doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"
 linkcheck = "cd doc && make linkcheck"
 
 [tool.pixi.feature.dev.dependencies]
@@ -115,3 +124,8 @@ conda = "*"
 jupyterlab = "*"
 twine = "*"
 rever = "*"
+
+[tool.pytest.ini_options]
+env = [
+    "MPLBACKEND=Agg"
+]

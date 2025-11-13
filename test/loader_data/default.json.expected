@@ -1,0 +1,32 @@
+{
+    "resources": [
+        {
+            "name": "default",
+            "type": "table",
+            "path": "default.csv",
+            "scheme": "file",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "encoding": "utf-8",
+            "schema": {
+                "fields": [
+                    {
+                        "name": "t",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "E",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "j",
+                        "type": "integer"
+                    }
+                ]
+            },
+            "metadata": {
+                "echemdb": null
+            }
+        }
+    ]
+}

@@ -1,8 +1,8 @@
 # generated data from tests and builds
 /test/generated
 /doc/files/generated
-test_parent_directory.*
-/test/
+test_parent_directory.csv
+test_parent_directory.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
