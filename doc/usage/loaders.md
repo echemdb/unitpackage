@@ -14,12 +14,12 @@ kernelspec:
 
 # Loaders
 
-`unitpackage.loaders` provides modules for loading non-standardized DSV (data-separated value) or CVS (comma-separated value) files, commonly created from software used to operate laboratory equipment.
+`unitpackage.loaders` provides modules for loading non-standardized DSV (delimiter-separated value) files, e.g. TSV (tab-separated) or CSV (comma-separated), commonly created from software used to operate laboratory equipment.
 Key issues of these files are, for example, lengthy header lines containing various metadata relevant to the recording software,
-the use of `,` as a decimal separator in some regions of this world,
+the use of `,` as a decimal separator in some world regions,
 or files containing multiple data tables, etc.
 
-`unitpackage.loaders` provides modules to load data directly as a `pandas` Data Frame, which are used by unitpackage to create frictionless Data Packages (or [unitpackages](https://github.com/echemdb/) supporting the use of units).
+`unitpackage.loaders` provides modules to parse non-standard files and load the data directly as a `pandas` Data Frame, which are used by unitpackage to create frictionless Data Packages (or [unitpackages](https://github.com/echemdb/) supporting the use of units).
 The CLI allows conversion of data directly into such Data Packages for seamless integration in existing workflows.
 
 Our approach aims at providing a single interface to load data into a certain format independent of the data source.
@@ -40,7 +40,7 @@ Improve table, such as including links.
 Consider the following DSV, that consists of three parts:
 
 * the header, usually containing metadata relevant to the software and user predefined settings,
-* column header lines, containing acronyms (dimensions) and often units for the data in one ore more rows,
+* column header lines, containing acronyms (dimensions) and often units for the data in one or more rows,
 * the data part, where each column consists of identical data types.
 
 ```{code-cell} ipython3
