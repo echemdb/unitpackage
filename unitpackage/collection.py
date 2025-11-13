@@ -95,13 +95,13 @@ class Collection:
         if not isinstance(package, Package):
             package = Package()
 
-        seen = set()
-        duplicates = []
-        for name in package.resource_names:
-            if name in seen and name not in duplicates:
-                duplicates.append(name)
-            else:
-                seen.add(name)
+        from collections import Counter
+
+        duplicates = [
+            identifier
+            for identifier, count in Counter(package.resource_names).items()
+            if count > 1
+        ]
 
         if duplicates:
             raise ValueError(f"Collection contains duplicate entries: {duplicates}")
