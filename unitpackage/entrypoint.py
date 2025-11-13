@@ -12,7 +12,7 @@ EXAMPLES::
     Options:
       --help  Show this message and exit.
     Commands:
-      csv  Convert a file containing CSV data into an echemdb unitpackage.
+      csv  Convert a file containing CSV data into a datapackage.
       ec   Convert an electrochemistry file into an echemdb datapackage.
 
 """
@@ -70,7 +70,7 @@ def cli():
 )
 def convert(csv, device, outdir, metadata):
     """
-    Convert a file containing CSV data into an echemdb unitpackage.
+    Convert a file containing CSV data into a datapackage.
     \f
 
     EXAMPLES::
