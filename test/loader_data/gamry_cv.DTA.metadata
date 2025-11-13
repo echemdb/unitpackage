@@ -1,0 +1,109 @@
+experiment:
+  type: BCV
+  comment: intended approach
+data description:
+  type: raw
+  measurement type: CV
+  scan rate:
+    comment: variable
+  potential scale:
+    unit: V
+    reference: RHE
+  current:
+    unit: mA
+electrochemical system:
+  instrumentation:
+  - type: potentiostat
+    supplier: Biologic VSP-300
+  electrolyte:
+    type: aq
+    components:
+    - name: water
+      type: solvent
+      source:
+        refinement: Merk Milli-Q IQ 7000
+      purity:
+        grade: ultrapure water
+        total organic carbon:
+          value: 3
+          unit: ppb
+        total ion conductivity:
+          value: 18
+          unit: MOhm cm
+    - name: HClO4
+      type: acid
+      source:
+        supplier: Sigma Aldrich
+        LOT: null
+      concentration:
+        value: 0.1
+        unit: mol / l
+      purity:
+        grade: ACS
+    - name: N2
+      type: gas
+      purity:
+        grade: N5.0
+      pressure:
+        unit: 1
+        value: bar
+      proportion:
+        value: 100
+    - name: CO
+      type: gas
+      purity:
+        value: 99.997
+        unit: percent
+      pressure:
+        value: 1
+        unit: bar
+      proportion:
+        value: 100
+    ph:
+      value: 1
+      uncertainty: 0.1
+    temperature:
+      value: 298.15
+      unit: K
+  electrodes:
+    configuration: 3
+    reference electrode:
+      type: RHE
+      source:
+        supplier: SI Analytics
+    counter electrode:
+      material: graphite
+      crystallographic orientation: poly
+      shape: rod
+    working electrode:
+      material: Pt
+      crystallographic orientation: poly
+      source:
+        supplier: MaTecK
+        LOT: 18111601
+      shape:
+        type: beat
+        height:
+          value: unknown
+          unit: mm
+        diameter:
+          value: unknown
+          unit: mm
+      geometric electrolyte contact area:
+        value: unknown
+        unit: cm-2
+      preparation procedure: procedure
+    electrochemical cell:
+      type: electrochemical glass cell
+      components:
+        - name: glass
+          part: cell
+        - name: Teflon
+          part: plug valve
+      cell description: cell description
+curation:
+  process:
+  - role: experimentalist
+    name: Max Doe
+    orcid: https://orcid.org/0000-0002-9686-3948
+    date: '2022-04-05'
