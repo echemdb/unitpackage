@@ -44,6 +44,7 @@ python-313 = ["test", "python-313"]
 python-314 = ["test", "python-314"]
 dev = ["dev", "test", "lint"]
 doc = ["doc"]
+release = ["release"]
 
 [tool.pixi.dependencies]
 astropy = "*"
@@ -122,8 +123,14 @@ linkcheck = "cd doc && make linkcheck"
 pip = "*"
 conda = "*"
 jupyterlab = "*"
+
+[tool.pixi.feature.release.dependencies]
 twine = "*"
 rever = "*"
+make = "*"
+
+[tool.pixi.feature.release.pypi-dependencies]
+build = "*"
 
 [tool.pytest.ini_options]
 env = [
