@@ -264,10 +264,15 @@ class EchemdbEntry(Entry):
 
         return fig
 
-    def rescale_reference(self, new_reference=None, field_name=None):
+    def rescale_reference(
+        self, new_reference=None, field_name=None, ph=None, custom_shift=None
+    ):  # pylint: disable=R0914
         r"""
         Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with potentials
         referenced to ``new_reference`` scale.
+
+        ::Warning:: This is an experimental feature working for standard aqueous reference electrodes and electrolytes.
+        We do not include temperature effects or other non-idealities at this point.
 
         EXAMPLES::
 
@@ -281,15 +286,16 @@ class EchemdbEntry(Entry):
             1  0.02 -0.102158 -0.981762
             ...
 
-            >>> rescaled_entry = entry.rescale_reference(new_reference='AgAgCl2')
+            >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-3M')
             >>> rescaled_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'AgAgCl2'}
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-3M'}
 
             >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
-                  t           E         j
-            0  0.00  887.896842 -0.998277
-            1  0.02  887.897842 -0.981762
+                  t         E         j
+            0  0.00  0.165942 -0.998277
+            1  0.02  0.166942 -0.981762
             ...
+
 
         """
         field_name = field_name or "E"
@@ -299,25 +305,40 @@ class EchemdbEntry(Entry):
         resource = Resource(self.resource.to_dict())
 
         field = self.mutable_resource.schema.get_field(field_name)
-        df = self.df.copy()
 
         if "reference" not in field.to_dict():
             raise ValueError(f"No Reference is associated with field '{field_name}'.")
 
         old_reference = field.to_dict()["reference"]
+
         if old_reference == new_reference:
             return self
 
-
         import astropy.units as u
 
-        ph = self.system.electrolyte.ph if hasattr(self.system, "electrolyte") and hasattr(self.system.electrolyte, "ph") else None
-        # Implement the calculation of the potential difference here
-        # parse the pH to the reference conversion for RHE conversion
-        potential_difference = 888 * u.Unit(field.custom["unit"])  # Placeholder value
+        ph = (
+            ph or self.system.electrolyte.ph
+            if hasattr(self.system, "electrolyte")
+            and hasattr(self.system.electrolyte, "ph")
+            else None
+        )
 
+        # TODO:: The class should be implemented in an external EC tools module.
+        # For now, we need a simple approach for reference scale conversion.
+        from unitpackage.electrochemistry.reference_electrodes import (
+            ReferenceElectrodes,
+        )
 
-        df[field_name] +=  potential_difference.value
+        # The potential difference is returned in V
+        potential_difference_value = custom_shift or ReferenceElectrodes.convert(
+            ref_from=old_reference, ref_to=new_reference, ph=ph.value
+        )
+
+        # create an stropy quantity
+        potential_difference = potential_difference_value * u.Unit(field.custom["unit"])
+
+        df = self.df.copy()
+        df[field_name] += potential_difference.value
 
         reference_unit = potential_difference.unit.to_string()
 
@@ -325,7 +346,9 @@ class EchemdbEntry(Entry):
         df_resource = Resource(df)
         df_resource.infer()
         df_resource.schema = resource.schema
-        df_resource.schema.update_field(field.name, {"reference": new_reference, "unit": reference_unit})
+        df_resource.schema.update_field(
+            field.name, {"reference": new_reference, "unit": reference_unit}
+        )
 
         resource.custom["MutableResource"] = df_resource
 
