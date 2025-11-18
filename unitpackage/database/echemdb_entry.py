@@ -264,15 +264,78 @@ class EchemdbEntry(Entry):
 
         return fig
 
-    def rescale_reference(
-        self, new_reference=None, field_name=None, ph=None, custom_shift=None
-    ):  # pylint: disable=R0914
+    def add_offset(self, field_name=None, offset=None, unit=None):
+        r"""
+        Add an offset (with specified units) to a specified field of the entry.
+        The offset properties are stored in the fields metadata.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.add_offset('E', 0.1, 'V')
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.003158 -0.998277
+            1  0.02 -0.002158 -0.981762
+            ...
+
+            >>> new_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E',
+            'type': 'number',
+            'unit': 'V',
+            'reference': 'RHE',
+            'offset': {'value': 0.1, 'unit': Unit("V")}}
+
+            >>> new_entry = entry.add_offset('E', 250, 'mV')
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.146842 -0.998277
+            1  0.02  0.147842 -0.981762
+            ...
+
+        """
+        import astropy.units as u
+
+        field = self.mutable_resource.schema.get_field(field_name)
+
+        df = self.df.copy()
+
+        offset_quantity = (offset * u.Unit(unit)).to(u.Unit(field.custom["unit"]))
+
+        df[field_name] += offset_quantity.value
+
+        from frictionless import Resource
+
+        resource = Resource(self.resource.to_dict())
+
+        df_resource = Resource(df)
+        df_resource.infer()
+        df_resource.schema = resource.schema
+
+        resource.custom["MutableResource"] = df_resource
+
+        df_resource.schema.update_field(
+            field_name, {"offset": {"value": offset, "unit": offset_quantity.unit}}
+        )
+
+        return type(self)(resource=resource)
+
+    def rescale_reference(self, new_reference=None, field_name=None, ph=None):
         r"""
         Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with potentials
         referenced to ``new_reference`` scale.
 
         ::Warning:: This is an experimental feature working for standard aqueous reference electrodes and electrolytes.
         We do not include temperature effects or other non-idealities at this point.
+
+        If a reference is not available, the axis can still be rescaled by adding an offset using the
+        :meth:`~unitpackage.database.echemdb_entry.add_offset`.
 
         EXAMPLES::
 
@@ -330,7 +393,7 @@ class EchemdbEntry(Entry):
         )
 
         # The potential difference is returned in V
-        potential_difference_value = custom_shift or ReferenceElectrodes.convert(
+        potential_difference_value = ReferenceElectrodes.convert(
             ref_from=old_reference, ref_to=new_reference, ph=ph.value
         )
 
