@@ -335,7 +335,7 @@ class EchemdbEntry(Entry):
         We do not include temperature effects or other non-idealities at this point.
 
         If a reference is not available, the axis can still be rescaled by adding an offset using the
-        :meth:`~unitpackage.database.echemdb_entry.add_offset`.
+        :meth:`~unitpackage.database.echemdb_entry.EchemdbEntry.add_offset`.
 
         EXAMPLES::
 
