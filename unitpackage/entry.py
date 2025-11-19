@@ -392,12 +392,13 @@ class Entry:
 
     def add_offset(self, field_name=None, offset=None, unit=None):
         r"""
-        Add an offset (with specified units) to a specified field of the entry.
+        Return an entry with an offset (with specified units) to a specified field of the entry.
         The offset properties are stored in the fields metadata.
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
             >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
             0  0.00 -0.103158 -0.998277
@@ -417,6 +418,8 @@ class Entry:
             'unit': 'V',
             'reference': 'RHE',
             'offset': {'value': 0.1, 'unit': Unit("V")}}
+
+        An offset with a different units than that of the field.::
 
             >>> new_entry = entry.add_offset('E', 250, 'mV')
             >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
