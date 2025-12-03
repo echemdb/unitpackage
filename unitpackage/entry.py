@@ -144,7 +144,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'bibliography', 'citation', 'create_examples', 'curation',
             'dataDescription', 'df', 'experimental', 'field_unit', 'figureDescription',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
+            'from_csv', 'from_df', 'from_loader', 'from_local', 'identifier', 'mutable_resource', 'plot',
             'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
 
         """
@@ -847,6 +847,56 @@ class Entry:
             os.path.join(outdir, csvname), metadata=metadata, fields=fields
         )
 
+    @classmethod
+    def from_loader(cls, filename=None, loaderName=None, metadata=None):
+        r"""
+        Returns an entry constructed from a loader known to unitpackage in loaders.
+
+        TODO: Shoule be accesible from the loader class.
+
+        available names:
+        * 'eclab'
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.from_loader(filename='test/loader_data/eclab_cv.mpt', loaderName='eclab')
+            >>> entry
+            Entry('eclab_cv')
+
+            >>> entry.df  # doctest: +NORMALIZE_WHITESPACE
+                mode  ox/red  error  ...      (Q-Qo)/C  I Range       P/W
+            0      2       1      0  ...  0.000000e+00       41  0.000001
+            1      2       0      0  ... -3.622761e-08       41 -0.000003
+            ...
+
+        """
+        from unitpackage.loaders.baseloader import BaseLoader
+
+        from pathlib import Path
+
+        path = Path(filename)
+
+        fields = None
+
+        if metadata:
+            import yaml
+            metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
+            try:
+                fields = metadata["figure description"]["fields"]
+            except (KeyError, AttributeError):
+                logger.warning("No units to the fields provided in the metadata")
+
+        if not loaderName:
+            csv = BaseLoader(filename)
+        else:
+            csv = BaseLoader.create('eclab')(open(filename, 'r'))
+
+        entry = cls.from_df(df=csv.df, metadata=metadata, basename=path.stem, fields=fields)
+
+        return entry
+
+
     def save(self, *, outdir, basename=None):
         r"""
         Create a Data Package, i.e., a CSV file and a JSON file, in the directory ``outdir``.
@@ -930,7 +980,7 @@ class Entry:
 
         resource = self.resource.to_dict()
 
-        # update the fields from the main resource with those from the "MutableResource"resource
+        # update the fields from the main resource with those from the "MutableResource" resource
         resource["schema"]["fields"] = self.mutable_resource.schema.fields
         resource["schema"] = resource["MutableResource"].schema.to_dict()
         del resource["MutableResource"]

@@ -129,8 +129,30 @@ class BaseLoader:
 
         return StringIO(self._file)
 
-    @staticmethod
-    def create(device=None):
+    @classmethod
+    def _loaders(cls):
+        r"""
+        A dictionary of known loaders.
+        """
+        return {"eclab": __import__('unitpackage.loaders.eclabloader').loaders.eclabloader.ECLabLoader,
+                "gamry": __import__('unitpackage.loaders.gamryloader').loaders.gamryloader.GamryLoader}
+
+    @classmethod
+    def known_loaders(cls):
+        r"""
+        A list of known loaders. Refer to the documentation for details
+        on supported file types for the individual Loaders.
+
+        EXAMPLES::
+
+            >>> BaseLoader.known_loaders()
+            ['eclab', 'gamry']
+
+        """
+        return list(cls._loaders().keys())
+
+    @classmethod
+    def create(cls, device=None):
         r"""
         Calls a specific `loader` based on a given device.
 
@@ -152,18 +174,19 @@ class BaseLoader:
             0     2       0    0.1       0          0
             1     2       1    1.4       5          1
 
+        An unknown device loader provides a list with supported Loaders::
+
+            >>> BaseLoader.create('unknown_device') # doctest: +NORMALIZE_WHITESPACE
+            Traceback (most recent call last):
+            ...
+            KeyError: "Device wth name 'unknown_device' is not in the list of supported Loaders (['eclab', 'gamry'])'."
+
         """
-        if device == "eclab":
-            from unitpackage.loaders.eclabloader import ECLabLoader
+        if device in BaseLoader.known_loaders():
 
-            return ECLabLoader
+            return cls._loaders()[device]
 
-        if device == "gamry":
-            from unitpackage.loaders.gamryloader import GamryLoader
-
-            return GamryLoader
-
-        raise KeyError(f"Device wth name '{device}' is unknown to the loader'.")
+        raise KeyError(f"Device wth name '{device}' is not in the list of supported Loaders ({cls.known_loaders()})'.")
 
     @property
     def header_lines(self):
