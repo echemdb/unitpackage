@@ -124,6 +124,10 @@ pip = "*"
 conda = "*"
 jupyterlab = "*"
 
+[tool.pixi.feature.release.tasks]
+# To create a new release, run `pixi run rever X.Y.Z`
+rever = { args = [ { "arg" = "version", "default" = "--help" } ],cmd = "rever {{ version }}" }
+
 [tool.pixi.feature.release.dependencies]
 twine = "*"
 rever = "*"
