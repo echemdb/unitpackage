@@ -4,6 +4,21 @@ echemdb Change Log
 
 .. current developments
 
+v0.11.0
+====================
+
+**Added:**
+
+* Added modules from `echemdb-converters` (https://github.com/echemdb/echemdb-converters v4.0.1) as modules in unitpackage within `unitpackage.loaders`.
+* Added support for Python 3.14.
+
+**Removed:**
+
+* Removed support for Python 3.9.
+* Removed dependency on iteration_utilities.
+
+
+
 v0.10.1
 ====================
 

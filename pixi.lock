@@ -41608,8 +41608,8 @@ packages:
   timestamp: 1762269211296
 - pypi: ./
   name: unitpackage
-  version: 0.10.1
-  sha256: 821e22f6ecfc0f520db00b1aa8c8275d9fcba2367176487d85cd00c620b94193
+  version: 0.11.0
+  sha256: 0c8cc3f4f0223cdd1ce3fd7ab4ff336d5fa463f31e566738bd593a48ad8cd6a4
   requires_dist:
   - astropy>=5,<8
   - clevercsv>=0.7.0,<0.9.0
