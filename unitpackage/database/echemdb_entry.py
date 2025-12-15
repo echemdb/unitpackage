@@ -335,7 +335,7 @@ class EchemdbEntry(Entry):
             ref_from=old_reference, ref_to=new_reference, ph=ph.value
         )
 
-        # create an stropy quantity
+        # create an astropy quantity
         potential_difference = potential_difference_value * u.Unit(field.custom["unit"])
 
         df = self.df.copy()

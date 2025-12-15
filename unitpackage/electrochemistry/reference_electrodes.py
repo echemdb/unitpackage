@@ -88,7 +88,7 @@ REFERENCE_ELECTRODE_DATA = {
 @dataclass(frozen=True)
 class ReferenceElectrode:
     """
-    Represents a single electrochemical reference electrode.
+    Represents a electrochemical reference electrode.
 
     Attributes
     ----------
