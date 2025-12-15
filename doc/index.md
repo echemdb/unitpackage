@@ -14,7 +14,7 @@ kernelspec:
 
 # Welcome to unitpackage's documentation!
 
-[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.11.0?labpath=tree%2Fdoc%2Findex.md)
+[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.11.1?labpath=tree%2Fdoc%2Findex.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15644101.svg)](https://zenodo.org/records/15644101)
 
 Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated or who performed the experiment. Such information can be stored in [frictionless Data Packages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON (metadata) file.
