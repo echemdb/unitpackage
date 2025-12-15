@@ -505,13 +505,7 @@ class BaseLoader:
         A rather messy file:
 
             >>> from io import StringIO
-            >>> file = StringIO(('''# I am messy data
-            ... Random stuff
-            ... maybe metadata : 3
-            ... in different formats = abc123
-            ... hopefully, some information
-            ... on where the data block starts!
-            ... t\tE\tj
+            >>> file = StringIO(('''t\tE\tj
             ... s\tV\tA/cm2
             ... 0\t0\t0
             ... 1\t1\t1
@@ -529,25 +523,12 @@ class BaseLoader:
         if len(self.delimiters) == 1:
             return self.delimiters[0]
 
-        if not len(self.delimiters) == 0:
-            from io import StringIO
+        import csv
+        from io import StringIO
 
-            import clevercsv
+        combined = StringIO(self.column_headers.getvalue() + self.data.getvalue())
 
-            for delimiter in self.delimiters:
-                combined = StringIO(
-                    self.column_headers.getvalue() + self.data.getvalue()
-                )
-                combined.seek(0)
-                delimiter_ = (
-                    clevercsv.detect.Detector()
-                    .detect(combined.read(), delimiters=[delimiter])
-                    .delimiter
-                )
-                if delimiter_:
-                    return delimiter_
-
-        return clevercsv.detect.Detector().detect(combined.read()).delimiter
+        return csv.Sniffer().sniff(combined.readline(), self.delimiters).delimiter
 
     @property
     def decimal(self):
@@ -610,11 +591,10 @@ class BaseLoader:
         with a single header line::
 
             >>> from io import StringIO
-            >>> file = StringIO('''a,b
+            >>> file = StringIO('''a\tb
             ... 0\t0,0
             ... 1\t1,0''')
             >>> csv = BaseLoader(file)
-            >>> # csv.data.readlines()[1].strip().split(csv.delimiter)
             >>> csv.decimal
             ','
 
