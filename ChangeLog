@@ -4,6 +4,15 @@ echemdb Change Log
 
 .. current developments
 
+v0.11.1
+====================
+
+**Removed:**
+
+* Removed dependency clevercsv and used Python's csv instead.
+
+
+
 v0.11.0
 ====================
 
