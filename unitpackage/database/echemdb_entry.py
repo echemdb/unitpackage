@@ -273,7 +273,7 @@ class EchemdbEntry(Entry):
         We do not include temperature effects or other non-idealities at this point.
 
         If a reference is not available, the axis can still be rescaled by adding an offset using the
-        :meth:`~unitpackage.database.echemdb_entry.EchemdbEntry.add_offset`.
+        :meth:`~unitpackage.entry.Entry.add_offset`.
 
         EXAMPLES::
 
@@ -287,14 +287,14 @@ class EchemdbEntry(Entry):
             1  0.02 -0.102158 -0.981762
             ...
 
-            >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-3M')
+            >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-sat')
             >>> rescaled_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-3M'}
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-sat'}
 
             >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
-            0  0.00  0.165942 -0.998277
-            1  0.02  0.166942 -0.981762
+            0  0.00  0.152942 -0.998277
+            1  0.02  0.153942 -0.981762
             ...
 
 

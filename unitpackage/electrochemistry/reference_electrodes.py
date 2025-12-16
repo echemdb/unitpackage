@@ -6,12 +6,13 @@ between reference scales.
 EXAMPLES::
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
-    >>> ReferenceElectrodes["Ag/AgCl-3M"]
-    ReferenceElectrode(name='Ag/AgCl-3M', value=0.21, unit='V', vs='SHE', source='Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.', formula=None)
+    >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
+    ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V', vs='SHE',
+    source={'isbn': '978-1119334064'}, alias=None, fullName=None,
+    temperatureDependence=None, choice=None, alternativeValues=None)
 
-    >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-3M", "SHE")
-    0.3400000000000001
-
+    >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
+    0.35300000000000004
 
 """
 
@@ -52,9 +53,7 @@ REFERENCE_ELECTRODE_DATA = {
         "value": 0.197,
         "unit": "V",
         "vs": "SHE",
-        "source": {
-            "isbn": "978-1119334064"
-        },
+        "source": {"isbn": "978-1119334064"},
     },
     "Ag/AgCl-1M": {
         "value": 0.22240,
@@ -143,14 +142,16 @@ REFERENCE_ELECTRODE_DATA = {
 
 
 @dataclass(frozen=True)
-class ReferenceElectrode:
+class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
     """
     Represents a electrochemical reference electrode.
 
     Attributes
     ----------
     name : str
-        Common name of the reference electrode (e.g., 'Ag/AgCl-3M', 'SHE').
+        Common name of the reference electrode (e.g., 'Ag/AgCl-sat', 'SHE').
+    fullName: str
+         Spelled out name.
     value : float
         Potential of the electrode relative to the standard hydrogen electrode (SHE), in volts.
     unit : str
@@ -159,19 +160,27 @@ class ReferenceElectrode:
         The reference scale against which the value is reported.
     source : str
         Bibliographic or textual source for the potential value.
+    alternativeValues : list
+        A list of alternative values including references for these values.
+    choice : str
+        Choice for choosing the specific reference value.
+    temperatureDependence : dict
+        A dict providing information about the temperature dependence of the reference electrode.
 
     Examples
     --------
     Accessing reference electrode data:
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
-    >>> ReferenceElectrodes["Ag/AgCl-3M"]
-    ReferenceElectrode(name='Ag/AgCl-3M', value=0.21, unit='V', vs='SHE', source='Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.', formula=None)
+    >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
+    ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V',
+    vs='SHE', source={'isbn': '978-1119334064'}, alias=None,
+    fullName=None, temperatureDependence=None, choice=None, alternativeValues=None)
 
     Converting between reference scales:
 
-    >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-3M", "SHE")
-    0.3400000000000001
+    >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
+    0.35300000000000004
 
     >>> ReferenceElectrodes.convert(ref_from="SHE", ref_to="RHE", ph=5)
     -0.2955
@@ -182,7 +191,11 @@ class ReferenceElectrode:
     unit: str = "V"
     vs: str = "SHE"
     source: str = ""
-    formula: str | None = None
+    alias: str | None = None
+    fullName: str | None = None  # pylint: disable=invalid-name
+    temperatureDependence: dict | None = None  # pylint: disable=invalid-name
+    choice: str | None = None
+    alternativeValues: list | None = None  # pylint: disable=invalid-name
 
 
 class ReferenceElectrodes:
@@ -206,7 +219,7 @@ class ReferenceElectrodes:
 
         >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
         >>> ReferenceElectrodes()
-        <ReferenceElectrodes: ['SHE', 'Ag/AgCl-sat', 'Ag/AgCl-3M', 'SCE-sat', 'MSE-sat', 'MSE-1M', 'RHE']>
+        <ReferenceElectrodes: ['SHE', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M', 'CE-0.1M', 'MSE-0.5M', 'MSE-sat', 'RHE']>
 
         """
         return f"<ReferenceElectrodes: {list(self._registry.keys())}>"
@@ -240,11 +253,11 @@ class ReferenceElectrodes:
 
         Examples
         --------
-        >>> ReferenceElectrodes.convert(ref_from="Ag/AgCl-3M", ref_to="SHE")
-        -0.21
+        >>> ReferenceElectrodes.convert(ref_from="Ag/AgCl-sat", ref_to="SHE")
+        -0.197
 
-        >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-3M", "SHE")
-        0.3400000000000001
+        >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
+        0.35300000000000004
 
         >>> ReferenceElectrodes.convert(ref_from="SHE", ref_to="RHE", ph=7)
         -0.4137
