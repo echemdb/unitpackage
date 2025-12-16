@@ -395,6 +395,8 @@ class Entry:
         Return an entry with an offset (with specified units) to a specified field of the entry.
         The offset properties are stored in the fields metadata.
 
+        If offsets are applied consecutively, the value is updated.
+
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
@@ -417,7 +419,7 @@ class Entry:
             'type': 'number',
             'unit': 'V',
             'reference': 'RHE',
-            'offset': {'value': 0.1, 'unit': Unit("V")}}
+            'offset': {'value': 0.1, 'unit': 'V'}}
 
         An offset with a different units than that of the field.::
 
@@ -428,17 +430,50 @@ class Entry:
             1  0.02  0.147842 -0.981762
             ...
 
+        A consecutively added offset::
+
+            >>> new_entry_1 = new_entry.add_offset('E', 0.150, 'V')
+            >>> new_entry_1.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.296842 -0.998277
+            1  0.02  0.297842 -0.981762
+            ...
+
+            >>> new_entry_1.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E',
+            'type': 'number',
+            'unit': 'V',
+            'reference': 'RHE',
+            'offset': {'value': 0.4, 'unit': 'V'}}
+
+
         """
         import astropy.units as u
 
         field = self.mutable_resource.schema.get_field(field_name)
 
+        if field.custom.get("unit") and not unit:
+            logger.warning(
+                f"No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."
+            )
+            unit = field.custom.get("unit")
+
+        if not field.custom.get("unit"):
+            logger.warning(
+                f"Field '{field_name}' has no unit defined. Offset cannot be applied without a unit."
+            )
+            unit = ""
+
+        field_unit = u.Unit(field.custom.get("unit"))
+
+        # create a new dataframe with offset values
         df = self.df.copy()
 
-        offset_quantity = (offset * u.Unit(unit)).to(u.Unit(field.custom["unit"]))
+        offset_quantity = (offset * u.Unit(unit)).to(u.Unit(field_unit))
 
         df[field_name] += offset_quantity.value
 
+        # create new resource
         from frictionless import Resource
 
         resource = Resource(self.resource.to_dict())
@@ -449,8 +484,24 @@ class Entry:
 
         resource.custom["MutableResource"] = df_resource
 
+        # update offset in the fields
+        old_field = self.mutable_resource.schema.get_field(field_name).to_dict()
+        old_field.setdefault("offset", {})
+        old_offset = old_field["offset"]
+        if not old_offset:
+            old_offset.setdefault("unit", field.custom.get("unit"))
+            old_offset.setdefault("value", 0.0)
+
+        old_offset_quantity = old_offset["value"] * u.Unit(old_offset["unit"])
+
+        if field_unit:
+            old_offset_quantity = old_offset_quantity.to(field_unit)
+
+        new_offset = old_offset_quantity.value + offset_quantity.value
+
         df_resource.schema.update_field(
-            field_name, {"offset": {"value": offset, "unit": offset_quantity.unit}}
+            field_name,
+            {"offset": {"value": float(new_offset), "unit": str(offset_quantity.unit)}},
         )
 
         return type(self)(resource=resource)
