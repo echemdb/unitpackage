@@ -7,7 +7,7 @@ EXAMPLES::
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-3M"]
-    ReferenceElectrode(name='Ag/AgCl-3M', value_vs_she=0.21, unit='V', vs='SHE', source='Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.', formula=None)
+    ReferenceElectrode(name='Ag/AgCl-3M', value=0.21, unit='V', vs='SHE', source='Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.', formula=None)
 
     >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-3M", "SHE")
     0.3400000000000001
@@ -37,49 +37,116 @@ EXAMPLES::
 
 from dataclasses import dataclass
 
-# reference_data.py
+# A n overview an particularities of reference electrodes can be inferred from
+# Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.
+# https://doi.org/10.1007/978-3-642-36188-3"
+# Many values below were found in that book, but the original DOI is given instead.
 REFERENCE_ELECTRODE_DATA = {
     "SHE": {
-        "value_vs_she": 0.000,
+        "value": 0.000,
         "unit": "V",
         "vs": "SHE",
         "source": "Definition (zero point).",
     },
     "Ag/AgCl-sat": {
-        "value_vs_she": 0.197,
+        "value": 0.197,
         "unit": "V",
         "vs": "SHE",
-        "source": "Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.",
+        "source": {
+            "doi": "https://doi.org/10.1007/978-3-642-36188-3",
+            "title": "Handbook of Reference Electrodes",
+        },
     },
     "Ag/AgCl-3M": {
-        "value_vs_she": 0.210,
+        "value": 0.210,
         "unit": "V",
         "vs": "SHE",
-        "source": "Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.",
+        "source": {
+            "doi": "https://doi.org/10.1007/978-3-642-36188-3",
+            "title": "Handbook of Reference Electrodes",
+        },
     },
-    "SCE-sat": {
-        "value_vs_she": 0.241,
+    "CE-sat": {
+        "fullName": "Saturated calomel electrode",
+        "alias": "SCE",
+        "value": 0.26796,
+        "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
         "unit": "V",
         "vs": "SHE",
-        "source": "Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.",
+        "source": {
+            "doi": "https://doi.org/10.1007/978-3-642-36188-3",
+            "title": "Handbook of Reference Electrodes",
+        },
+    },
+    "CE-1M": {
+        "fullName": "1 molar calomel electrode",
+        "value": 0.2801,
+        "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1051/jcp/1954510590"},
+        "alternativeValues": [
+            {"value": 0.2801, "doi": "https://doi.org/10.1051/jcp/1954510590"},
+            {"value": 0.2801, "isbn": "9780123768568"},
+        ],
+    },
+    "CE-0.1M": {
+        "fullName": "0.1 molar calomel electrode",
+        "value": 0.3337,
+        "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1051/jcp/1954510590"},
+        "alternativeValues": [
+            {"value": 0.3337, "isbn": "978-1-118-31280-3"},
+            {"value": 0.3337, "doi": "https://doi.org/10.1051/jcp/1954510590"},
+        ],
+    },
+    "MSE": {
+        "fullName": "Mercury/mercurous sulfate electrode",
+        "value": 0.61236,
+        "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
+        "unit": "V",
+        "vs": "SHE",
+        "temperatureDependence": {
+            "formula": "E = 0.63495 - 781.44E-6 * T - 426,89E-9 * T**2",
+            "comment": "E is in V and T in °C. Equation is valid in the range of 0°C to 60°C",
+            "doi": "https://doi.org/10.1021/ja01304a009",
+        },
+        "source": {"doi": "https://doi.org/10.1039/FT9949001875"},
+        "alternativeValues": [
+            {"value": 0.61587, "source": "https://doi.org/10.1039/TF9605601172"},
+            {"value": 0.61515, "source": "https://doi.org/10.1021/ja01304a009"},
+            {"value": 0.6125, "source": "https://doi.org/10.1039/TF9656102050"},
+            {"value": 0.61236, "source": "https://doi.org/10.1039/FT9949001875"},
+            {"value": 0.61544, "source": "https://doi.org/10.1007/BF00973518"},
+        ],
+    },
+    "MSE-0.5M": {
+        "fullName": "Mercury sulfate electrode",
+        "value": 0.640,
+        "unit": "V",
+        "vs": "SHE",
+        "temperatureDependence": {
+            "formula": "E(V) = 0.63495 - 781.44E-6 * T - 426,89E-9 * T**2",
+            "comment": "valid in the range of 0°C to 60°C",
+            "doi": "https://doi.org/10.1021/ja01304a009",
+        },
+        "source": {
+            "doi": "https://doi.org/10.1007/978-3-642-36188-3",
+            "title": "Handbook of Reference Electrodes",
+        },
     },
     "MSE-sat": {
-        "value_vs_she": 0.640,
+        "value": 654,
         "unit": "V",
         "vs": "SHE",
-        "source": "Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.",
-    },
-    "MSE-1M": {
-        "value_vs_she": 0.000,
-        "unit": "V",
-        "vs": "MSE-1M",
         "source": "Chosen as internal zero for MSE family.",
     },
     "RHE": {
-        "value_vs_she": 0.000,
+        "value": 0.000,
         "unit": "V",
         "vs": "SHE",
-        "formula": "E(RHE) = E(SHE) - 0.0591 × pH",
         "source": "Nernst equation, 25 °C.",
     },
 }
@@ -94,7 +161,7 @@ class ReferenceElectrode:
     ----------
     name : str
         Common name of the reference electrode (e.g., 'Ag/AgCl-3M', 'SHE').
-    value_vs_she : float
+    value : float
         Potential of the electrode relative to the standard hydrogen electrode (SHE), in volts.
     unit : str
         Unit of the potential, typically 'V'.
@@ -111,7 +178,7 @@ class ReferenceElectrode:
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-3M"]
-    ReferenceElectrode(name='Ag/AgCl-3M', value_vs_she=0.21, unit='V', vs='SHE', source='Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.', formula=None)
+    ReferenceElectrode(name='Ag/AgCl-3M', value=0.21, unit='V', vs='SHE', source='Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.', formula=None)
 
     Converting between reference scales:
 
@@ -123,7 +190,7 @@ class ReferenceElectrode:
     """
 
     name: str
-    value_vs_she: float
+    value: float
     unit: str = "V"
     vs: str = "SHE"
     source: str = ""
@@ -200,7 +267,7 @@ class ReferenceElectrodes:
                 if ph is None:
                     raise ValueError("pH must be provided for RHE conversion.")
                 return -0.0591 * ph
-            return cls[ref].value_vs_she
+            return cls[ref].value
 
         shift = get_value_vs_she(ref_to) - get_value_vs_she(ref_from)
 
