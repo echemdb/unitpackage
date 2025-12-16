@@ -53,18 +53,23 @@ REFERENCE_ELECTRODE_DATA = {
         "unit": "V",
         "vs": "SHE",
         "source": {
-            "doi": "https://doi.org/10.1007/978-3-642-36188-3",
-            "title": "Handbook of Reference Electrodes",
+            "isbn": "978-1119334064"
         },
     },
-    "Ag/AgCl-3M": {
-        "value": 0.210,
+    "Ag/AgCl-1M": {
+        "value": 0.22240,
         "unit": "V",
         "vs": "SHE",
+        "choice": "Average value from the alternative values.",
         "source": {
             "doi": "https://doi.org/10.1007/978-3-642-36188-3",
             "title": "Handbook of Reference Electrodes",
         },
+        "alternativeValues": [
+            {"value": 0.22246, "source": "https://doi.org/10.1021/ja01333a001"},
+            {"value": 0.22234, "source": "https://doi.org/10.6028/jres.053.037"},
+            {"value": 0.22239, "source": "https://doi.org/10.1021/j150506a011"},
+        ],
     },
     "CE-sat": {
         "fullName": "Saturated calomel electrode",
@@ -102,7 +107,7 @@ REFERENCE_ELECTRODE_DATA = {
             {"value": 0.3337, "doi": "https://doi.org/10.1051/jcp/1954510590"},
         ],
     },
-    "MSE": {
+    "MSE-0.5M": {
         "fullName": "Mercury/mercurous sulfate electrode",
         "value": 0.61236,
         "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
@@ -122,26 +127,11 @@ REFERENCE_ELECTRODE_DATA = {
             {"value": 0.61544, "source": "https://doi.org/10.1007/BF00973518"},
         ],
     },
-    "MSE-0.5M": {
-        "fullName": "Mercury sulfate electrode",
-        "value": 0.640,
-        "unit": "V",
-        "vs": "SHE",
-        "temperatureDependence": {
-            "formula": "E(V) = 0.63495 - 781.44E-6 * T - 426,89E-9 * T**2",
-            "comment": "valid in the range of 0°C to 60°C",
-            "doi": "https://doi.org/10.1021/ja01304a009",
-        },
-        "source": {
-            "doi": "https://doi.org/10.1007/978-3-642-36188-3",
-            "title": "Handbook of Reference Electrodes",
-        },
-    },
     "MSE-sat": {
         "value": 654,
         "unit": "V",
         "vs": "SHE",
-        "source": "Chosen as internal zero for MSE family.",
+        "source": "Internally used reference value.",
     },
     "RHE": {
         "value": 0.000,
@@ -169,8 +159,6 @@ class ReferenceElectrode:
         The reference scale against which the value is reported.
     source : str
         Bibliographic or textual source for the potential value.
-    formula : str, optional
-        Formula for cases where the potential depends on pH or temperature (e.g., RHE).
 
     Examples
     --------
