@@ -446,6 +446,15 @@ class Entry:
             'reference': 'RHE',
             'offset': {'value': 0.4, 'unit': 'V'}}
 
+        If no unit is provided, the field unit is used instead.::
+
+            >>> new_entry_2 = new_entry.add_offset('E', 0.150)
+            >>> new_entry_2.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.296842 -0.998277
+            1  0.02  0.297842 -0.981762
+            ...
+
 
         """
         import astropy.units as u
@@ -454,7 +463,7 @@ class Entry:
 
         if field.custom.get("unit") and not unit:
             logger.warning(
-                f"No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."
+                f"""No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."""
             )
             unit = field.custom.get("unit")
 

@@ -135,9 +135,22 @@ REFERENCE_ELECTRODE_DATA = {
         "vs": "SHE",
         "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
         "alternativeValues": [
-            {"value": 0.1487, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0015, "type": "experimental"},
-            {"value": 0.1637, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
-            {"value": 0.1690, "source": "https://doi.org/10.1039/CT9119900845", "type" : "experimental"},
+            {
+                "value": 0.1487,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "uncertainty": 0.0015,
+                "type": "experimental",
+            },
+            {
+                "value": 0.1637,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "type": "calculated",
+            },
+            {
+                "value": 0.1690,
+                "source": "https://doi.org/10.1039/CT9119900845",
+                "type": "experimental",
+            },
         ],
     },
     "Hg/HgO-0.5M-NaOH": {
@@ -149,8 +162,17 @@ REFERENCE_ELECTRODE_DATA = {
         "vs": "SHE",
         "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
         "alternativeValues": [
-            {"value": 0.1270, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0014, "type": "experimental"},
-            {"value": 0.1254, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+            {
+                "value": 0.1270,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "uncertainty": 0.0014,
+                "type": "experimental",
+            },
+            {
+                "value": 0.1254,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "type": "calculated",
+            },
         ],
     },
     "Hg/HgO-1M-NaOH": {
@@ -162,9 +184,22 @@ REFERENCE_ELECTRODE_DATA = {
         "vs": "SHE",
         "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
         "alternativeValues": [
-            {"value": 0.1078, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0006, "type": "experimental"},
-            {"value": 0.1079, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
-            {"value": 0.1135, "source": "https://doi.org/10.1039/CT9119900845", "type" : "experimental"},
+            {
+                "value": 0.1078,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "uncertainty": 0.0006,
+                "type": "experimental",
+            },
+            {
+                "value": 0.1079,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "type": "calculated",
+            },
+            {
+                "value": 0.1135,
+                "source": "https://doi.org/10.1039/CT9119900845",
+                "type": "experimental",
+            },
         ],
     },
     "Hg/HgO-0.1M-KOH": {
@@ -176,8 +211,17 @@ REFERENCE_ELECTRODE_DATA = {
         "vs": "SHE",
         "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
         "alternativeValues": [
-            {"value": 0.1414, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0027, "type": "experimental"},
-            {"value": 0.1635, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+            {
+                "value": 0.1414,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "uncertainty": 0.0027,
+                "type": "experimental",
+            },
+            {
+                "value": 0.1635,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "type": "calculated",
+            },
         ],
     },
     "Hg/HgO-0.5M-KOH": {
@@ -189,9 +233,22 @@ REFERENCE_ELECTRODE_DATA = {
         "vs": "SHE",
         "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
         "alternativeValues": [
-            {"value": 0.1256, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0017, "type": "experimental"},
-            {"value": 0.1241, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
-            {"value": 0.1100, "source": "https://doi.org/10.1039/CT9119900845", "type" : "experimental"},
+            {
+                "value": 0.1256,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "uncertainty": 0.0017,
+                "type": "experimental",
+            },
+            {
+                "value": 0.1241,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "type": "calculated",
+            },
+            {
+                "value": 0.1100,
+                "source": "https://doi.org/10.1039/CT9119900845",
+                "type": "experimental",
+            },
         ],
     },
     "Hg/HgO-1M-KOH": {
@@ -203,8 +260,17 @@ REFERENCE_ELECTRODE_DATA = {
         "vs": "SHE",
         "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
         "alternativeValues": [
-            {"value": 0.1027, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0026, "type": "experimental"},
-            {"value": 0.1053, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+            {
+                "value": 0.1027,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "uncertainty": 0.0026,
+                "type": "experimental",
+            },
+            {
+                "value": 0.1053,
+                "source": "https://doi.org/10.1021/acscatal.2c05655",
+                "type": "calculated",
+            },
         ],
     },
     "MSE-sat": {
