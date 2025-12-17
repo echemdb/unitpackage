@@ -38,10 +38,10 @@ EXAMPLES::
 
 from dataclasses import dataclass
 
-# A n overview an particularities of reference electrodes can be inferred from
+# An overview and particularities of reference electrodes can be inferred from
 # Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.
 # https://doi.org/10.1007/978-3-642-36188-3"
-# Many values below were found in that book, but the original DOI is given instead.
+# Many values below can found in that source. Neverthless, the DOIs to the original works are given.
 REFERENCE_ELECTRODE_DATA = {
     "SHE": {
         "value": 0.000,
