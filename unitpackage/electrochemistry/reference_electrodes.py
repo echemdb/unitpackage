@@ -38,7 +38,6 @@ EXAMPLES::
 
 
 import logging
-
 from dataclasses import dataclass
 
 logger = logging.getLogger("unitpackage")
@@ -49,8 +48,8 @@ logger = logging.getLogger("unitpackage")
 # Many values below can found in that source. Nevertheless, the DOIs to the original works are given.
 REFERENCE_ELECTRODE_DATA = {
     "SHE": {
-        "fullName" : "Standard hydrogen electrode",
-        "type" : "theoretical",
+        "fullName": "Standard hydrogen electrode",
+        "type": "theoretical",
         "value": 0.000,
         "unit": "V",
         "vs": "SHE",
@@ -58,11 +57,11 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Ag/AgCl": {
         "fullName": "Silver / Silver Chloride reference electrode for which the concentration is not specified.",
-        "type" : "generic",
+        "type": "generic",
         "value": 0.210,
         "unit": "V",
         "vs": "SHE",
-        "choice": "Reference value for a generic Ag/AgCl electrode"
+        "choice": "Reference value for a generic Ag/AgCl electrode",
     },
     "Ag/AgCl-sat": {
         "fullName": "KCl Saturated silver / silver chloride electrode",
@@ -74,7 +73,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Ag/AgCl-1M": {
         "fullName": "1 M KCL silver / silver chloride electrode",
-        "type" : "average experimental",
+        "type": "average experimental",
         "value": 0.22240,
         "unit": "V",
         "vs": "SHE",
@@ -303,7 +302,7 @@ REFERENCE_ELECTRODE_DATA = {
         ],
     },
     "MSE-sat": {
-        "fullName" : "Saturated mercury / mercurous sulfate electrode",
+        "fullName": "Saturated mercury / mercurous sulfate electrode",
         "type": "generic",
         "value": 0.654,
         "unit": "V",
@@ -369,7 +368,7 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
     """
 
     name: str
-    fullName: str # pylint: disable=invalid-name
+    fullName: str  # pylint: disable=invalid-name
     type: str
     value: float
     unit: str = "V"
