@@ -8,7 +8,7 @@ EXAMPLES::
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
     ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V', vs='SHE',
-    source={'isbn': '978-1119334064'}, alias=None, fullName=None,
+    source={'isbn': '978-1119334064'}, uncertainty=None, alias=None, fullName=None,
     temperatureDependence=None, choice=None, alternativeValues=None)
 
     >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
@@ -41,7 +41,7 @@ from dataclasses import dataclass
 # An overview and particularities of reference electrodes can be inferred from
 # Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.
 # https://doi.org/10.1007/978-3-642-36188-3"
-# Many values below can found in that source. Neverthless, the DOIs to the original works are given.
+# Many values below can found in that source. Nevertheless, the DOIs to the original works are given.
 REFERENCE_ELECTRODE_DATA = {
     "SHE": {
         "value": 0.000,
@@ -126,6 +126,87 @@ REFERENCE_ELECTRODE_DATA = {
             {"value": 0.61544, "source": "https://doi.org/10.1007/BF00973518"},
         ],
     },
+    "Hg/HgO-0.1M-NaOH": {
+        "fullName": "Mercury mercury oxide electrode with internal 0.1 M NaOH solution",
+        "value": 0.1485,
+        "uncertainty": 0.0018,
+        "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
+        "alternativeValues": [
+            {"value": 0.1487, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0015, "type": "experimental"},
+            {"value": 0.1637, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+            {"value": 0.1690, "source": "https://doi.org/10.1039/CT9119900845", "type" : "experimental"},
+        ],
+    },
+    "Hg/HgO-0.5M-NaOH": {
+        "fullName": "Mercury mercury oxide electrode with internal 0.5 M NaOH solution",
+        "value": 0.1280,
+        "uncertainty": 0.0017,
+        "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
+        "alternativeValues": [
+            {"value": 0.1270, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0014, "type": "experimental"},
+            {"value": 0.1254, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+        ],
+    },
+    "Hg/HgO-1M-NaOH": {
+        "fullName": "Mercury mercury oxide electrode with internal 1 M NaOH solution",
+        "value": 0.1089,
+        "uncertainty": 0.0012,
+        "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
+        "alternativeValues": [
+            {"value": 0.1078, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0006, "type": "experimental"},
+            {"value": 0.1079, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+            {"value": 0.1135, "source": "https://doi.org/10.1039/CT9119900845", "type" : "experimental"},
+        ],
+    },
+    "Hg/HgO-0.1M-KOH": {
+        "fullName": "Mercury mercury oxide electrode with internal 0.1 M KOH solution",
+        "value": 0.1415,
+        "uncertainty": 0.0012,
+        "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
+        "alternativeValues": [
+            {"value": 0.1414, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0027, "type": "experimental"},
+            {"value": 0.1635, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+        ],
+    },
+    "Hg/HgO-0.5M-KOH": {
+        "fullName": "Mercury mercury oxide electrode with internal 0.5 M KOH solution",
+        "value": 0.1267,
+        "uncertainty": 0.0017,
+        "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
+        "alternativeValues": [
+            {"value": 0.1256, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0017, "type": "experimental"},
+            {"value": 0.1241, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+            {"value": 0.1100, "source": "https://doi.org/10.1039/CT9119900845", "type" : "experimental"},
+        ],
+    },
+    "Hg/HgO-1M-KOH": {
+        "fullName": "Mercury mercury oxide electrode with internal 0.5 M NaOH solution",
+        "value": 0.1034,
+        "uncertainty": 0.0023,
+        "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
+        "unit": "V",
+        "vs": "SHE",
+        "source": {"doi": "https://doi.org/10.1021/acscatal.2c05655"},
+        "alternativeValues": [
+            {"value": 0.1027, "source": "https://doi.org/10.1021/acscatal.2c05655", "uncertainty": 0.0026, "type": "experimental"},
+            {"value": 0.1053, "source": "https://doi.org/10.1021/acscatal.2c05655", "type": "calculated"},
+        ],
+    },
     "MSE-sat": {
         "value": 0.654,
         "unit": "V",
@@ -154,6 +235,8 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
          Spelled out name.
     value : float
         Potential of the electrode relative to the standard hydrogen electrode (SHE), in volts.
+    uncertainty : float
+        Uncertainty of the experimental value.
     unit : str
         Unit of the potential, typically 'V'.
     vs : str
@@ -173,8 +256,8 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
-    ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V',
-    vs='SHE', source={'isbn': '978-1119334064'}, alias=None,
+    ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V', vs='SHE',
+    source={'isbn': '978-1119334064'}, uncertainty=None, alias=None,
     fullName=None, temperatureDependence=None, choice=None, alternativeValues=None)
 
     Converting between reference scales:
@@ -191,6 +274,7 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
     unit: str = "V"
     vs: str = "SHE"
     source: str = ""
+    uncertainty: float | None = None
     alias: str | None = None
     fullName: str | None = None  # pylint: disable=invalid-name
     temperatureDependence: dict | None = None  # pylint: disable=invalid-name
@@ -218,8 +302,10 @@ class ReferenceElectrodes:
         EXAMPLES
 
         >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
-        >>> ReferenceElectrodes()
-        <ReferenceElectrodes: ['SHE', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M', 'CE-0.1M', 'MSE-0.5M', 'MSE-sat', 'RHE']>
+        >>> ReferenceElectrodes() # doctest: +NORMALIZE_WHITESPACE
+        <ReferenceElectrodes: ['SHE', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M',
+        'CE-0.1M', 'MSE-0.5M', 'Hg/HgO-0.1M-NaOH', 'Hg/HgO-0.5M-NaOH', 'Hg/HgO-1M-NaOH',
+        'Hg/HgO-0.1M-KOH', 'Hg/HgO-0.5M-KOH', 'Hg/HgO-1M-KOH', 'MSE-sat', 'RHE']>
 
         """
         return f"<ReferenceElectrodes: {list(self._registry.keys())}>"
