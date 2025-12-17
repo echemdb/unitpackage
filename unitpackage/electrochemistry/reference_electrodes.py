@@ -127,10 +127,10 @@ REFERENCE_ELECTRODE_DATA = {
         ],
     },
     "MSE-sat": {
-        "value": 654,
+        "value": 0.654,
         "unit": "V",
         "vs": "SHE",
-        "source": "Internally used reference value.",
+        "source": "Internally used reference value at the Institute of Electrochemistry (Ulm University).",
     },
     "RHE": {
         "value": 0.000,
