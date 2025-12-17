@@ -7,9 +7,9 @@ EXAMPLES::
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
-    ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V', vs='SHE',
-    source={'isbn': '978-1119334064'}, uncertainty=None, alias=None, fullName=None,
-    temperatureDependence=None, choice=None, alternativeValues=None)
+    ReferenceElectrode(name='Ag/AgCl-sat', fullName='KCl Saturated silver / silver chloride electrode',
+    type='experimental', value=0.197, unit='V', vs='SHE', source={'isbn': '978-1119334064'},
+    uncertainty=None, alias=None, temperatureDependence=None, choice=None, alternativeValues=None)
 
     >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
     0.35300000000000004
@@ -36,7 +36,12 @@ EXAMPLES::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
+
+import logging
+
 from dataclasses import dataclass
+
+logger = logging.getLogger("unitpackage")
 
 # An overview and particularities of reference electrodes can be inferred from
 # Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.
@@ -44,18 +49,32 @@ from dataclasses import dataclass
 # Many values below can found in that source. Nevertheless, the DOIs to the original works are given.
 REFERENCE_ELECTRODE_DATA = {
     "SHE": {
+        "fullName" : "Standard hydrogen electrode",
+        "type" : "theoretical",
         "value": 0.000,
         "unit": "V",
         "vs": "SHE",
         "source": "Definition (zero point).",
     },
+    "Ag/AgCl": {
+        "fullName": "Silver / Silver Chloride reference electrode for which the concentration is not specified.",
+        "type" : "generic",
+        "value": 0.210,
+        "unit": "V",
+        "vs": "SHE",
+        "choice": "Reference value for a generic Ag/AgCl electrode"
+    },
     "Ag/AgCl-sat": {
+        "fullName": "KCl Saturated silver / silver chloride electrode",
+        "type": "experimental",
         "value": 0.197,
         "unit": "V",
         "vs": "SHE",
         "source": {"isbn": "978-1119334064"},
     },
     "Ag/AgCl-1M": {
+        "fullName": "1 M KCL silver / silver chloride electrode",
+        "type" : "average experimental",
         "value": 0.22240,
         "unit": "V",
         "vs": "SHE",
@@ -72,6 +91,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "CE-sat": {
         "fullName": "Saturated calomel electrode",
+        "type": "experimental",
         "alias": "SCE",
         "value": 0.26796,
         "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
@@ -84,6 +104,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "CE-1M": {
         "fullName": "1 molar calomel electrode",
+        "type": "experimental",
         "value": 0.2801,
         "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
         "unit": "V",
@@ -95,7 +116,8 @@ REFERENCE_ELECTRODE_DATA = {
         ],
     },
     "CE-0.1M": {
-        "fullName": "0.1 molar calomel electrode",
+        "fullName": "0.1 M calomel electrode",
+        "type": "experimental",
         "value": 0.3337,
         "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
         "unit": "V",
@@ -107,7 +129,8 @@ REFERENCE_ELECTRODE_DATA = {
         ],
     },
     "MSE-0.5M": {
-        "fullName": "Mercury/mercurous sulfate electrode",
+        "fullName": "0.5 M mercury / mercurous sulfate electrode",
+        "type": "experimental",
         "value": 0.61236,
         "choice": "Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
         "unit": "V",
@@ -128,6 +151,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Hg/HgO-0.1M-NaOH": {
         "fullName": "Mercury mercury oxide electrode with internal 0.1 M NaOH solution",
+        "type": "experimental",
         "value": 0.1485,
         "uncertainty": 0.0018,
         "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -155,6 +179,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Hg/HgO-0.5M-NaOH": {
         "fullName": "Mercury mercury oxide electrode with internal 0.5 M NaOH solution",
+        "type": "experimental",
         "value": 0.1280,
         "uncertainty": 0.0017,
         "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -177,6 +202,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Hg/HgO-1M-NaOH": {
         "fullName": "Mercury mercury oxide electrode with internal 1 M NaOH solution",
+        "type": "experimental",
         "value": 0.1089,
         "uncertainty": 0.0012,
         "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -204,6 +230,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Hg/HgO-0.1M-KOH": {
         "fullName": "Mercury mercury oxide electrode with internal 0.1 M KOH solution",
+        "type": "experimental",
         "value": 0.1415,
         "uncertainty": 0.0012,
         "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -226,6 +253,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Hg/HgO-0.5M-KOH": {
         "fullName": "Mercury mercury oxide electrode with internal 0.5 M KOH solution",
+        "type": "experimental",
         "value": 0.1267,
         "uncertainty": 0.0017,
         "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -253,6 +281,7 @@ REFERENCE_ELECTRODE_DATA = {
     },
     "Hg/HgO-1M-KOH": {
         "fullName": "Mercury mercury oxide electrode with internal 0.5 M NaOH solution",
+        "type": "experimental",
         "value": 0.1034,
         "uncertainty": 0.0023,
         "choice": "First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -274,12 +303,16 @@ REFERENCE_ELECTRODE_DATA = {
         ],
     },
     "MSE-sat": {
+        "fullName" : "Saturated mercury / mercurous sulfate electrode",
+        "type": "generic",
         "value": 0.654,
         "unit": "V",
         "vs": "SHE",
         "source": "Internally used reference value at the Institute of Electrochemistry (Ulm University).",
     },
     "RHE": {
+        "fullName": "Reversible hydrogen electrode",
+        "type": "theoretical",
         "value": 0.000,
         "unit": "V",
         "vs": "SHE",
@@ -322,9 +355,9 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
 
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
-    ReferenceElectrode(name='Ag/AgCl-sat', value=0.197, unit='V', vs='SHE',
-    source={'isbn': '978-1119334064'}, uncertainty=None, alias=None,
-    fullName=None, temperatureDependence=None, choice=None, alternativeValues=None)
+    ReferenceElectrode(name='Ag/AgCl-sat', fullName='KCl Saturated silver / silver chloride electrode',
+    type='experimental', value=0.197, unit='V', vs='SHE', source={'isbn': '978-1119334064'},
+    uncertainty=None, alias=None, temperatureDependence=None, choice=None, alternativeValues=None)
 
     Converting between reference scales:
 
@@ -336,13 +369,14 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
     """
 
     name: str
+    fullName: str # pylint: disable=invalid-name
+    type: str
     value: float
     unit: str = "V"
     vs: str = "SHE"
     source: str = ""
     uncertainty: float | None = None
     alias: str | None = None
-    fullName: str | None = None  # pylint: disable=invalid-name
     temperatureDependence: dict | None = None  # pylint: disable=invalid-name
     choice: str | None = None
     alternativeValues: list | None = None  # pylint: disable=invalid-name
@@ -369,9 +403,9 @@ class ReferenceElectrodes:
 
         >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
         >>> ReferenceElectrodes() # doctest: +NORMALIZE_WHITESPACE
-        <ReferenceElectrodes: ['SHE', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M',
-        'CE-0.1M', 'MSE-0.5M', 'Hg/HgO-0.1M-NaOH', 'Hg/HgO-0.5M-NaOH', 'Hg/HgO-1M-NaOH',
-        'Hg/HgO-0.1M-KOH', 'Hg/HgO-0.5M-KOH', 'Hg/HgO-1M-KOH', 'MSE-sat', 'RHE']>
+        <ReferenceElectrodes: ['SHE', 'Ag/AgCl', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M',
+        'CE-0.1M', 'MSE-0.5M', 'Hg/HgO-0.1M-NaOH', 'Hg/HgO-0.5M-NaOH', 'Hg/HgO-1M-NaOH', 'Hg/HgO-0.1M-KOH',
+        'Hg/HgO-0.5M-KOH', 'Hg/HgO-1M-KOH', 'MSE-sat', 'RHE']>
 
         """
         return f"<ReferenceElectrodes: {list(self._registry.keys())}>"
@@ -414,6 +448,11 @@ class ReferenceElectrodes:
         >>> ReferenceElectrodes.convert(ref_from="SHE", ref_to="RHE", ph=7)
         -0.4137
         """
+        for ref in [ref_from, ref_to]:
+            if cls[ref].type == "generic":
+                logger.warning(
+                    f"""Reference {ref} is of type "generic", i.e., the value is not based on experimental or theoretical values. Consult the details for {ref} with `ReferenceElecttrodes()[{ref}]."""
+                )
 
         def get_value_vs_she(ref: str) -> float:
             if ref == "RHE":
