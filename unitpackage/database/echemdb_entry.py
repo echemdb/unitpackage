@@ -326,13 +326,11 @@ class EchemdbEntry(Entry):
 
         # TODO:: The class should be implemented in an external EC tools module.
         # For now, we need a simple approach for reference scale conversion.
-        from unitpackage.electrochemistry.reference_electrodes import (
-            ReferenceElectrodes,
-        )
+        from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
 
         # The potential difference is returned in V
-        potential_difference_value = ReferenceElectrodes.convert(
-            ref_from=old_reference, ref_to=new_reference, ph=ph.value
+        potential_difference_value = ReferenceElectrode(old_reference).shift(
+            to=new_reference, ph=ph.value
         )
 
         # create an astropy quantity
