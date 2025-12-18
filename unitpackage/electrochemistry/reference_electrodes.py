@@ -8,8 +8,9 @@ EXAMPLES::
     >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
     >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
     ReferenceElectrode(name='Ag/AgCl-sat', fullName='KCl Saturated silver / silver chloride electrode',
-    entries=[{'value': 0.197, 'preferred': True, 'type': 'experimental', 'unit': 'V', 'vs': 'SHE',
-    'source': {'isbn': '978-1119334064'}}], alias=None, temperatureDependence=None)
+    entries=[ReferenceElectrodeEntry(value=0.197, unit='V', vs='SHE', type='experimental', temperature=None,
+    source={'isbn': '978-1119334064'}, uncertainty=None, preferred=True, choice=None, doi=None, isbn=None)],
+    alias=None, temperatureDependence=None)
 
     >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
     0.35300000000000004
@@ -38,13 +39,36 @@ EXAMPLES::
 
 
 import logging
-from dataclasses import dataclass
+from dataclasses import dataclass, field
+from typing import Any
 
 from unitpackage.electrochemistry.reference_electrode_data import (
     REFERENCE_ELECTRODE_DATA,
 )
 
 logger = logging.getLogger("unitpackage")
+
+
+@dataclass(frozen=True)
+class ReferenceElectrodeEntry:  # pylint: disable=too-many-instance-attributes
+    """
+    Represents an entry with a value of a specified reference electrode.
+
+    TODO:: Add docstring
+
+    """
+
+    value: float
+    unit: str | None = None  # This should be mandatory
+    vs: str | None = None  # This should be mandatory
+    type: str | None = None  # This should be mandatory
+    temperature: str | None = None  # This should be mandatory
+    source: dict[str, Any] | None = None  # This should be mandatory
+    uncertainty: float | None = None  # provide if given
+    preferred: bool = False  # Could be denoted as "standard"
+    choice: str | None = None  # Only if preferred
+    doi: str | None = None  # Should be omitted and included in source
+    isbn: str | None = None  # Should be omitted and included in source
 
 
 @dataclass(frozen=True)
@@ -63,30 +87,39 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
     temperatureDependence : dict
         A list of formulas or data, providing information about the temperature dependence of the reference electrode.
 
-    Examples
-    --------
-    Accessing reference electrode data:
+    EXAMPLES
 
-    >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
-    >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
-    ReferenceElectrode(name='Ag/AgCl-sat', fullName='KCl Saturated silver / silver chloride electrode',
-    entries=[{'value': 0.197, 'preferred': True, 'type': 'experimental', 'unit': 'V', 'vs': 'SHE',
-    'source': {'isbn': '978-1119334064'}}], alias=None, temperatureDependence=None)
+    Accessing reference electrode data::
 
-    Converting between reference scales:
+        >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
+        >>> ReferenceElectrodes["Ag/AgCl-sat"] # doctest: +NORMALIZE_WHITESPACE
+        ReferenceElectrode(name='Ag/AgCl-sat', fullName='KCl Saturated silver / silver chloride electrode',
+        entries=[ReferenceElectrodeEntry(value=0.197, unit='V', vs='SHE', type='experimental',
+        temperature=None, source={'isbn': '978-1119334064'}, uncertainty=None, preferred=True, choice=None,
+        doi=None, isbn=None)], alias=None, temperatureDependence=None)
 
-    >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
-    0.35300000000000004
+        Converting between reference scales:
 
-    >>> ReferenceElectrodes.convert(ref_from="SHE", ref_to="RHE", ph=5)
-    -0.2955
+        >>> ReferenceElectrodes.convert(0.55, "Ag/AgCl-sat", "SHE")
+        0.35300000000000004
+
+        >>> ReferenceElectrodes.convert(ref_from="SHE", ref_to="RHE", ph=5)
+        -0.2955
     """
 
     name: str
     fullName: str  # pylint: disable=invalid-name
-    entries: list  # pylint: disable=invalid-name
+    # entries: list
+    entries: list[ReferenceElectrodeEntry] = field(default_factory=list)
     alias: str | None = None
     temperatureDependence: dict | None = None  # pylint: disable=invalid-name
+
+    def __post_init__(self):
+        converted = [
+            ReferenceElectrodeEntry(**entry) if isinstance(entry, dict) else entry
+            for entry in self.entries
+        ]
+        object.__setattr__(self, "entries", converted)
 
     @property
     def value(self):
@@ -100,7 +133,7 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
             0.197
 
         """
-        return self.preferred["value"]
+        return self.preferred.value
 
     @property
     def preferred(self):
@@ -111,11 +144,12 @@ class ReferenceElectrode:  # pylint: disable=too-many-instance-attributes
 
             >>> from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
             >>> ReferenceElectrodes["Ag/AgCl-sat"].preferred # doctest: +NORMALIZE_WHITESPACE
-            {'value': 0.197, 'preferred': True, 'type': 'experimental', 'unit': 'V',
-            'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}
+            ReferenceElectrodeEntry(value=0.197, unit='V', vs='SHE', type='experimental',
+            temperature=None, source={'isbn': '978-1119334064'}, uncertainty=None,
+            preferred=True, choice=None, doi=None, isbn=None)
 
         """
-        entries = [entry for entry in self.entries if "preferred" in entry.keys()]
+        entries = [entry for entry in self.entries if entry.preferred]
 
         if not entries:
             raise KeyError(f"No preferred value found in the {self}.")
@@ -194,7 +228,7 @@ class ReferenceElectrodes:
         """
 
         for ref in [ref_from, ref_to]:
-            if cls[ref].preferred["type"] == "generic":
+            if cls[ref].preferred.type == "generic":
                 logger.warning(
                     f"""Reference {ref} is of type "generic", i.e., the value is not based on experimental or theoretical values. Consult the details for {ref} with `ReferenceElectrodes()[{ref}]."""
                 )
@@ -204,7 +238,7 @@ class ReferenceElectrodes:
                 if ph is None:
                     raise ValueError("pH must be provided for RHE conversion.")
                 return -0.0591 * ph
-            return cls[ref].value
+            return cls[ref].preferred.value
 
         shift = get_value_vs_she(ref_to) - get_value_vs_she(ref_from)
 
