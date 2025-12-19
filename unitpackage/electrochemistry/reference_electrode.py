@@ -125,6 +125,49 @@ class _ReferenceElectrode:
         """
         return f"{self.data}"
 
+    def to_json(self, filename=None, outdir=None):
+        """Return the data as a JSON string or save to file.
+
+        Parameters
+        ----------
+        filename : str, optional
+            Filename to save the JSON to. If None, returns the JSON string.
+            Default is "reference_electrode.json" if outdir is provided.
+        outdir : str, optional
+            Directory to save the file to. If None, uses current directory.
+
+        Returns
+        -------
+        str
+            JSON string if filename is None, else None.
+
+        EXAMPLES
+
+        >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
+        >>> ref = ReferenceElectrode("Ag/AgCl-sat")
+        >>> import json
+        >>> json.loads(ref.to_json()) # doctest: +NORMALIZE_WHITESPACE
+        {'fullName': 'KCl Saturated silver / silver chloride electrode',
+        'entries': [{'value': 0.197, 'preferred': True, 'approach': 'experimental',
+        'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
+
+        """
+        import json
+        import os
+        json_str = json.dumps(self.data, indent=2)
+        if filename or outdir:
+            if filename is None:
+                filename = "reference_electrode.json"
+            if outdir:
+                os.makedirs(outdir, exist_ok=True)
+                filepath = os.path.join(outdir, filename)
+            else:
+                filepath = filename
+            with open(filepath, 'w') as f:
+                f.write(json_str)
+            return None
+        return json_str
+
     @property
     def data(self):
         """
