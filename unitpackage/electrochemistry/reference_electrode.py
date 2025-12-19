@@ -29,6 +29,7 @@ EXAMPLES::
 #
 #        Copyright (C) 2025 Johannes Hermann
 #        Copyright (C) 2025 Albert Engstfeld
+#        Copyright (C) 2025 Julian Rüth
 #
 #  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
