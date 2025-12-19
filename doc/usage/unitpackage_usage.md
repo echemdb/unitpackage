@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.18.1
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
@@ -36,35 +36,12 @@ len(db)
 
 The identifiers can also be returned as a list.
 
++++
+
+### Slice the collection
+
 ```{code-cell} ipython3
 db.identifiers[0:3]
-```
-
-You can iterate over these entries
-
-```{code-cell} ipython3
-next(iter(db))
-```
-
-The collection can be filtered for specific descriptors,
-whereby a new collection is created.
-
-```{code-cell} ipython3
-filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
-len(filtered_db)
-```
-
-Alternatively parse a custom filter.
-
-```{code-cell} ipython3
-def custom_filter(entry):
-    for component in entry.system.electrolyte.components:
-        if 'ClO4' in component.name:
-            return True
-    return False
-
-filtered_db = db.filter(custom_filter)
-len(filtered_db)
 ```
 
 A new collection from an existing collection can be created from a list of selected identifiers
@@ -86,6 +63,37 @@ or a slice.
 ```{code-cell} ipython3
 sliced_db = db[:2]
 sliced_db
+```
+
+You can iterate over these entries
+
+```{code-cell} ipython3
+next(iter(db))
+```
+
+The collection can be filtered for specific descriptors,
+whereby a new collection is created.
+
++++
+
+### Filter the collection
+
+```{code-cell} ipython3
+filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
+len(filtered_db)
+```
+
+Alternatively parse a custom filter.
+
+```{code-cell} ipython3
+def custom_filter(entry):
+    for component in entry.system.electrolyte.components:
+        if 'ClO4' in component.name:
+            return True
+    return False
+
+filtered_db = db.filter(custom_filter)
+len(filtered_db)
 ```
 
 ## Entry
@@ -174,7 +182,11 @@ The description of the fields (column names) including units and/or other inform
 entry.resource.schema
 ```
 
-The units of the dataframe can be rescaled.
+### Data manipulation
+
++++
+
+The units of the dataframe can be rescaled to different cinvvertible units.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
@@ -186,6 +198,56 @@ The units are updated in the schema of the 'MutableResource'.
 ```{code-cell} ipython3
 rescaled_entry.mutable_resource
 ```
+
+An offset can be applied to a certain axis.
+
+```{code-cell} ipython3
+offset_entry = entry.add_offset('E', 0.32, 'V')
+offset_entry.df.head()
+```
+
+The offset is indicated in the mutable_resource. For subsequent offsets, the value is updated.
+
+```{code-cell} ipython3
+offset_entry.mutable_resource
+```
+
+In principle all pandas operations can be applied to the dataframe, including for example multiplying the columns
+
+```{code-cell} ipython3
+entry.df['P/A'] = entry.df['E'] * entry.df['j']
+entry.df.head()
+```
+
+However, the information is currently not updated in the field description. Here the field 'P/A' is missing after its creation above. Also the information on the units of the new axis is missing.
+
+```{code-cell} ipython3
+entry.mutable_resource
+```
+
+Let's remove it and try a different approach.
+
+```{code-cell} ipython3
+del entry.df['P/A']
+```
+
+The workaround is currently to add a new column to the entries dataframe with the unitpackage interface, which allows parsin information about the newly created field.
+
+```{code-cell} ipython3
+import pandas as pd
+import astropy.units as u
+
+df = pd.DataFrame()
+df['P/A'] = entry.df['E'] * entry.df['j']
+
+new_field_unit = u.Unit(entry.field_unit('E')) * u.Unit(entry.field_unit('j'))
+new_entry = entry.add_columns(df['P/A'], new_fields=[{'name':'P/A', 'unit': new_field_unit}])
+new_entry.df.head()
+```
+
+### Column information
+
++++
 
 The units of a specific field can be retrieved.
 
@@ -211,6 +273,22 @@ A plot with rescaled axis is obtained by rescaling the entry first.
 
 ```{code-cell} ipython3
 entry.rescale({'E':'mV', 'j':'uA / cm2'}).plot(x_label='t', y_label='j')
+```
+
+We can also use the matplotlib interface.
+
+```{code-cell} ipython3
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(1,1)
+
+x = 'E'
+y = 'j'
+
+entry.df.plot(x, y, ax=ax)
+plt.title(entry.identifier)
+ax.set_xlabel(f"{x} [{entry.field_unit(x)}]")
+ax.set_ylabel(f"{y} [{entry.field_unit(y)}]")
 ```
 
 ## Bibliography

@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -80,15 +80,100 @@ entry.figureDescription.fields
 entry.figureDescription.scanRate
 ```
 
+### Changing column units
+
++++
+
+An entry can be rescaled to new units.
+
+```{code-cell} ipython3
+rescaled_entry = entry.rescale({'E': 'mV', 'j': 'A / m2' })
+rescaled_entry.df.head(5)
+```
+
+The information is updated in the field description of the mutable resource.
+
+```{code-cell} ipython3
+rescaled_entry.mutable_resource.schema
+```
+
 An entry can be rescaled to these original units.
 
 ```{code-cell} ipython3
-original_entry = entry.rescale('original')
+original_entry = rescaled_entry.rescale('original')
 original_entry.df.head(5)
 ```
 
+The information in the mutable resource is updated accordingly.
+
 ```{code-cell} ipython3
 original_entry.mutable_resource.schema
+```
+
+### Shifting reference scales
+
+A key issue for comparing aqueous electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the data is not straight forward unless the data is shifted to a new reference scale. The shift to a different reference scale depends on the how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data. 
+
+#### Separate consideration
+
+To mitigate this issue, the `unitpackage.electrochemistry.reference_electrdoes` module, contains reference electrodes currently supported by unitpackage that can be accessed by its API.
+
+```{code-cell} ipython3
+from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
+
+ReferenceElectrodes()
+```
+
+The name consits of a common acronym of the reference electrode, followed by the concentration or molality. Other possible names found commonly in the literature for the individual reference electrodes as well as the full name can be accessed fro each electrode. For example the `CE-sat` is commonly shown as `SCE`, e.g., Saturated Calomel Electrode.
+
+```{code-cell} ipython3
+ReferenceElectrodes['CE-sat']
+```
+
+The ReferenceElectrode class can be used to show the shifts in potential between different reference electrodes. The units are always in `V`!
+
+```{code-cell} ipython3
+ReferenceElectrodes.convert(ref_from='Ag/AgCl-sat', ref_to='CE-1M')
+```
+
+One can also specify a certain value
+
+```{code-cell} ipython3
+ReferenceElectrodes.convert(potential = 0.564, ref_from='Ag/AgCl-sat', ref_to='CE-1M')
+```
+
+For conversion to and from the RHE scale, the pH is required.
+
+```{code-cell} ipython3
+ReferenceElectrodes.convert(potential = 0.564, ref_from='Ag/AgCl-sat', ref_to='RHE', ph=13)
+```
+
+#### unitpackage implementation
+
+If the reference scale is given for a certain entry, the potentials can directly be shifted from an `EchemdbEntry`
+
+```{code-cell} ipython3
+entry_mse = entry.rescale_reference('MSE-sat')
+entry_mse.df.head()
+```
+
+If a pH value is provided in the metadata, conversion to RHE is straight forward. In other cases the pH must be provide as additional argument.
+
+```{code-cell} ipython3
+entry.system.electrolyte.ph
+```
+
+```{code-cell} ipython3
+entry.get_electrode('REF')
+```
+
+```{code-cell} ipython3
+entry.df.head()
+```
+
+```{code-cell} ipython3
+entry_rhe = entry.rescale_reference('SHE')
+entry_rhe.df.head()
 ```
 
 ## Plotting
