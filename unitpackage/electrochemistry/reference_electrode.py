@@ -45,23 +45,21 @@ EXAMPLES::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 
-from typing import Any, List, Optional
-
 
 # pylint: disable=too-many-instance-attributes,too-few-public-methods
 class _ReferenceElectrodeEntry:
     def __init__(
         self,
-        value: float,
-        unit: str,
-        vs: str,
-        approach: str,
-        preferred: Optional[bool] = None,
-        source: Optional[Any] = None,
-        choice: Optional[str] = None,
-        uncertainty: Optional[float] = None,
-        doi: Optional[str] = None,
-        isbn: Optional[str] = None,
+        value,
+        unit,
+        vs,
+        approach,
+        preferred = None,
+        source = None,
+        choice = None,
+        uncertainty = None,
+        doi = None,
+        isbn = None,
     ):
         self.value = value
         self.preferred = preferred
@@ -100,11 +98,11 @@ class _ReferenceElectrode:
 
     def __init__(
         self,
-        name: str,
-        full_name: str,
-        alias: Optional[str] = None,
-        entries: Optional[List[_ReferenceElectrodeEntry]] = None,
-        temperature_dependence: Optional[List[Any]] = None,
+        name,
+        full_name,
+        alias = None,
+        entries = None,
+        temperature_dependence = None,
     ):
         self.name = name
         self.full_name = full_name
@@ -127,19 +125,6 @@ class _ReferenceElectrode:
 
     def to_json(self, filename=None, outdir=None):
         """Return the data as a JSON string or save to file.
-
-        Parameters
-        ----------
-        filename : str, optional
-            Filename to save the JSON to. If None, returns the JSON string.
-            Default is "reference_electrode.json" if outdir is provided.
-        outdir : str, optional
-            Directory to save the file to. If None, uses current directory.
-
-        Returns
-        -------
-        str
-            JSON string if filename is None, else None.
 
         EXAMPLES
 
