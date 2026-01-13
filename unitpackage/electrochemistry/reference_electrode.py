@@ -54,12 +54,12 @@ class _ReferenceElectrodeEntry:
         unit,
         vs,
         approach,
-        standard = None,
-        source = None,
-        choice = None,
-        uncertainty = None,
-        doi = None,
-        isbn = None,
+        standard=None,
+        source=None,
+        choice=None,
+        uncertainty=None,
+        doi=None,
+        isbn=None,
     ):
         self.value = value
         self.standard = standard
@@ -100,9 +100,9 @@ class _ReferenceElectrode:
         self,
         name,
         full_name,
-        alias = None,
-        entries = None,
-        temperature_dependence = None,
+        alias=None,
+        entries=None,
+        temperature_dependence=None,
     ):
         self.name = name
         self.full_name = full_name
@@ -139,6 +139,7 @@ class _ReferenceElectrode:
         """
         import json
         import os
+
         json_str = json.dumps(self.data, indent=2)
         if filename or outdir:
             if filename is None:
@@ -148,7 +149,7 @@ class _ReferenceElectrode:
                 filepath = os.path.join(outdir, filename)
             else:
                 filepath = filename
-            with open(filepath, 'w') as f:
+            with open(filepath, "w") as f:
                 f.write(json_str)
             return None
         return json_str
