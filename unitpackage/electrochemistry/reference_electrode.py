@@ -15,9 +15,10 @@ EXAMPLES::
     >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
     >>> ref = ReferenceElectrode("Ag/AgCl-sat")#
     >>> ref # doctest: +NORMALIZE_WHITESPACE
-    {'fullName': 'KCl Saturated silver / silver chloride electrode',
-    'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
-    'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
+    {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
+    'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
+    'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}],
+    'temperature_dependence': []}
 
     >>> ref.shift(to="SHE", potential=0.55)
     0.35300000000000004
@@ -27,9 +28,9 @@ EXAMPLES::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2025 Johannes Hermann
-#        Copyright (C) 2025 Albert Engstfeld
-#        Copyright (C) 2025 Julian Rüth
+#        Copyright (C) 2025-2026 Johannes Hermann
+#        Copyright (C) 2025-2026 Albert Engstfeld
+#        Copyright (C) 2025-2026 Julian Rüth
 #
 #  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -67,6 +68,20 @@ class _ReferenceElectrodeEntry:
         self.source = source
         self.choice = choice
         self.uncertainty = uncertainty
+
+    def __repr__(self):
+        """String representation of the ReferenceElectrode.
+
+        EXAMPLES
+
+        >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
+        >>> ref = ReferenceElectrode("Ag/AgCl-sat") # doctest: +NORMALIZE_WHITESPACE
+        >>> ref.entries[0] # doctest: +NORMALIZE_WHITESPACE
+        {'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental', 'unit': 'V',
+        'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}
+
+        """
+        return str(self.__dict__)
 
 
 class _ReferenceElectrode:
@@ -115,9 +130,14 @@ class _ReferenceElectrode:
 
         >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
         >>> ref = ReferenceElectrode("Ag/AgCl-sat") # doctest: +NORMALIZE_WHITESPACE
+        >>> ref # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
+        'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026',
+        'approach': 'experimental', 'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'},
+        'choice': None, 'uncertainty': None}], 'temperature_dependence': []}
 
         """
-        return f"{self.data}"
+        return str(self.__dict__)
 
     def to_json(self, filename=None, outdir=None):
         """Return the data as a JSON string or save to file.
@@ -185,10 +205,7 @@ class _ReferenceElectrode:
                 entry_dict["choice"] = entry.choice
             if entry.uncertainty is not None:
                 entry_dict["uncertainty"] = entry.uncertainty
-            if entry.doi is not None:
-                entry_dict["doi"] = entry.doi
-            if entry.isbn is not None:
-                entry_dict["isbn"] = entry.isbn
+
             entries_dicts.append(entry_dict)
 
         data_dict = {
@@ -254,10 +271,6 @@ class _ReferenceElectrode:
             entry_dict["choice"] = entry.choice
         if entry.uncertainty is not None:
             entry_dict["uncertainty"] = entry.uncertainty
-        if entry.doi is not None:
-            entry_dict["doi"] = entry.doi
-        if entry.isbn is not None:
-            entry_dict["isbn"] = entry.isbn
         return entry_dict
 
     def shift(
@@ -372,9 +385,19 @@ def ReferenceElectrode(reference):
         >>> ReferenceElectrode(ref) is ref
         True
 
+        >>> ReferenceElectrode('custom') # doctest: +NORMALIZE_WHITESPACE
+        Traceback (most recent call last):
+        ...
+        KeyError: "Reference electrode 'custom' not found in available reference electrodes
+        (['SHE', 'Ag/AgCl', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M', 'CE-0.1M',
+        'Hg/HgO-0.1M-NaOH', 'Hg/HgO-0.5M-NaOH', 'Hg/HgO-1M-NaOH', 'Hg/HgO-0.1M-KOH',
+        'Hg/HgO-0.5M-KOH', 'Hg/HgO-1M-KOH', 'MSE-sat', 'MSE-0.5M', 'RHE'])."
+
     """
     if isinstance(reference, _ReferenceElectrode):
         return reference
+    if not reference in _reference_electrodes.keys():
+        raise KeyError(f"Reference electrode '{reference}' not found in available reference electrodes ({list(_reference_electrodes.keys())}).")
     return _reference_electrodes[reference]
 
 
