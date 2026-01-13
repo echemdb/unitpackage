@@ -97,7 +97,7 @@ The information is updated in the field description of the mutable resource.
 rescaled_entry.mutable_resource.schema
 ```
 
-An entry can be rescaled to these original units.
+An entry can be rescaled to its original units.
 
 ```{code-cell} ipython3
 original_entry = rescaled_entry.rescale('original')
@@ -112,11 +112,11 @@ original_entry.mutable_resource.schema
 
 ### Shifting reference scales
 
-A key issue for comparing aqueous electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the data is not straight forward unless the data is shifted to a new reference scale. The shift to a different reference scale depends on the how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data. 
+A key issue for comparing electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the potential data is not straight forward unless the data is shifted to a common reference scale. The shift to a different reference scale depends on how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data. 
 
 #### Separate consideration
 
-To mitigate this issue, the `unitpackage.electrochemistry.reference_electrdoes` module, contains reference electrodes currently supported by unitpackage that can be accessed by its API.
+To mitigate this issue, the `unitpackage.electrochemistry.reference_electrdoes` module, contains a collection of commonly used reference electrodes that can be accessed by its API.
 
 ```{code-cell} ipython3
 from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
@@ -124,7 +124,7 @@ from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrode
 ReferenceElectrodes()
 ```
 
-The name consits of a common acronym of the reference electrode, followed by the concentration or molality. Other possible names found commonly in the literature for the individual reference electrodes as well as the full name can be accessed fro each electrode. For example the `CE-sat` is commonly shown as `SCE`, e.g., Saturated Calomel Electrode.
+The name consists of a common acronym of the reference electrode, CE for Calomel Electrode, followed by the concentration or molality of the secondary salt, e.g. KCl in this case. Synonyms commonly used in the literature as well as their full name can be accessed for each electrode. For example the `CE-sat` is commonly shown as `SCE`, e.g., Saturated Calomel Electrode.
 
 ```{code-cell} ipython3
 ReferenceElectrodes['CE-sat']
@@ -136,7 +136,7 @@ The ReferenceElectrode class can be used to show the shifts in potential between
 ReferenceElectrodes.convert(ref_from='Ag/AgCl-sat', ref_to='CE-1M')
 ```
 
-One can also specify a certain value
+One can convert a single value by specifying it
 
 ```{code-cell} ipython3
 ReferenceElectrodes.convert(potential = 0.564, ref_from='Ag/AgCl-sat', ref_to='CE-1M')
@@ -150,7 +150,7 @@ ReferenceElectrodes.convert(potential = 0.564, ref_from='Ag/AgCl-sat', ref_to='R
 
 #### unitpackage implementation
 
-If the reference scale is given for a certain entry, the potentials can directly be shifted from an `EchemdbEntry`
+If the reference scale is given for a certain entry, the potentials can directly be shifted 
 
 ```{code-cell} ipython3
 entry_mse = entry.rescale_reference('MSE-sat')

@@ -6,8 +6,8 @@ TODO:: Add description of certain sources, etc
 
 # An overview and particularities of reference electrodes can be inferred from
 # Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.
-# https://doi.org/10.1007/978-3-642-36188-3"
-# Many values below can found in that source. Nevertheless, the DOIs to the original works are given.
+# https://doi.org/10.1007/978-3-642-36188-3
+# Many values below can be found in that source. Nevertheless, the DOIs to the original works are given.
 
 
 EXAMPLES::
@@ -423,7 +423,7 @@ _reference_electrodes = {
     ),
     "Ag/AgCl-1M": _ReferenceElectrode(
         name="Ag/AgCl-1M",
-        full_name="1 M KCL silver / silver chloride electrode",
+        full_name="1 M KCl silver / silver chloride electrode",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.22246,
@@ -470,7 +470,7 @@ _reference_electrodes = {
     ),
     "CE-1M": _ReferenceElectrode(
         name="CE-1M",
-        full_name="1 molar calomel electrode",
+        full_name="1 M calomel electrode",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.2801,
@@ -752,7 +752,7 @@ _reference_electrodes = {
         full_name="0.5 M mercury / mercurous sulfate electrode",
         temperature_dependence=[
             {
-                "formula": "E = 0.63495 - 781.44E-6 * T - 426,89E-9 * T**2",
+                "formula": "E = 0.63495 - 781.44E-6 * T - 426.89E-9 * T**2",
                 "comment": "E is in V and T in °C. Equation is valid in the range of 0°C to 60°C",
                 "source": {"doi": "https://doi.org/10.1021/ja01304a009"},
             }

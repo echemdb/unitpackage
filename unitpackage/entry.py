@@ -421,7 +421,7 @@ class Entry:
             'reference': 'RHE',
             'offset': {'value': 0.1, 'unit': 'V'}}
 
-        An offset with a different units than that of the field.::
+        An offset with a different unit than that of the field.::
 
             >>> new_entry = entry.add_offset('E', 250, 'mV')
             >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE

@@ -186,7 +186,7 @@ entry.resource.schema
 
 +++
 
-The units of the dataframe can be rescaled to different cinvvertible units.
+The units of the dataframe can be rescaled to different convertible units.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
