@@ -492,7 +492,7 @@ _reference_electrodes = {
     ),
     "CE-0.1M": _ReferenceElectrode(
         name="CE-0.1M",
-        full_name="0.1 M calomel electrode",
+        full_name="0.1 M mercury / mercury(I) chloride (calomel) electrode",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.3337,
@@ -552,7 +552,7 @@ _reference_electrodes = {
     ),
     "Hg/HgO-0.5M-NaOH": _ReferenceElectrode(
         name="Hg/HgO-0.5M-NaOH",
-        full_name="Mercury mercury oxide electrode with internal 0.5 M NaOH solution",
+        full_name="Mercury / mercury oxide electrode with internal 0.5 M NaOH solution",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1270,
@@ -583,7 +583,7 @@ _reference_electrodes = {
     ),
     "Hg/HgO-1M-NaOH": _ReferenceElectrode(
         name="Hg/HgO-1M-NaOH",
-        full_name="Mercury mercury oxide electrode with internal 1 M NaOH solution",
+        full_name="Mercury / mercury oxide electrode with internal 1 M NaOH solution",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1078,
@@ -621,7 +621,7 @@ _reference_electrodes = {
     ),
     "Hg/HgO-0.1M-KOH": _ReferenceElectrode(
         name="Hg/HgO-0.1M-KOH",
-        full_name="Mercury mercury oxide electrode with internal 0.1 M KOH solution",
+        full_name="Mercury / mercury oxide electrode with internal 0.1 M KOH solution",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1414,
@@ -652,7 +652,7 @@ _reference_electrodes = {
     ),
     "Hg/HgO-0.5M-KOH": _ReferenceElectrode(
         name="Hg/HgO-0.5M-KOH",
-        full_name="Mercury mercury oxide electrode with internal 0.5 M KOH solution",
+        full_name="Mercury / mercury oxide electrode with internal 0.5 M KOH solution",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1256,
@@ -690,7 +690,7 @@ _reference_electrodes = {
     ),
     "Hg/HgO-1M-KOH": _ReferenceElectrode(
         name="Hg/HgO-1M-KOH",
-        full_name="Mercury mercury oxide electrode with internal 0.5 M NaOH solution",
+        full_name="Mercury / mercury oxide electrode with internal 0.5 M NaOH solution",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1027,
@@ -761,13 +761,6 @@ _reference_electrodes = {
             _ReferenceElectrodeEntry(
                 value=0.6125,
                 source="https://doi.org/10.1039/TF9656102050",
-                unit="V",
-                vs="SHE",
-                approach="unknown",
-            ),
-            _ReferenceElectrodeEntry(
-                value=0.61236,
-                source={"doi": "https://doi.org/10.1039/FT9949001875"},
                 unit="V",
                 vs="SHE",
                 approach="unknown",
