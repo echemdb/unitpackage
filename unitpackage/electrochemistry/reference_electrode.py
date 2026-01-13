@@ -16,7 +16,7 @@ EXAMPLES::
     >>> ref = ReferenceElectrode("Ag/AgCl-sat")#
     >>> ref # doctest: +NORMALIZE_WHITESPACE
     {'fullName': 'KCl Saturated silver / silver chloride electrode',
-    'entries': [{'value': 0.197, 'preferred': True, 'approach': 'experimental',
+    'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
     'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
 
     >>> ref.shift(to="SHE", potential=0.55)
@@ -133,7 +133,7 @@ class _ReferenceElectrode:
         >>> import json
         >>> json.loads(ref.to_json()) # doctest: +NORMALIZE_WHITESPACE
         {'fullName': 'KCl Saturated silver / silver chloride electrode',
-        'entries': [{'value': 0.197, 'preferred': True, 'approach': 'experimental',
+        'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
         'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
 
         """
@@ -164,7 +164,7 @@ class _ReferenceElectrode:
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.data # doctest: +NORMALIZE_WHITESPACE
             {'fullName': 'KCl Saturated silver / silver chloride electrode',
-            'entries': [{'value': 0.197, 'preferred': True, 'approach': 'experimental',
+            'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
             'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
 
         """
@@ -229,7 +229,7 @@ class _ReferenceElectrode:
             >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.preferred_data # doctest: +NORMALIZE_WHITESPACE
-            {'value': 0.197, 'preferred': True, 'approach': 'experimental',
+            {'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
             'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}
 
         """
@@ -409,7 +409,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.000,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="theoretical",
                 unit="V",
                 vs="SHE",
@@ -423,7 +423,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.210,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="generic",
                 unit="V",
                 vs="SHE",
@@ -437,7 +437,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.197,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 unit="V",
                 vs="SHE",
@@ -452,22 +452,22 @@ _reference_electrodes = {
             _ReferenceElectrodeEntry(
                 value=0.22246,
                 approach="unknown",
-                source="https://doi.org/10.1021/ja01333a001",
+                source={"doi": "https://doi.org/10.1021/ja01333a001"},
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.22234,
                 approach="unknown",
-                source="https://doi.org/10.6028/jres.053.037",
+                source={"doi": "https://doi.org/10.6028/jres.053.037"},
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.22239,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="unknown",
-                source="https://doi.org/10.1021/j150506a011",
+                source={"doi": "https://doi.org/10.1021/j150506a011"},
                 unit="V",
                 vs="SHE",
             ),
@@ -480,7 +480,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.26796,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 choice="Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
                 unit="V",
@@ -499,20 +499,20 @@ _reference_electrodes = {
             _ReferenceElectrodeEntry(
                 value=0.2801,
                 approach="unknown",
-                doi="https://doi.org/10.1051/jcp/1954510590",
+                source={"doi": "https://doi.org/10.1051/jcp/1954510590"},
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.2801,
                 approach="unknown",
-                isbn="9780123768568",
+                source={"isbn": "9780123768568"},
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.2801,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 choice="Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
                 unit="V",
@@ -528,20 +528,20 @@ _reference_electrodes = {
             _ReferenceElectrodeEntry(
                 value=0.3337,
                 approach="unknown",
-                isbn="978-1-118-31280-3",
+                source={"isbn": "978-1-118-31280-3"},
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.3337,
                 approach="unknown",
-                doi="https://doi.org/10.1051/jcp/1954510590",
+                source={"doi": "https://doi.org/10.1051/jcp/1954510590"},
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.3337,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 choice="Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
                 unit="V",
@@ -556,7 +556,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1487,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 uncertainty=0.0015,
                 approach="experimental",
                 unit="V",
@@ -564,21 +564,21 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1637,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 approach="calculated",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1690,
-                source="https://doi.org/10.1039/CT9119900845",
+                source={"doi": "https://doi.org/10.1039/CT9119900845"},
                 approach="experimental",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1485,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 uncertainty=0.0018,
                 choice="First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -594,7 +594,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1270,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 uncertainty=0.0014,
                 approach="experimental",
                 unit="V",
@@ -602,14 +602,14 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1254,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 approach="calculated",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1280,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 uncertainty=0.0017,
                 choice="First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -647,7 +647,7 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1089,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 uncertainty=0.0012,
                 choice="First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -678,7 +678,7 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1415,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 uncertainty=0.0012,
                 choice="First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -694,7 +694,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1256,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 uncertainty=0.0017,
                 approach="experimental",
                 unit="V",
@@ -702,21 +702,21 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1241,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 approach="calculated",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1100,
-                source="https://doi.org/10.1039/CT9119900845",
+                source={"doi": "https://doi.org/10.1039/CT9119900845"},
                 approach="experimental",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1267,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 uncertainty=0.0017,
                 choice="First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -732,7 +732,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1027,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 uncertainty=0.0026,
                 approach="experimental",
                 unit="V",
@@ -740,14 +740,14 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1053,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 approach="calculated",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1034,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 uncertainty=0.0023,
                 choice="First value in Kawashima et al. (DOI: https://doi.org/10.1021/acscatal.2c05655), which is similar to a second reported value.",
@@ -763,7 +763,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.654,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="generic",
                 unit="V",
                 vs="SHE",
@@ -778,20 +778,20 @@ _reference_electrodes = {
             {
                 "formula": "E = 0.63495 - 781.44E-6 * T - 426,89E-9 * T**2",
                 "comment": "E is in V and T in °C. Equation is valid in the range of 0°C to 60°C",
-                "doi": "https://doi.org/10.1021/ja01304a009",
+                "source": {"doi": "https://doi.org/10.1021/ja01304a009"},
             }
         ],
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.61587,
-                source="https://doi.org/10.1039/TF9605601172",
+                source={"doi": "https://doi.org/10.1039/TF9605601172"},
                 unit="V",
                 vs="SHE",
                 approach="unknown",
             ),
             _ReferenceElectrodeEntry(
                 value=0.61515,
-                source="https://doi.org/10.1021/ja01304a009",
+                source={"doi": "https://doi.org/10.1021/ja01304a009"},
                 unit="V",
                 vs="SHE",
                 approach="unknown",
@@ -805,21 +805,21 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.61236,
-                source="https://doi.org/10.1039/FT9949001875",
+                source={"doi": "https://doi.org/10.1039/FT9949001875"},
                 unit="V",
                 vs="SHE",
                 approach="unknown",
             ),
             _ReferenceElectrodeEntry(
                 value=0.61544,
-                source="https://doi.org/10.1007/BF00973518",
+                source={"doi": "https://doi.org/10.1007/BF00973518"},
                 unit="V",
                 vs="SHE",
                 approach="unknown",
             ),
             _ReferenceElectrodeEntry(
                 value=0.61236,
-                preferred=True,
+                standard="ECHEMDB-2026",
                 approach="experimental",
                 choice="Recommended value in Handbook of Reference Electrodes (DOI: https://doi.org/10.1007/978-3-642-36188-3).",
                 unit="V",
@@ -835,7 +835,7 @@ _reference_electrodes = {
             _ReferenceElectrodeEntry(
                 value=0.000,
                 approach="theoretical",
-                preferred=True,
+                standard="ECHEMDB-2026",
                 unit="V",
                 vs="SHE",
                 source="Nernst equation, 25 °C.",
