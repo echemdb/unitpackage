@@ -58,8 +58,6 @@ class _ReferenceElectrodeEntry:
         source=None,
         choice=None,
         uncertainty=None,
-        doi=None,
-        isbn=None,
     ):
         self.value = value
         self.standard = standard
@@ -69,8 +67,6 @@ class _ReferenceElectrodeEntry:
         self.source = source
         self.choice = choice
         self.uncertainty = uncertainty
-        self.doi = doi
-        self.isbn = isbn
 
 
 class _ReferenceElectrode:
@@ -266,28 +262,16 @@ class _ReferenceElectrode:
 
     def shift(
         self,
-        to: str | None = None,
-        potential: float | None = None,
-        ph: float | None = None,
+        to=None,
+        potential=None,
+        ph=None,
     ):
         """
-        Determine the shift in potential between the reference electrode and another reference electrode.
+        Determine the shift in potential between the reference electrode
+        and another reference electrode.
 
-        The shift can also be determined for a specific potential. For conversion from an to the RHE scale, the pH is required.
-
-        Parameters
-        ----------
-        to : str
-            The target reference scale.
-        potential : float, Quantity, or None
-            Potential vs. `ref_from`. If None, returns only the shift.
-        pH : float, optional
-            Required if RHE is involved.
-
-        Returns
-        -------
-        float
-            Converted potential (if `potential` provided) or shift (if not).
+        The shift can also be determined for a specific potential.
+        For conversion from an to the RHE scale, the pH is required.
 
         EXAMPLES:
 
@@ -374,7 +358,7 @@ class _ReferenceElectrode:
 
 
 # pylint: disable=invalid-name
-def ReferenceElectrode(reference: str | _ReferenceElectrode) -> _ReferenceElectrode:
+def ReferenceElectrode(reference):
     """
     Get a reference electrode object.
 
