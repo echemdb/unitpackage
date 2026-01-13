@@ -54,7 +54,7 @@ class _ReferenceElectrodeEntry:
         unit,
         vs,
         approach,
-        preferred = None,
+        standard = None,
         source = None,
         choice = None,
         uncertainty = None,
@@ -62,7 +62,7 @@ class _ReferenceElectrodeEntry:
         isbn = None,
     ):
         self.value = value
-        self.preferred = preferred
+        self.standard = standard
         self.approach = approach
         self.unit = unit
         self.vs = vs
@@ -173,8 +173,8 @@ class _ReferenceElectrode:
             entry_dict = {
                 "value": entry.value,
             }
-            if entry.preferred is not None:
-                entry_dict["preferred"] = entry.preferred
+            if entry.standard is not None:
+                entry_dict["standard"] = entry.standard
             entry_dict["approach"] = (
                 entry.approach if entry.approach is not None else "unknown"
             )
@@ -205,45 +205,45 @@ class _ReferenceElectrode:
         return data_dict
 
     @property
-    def preferred_value(self):
+    def standard_value(self):
         """
-        The preferred value vs SHE of this reference electrode.
+        The standard value vs SHE of this reference electrode.
 
         EXAMPLES::
 
             >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
-            >>> ref.preferred_value
+            >>> ref.standard_value
             0.197
 
         """
-        return self.preferred_data["value"]
+        return self.standard_data["value"]
 
     @property
-    def preferred_data(self):
+    def standard_data(self):
         """
-        The preferred reference electrode from the reference electrodes' entries.
+        The standard reference electrode from the reference electrodes' entries.
 
         EXAMPLES::
 
             >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
-            >>> ref.preferred_data # doctest: +NORMALIZE_WHITESPACE
+            >>> ref.standard_data # doctest: +NORMALIZE_WHITESPACE
             {'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
             'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}
 
         """
-        entries = [entry for entry in self.entries if entry.preferred]
+        entries = [entry for entry in self.entries if entry.standard]
         if not entries:
-            raise KeyError(f"No preferred value found in the {self.name}.")
+            raise KeyError(f"No standard value found in the {self.name}.")
         if len(entries) > 1:
             raise KeyError(
-                f"Multiple entries with preferred values found in {self.name}."
+                f"Multiple entries with standard values found in {self.name}."
             )
         entry = entries[0]
         entry_dict = {
             "value": entry.value,
-            "preferred": entry.preferred,
+            "standard": entry.standard,
         }
         if entry.approach is not None:
             entry_dict["approach"] = entry.approach
@@ -352,7 +352,7 @@ class _ReferenceElectrode:
 
         for ref_name in [ref_from, ref_to]:
             ref_obj = ReferenceElectrode(ref_name)
-            if ref_obj.preferred_data["approach"] == "generic":
+            if ref_obj.standard_data["approach"] == "generic":
                 logger.warning(
                     f"Reference {ref_name} is of type 'generic', i.e., the value is not based on experimental or theoretical values. Consult the details for {ref_name} with `ReferenceElectrode.data`."
                 )
@@ -362,7 +362,7 @@ class _ReferenceElectrode:
                 if ph is None:
                     raise ValueError("pH must be provided for RHE conversion.")
                 return -0.0591 * ph
-            return ReferenceElectrode(ref).preferred_value
+            return ReferenceElectrode(ref).standard_value
 
         shift_value = get_value_vs_she(ref_to) - get_value_vs_she(self.name)
 
@@ -377,15 +377,6 @@ def ReferenceElectrode(reference: str | _ReferenceElectrode) -> _ReferenceElectr
     """
     Get a reference electrode object.
 
-    Parameters
-    ----------
-    reference : str or _ReferenceElectrode
-        The name of the reference electrode or the object itself.
-
-    Returns
-    -------
-    _ReferenceElectrode
-        The reference electrode object.
 
     EXAMPLES::
 
