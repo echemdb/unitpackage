@@ -83,6 +83,9 @@ class _ReferenceElectrodeEntry:
         """
         return str(self.__dict__)
 
+    def __getitem__(self, name):
+        return self.__dict__[name]
+
 
 class _ReferenceElectrode:
     """
@@ -157,6 +160,7 @@ class _ReferenceElectrode:
         import os
 
         json_str = json.dumps(self.data, indent=2)
+
         if filename or outdir:
             if filename is None:
                 filename = "reference_electrode.json"
@@ -165,9 +169,14 @@ class _ReferenceElectrode:
                 filepath = os.path.join(outdir, filename)
             else:
                 filepath = filename
-            with open(filepath, "w") as f:
-                f.write(json_str)
+            with open(filepath, "w", encoding="utf-8") as f:
+                json.dump(self.data, f, ensure_ascii=False, indent=4)
+                # json.dump does not save files with a newline, which compromises the tests
+                # where the output files are compared to an expected json.
+                f.write("\n")
+
             return None
+
         return json_str
 
     @property
@@ -221,7 +230,7 @@ class _ReferenceElectrode:
     @property
     def standard_value(self):
         """
-        The standard value vs SHE of this reference electrode.
+        The standard value vs. SHE of this reference electrode.
 
         EXAMPLES::
 
@@ -231,7 +240,7 @@ class _ReferenceElectrode:
             0.197
 
         """
-        return self.standard_data["value"]
+        return self.standard_data.value
 
     @property
     def standard_data(self):
@@ -243,8 +252,8 @@ class _ReferenceElectrode:
             >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.standard_data # doctest: +NORMALIZE_WHITESPACE
-            {'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
-            'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}
+            {'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental', 'unit': 'V',
+            'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}
 
         """
         entries = [entry for entry in self.entries if entry.standard]
@@ -255,23 +264,8 @@ class _ReferenceElectrode:
                 f"Multiple entries with standard values found in {self.name}."
             )
         entry = entries[0]
-        entry_dict = {
-            "value": entry.value,
-            "standard": entry.standard,
-        }
-        if entry.approach is not None:
-            entry_dict["approach"] = entry.approach
-        if entry.unit is not None:
-            entry_dict["unit"] = entry.unit
-        if entry.vs is not None:
-            entry_dict["vs"] = entry.vs
-        if entry.source is not None:
-            entry_dict["source"] = entry.source
-        if entry.choice is not None:
-            entry_dict["choice"] = entry.choice
-        if entry.uncertainty is not None:
-            entry_dict["uncertainty"] = entry.uncertainty
-        return entry_dict
+
+        return entry
 
     def shift(
         self,
@@ -396,8 +390,12 @@ def ReferenceElectrode(reference):
     """
     if isinstance(reference, _ReferenceElectrode):
         return reference
-    if not reference in _reference_electrodes.keys():
-        raise KeyError(f"Reference electrode '{reference}' not found in available reference electrodes ({list(_reference_electrodes.keys())}).")
+
+    if reference not in _reference_electrodes:
+        raise KeyError(
+            f"Reference electrode '{reference}' not found in available reference electrodes ({list(_reference_electrodes.keys())})."
+        )
+
     return _reference_electrodes[reference]
 
 
