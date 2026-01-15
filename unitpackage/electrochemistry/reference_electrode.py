@@ -200,7 +200,10 @@ class _ReferenceElectrode:
 
         """
         data = self.__dict__.copy()
-        data['entries'] = [entry.__dict__ if isinstance(entry, _ReferenceElectrodeEntry) else entry for entry in self.entries]
+        data["entries"] = [
+            entry.__dict__ if isinstance(entry, _ReferenceElectrodeEntry) else entry
+            for entry in self.entries
+        ]
         return data
 
     @property
