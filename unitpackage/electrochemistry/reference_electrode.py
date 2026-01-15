@@ -4,16 +4,19 @@ and determine the shift between different potential scales.
 
 TODO:: Add description of certain sources, etc
 
-# An overview and particularities of reference electrodes can be inferred from
-# Inzelt et al., Handbook of Reference Electrodes, Springer, 2013.
-# https://doi.org/10.1007/978-3-642-36188-3
-# Many values below can be found in that source. Nevertheless, the DOIs to the original works are given.
+An overview and particularities of reference electrodes can be, for example,
+be inferred from the following sources:
+
+* Inzelt et al., Handbook of Reference Electrodes, Springer, 2013 (DOI: https://doi.org/10.1007/978-3-642-36188-3)
+
+Many values for specific reference electrodes can be found in these sources.
+The individual entries are associated with DOIs to the original works.
 
 
 EXAMPLES::
 
     >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
-    >>> ref = ReferenceElectrode("Ag/AgCl-sat")#
+    >>> ref = ReferenceElectrode("Ag/AgCl-sat")
     >>> ref # doctest: +NORMALIZE_WHITESPACE
     {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
     'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
@@ -151,15 +154,16 @@ class _ReferenceElectrode:
         >>> ref = ReferenceElectrode("Ag/AgCl-sat")
         >>> import json
         >>> json.loads(ref.to_json()) # doctest: +NORMALIZE_WHITESPACE
-        {'fullName': 'KCl Saturated silver / silver chloride electrode',
-        'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
-        'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
+        {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
+        'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
+        'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}],
+        'temperature_dependence': []}
 
         """
         import json
         import os
 
-        json_str = json.dumps(self.data, indent=2)
+        json_str = json.dumps(self.data, indent=4)
 
         if filename or outdir:
             if filename is None:
@@ -189,43 +193,15 @@ class _ReferenceElectrode:
             >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.data # doctest: +NORMALIZE_WHITESPACE
-            {'fullName': 'KCl Saturated silver / silver chloride electrode',
-            'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
-            'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}}]}
+            {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
+            'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
+            'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}],
+            'temperature_dependence': []}
 
         """
-        entries_dicts = []
-        for entry in self.entries:
-            entry_dict = {
-                "value": entry.value,
-            }
-            if entry.standard is not None:
-                entry_dict["standard"] = entry.standard
-            entry_dict["approach"] = (
-                entry.approach if entry.approach is not None else "unknown"
-            )
-            if entry.unit is not None:
-                entry_dict["unit"] = entry.unit
-            if entry.vs is not None:
-                entry_dict["vs"] = entry.vs
-            if entry.source is not None:
-                entry_dict["source"] = entry.source
-            if entry.choice is not None:
-                entry_dict["choice"] = entry.choice
-            if entry.uncertainty is not None:
-                entry_dict["uncertainty"] = entry.uncertainty
-
-            entries_dicts.append(entry_dict)
-
-        data_dict = {
-            "fullName": self.full_name,
-            "entries": entries_dicts,
-        }
-        if self.alias:
-            data_dict["alias"] = self.alias
-        if self.temperature_dependence:
-            data_dict["temperatureDependence"] = self.temperature_dependence
-        return data_dict
+        data = self.__dict__.copy()
+        data['entries'] = [entry.__dict__ if isinstance(entry, _ReferenceElectrodeEntry) else entry for entry in self.entries]
+        return data
 
     @property
     def standard_value(self):
@@ -278,7 +254,7 @@ class _ReferenceElectrode:
         and another reference electrode.
 
         The shift can also be determined for a specific potential.
-        For conversion from an to the RHE scale, the pH is required.
+        For conversion from and to the RHE scale, the pH must be provided.
 
         EXAMPLES:
 
