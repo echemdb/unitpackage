@@ -116,41 +116,51 @@ A key issue for comparing electrochemical current potential traces is that data 
 
 #### Separate consideration
 
-To mitigate this issue, the `unitpackage.electrochemistry.reference_electrdoes` module, contains a collection of commonly used reference electrodes that can be accessed by its API.
+To mitigate this issue, the `unitpackage.electrochemistry.reference_electrode` module, contains a collection of commonly used reference electrodes that can be accessed by its API.
 
 ```{code-cell} ipython3
-from unitpackage.electrochemistry.reference_electrodes import ReferenceElectrodes
+from unitpackage.electrochemistry.reference_electrode import _reference_electrodes
 
-ReferenceElectrodes()
+_reference_electrodes.keys()
 ```
 
-The name consists of a common acronym of the reference electrode, CE for Calomel Electrode, followed by the concentration or molality of the secondary salt, e.g. KCl in this case. Synonyms commonly used in the literature as well as their full name can be accessed for each electrode. For example the `CE-sat` is commonly shown as `SCE`, e.g., Saturated Calomel Electrode.
+A `ReferenceElectrode` object can be created by providing the corresponding acronym.
 
 ```{code-cell} ipython3
-ReferenceElectrodes['CE-sat']
+from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
+
+ref = ReferenceElectrode('CE-sat')
+ref
 ```
 
-The ReferenceElectrode class can be used to show the shifts in potential between different reference electrodes. The units are always in `V`!
+A certain `ReferenceElectrode` can contain multiple entries with values from different sources. For the echemdb standard data values were chosen based on the discussion of the specified reference electrodes in the literature.
 
 ```{code-cell} ipython3
-ReferenceElectrodes.convert(ref_from='Ag/AgCl-sat', ref_to='CE-1M')
+ref.standard_data
 ```
 
-One can convert a single value by specifying it
+The shift a certain reference electrode vs that of another known reference electrode can be inferrred. 
+The resulting value is always in `V`!
 
 ```{code-cell} ipython3
-ReferenceElectrodes.convert(potential = 0.564, ref_from='Ag/AgCl-sat', ref_to='CE-1M')
+ref.shift(to='CE-1M')
+```
+
+The shift can also be calculated for a specific potential.
+
+```{code-cell} ipython3
+ref.shift(to='CE-1M', potential = 0.564)
 ```
 
 For conversion to and from the RHE scale, the pH is required.
 
 ```{code-cell} ipython3
-ReferenceElectrodes.convert(potential = 0.564, ref_from='Ag/AgCl-sat', ref_to='RHE', ph=13)
+ref.shift(to='RHE', potential = 0.564, ph=13)
 ```
 
 #### unitpackage implementation
 
-If the reference scale is given for a certain entry, the potentials can directly be shifted 
+If the reference scale is given for a certain entry, the potentials can directly be shifted
 
 ```{code-cell} ipython3
 entry_mse = entry.rescale_reference('MSE-sat')
