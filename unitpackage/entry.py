@@ -390,7 +390,7 @@ class Entry:
 
         return type(self)(resource=resource)
 
-    def add_offset(self, field_name=None, offset=None, unit=None):
+    def add_offset(self, field_name=None, offset=None, unit=""):
         r"""
         Return an entry with an offset (with specified units) to a specified field of the entry.
         The offset properties are stored in the fields metadata.
@@ -467,12 +467,6 @@ class Entry:
             )
             unit = field.custom.get("unit")
 
-        if not field.custom.get("unit"):
-            logger.warning(
-                f"Field '{field_name}' has no unit defined. Offset cannot be applied without a unit."
-            )
-            unit = ""
-
         field_unit = u.Unit(field.custom.get("unit"))
 
         # create a new dataframe with offset values
@@ -493,19 +487,10 @@ class Entry:
 
         resource.custom["MutableResource"] = df_resource
 
-        # update offset in the fields
-        old_field = self.mutable_resource.schema.get_field(field_name).to_dict()
-        old_field.setdefault("offset", {})
-        old_offset = old_field["offset"]
-        if not old_offset:
-            old_offset.setdefault("unit", field.custom.get("unit"))
-            old_offset.setdefault("value", 0.0)
-
-        old_offset_quantity = old_offset["value"] * u.Unit(old_offset["unit"])
-
-        if field_unit:
-            old_offset_quantity = old_offset_quantity.to(field_unit)
-
+        # include or update the offset in the fields metadata
+        old_offset_quantity = field.custom.get("offset", {}).get("value", 0.0) * u.Unit(
+            field.custom.get("offset", {}).get("unit", field.custom.get("unit"))
+        )
         new_offset = old_offset_quantity.value + offset_quantity.value
 
         df_resource.schema.update_field(
