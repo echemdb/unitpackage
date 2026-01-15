@@ -14,7 +14,7 @@ api/entry.md
 api/descriptor.md
 api/database/echemdb.md
 api/database/echemdb_entry.md
-api/electrochemistry/reference_electrodes.md
+api/electrochemistry/reference_electrode.md
 api/remote.md
 api/local.md
 api/baseloader.md
