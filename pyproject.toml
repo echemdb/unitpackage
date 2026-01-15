@@ -27,6 +27,7 @@ packages = [
     "unitpackage",
     "unitpackage.cv",
     "unitpackage.database",
+    "unitpackage.electrochemistry",
     "unitpackage.loaders",
     "unitpackage.test",
 ]

@@ -390,6 +390,116 @@ class Entry:
 
         return type(self)(resource=resource)
 
+    def add_offset(self, field_name=None, offset=None, unit=""):
+        r"""
+        Return an entry with an offset (with specified units) to a specified field of the entry.
+        The offset properties are stored in the fields metadata.
+
+        If offsets are applied consecutively, the value is updated.
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.add_offset('E', 0.1, 'V')
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.003158 -0.998277
+            1  0.02 -0.002158 -0.981762
+            ...
+
+            >>> new_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E',
+            'type': 'number',
+            'unit': 'V',
+            'reference': 'RHE',
+            'offset': {'value': 0.1, 'unit': 'V'}}
+
+        An offset with a different unit than that of the field.::
+
+            >>> new_entry = entry.add_offset('E', 250, 'mV')
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.146842 -0.998277
+            1  0.02  0.147842 -0.981762
+            ...
+
+        A consecutively added offset::
+
+            >>> new_entry_1 = new_entry.add_offset('E', 0.150, 'V')
+            >>> new_entry_1.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.296842 -0.998277
+            1  0.02  0.297842 -0.981762
+            ...
+
+            >>> new_entry_1.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E',
+            'type': 'number',
+            'unit': 'V',
+            'reference': 'RHE',
+            'offset': {'value': 0.4, 'unit': 'V'}}
+
+        If no unit is provided, the field unit is used instead.::
+
+            >>> new_entry_2 = new_entry.add_offset('E', 0.150)
+            >>> new_entry_2.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.296842 -0.998277
+            1  0.02  0.297842 -0.981762
+            ...
+
+
+        """
+        import astropy.units as u
+
+        field = self.mutable_resource.schema.get_field(field_name)
+
+        if field.custom.get("unit") and not unit:
+            logger.warning(
+                f"""No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."""
+            )
+            unit = field.custom.get("unit")
+
+        field_unit = u.Unit(field.custom.get("unit"))
+
+        # create a new dataframe with offset values
+        df = self.df.copy()
+
+        offset_quantity = (offset * u.Unit(unit)).to(u.Unit(field_unit))
+
+        df[field_name] += offset_quantity.value
+
+        # create new resource
+        from frictionless import Resource
+
+        resource = Resource(self.resource.to_dict())
+
+        df_resource = Resource(df)
+        df_resource.infer()
+        df_resource.schema = resource.schema
+
+        resource.custom["MutableResource"] = df_resource
+
+        # include or update the offset in the fields metadata
+        old_offset_quantity = field.custom.get("offset", {}).get("value", 0.0) * u.Unit(
+            field.custom.get("offset", {}).get("unit", field.custom.get("unit"))
+        )
+        new_offset = old_offset_quantity.value + offset_quantity.value
+
+        df_resource.schema.update_field(
+            field_name,
+            {"offset": {"value": float(new_offset), "unit": str(offset_quantity.unit)}},
+        )
+
+        return type(self)(resource=resource)
+
     @property
     def mutable_resource(self):
         r"""
