@@ -526,9 +526,9 @@ class Entry:
         if not self.resource.custom["MutableResource"]:
             from frictionless import Schema
 
-            from unitpackage.local import create_df_resource
+            from unitpackage.local import create_df_resource_from_tabular_resource
 
-            self.resource.custom["MutableResource"] = create_df_resource(self.resource)
+            self.resource.custom["MutableResource"] = create_df_resource_from_tabular_resource(self.resource)
             self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
                 self.resource.schema.to_dict()
             )
