@@ -205,6 +205,29 @@ def update_fields(schema, fields):
         {'fields': [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
                     {'name': 'I', 'type': 'integer', 'unit': 'A'}]}
 
+    TESTS:
+
+    Invalid fields::
+
+        >>> fields = 'not a list'
+        >>> new_schema = update_fields(schema, fields)
+        Traceback (most recent call last):
+        ...
+        ValueError: 'fields' must be a list such as
+        [{'name': '<fieldname>', 'unit':'<field unit>'}]`,
+        e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`
+
+    More fields than required::
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
+        >>> new_schema = update_fields(schema, fields) # doctest: +NORMALIZE_WHITESPACE
+
+    Part of the fields specified:
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}]
+        >>> new_schema = update_fields(schema, fields) # doctest: +NORMALIZE_WHITESPACE
+
+
     """
     original_schema = schema
     if not isinstance(fields, list):
@@ -271,28 +294,6 @@ def create_unitpackage(resource, metadata=None, fields=None):
         >>> package # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
-
-    TESTS:
-
-    Invalid fields::
-
-        >>> fields = 'not a list'
-        >>> package = create_unitpackage(resource=resource, fields=fields) # doctest: +NORMALIZE_WHITESPACE
-        Traceback (most recent call last):
-        ...
-        ValueError: 'fields' must be a list such as
-        [{'name': '<fieldname>', 'unit':'<field unit>'}]`,
-        e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`
-
-    More fields than required::
-
-        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
-        >>> package = create_unitpackage(resource=resource, fields=fields) # doctest: +NORMALIZE_WHITESPACE
-
-    Part of the fields specified:
-
-        >>> fields = [{'name':'E', 'unit': 'mV'}]
-        >>> package = create_unitpackage(resource=resource, fields=fields) # doctest: +NORMALIZE_WHITESPACE
 
     """
 
