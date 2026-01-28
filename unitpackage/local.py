@@ -66,6 +66,7 @@ def create_tabular_resource_from_csv(csvname):
 
     return resource
 
+
 def create_df_resource_from_df(df):
     r"""
     Return a pandas dataframe resource for a pandas DataFrame.
@@ -182,7 +183,29 @@ def collect_datapackages(data):
 
     return [Package(package) for package in packages]
 
+
 def update_fields(schema, fields):
+    r"""
+    Return a new Schema based on :param schema: where the fields have been
+    updated with the information in :param fields:.
+
+    The :param fields: list must must be structured such as
+    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
+
+    EXAMPLES::
+
+        >>> from unitpackage.local import update_fields, create_tabular_resource_from_csv
+        >>> schema = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv").schema
+        >>> schema
+        {'fields': [{'name': 'E', 'type': 'integer'}, {'name': 'I', 'type': 'integer'}]}
+
+        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
+        >>> new_schema = update_fields(schema, fields)
+        >>> new_schema # doctest: +NORMALIZE_WHITESPACE
+        {'fields': [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+                    {'name': 'I', 'type': 'integer', 'unit': 'A'}]}
+
+    """
     original_schema = schema
     if not isinstance(fields, list):
         raise ValueError(
@@ -205,6 +228,7 @@ def update_fields(schema, fields):
 
     new_fields = []
     unspecified_fields = []
+    unused_provided_fields = []
 
     for name in original_schema.field_names:
         if name in provided_schema.field_names:
@@ -212,6 +236,8 @@ def update_fields(schema, fields):
                 provided_schema.get_field(name).to_dict()
                 | original_schema.get_field(name).to_dict()
             )
+        elif name not in original_schema.field_names:
+            unused_provided_fields.append(name)
         else:
             new_fields.append(original_schema.get_field(name).to_dict())
 
@@ -220,10 +246,6 @@ def update_fields(schema, fields):
             f"Additional information were not provided for fields {unspecified_fields}."
         )
 
-    unused_provided_fields = []
-    for name in provided_schema.field_names:
-        if name not in original_schema.field_names:
-            unused_provided_fields.append(name)
     if len(unused_provided_fields) != 0:
         logger.warning(
             f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {original_schema.field_names}."
@@ -231,7 +253,8 @@ def update_fields(schema, fields):
 
     return Schema.from_descriptor({"fields": new_fields})
 
-def create_unitpackage(csvname, metadata=None, fields=None):
+
+def create_unitpackage(resource, metadata=None, fields=None):
     r"""
     Return a Data Package built from a :param metadata: dict and tabular data
     in :param csvname: str.
@@ -241,8 +264,10 @@ def create_unitpackage(csvname, metadata=None, fields=None):
 
     EXAMPLES::
 
+        >>> from unitpackage.local import create_tabular_resource_from_csv, create_unitpackage
+        >>> resource = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv")
         >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields)
+        >>> package = create_unitpackage(resource=resource, fields=fields)
         >>> package # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
@@ -252,7 +277,7 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     Invalid fields::
 
         >>> fields = 'not a list'
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> package = create_unitpackage(resource=resource, fields=fields) # doctest: +NORMALIZE_WHITESPACE
         Traceback (most recent call last):
         ...
         ValueError: 'fields' must be a list such as
@@ -262,16 +287,14 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     More fields than required::
 
         >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> package = create_unitpackage(resource=resource, fields=fields) # doctest: +NORMALIZE_WHITESPACE
 
     Part of the fields specified:
 
         >>> fields = [{'name':'E', 'unit': 'mV'}]
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> package = create_unitpackage(resource=resource, fields=fields) # doctest: +NORMALIZE_WHITESPACE
 
     """
-
-    resource = create_tabular_resource_from_csv(csvname)
 
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)

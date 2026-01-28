@@ -503,7 +503,7 @@ class Entry:
     @property
     def mutable_resource(self):
         r"""
-        Return the data of this entry's "MutableResource" as a data frame.
+        Return the entry's "MutableResource".
 
         EXAMPLES::
 
@@ -524,11 +524,24 @@ class Entry:
         self.resource.custom.setdefault("MutableResource", "")
 
         if not self.resource.custom["MutableResource"]:
+            if not self.resource.format in ["csv", "pandas"]:
+                raise ValueError(
+                    "MutableResource can only be created from resources of format 'csv' or 'pandas'."
+                )
+
+            if self.resource.format == "csv":
+
+                from unitpackage.local import create_df_resource_from_tabular_resource
+
+                self.resource.custom["MutableResource"] = (
+                    create_df_resource_from_tabular_resource(self.resource)
+                )
+
+            elif self.resource.format == "pandas":
+                self.resource.custom["MutableResource"] = self.resource
+
             from frictionless import Schema
 
-            from unitpackage.local import create_df_resource_from_tabular_resource
-
-            self.resource.custom["MutableResource"] = create_df_resource_from_tabular_resource(self.resource)
             self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
                 self.resource.schema.to_dict()
             )
@@ -555,6 +568,18 @@ class Entry:
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry.df
+               x  y
+            0  1  2
+            1  2  3
+            2  3  4
 
         """
         return self.mutable_resource.data
@@ -718,7 +743,7 @@ class Entry:
 
         Units describing the fields can be provided::
 
-            >>> import os
+            >>> from unitpackage.entry import Entry
             >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', fields=fields)
             >>> entry
@@ -730,7 +755,6 @@ class Entry:
 
         Metadata can be appended::
 
-            >>> import os
             >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
             >>> metadata = {'user':'Max Doe'}
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', metadata=metadata, fields=fields)
@@ -742,7 +766,6 @@ class Entry:
 
         A filename containing upper case characters::
 
-            >>> import os
             >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
             >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv', fields=fields)
             >>> entry
@@ -757,9 +780,15 @@ class Entry:
             ...
 
         """
-        from unitpackage.local import create_unitpackage
+        from unitpackage.local import (
+            create_tabular_resource_from_csv,
+            create_unitpackage,
+        )
 
-        package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
+        resource = create_tabular_resource_from_csv(csvname=csvname)
+        package = create_unitpackage(
+            resource=resource, metadata=metadata, fields=fields
+        )
 
         return cls(resource=package.resources[0])
 
@@ -891,9 +920,13 @@ class Entry:
         return cls(resource=package.resources[0])
 
     @classmethod
-    def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
+    def from_df(cls, df, metadata=None, fields=None, *, basename):
         r"""
         Returns an entry constructed from a pandas dataframe.
+        A name `basename` for the entry must be provided.
+        The name must be lower-case and contain only alphanumeric
+        characters along with `.` , `_` or `-` characters'.
+        (Upper case characters are converted to lower case.)
 
         EXAMPLES::
 
@@ -941,21 +974,15 @@ class Entry:
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
-        if outdir is None:
-            import atexit
-            import shutil
-            import tempfile
+        from unitpackage.local import create_df_resource_from_df, create_unitpackage
 
-            outdir = tempfile.mkdtemp()
-            atexit.register(shutil.rmtree, outdir)
+        resource = create_df_resource_from_df(df)
+        resource.name = basename.lower()
 
-        csvname = basename + ".csv"
-
-        df.to_csv(os.path.join(outdir, csvname), index=False)
-
-        return cls.from_csv(
-            os.path.join(outdir, csvname), metadata=metadata, fields=fields
+        package = create_unitpackage(
+            resource=resource, metadata=metadata, fields=fields
         )
+        return cls(resource=package.resources[0])
 
     def save(self, *, outdir, basename=None):
         r"""
@@ -1028,6 +1055,7 @@ class Entry:
             os.makedirs(outdir)
 
         basename = basename or self.identifier
+        basename = basename.lower()
         csv_name = os.path.join(outdir, basename + ".csv")
         json_name = os.path.join(outdir, basename + ".json")
 
@@ -1037,6 +1065,12 @@ class Entry:
         if basename:
             self.resource.path = basename + ".csv"
             self.resource.name = basename
+
+        # convert a pandas resource into a csv resource
+        if self.resource.format == "pandas":
+            self.resource.format = "csv"
+            self.resource.mediatype = "text/csv"
+            del self.resource.data
 
         resource = self.resource.to_dict()
 
