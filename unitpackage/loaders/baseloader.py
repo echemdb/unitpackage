@@ -422,6 +422,20 @@ class BaseLoader:
             0  0  0
             1  1  1
 
+        A file with two column header lines, which is sometimes, for example,
+        used for storing units to the values::
+
+            >>> from io import StringIO
+            >>> file = StringIO(r'''a,b
+            ... m,s
+            ... 0,0
+            ... 1,1''')
+            >>> csv = BaseLoader(file, column_header_lines=2)
+            >>> csv.df
+               a / m  b / s
+            0      0      0
+            1      1      1
+
         """
         import pandas as pd
 
