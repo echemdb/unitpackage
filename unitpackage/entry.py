@@ -55,7 +55,7 @@ also contain information on the source of the data.::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -735,7 +735,17 @@ class Entry:
         return fig
 
     @classmethod
-    def from_csv(cls, csvname, metadata=None, fields=None):
+    def from_csv(
+        cls,
+        csvname,
+        encoding=None,
+        header_lines=None,
+        column_header_lines=None,
+        decimal=None,
+        delimiters=None,
+        metadata=None,
+        fields=None,
+    ):
         r"""
         Returns an entry constructed from a CSV with a single header line.
 
@@ -785,7 +795,16 @@ class Entry:
             create_unitpackage,
         )
 
-        resource = create_tabular_resource_from_csv(csvname=csvname)
+        # pylint: disable=duplicate-code
+        resource = create_tabular_resource_from_csv(
+            csvname=csvname,
+            encoding=encoding,
+            header_lines=header_lines,
+            column_header_lines=column_header_lines,
+            decimal=decimal,
+            delimiters=delimiters,
+        )
+
         package = create_unitpackage(
             resource=resource, metadata=metadata, fields=fields
         )

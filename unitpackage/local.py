@@ -6,7 +6,7 @@ collecting Data Packages and creating unitpackages.
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C)      2021 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -36,35 +36,109 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_tabular_resource_from_csv(csvname):
+def create_tabular_resource_from_csv(
+    csvname,
+    encoding=None,
+    header_lines=None,
+    column_header_lines=None,
+    decimal=None,
+    delimiters=None,
+):
     r"""
-    Return a Data Package built from a :param metadata: dict and tabular data
-    in :param csvname: str.
-
-    The :param fields: list must must be structured such as
-    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
+    Return a resource built from a provided CSV.
 
     EXAMPLES::
 
-        >>> resource = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv")
-        >>> resource # doctest: +NORMALIZE_WHITESPACE
-        {'name': 'from_csv', ...
+    For standard CSV files (single header line and subsequent
+    lines with data, using `.` as decimal separator.)
+    a tabular data resource is created::
 
-        >>> resource.format
-        'csv'
+        >>> filename = './examples/from_csv/from_csv.csv'
+        >>> resource = create_tabular_resource_from_csv(filename)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'from_csv',
+        'type': 'table',
+        'path': 'from_csv.csv',
+        'scheme': 'file',
+        'format': 'csv',
+        'mediatype': 'text/csv', ...
+
+    For CSV files with a more complex structure (header, multiple column header lines, or other separators)
+    a pandas dataframe resource is created instead::
+
+        >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
+        >>> resource = create_tabular_resource_from_csv(csvname=filename, column_header_lines=2)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'memory',
+        'type': 'table',
+        'data': [],
+        'format': 'pandas',
+        'mediatype': 'application/pandas',
+        'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
+                              {'name': 'j / A / cm2', 'type': 'integer'}]}}
+
+
+    """
+    csv_basename = os.path.basename(csvname)
+
+    if not header_lines and not column_header_lines and not decimal and not delimiters:
+        resource = Resource(
+            path=csv_basename,
+            basepath=os.path.dirname(csvname) or ".",
+        )
+        resource.infer()
+        return resource
+
+    # pylint: disable=duplicate-code
+    return create_df_resource_from_csv(
+        csvname,
+        encoding=encoding,
+        header_lines=header_lines,
+        column_header_lines=column_header_lines,
+        decimal=decimal,
+        delimiters=delimiters,
+    )
+
+
+def create_df_resource_from_csv(
+    csvname,
+    encoding=None,
+    header_lines=None,
+    column_header_lines=None,
+    decimal=None,
+    delimiters=None,
+):
+    r"""
+    Create a pandas dataframe resource from a CSV file.
+
+    EXAMPLES::
+
+        >>> from unitpackage.local import create_df_resource_from_csv
+        >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
+        >>> resource = create_df_resource_from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'memory',
+        'type': 'table',
+        'data': [],
+        'format': 'pandas',
+        'mediatype': 'application/pandas',
+        'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
+                              {'name': 'j / A / cm2', 'type': 'integer'}]}}
 
     """
 
-    csv_basename = os.path.basename(csvname)
+    from unitpackage.loaders.baseloader import BaseLoader
 
-    resource = Resource(
-        path=csv_basename,
-        basepath=os.path.dirname(csvname) or ".",
-    )
+    with open(csvname, "r", encoding=encoding or "utf-8") as f:
+        csv = BaseLoader(
+            f,
+            header_lines=header_lines,
+            column_header_lines=column_header_lines,
+            decimal=decimal,
+            delimiters=delimiters,
+        )
 
-    resource.infer()
-
-    return resource
+    return create_df_resource_from_df(csv.df)
 
 
 def create_df_resource_from_df(df):
@@ -296,7 +370,6 @@ def create_unitpackage(resource, metadata=None, fields=None):
         ...
 
     """
-
     resource.custom.setdefault("metadata", {})
     resource.custom["metadata"].setdefault("echemdb", metadata)
 
