@@ -15,7 +15,7 @@ EXAMPLES:
 Metadata included in an entry is accessible as an attribute::
 
     >>> entry = Entry.create_examples()[0]
-    >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     {'citationKey': 'alves_2011_electrochemistry_6010',
     'url': 'https://doi.org/10.1039/C0CP01001D',
     'figure': '1a',
@@ -30,25 +30,6 @@ The data of the entry can be called as a pandas dataframe::
     0      0.000000 -0.103158 -0.998277
     1      0.020000 -0.102158 -0.981762
     ...
-
-Data Entries containing published data,
-also contain information on the source of the data.::
-
-    >>> from unitpackage.collection import Collection
-    >>> db = Collection.create_example()
-    >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    Entry('article',
-      fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
-        ('journal', 'Physical Chemistry Chemical Physics'),
-        ('volume', '13'),
-        ('number', '13'),
-        ('pages', '6010--6021'),
-        ('year', '2011'),
-        ('publisher', 'Royal Society of Chemistry'),
-        ('abstract', 'We investigated ...')],
-      persons={'author': [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')]})
 
 """
 
@@ -115,6 +96,10 @@ class Entry:
 
     """
 
+    default_metadata_key = ""
+    """Default metadata key to use when accessing the descriptor.
+    If empty string, the entire metadata dict is used. Subclasses can override this."""
+
     def __init__(self, resource):
         self.resource = resource
 
@@ -142,10 +127,9 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            [... 'bibliography', 'citation', 'create_examples', 'curation',
-            'dataDescription', 'df', 'experimental', 'field_unit', 'figureDescription',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
-            'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
+            [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
+            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',
+            'plot', 'rename_fields', 'rescale', 'resource',  'save', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -157,7 +141,7 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
@@ -166,7 +150,7 @@ class Entry:
 
         The returned descriptor can again be accessed in the same way::
 
-            >>> entry.system.electrolyte.components[0].name
+            >>> entry.echemdb.system.electrolyte.components[0].name
             'H2O'
 
         """
@@ -179,7 +163,7 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
+            >>> entry["echemdb"]["source"] # doctest: +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
@@ -191,123 +175,70 @@ class Entry:
 
     @property
     def _descriptor(self):
-        return Descriptor(self.resource.custom["metadata"]["echemdb"])
+        r"""
+        Return a Descriptor object wrapping the entry's metadata.
+
+        The metadata structure depends on the :attr:`default_metadata_key` class attribute:
+
+        - If ``default_metadata_key`` is an empty string (default in :class:`Entry`),
+          the entire ``metadata`` dict is wrapped as the descriptor.
+        - If ``default_metadata_key`` is set to a non-empty string (e.g., "echemdb" in subclasses),
+          the descriptor wraps only the metadata under that specific key.
+
+        This allows subclasses to work with different metadata structures while maintaining
+        a consistent interface through the Descriptor class.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._descriptor # doctest: +ELLIPSIS
+            {'echemdb': ...}
+
+            >>> entry.echemdb.source.citationKey
+            'alves_2011_electrochemistry_6010'
+
+
+        """
+        return Descriptor(self._default_metadata)
 
     @property
     def _metadata(self):
         r"""
-        Returns the metadata named "echemdb" associated with this entry.
+        Returns the metadata associated with this entry.
+
+        The metadata may contain keys which nest entire metadata schemas (e.g., "echemdb", "myExperiment", etc.).
+        Use :attr:`_default_metadata` to access the subset determined by :attr:`default_metadata_key`.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry._metadata # doctest: +NORMALIZE_WHITESPACE
-            {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}
+            >>> entry._metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
         """
-        return self.resource.custom["metadata"]["echemdb"]
+        return self.resource.custom["metadata"]
 
     @property
-    def bibliography(self):
+    def _default_metadata(self):
         r"""
-        Return a pybtex bibliography object associated with this entry.
+        Returns the metadata subset based on :attr:`default_metadata_key`.
+
+        If :attr:`default_metadata_key` is empty, returns the entire metadata dict.
+        Otherwise, returns the metadata under the specified key.
+
+        This is useful for subclasses that want to work with a specific metadata structure.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
-            Entry('article',
-            fields=[
-                ('title', ...
-                ...
-
-            >>> entry_no_bib = Entry.create_examples(name="no_bibliography")[0]
-            >>> entry_no_bib.bibliography
-            ''
+            >>> entry._default_metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
         """
-        metadata = self._metadata.setdefault("source", {})
-        citation = metadata.setdefault("bibdata", "")
-
-        if not citation:
-            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
-            return citation
-
-        from pybtex.database import parse_string
-
-        bibliography = parse_string(citation, "bibtex")
-        return bibliography.entries[self.source.citationKey]
-
-    def citation(self, backend="text"):
-        r"""
-        Return a formatted reference for the entry's bibliography such as:
-
-        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
-
-        Rendering default is plain text 'text', but can be changed to any format
-        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.citation(backend='text')
-            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
-            >>> print(entry.citation(backend='md'))
-            O\. B\. Alves *et al\.*
-            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
-            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
-
-        """
-        from pybtex.style.formatting.unsrt import Style
-
-        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
-        class EchemdbStyle(Style):
-            r"""
-            A citation style for the echemdb website.
-            """
-
-            def format_names(self, role, as_sentence=True):
-                from pybtex.style.template import node
-
-                @node
-                def names(_, context, role):
-                    persons = context["entry"].persons[role]
-                    style = context["style"]
-
-                    names = [
-                        style.format_name(person, style.abbreviate_names)
-                        for person in persons
-                    ]
-
-                    if len(names) == 1:
-                        return names[0].format_data(context)
-
-                    from pybtex.style.template import tag, words
-
-                    # pylint: disable=no-value-for-parameter
-                    return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
-                        context
-                    )
-
-                # pylint: disable=no-value-for-parameter
-                names = names(role)
-
-                from pybtex.style.template import sentence
-
-                return sentence[names] if as_sentence else names
-
-            def format_title(self, e, which_field, as_sentence=True):
-                from pybtex.style.template import field, sentence, tag
-
-                # pylint: disable=no-value-for-parameter
-                title = tag("i")[field(which_field)]
-                return sentence[title] if as_sentence else title
-
-        return (
-            EchemdbStyle(abbreviate_names=True)
-            .format_entry("unused", self.bibliography)
-            .text.render_as(backend)
-        )
+        metadata = self._metadata
+        if self.default_metadata_key and self.default_metadata_key in metadata:
+            return metadata[self.default_metadata_key]
+        return metadata
 
     def field_unit(self, field_name):
         r"""

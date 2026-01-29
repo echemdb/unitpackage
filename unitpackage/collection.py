@@ -20,7 +20,7 @@ that are displayed on the `echemdb website
 Search the collection for entries, for example,
 from a single publication providing its DOI::
 
-    >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+    >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
@@ -28,7 +28,7 @@ from a single publication providing its DOI::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -47,7 +47,6 @@ from a single publication providing its DOI::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-from functools import cached_property
 
 from frictionless import Package
 
@@ -138,60 +137,6 @@ class Collection:
             package=package,
         )
 
-    @cached_property
-    def bibliography(self):
-        r"""
-        Return a pybtex database of all bibtex bibliography files,
-        associated with the entries.
-
-        EXAMPLES::
-
-            >>> collection = Collection.create_example()
-            >>> collection.bibliography
-            BibliographyData(
-              entries=OrderedCaseInsensitiveDict([
-                ('alves_2011_electrochemistry_6010', Entry('article',
-                ...
-                ('engstfeld_2018_polycrystalline_17743', Entry('article',
-                ...
-
-        A derived collection includes only the bibliographic entries of the remaining entries::
-
-            >>> collection.filter(lambda entry: entry.source.citationKey != 'alves_2011_electrochemistry_6010').bibliography
-            BibliographyData(
-              entries=OrderedCaseInsensitiveDict([
-                ('engstfeld_2018_polycrystalline_17743', Entry('article',
-                ...
-
-        A collection with entries without bibliography::
-
-            >>> collection = Collection.create_example()["no_bibliography"]
-            >>> collection.bibliography
-            ''
-
-        """
-        from pybtex.database import BibliographyData
-
-        bib_data = BibliographyData(
-            {
-                entry.bibliography.key: entry.bibliography
-                for entry in self
-                if entry.bibliography
-            }
-        )
-
-        if isinstance(bib_data, str):
-            return bib_data
-
-        # Remove duplicates from the bibliography
-        bib_data_ = BibliographyData()
-
-        for key, entry in bib_data.entries.items():
-            if key not in bib_data_.entries:
-                bib_data_.add_entry(key, entry)
-
-        return bib_data_
-
     def filter(self, predicate):
         r"""
         Return the subset of the collection that satisfies predicate.
@@ -199,7 +144,7 @@ class Collection:
         EXAMPLES::
 
             >>> collection = Collection.create_example()
-            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
+            >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
 
@@ -610,7 +555,7 @@ class Collection:
 
             >>> from unitpackage.collection import Collection
             >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
-            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
+            >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('alves_2011_electrochemistry_6010_f2_red')]
 
         The folder containing the data in the zip can be specified with the :param data:.

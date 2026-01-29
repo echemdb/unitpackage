@@ -25,7 +25,6 @@ unitpackage = "unitpackage.entrypoint:cli"
 [tool.setuptools]
 packages = [
     "unitpackage",
-    "unitpackage.cv",
     "unitpackage.database",
     "unitpackage.electrochemistry",
     "unitpackage.loaders",

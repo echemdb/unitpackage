@@ -377,7 +377,7 @@ def create_unitpackage(resource, metadata=None, fields=None):
 
     """
     resource.custom.setdefault("metadata", {})
-    resource.custom["metadata"].setdefault("echemdb", metadata)
+    resource.custom["metadata"] = metadata
 
     if fields:
         # Update fields in the Resource describing the data in the CSV
