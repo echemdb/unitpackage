@@ -62,6 +62,163 @@ from unitpackage.descriptor import Descriptor
 logger = logging.getLogger("unitpackage")
 
 
+class ResourceMetadata:
+    r"""
+    Manages metadata for an Entry, supporting both dict and attribute access,
+    and providing methods to load metadata from various sources.
+
+    EXAMPLES::
+
+        >>> entry = Entry.create_examples()[0]
+        >>> entry.metadata['echemdb']['source']['citationKey']
+        'alves_2011_electrochemistry_6010'
+
+        >>> entry.metadata.echemdb.source.citationKey
+        'alves_2011_electrochemistry_6010'
+
+    """
+
+    def __init__(self, entry):
+        object.__setattr__(self, "_entry", entry)
+
+    @property
+    def _metadata(self):
+        return self._entry.resource.custom.setdefault("metadata", {})
+
+    @property
+    def _descriptor(self):
+        return Descriptor(self._metadata)
+
+    def __getitem__(self, key):
+        r"""
+        Dict-style access to metadata with descriptor support.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+        """
+        return self._descriptor[key]
+
+    def __setitem__(self, key, value):
+        r"""
+        Dict-style assignment to metadata.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata['custom_key'] = {'data': 'value'}
+            >>> entry.metadata['custom_key']
+            {'data': 'value'}
+
+        """
+        self._metadata[key] = value
+
+    def __getattr__(self, name):
+        r"""
+        Attribute-style access to metadata with full descriptor support.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata.echemdb.source.citationKey
+            'alves_2011_electrochemistry_6010'
+
+        """
+        return getattr(self._descriptor, name)
+
+    def from_dict(self, data):
+        r"""
+        Load metadata from a dictionary.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata.from_dict({'echemdb': {'source': {'citationKey': 'test'}}})
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'test'
+
+        """
+        self._entry.resource.custom["metadata"] = data
+
+    def _add_metadata(self, key, data):
+        r"""
+        Add metadata under a specific key.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata._add_metadata('custom_key', {'data': 'value'})
+            >>> entry.metadata['custom_key']
+            {'data': 'value'}
+
+        """
+        if key:
+            self._entry.resource.custom["metadata"][key] = data
+        else:
+            self._entry.resource.custom["metadata"] = data
+
+    def from_yaml(self, filename, key=None):
+        r"""
+        Load metadata from a YAML file.
+
+        If a key is provided, the loaded data is stored under that key.
+        Otherwise, it replaces the entire metadata dict.
+
+        EXAMPLES::
+
+            >>> import os
+            >>> import tempfile
+            >>> import yaml
+            >>> entry = Entry.create_examples()[0]
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+            ...     yaml.dump({'source': {'citationKey': 'yaml_test'}}, f)
+            ...     temp_path = f.name
+            >>> entry.metadata.from_yaml(temp_path, key='echemdb')
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'yaml_test'
+            >>> os.unlink(temp_path)
+
+        """
+        import yaml
+
+        with open(filename, "r", encoding="utf-8") as f:
+            data = yaml.safe_load(f)
+
+        self._add_metadata(key, data)
+
+    def from_json(self, filename, key=None):
+        r"""
+        Load metadata from a JSON file.
+
+        If a key is provided, the loaded data is stored under that key.
+        Otherwise, it replaces the entire metadata dict.
+
+        EXAMPLES::
+
+            >>> import os
+            >>> import json
+            >>> import tempfile
+            >>> entry = Entry.create_examples()[0]
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            ...     json.dump({'source': {'citationKey': 'json_test'}}, f)
+            ...     temp_path = f.name
+            >>> entry.metadata.from_json(temp_path, key='echemdb')
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'json_test'
+            >>> os.unlink(temp_path)
+
+        """
+        import json
+
+        with open(filename, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        self._add_metadata(key, data)
+
+
 class Entry:
     r"""
     A `frictionless Resource <https://github.com/frictionlessdata/frictionless-py>`_
@@ -104,6 +261,33 @@ class Entry:
         self.resource = resource
 
     @property
+    def metadata(self):
+        r"""
+        Access and manage entry metadata.
+
+        Returns a ResourceMetadata that supports both dict and attribute-style access.
+        Allows loading metadata from various sources. Modifications are applied in-place.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+            >>> entry.metadata.echemdb['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+        Load metadata from a dict::
+
+            >>> new_entry = Entry.create_examples()[0]
+            >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
+            >>> new_entry.metadata['echemdb']['test']
+            'data'
+
+        """
+        return ResourceMetadata(self)
+
+    @property
     def identifier(self):
         r"""
         Return a unique identifier for this entry, i.e., its basename.
@@ -128,7 +312,7 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',
+            'from_csv', 'from_df', 'from_local', 'identifier', 'metadata', 'mutable_resource',
             'plot', 'rename_fields', 'rescale', 'resource',  'save', 'yaml']
 
         """
