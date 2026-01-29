@@ -70,6 +70,9 @@ class ResourceMetadata:
     EXAMPLES::
 
         >>> entry = Entry.create_examples()[0]
+        >>> entry.metadata # doctest: +ELLIPSIS
+        {'echemdb': {'experimental': ...
+
         >>> entry.metadata['echemdb']['source']['citationKey']
         'alves_2011_electrochemistry_6010'
 
@@ -80,6 +83,9 @@ class ResourceMetadata:
 
     def __init__(self, entry):
         object.__setattr__(self, "_entry", entry)
+
+    def __repr__(self):
+        return repr(self._metadata)
 
     @property
     def _metadata(self):
