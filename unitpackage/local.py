@@ -148,6 +148,7 @@ def create_df_resource_from_df(df):
     EXAMPLES::
 
         >>> data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
+        >>> import pandas as pd
         >>> df = pd.DataFrame(data)
         >>> from unitpackage.local import create_df_resource_from_df
         >>> resource = create_df_resource_from_df(df)
@@ -327,25 +328,30 @@ def update_fields(schema, fields):
     unspecified_fields = []
     unused_provided_fields = []
 
+    # First, update fields that exist in the original schema,
+    # and record which original fields have no additional information provided.
     for name in original_schema.field_names:
         if name in provided_schema.field_names:
             new_fields.append(
                 provided_schema.get_field(name).to_dict()
                 | original_schema.get_field(name).to_dict()
             )
-        elif name not in original_schema.field_names:
-            unused_provided_fields.append(name)
         else:
+            unspecified_fields.append(name)
             new_fields.append(original_schema.get_field(name).to_dict())
 
+    # Then, record any provided fields that are not present in the original schema.
+    for name in provided_schema.field_names:
+        if name not in original_schema.field_names:
+            unused_provided_fields.append(name)
     if len(unspecified_fields) != 0:
         logger.warning(
-            f"Additional information were not provided for fields {unspecified_fields}."
+            f"Additional information was not provided for fields {unspecified_fields}."
         )
 
     if len(unused_provided_fields) != 0:
         logger.warning(
-            f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {original_schema.field_names}."
+            f"Fields with names {unused_provided_fields} were provided but do not appear in the field names of tabular resource {original_schema.field_names}."
         )
 
     return Schema.from_descriptor({"fields": new_fields})
@@ -354,9 +360,9 @@ def update_fields(schema, fields):
 def create_unitpackage(resource, metadata=None, fields=None):
     r"""
     Return a Data Package built from a :param metadata: dict and tabular data
-    in :param csvname: str.
+    in :param resource: frictionless.Resource.
 
-    The :param fields: list must must be structured such as
+    The :param fields: list must be structured such as
     `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
 
     EXAMPLES::

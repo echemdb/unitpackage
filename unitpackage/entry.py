@@ -524,7 +524,7 @@ class Entry:
         self.resource.custom.setdefault("MutableResource", "")
 
         if not self.resource.custom["MutableResource"]:
-            if not self.resource.format in ["csv", "pandas"]:
+            if self.resource.format not in ["csv", "pandas"]:
                 raise ValueError(
                     "MutableResource can only be created from resources of format 'csv' or 'pandas'."
                 )
@@ -1089,7 +1089,8 @@ class Entry:
         if self.resource.format == "pandas":
             self.resource.format = "csv"
             self.resource.mediatype = "text/csv"
-            del self.resource.data
+            if hasattr(self.resource, "data"):
+                del self.resource.data
 
         resource = self.resource.to_dict()
 
