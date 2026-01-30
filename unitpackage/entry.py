@@ -131,6 +131,67 @@ class Entry:
         """
         return MetadataDescriptor(self)
 
+    def load_metadata(self, filename, format=None, key=None):
+        r"""
+        Load metadata from a file and return self for method chaining.
+
+        The file format is auto-detected from the extension if not specified.
+        Supported formats are 'yaml' and 'json'.
+
+        EXAMPLES:
+
+        Load metadata from a YAML file::
+
+            >>> import os
+            >>> import tempfile
+            >>> import yaml
+            >>> entry = Entry.create_examples()[0]
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+            ...     yaml.dump({'source': {'citationKey': 'chain_test'}}, f)
+            ...     temp_path = f.name
+            >>> entry.load_metadata(temp_path, key='echemdb').metadata.echemdb.source.citationKey
+            'chain_test'
+            >>> os.unlink(temp_path)
+
+        Load metadata from a JSON file with auto-detection::
+
+            >>> import os
+            >>> import json
+            >>> import tempfile
+            >>> entry = Entry.create_examples()[0]
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            ...     json.dump({'custom': {'data': 'value'}}, f)
+            ...     temp_path = f.name
+            >>> entry.load_metadata(temp_path).metadata.custom.data
+            'value'
+            >>> os.unlink(temp_path)
+
+
+        """
+        # Auto-detect format from file extension if not specified
+        if format is None:
+            if filename.endswith('.yaml') or filename.endswith('.yml'):
+                format = 'yaml'
+            elif filename.endswith('.json'):
+                format = 'json'
+            else:
+                raise ValueError(
+                    f"Cannot auto-detect format for '{filename}'. "
+                    "Please specify format='yaml' or format='json'"
+                )
+
+        # Load metadata using the appropriate method
+        if format == 'yaml':
+            self.metadata.from_yaml(filename, key=key)
+        elif format == 'json':
+            self.metadata.from_json(filename, key=key)
+        else:
+            raise ValueError(
+                f"Unsupported format '{format}'. Use 'yaml' or 'json'"
+            )
+
+        return self
+
     @property
     def identifier(self):
         r"""
@@ -156,8 +217,9 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'metadata', 'mutable_resource',
-            'plot', 'rename_fields', 'rescale', 'resource',  'save', 'yaml']
+            'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
+            'metadata', 'mutable_resource', 'plot', 'rename_fields', 'rescale', 'resource',
+            'save', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
