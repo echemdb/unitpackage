@@ -114,9 +114,11 @@ def convert(csv, device, outdir, metadata):
         with open(csv, "r") as file:  # pylint: disable=unspecified-encoding
             loader = BaseLoader(file)
 
-    entry = Entry.from_df(
-        df=loader.df, basename=Path(csv).stem, metadata=metadata, fields=fields
-    )
+    entry = Entry.from_df(df=loader.df, basename=Path(csv).stem)
+    if fields:
+        entry = entry.update_fields(fields=fields)
+    if metadata:
+        entry.metadata.from_dict(metadata)
     entry.save(outdir=outdir)
 
 

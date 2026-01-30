@@ -259,33 +259,38 @@ def collect_datapackages(data):
     return [Package(package) for package in packages]
 
 
-def update_fields(schema, fields):
+def update_fields(original_fields, new_fields):
     r"""
-    Return a new Schema based on :param schema: where the fields have been
-    updated with the information in :param fields:.
+    Return a new list of fields where a list of fields has been updated
+    based on a new list of fields.
 
-    The :param fields: list must must be structured such as
-    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
+    The :param: original_fields: list and :param new_fields: list
+    must must be structured such as
+    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`
+    and each entry must contain a key `name` corresponding to a field name
+    in the original fields.
 
     EXAMPLES::
 
         >>> from unitpackage.local import update_fields, create_tabular_resource_from_csv
         >>> schema = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv").schema
-        >>> schema
-        {'fields': [{'name': 'E', 'type': 'integer'}, {'name': 'I', 'type': 'integer'}]}
+        >>> original_fields = schema.to_dict()['fields']
+        >>> original_fields # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer'},
+        {'name': 'I', 'type': 'integer'}]
 
-        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
-        >>> new_schema = update_fields(schema, fields)
-        >>> new_schema # doctest: +NORMALIZE_WHITESPACE
-        {'fields': [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
-                    {'name': 'I', 'type': 'integer', 'unit': 'A'}]}
+        >>> new_fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
+        >>> updated_fields = update_fields(original_fields, new_fields)
+        >>> updated_fields # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+        {'name': 'I', 'type': 'integer', 'unit': 'A'}]
 
     TESTS:
 
     Invalid fields::
 
         >>> fields = 'not a list'
-        >>> new_schema = update_fields(schema, fields)
+        >>> updated_fields = update_fields(original_fields, fields)
         Traceback (most recent call last):
         ...
         ValueError: 'fields' must be a list such as
@@ -295,53 +300,67 @@ def update_fields(schema, fields):
     More fields than required::
 
         >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
-        >>> new_schema = update_fields(schema, fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> updated_fields = update_fields(original_fields, fields)
+        >>> updated_fields  # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+        {'name': 'I', 'type': 'integer', 'unit': 'A'}]
 
     Part of the fields specified:
 
         >>> fields = [{'name':'E', 'unit': 'mV'}]
-        >>> new_schema = update_fields(schema, fields) # doctest: +NORMALIZE_WHITESPACE
-
+        >>> updated_fields = update_fields(original_fields, fields)
+        >>> updated_fields  # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+        {'name': 'I', 'type': 'integer'}]
 
     """
-    original_schema = schema
-    if not isinstance(fields, list):
-        raise ValueError(
-            "'fields' must be a list such as \
-            [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
-            e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
-        )
 
-    # remove field if it is not a Mapping instance
-    from collections.abc import Mapping
-
-    for field in fields:
-        if not isinstance(field, Mapping):
+    def validate_field_structure(fields):
+        if not isinstance(fields, list):
             raise ValueError(
-                "'field' must be a dict such as {'name': '<fieldname>', 'unit':'<field unit>'},\
-                e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
+                "'fields' must be a list such as \
+                [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
+                e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
             )
 
-    provided_schema = Schema.from_descriptor({"fields": fields}, allow_invalid=True)
+        # remove field if it is not a Mapping instance
+        from collections.abc import Mapping
 
-    new_fields = []
+        for field in fields:
+            if not isinstance(field, Mapping):
+                raise ValueError(
+                    "'field' must be a dict such as {'name': '<fieldname>', 'unit':'<field unit>'},\
+                    e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
+                )
+
+    validate_field_structure(original_fields)
+    validate_field_structure(new_fields)
+
+    original_schema = Schema({"fields": original_fields})
+
+    # Create a lookup dict for provided fields by name
+    provided_fields_dict = {
+        field["name"]: field for field in new_fields if "name" in field
+    }
+
+    updated_fields = []
     unspecified_fields = []
     unused_provided_fields = []
 
     # First, update fields that exist in the original schema,
     # and record which original fields have no additional information provided.
     for name in original_schema.field_names:
-        if name in provided_schema.field_names:
-            new_fields.append(
-                provided_schema.get_field(name).to_dict()
-                | original_schema.get_field(name).to_dict()
-            )
+        if name in provided_fields_dict:
+            # Start with original field, then update only the keys provided in the input
+            updated_field = original_schema.get_field(name).to_dict()
+            updated_field.update(provided_fields_dict[name])
+            updated_fields.append(updated_field)
         else:
             unspecified_fields.append(name)
-            new_fields.append(original_schema.get_field(name).to_dict())
+            updated_fields.append(original_schema.get_field(name).to_dict())
 
     # Then, record any provided fields that are not present in the original schema.
-    for name in provided_schema.field_names:
+    for name in provided_fields_dict.keys():
         if name not in original_schema.field_names:
             unused_provided_fields.append(name)
     if len(unspecified_fields) != 0:
@@ -354,7 +373,7 @@ def update_fields(schema, fields):
             f"Fields with names {unused_provided_fields} were provided but do not appear in the field names of tabular resource {original_schema.field_names}."
         )
 
-    return Schema.from_descriptor({"fields": new_fields})
+    return updated_fields
 
 
 def create_unitpackage(resource, metadata=None, fields=None):
@@ -369,8 +388,8 @@ def create_unitpackage(resource, metadata=None, fields=None):
 
         >>> from unitpackage.local import create_tabular_resource_from_csv, create_unitpackage
         >>> resource = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv")
-        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-        >>> package = create_unitpackage(resource=resource, fields=fields)
+        >>> new_fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+        >>> package = create_unitpackage(resource=resource, fields=new_fields)
         >>> package # doctest: +NORMALIZE_WHITESPACE
         {'resources': [{'name':
         ...
@@ -381,7 +400,10 @@ def create_unitpackage(resource, metadata=None, fields=None):
 
     if fields:
         # Update fields in the Resource describing the data in the CSV
-        resource.schema = update_fields(resource.schema, fields)
+        updated_fields = update_fields(resource.schema.to_dict()["fields"], fields)
+        original_schema = resource.schema.to_dict()
+        original_schema["fields"] = updated_fields
+        resource.schema = Schema.from_descriptor(original_schema)
 
     package = Package(resources=[resource])
 
