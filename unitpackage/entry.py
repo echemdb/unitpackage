@@ -659,6 +659,13 @@ class Entry:
             >>> new_entry.field_unit('P/A')
             Unit("A V / m2")
 
+        TESTS:
+
+        Validate that the identifier is preserved::
+
+            >>> new_entry.identifier
+            'alves_2011_electrochemistry_6010_f1a_solid'
+
         """
         import pandas as pd
 
@@ -840,11 +847,9 @@ class Entry:
         delimiters=None,
     ):
         r"""
-        Returns an entry constructed from a CSV with a single header line.
+        Returns an entry constructed from a CSV.
 
-        EXAMPLES:
-
-        Units describing the fields can be provided::
+        EXAMPLES::
 
             >>> from unitpackage.entry import Entry
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
@@ -872,6 +877,19 @@ class Entry:
             'path': 'UpperCase.csv',
             ...
 
+        CSV with a more complex structure, such as multiple header lines can be constructed::
+
+            >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
+            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'from_csv_multiple_headers',
+            'type': 'table',
+            'data': [],
+            'format': 'pandas',
+            'mediatype': 'application/pandas',
+            'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
+                                {'name': 'j / A / cm2', 'type': 'integer'}]}}
+
         """
         from unitpackage.local import create_tabular_resource_from_csv
 
@@ -884,6 +902,13 @@ class Entry:
             decimal=decimal,
             delimiters=delimiters,
         )
+
+        from pathlib import Path
+
+        if resource.name == "memory":
+            resource.name = Path(
+                csvname
+            ).stem.lower()  # Use stem (filename without extension)
 
         return cls(resource)
 
