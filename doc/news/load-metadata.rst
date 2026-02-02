@@ -1,6 +1,6 @@
 **Added:**
 
-* Added <news item>.
+* Added `entry.remove_columns`, which removes both a column from the dataframe and the fields.
 
 **Changed:**
 

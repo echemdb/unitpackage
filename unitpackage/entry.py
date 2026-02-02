@@ -241,8 +241,8 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
             'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
-            'metadata', 'mutable_resource', 'plot', 'rename_fields', 'rescale',
-            'resource', 'save', 'update_fields', 'yaml']
+            'metadata', 'mutable_resource', 'plot', 'remove_columns', 'rename_fields',
+            'rescale', 'resource', 'save', 'update_fields', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -682,6 +682,44 @@ class Entry:
 
         fields.extend(new_fields)
         entry = self.from_df(df=df_, basename=self.identifier).update_fields(fields)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
+
+    def remove_columns(self, *field_names):
+        r"""
+        Removes specified columns from the dataframe
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.remove_columns('E', 'j')
+            >>> new_entry.df
+                          t
+            0      0.000000
+            1      0.020000
+            ...
+
+            >>> 'E' in new_entry.df.columns
+            False
+
+        """
+        df = self.df.copy()
+        df.drop(columns=list(field_names), inplace=True)
+
+        fields = [
+            field.to_dict()
+            for field in self.mutable_resource.schema.fields
+            if field.name not in field_names
+        ]
+        entry = self.from_df(df=df, basename=self.identifier).update_fields(fields)
         entry.metadata.from_dict(self._metadata)
 
         return entry
