@@ -13,7 +13,7 @@
 
 **Fixed:**
 
-* Fixed <news item>.
+* Fixed creating plots from entries without units in the fields.
 
 **Deprecated:**
 
