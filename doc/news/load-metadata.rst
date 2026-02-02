@@ -4,7 +4,7 @@
 
 **Changed:**
 
-* Changed <news item>.
+* Changed `entry.field_unit` to return an empty string instead of raising a KeyError when a field does not have a unit.
 
 **Removed:**
 
@@ -13,7 +13,7 @@
 
 **Fixed:**
 
-* Fixed creating plots from entries without units in the fields.
+* Fixed creating plots from entries without units in the fields (#128).
 
 **Deprecated:**
 
