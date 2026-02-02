@@ -364,7 +364,14 @@ class Entry:
             'V'
 
         """
-        return self.mutable_resource.schema.get_field(field_name).custom["unit"]
+        try:
+            return self.mutable_resource.schema.get_field(field_name).custom["unit"]
+        except KeyError:
+            logger.warning(
+                f"Field '{field_name}' in {self.identifier} does not have a unit."
+            )
+
+        return ""
 
     def rescale(self, units):
         r"""
@@ -753,6 +760,15 @@ class Entry:
             >>> entry.plot(x_label='j', y_label='E')
             Figure(...)
 
+        A plot from data without units::
+
+            >>> import pandas as pd
+            >>> data = {'t': [0, 1, 2], 'E': [0.0, 1.0, 2.0]}
+            >>> df = pd.DataFrame(data)
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry.plot()
+            Figure(...)
+
         """
         import plotly.graph_objects
 
@@ -770,6 +786,9 @@ class Entry:
             )
         )
 
+        x_unit = self.field_unit(x_label)
+        y_unit = self.field_unit(y_label)
+
         fig.update_layout(
             template="simple_white",
             showlegend=True,
@@ -777,8 +796,8 @@ class Entry:
             width=600,
             height=400,
             margin={"l": 70, "r": 70, "b": 70, "t": 70, "pad": 7},
-            xaxis_title=f"{x_label} [{self.field_unit(x_label)}]",
-            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+            xaxis_title=f"{x_label} [{x_unit}]" if x_unit else x_label,
+            yaxis_title=f"{y_label} [{y_unit}]" if y_unit else y_label,
         )
 
         fig.update_xaxes(showline=True, mirror=True)
