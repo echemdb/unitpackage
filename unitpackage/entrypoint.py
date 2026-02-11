@@ -102,9 +102,8 @@ def convert(csv, device, outdir, metadata):
 
     if metadata:
         metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
-        try:
-            fields = metadata["figure description"]["fields"]
-        except (KeyError, AttributeError):
+        fields = metadata["figure description"].get("fields")
+        if not fields:
             logger.warning("No units to the fields provided in the metadata")
 
     if device:
