@@ -21,12 +21,32 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
     >>> entry.plot()
     Figure(...)
 
+    Data Entries containing published data,
+    also contain information on the source of the data.::
+
+    >>> from unitpackage.database.echemdb import Echemdb
+    >>> db = Echemdb.create_example()
+    >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
+    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
+    Entry('article',
+      fields=[
+        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
+        ('journal', 'Physical Chemistry Chemical Physics'),
+        ('volume', '13'),
+        ('number', '13'),
+        ('pages', '6010--6021'),
+        ('year', '2011'),
+        ('publisher', 'Royal Society of Chemistry'),
+        ('abstract', 'We investigated ...')],
+      persons={'author': [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')]})
+
+
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -66,6 +86,9 @@ class EchemdbEntry(Entry):
 
     """
 
+    default_metadata_key = "echemdb"
+    """Use 'echemdb' key to access descriptor metadata."""
+
     def __repr__(self):
         r"""
         Return a printable representation of this entry.
@@ -78,6 +101,108 @@ class EchemdbEntry(Entry):
 
         """
         return f"Echemdb({self.identifier!r})"
+
+    @property
+    def bibliography(self):
+        r"""
+        Return a pybtex bibliography object associated with this entry.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
+            Entry('article',
+            fields=[
+                ('title', ...
+                ...
+
+            >>> entry_no_bib = EchemdbEntry.create_examples(name="no_bibliography")[0]
+            >>> entry_no_bib.bibliography
+            ''
+
+        """
+        metadata = self._default_metadata.setdefault("source", {})
+        citation = metadata.setdefault("bibdata", "")
+
+        if not citation:
+            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
+            return citation
+
+        from pybtex.database import parse_string
+
+        bibliography = parse_string(citation, "bibtex")
+        return bibliography.entries[self.source.citationKey]
+
+    def citation(self, backend="text"):
+        r"""
+        Return a formatted reference for the entry's bibliography such as:
+
+        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+
+        Rendering default is plain text 'text', but can be changed to any format
+        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry.citation(backend='text')
+            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
+            >>> print(entry.citation(backend='md'))
+            O\. B\. Alves *et al\.*
+            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
+            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
+
+        """
+        from pybtex.style.formatting.unsrt import Style
+
+        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
+        class EchemdbStyle(Style):
+            r"""
+            A citation style for the echemdb website.
+            """
+
+            def format_names(self, role, as_sentence=True):
+                from pybtex.style.template import node
+
+                @node
+                def names(_, context, role):
+                    persons = context["entry"].persons[role]
+                    style = context["style"]
+
+                    names = [
+                        style.format_name(person, style.abbreviate_names)
+                        for person in persons
+                    ]
+
+                    if len(names) == 1:
+                        return names[0].format_data(context)
+
+                    from pybtex.style.template import tag, words
+
+                    # pylint: disable=no-value-for-parameter
+                    return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
+                        context
+                    )
+
+                # pylint: disable=no-value-for-parameter
+                names = names(role)
+
+                from pybtex.style.template import sentence
+
+                return sentence[names] if as_sentence else names
+
+            def format_title(self, e, which_field, as_sentence=True):
+                from pybtex.style.template import field, sentence, tag
+
+                # pylint: disable=no-value-for-parameter
+                title = tag("i")[field(which_field)]
+                return sentence[title] if as_sentence else title
+
+        return (
+            EchemdbStyle(abbreviate_names=True)
+            .format_entry("unused", self.bibliography)
+            .text.render_as(backend)
+        )
 
     def get_electrode(self, name):
         r"""
