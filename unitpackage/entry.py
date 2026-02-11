@@ -14,8 +14,9 @@ EXAMPLES:
 
 Metadata included in an entry is accessible as an attribute::
 
+    >>> from unitpackage.entry import Entry
     >>> entry = Entry.create_examples()[0]
-    >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     {'citationKey': 'alves_2011_electrochemistry_6010',
     'url': 'https://doi.org/10.1039/C0CP01001D',
     'figure': '1a',
@@ -31,31 +32,34 @@ The data of the entry can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Data Entries containing published data,
-also contain information on the source of the data.::
+Entries can be created from from various sources, such as csv files or pandas dataframes::
 
-    >>> from unitpackage.collection import Collection
-    >>> db = Collection.create_example()
-    >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    Entry('article',
-      fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
-        ('journal', 'Physical Chemistry Chemical Physics'),
-        ('volume', '13'),
-        ('number', '13'),
-        ('pages', '6010--6021'),
-        ('year', '2011'),
-        ('publisher', 'Royal Society of Chemistry'),
-        ('abstract', 'We investigated ...')],
-      persons={'author': [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')]})
+    >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
+    >>> entry
+    Entry('from_csv')
+
+Information on the fields such as units can be updated::
+
+    >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+    >>> entry = entry.update_fields(fields=fields)
+    >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+    [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+    {'name': 'I', 'type': 'integer', 'unit': 'A'}]
+
+Metadata to the resource can be updated in-place::
+
+    >>> metadata = {'echemdb': {'source': {'citationKey': 'new_key'}}}
+    >>> entry.metadata.from_dict(metadata)
+    >>> entry.metadata
+    {'echemdb': {'source': {'citationKey': 'new_key'}}}
+
 
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -77,6 +81,7 @@ import logging
 import os.path
 
 from unitpackage.descriptor import Descriptor
+from unitpackage.metadata import MetadataDescriptor
 
 logger = logging.getLogger("unitpackage")
 
@@ -115,8 +120,100 @@ class Entry:
 
     """
 
+    default_metadata_key = ""
+    """Default metadata key to use when accessing the descriptor.
+    If empty string, the entire metadata dict is used. Subclasses can override this."""
+
     def __init__(self, resource):
         self.resource = resource
+
+    @property
+    def metadata(self):
+        r"""
+        Access and manage entry metadata.
+
+        Returns a MetadataDescriptor that supports both dict and attribute-style access.
+        Allows loading metadata from various sources. Modifications are applied in-place.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+            >>> entry.metadata.echemdb['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+        Load metadata from a dict::
+
+            >>> new_entry = Entry.create_examples()[0]
+            >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
+            >>> new_entry.metadata['echemdb']['test']
+            'data'
+
+        """
+        return MetadataDescriptor(self)
+
+    def load_metadata(self, filename, file_format=None, key=None):
+        r"""
+        Load metadata from a file and return self for method chaining.
+
+        The file format is auto-detected from the extension if not specified.
+        Supported formats are 'yaml' and 'json'.
+
+        EXAMPLES:
+
+        Load metadata from a YAML file::
+
+            >>> import os
+            >>> import tempfile
+            >>> import yaml
+            >>> entry = Entry.create_examples()[0]
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+            ...     yaml.dump({'source': {'citationKey': 'chain_test'}}, f)
+            ...     temp_path = f.name
+            >>> entry.load_metadata(temp_path, key='echemdb').metadata.echemdb.source.citationKey
+            'chain_test'
+            >>> os.unlink(temp_path)
+
+        Load metadata from a JSON file with auto-detection::
+
+            >>> import os
+            >>> import json
+            >>> import tempfile
+            >>> entry = Entry.create_examples()[0]
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            ...     json.dump({'custom': {'data': 'value'}}, f)
+            ...     temp_path = f.name
+            >>> entry.load_metadata(temp_path).metadata.custom.data
+            'value'
+            >>> os.unlink(temp_path)
+
+
+        """
+        # Auto-detect format from file extension if not specified
+        if file_format is None:
+            if filename.endswith(".yaml") or filename.endswith(".yml"):
+                file_format = "yaml"
+            elif filename.endswith(".json"):
+                file_format = "json"
+            else:
+                raise ValueError(
+                    f"Cannot auto-detect format for '{filename}'. "
+                    "Please specify file_format='yaml' or file_format='json'"
+                )
+
+        # Load metadata using the appropriate method
+        if file_format == "yaml":
+            self.metadata.from_yaml(filename, key=key)
+        elif file_format == "json":
+            self.metadata.from_json(filename, key=key)
+        else:
+            raise ValueError(
+                f"Unsupported format '{file_format}'. Use 'yaml' or 'json'"
+            )
+
+        return self
 
     @property
     def identifier(self):
@@ -142,10 +239,10 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            [... 'bibliography', 'citation', 'create_examples', 'curation',
-            'dataDescription', 'df', 'experimental', 'field_unit', 'figureDescription',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
-            'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
+            [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
+            'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
+            'metadata', 'mutable_resource', 'plot', 'remove_columns', 'rename_fields',
+            'rescale', 'resource', 'save', 'update_fields', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -157,7 +254,7 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
@@ -166,7 +263,7 @@ class Entry:
 
         The returned descriptor can again be accessed in the same way::
 
-            >>> entry.system.electrolyte.components[0].name
+            >>> entry.echemdb.system.electrolyte.components[0].name
             'H2O'
 
         """
@@ -179,7 +276,7 @@ class Entry:
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
+            >>> entry["echemdb"]["source"] # doctest: +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
@@ -191,123 +288,70 @@ class Entry:
 
     @property
     def _descriptor(self):
-        return Descriptor(self.resource.custom["metadata"]["echemdb"])
+        r"""
+        Return a Descriptor object wrapping the entry's metadata.
+
+        The metadata structure depends on the :attr:`default_metadata_key` class attribute:
+
+        - If ``default_metadata_key`` is an empty string (default in :class:`Entry`),
+          the entire ``metadata`` dict is wrapped as the descriptor.
+        - If ``default_metadata_key`` is set to a non-empty string (e.g., "echemdb" in subclasses),
+          the descriptor wraps only the metadata under that specific key.
+
+        This allows subclasses to work with different metadata structures while maintaining
+        a consistent interface through the Descriptor class.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry._descriptor # doctest: +ELLIPSIS
+            {'echemdb': ...}
+
+            >>> entry.echemdb.source.citationKey
+            'alves_2011_electrochemistry_6010'
+
+
+        """
+        return Descriptor(self._default_metadata)
 
     @property
     def _metadata(self):
         r"""
-        Returns the metadata named "echemdb" associated with this entry.
+        Returns the metadata associated with this entry.
+
+        The metadata may contain keys which nest entire metadata schemas (e.g., "echemdb", "myExperiment", etc.).
+        Use :attr:`_default_metadata` to access the subset determined by :attr:`default_metadata_key`.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry._metadata # doctest: +NORMALIZE_WHITESPACE
-            {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}
+            >>> entry._metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
         """
-        return self.resource.custom["metadata"]["echemdb"]
+        return self.resource.custom.setdefault("metadata", {})
 
     @property
-    def bibliography(self):
+    def _default_metadata(self):
         r"""
-        Return a pybtex bibliography object associated with this entry.
+        Returns the metadata subset based on :attr:`default_metadata_key`.
+
+        If :attr:`default_metadata_key` is empty, returns the entire metadata dict.
+        Otherwise, returns the metadata under the specified key.
+
+        This is useful for subclasses that want to work with a specific metadata structure.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
-            Entry('article',
-            fields=[
-                ('title', ...
-                ...
-
-            >>> entry_no_bib = Entry.create_examples(name="no_bibliography")[0]
-            >>> entry_no_bib.bibliography
-            ''
+            >>> entry._default_metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
         """
-        metadata = self._metadata.setdefault("source", {})
-        citation = metadata.setdefault("bibdata", "")
-
-        if not citation:
-            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
-            return citation
-
-        from pybtex.database import parse_string
-
-        bibliography = parse_string(citation, "bibtex")
-        return bibliography.entries[self.source.citationKey]
-
-    def citation(self, backend="text"):
-        r"""
-        Return a formatted reference for the entry's bibliography such as:
-
-        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
-
-        Rendering default is plain text 'text', but can be changed to any format
-        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
-
-        EXAMPLES::
-
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.citation(backend='text')
-            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
-            >>> print(entry.citation(backend='md'))
-            O\. B\. Alves *et al\.*
-            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
-            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
-
-        """
-        from pybtex.style.formatting.unsrt import Style
-
-        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
-        class EchemdbStyle(Style):
-            r"""
-            A citation style for the echemdb website.
-            """
-
-            def format_names(self, role, as_sentence=True):
-                from pybtex.style.template import node
-
-                @node
-                def names(_, context, role):
-                    persons = context["entry"].persons[role]
-                    style = context["style"]
-
-                    names = [
-                        style.format_name(person, style.abbreviate_names)
-                        for person in persons
-                    ]
-
-                    if len(names) == 1:
-                        return names[0].format_data(context)
-
-                    from pybtex.style.template import tag, words
-
-                    # pylint: disable=no-value-for-parameter
-                    return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
-                        context
-                    )
-
-                # pylint: disable=no-value-for-parameter
-                names = names(role)
-
-                from pybtex.style.template import sentence
-
-                return sentence[names] if as_sentence else names
-
-            def format_title(self, e, which_field, as_sentence=True):
-                from pybtex.style.template import field, sentence, tag
-
-                # pylint: disable=no-value-for-parameter
-                title = tag("i")[field(which_field)]
-                return sentence[title] if as_sentence else title
-
-        return (
-            EchemdbStyle(abbreviate_names=True)
-            .format_entry("unused", self.bibliography)
-            .text.render_as(backend)
-        )
+        metadata = self._metadata
+        if self.default_metadata_key and self.default_metadata_key in metadata:
+            return metadata[self.default_metadata_key]
+        return metadata
 
     def field_unit(self, field_name):
         r"""
@@ -320,7 +364,14 @@ class Entry:
             'V'
 
         """
-        return self.mutable_resource.schema.get_field(field_name).custom["unit"]
+        try:
+            return self.mutable_resource.schema.get_field(field_name).custom["unit"]
+        except KeyError:
+            logger.warning(
+                f"Field '{field_name}' in {self.identifier} does not have a unit."
+            )
+
+        return ""
 
     def rescale(self, units):
         r"""
@@ -503,7 +554,7 @@ class Entry:
     @property
     def mutable_resource(self):
         r"""
-        Return the data of this entry's "MutableResource" as a data frame.
+        Return the entry's "MutableResource".
 
         EXAMPLES::
 
@@ -524,11 +575,24 @@ class Entry:
         self.resource.custom.setdefault("MutableResource", "")
 
         if not self.resource.custom["MutableResource"]:
+            if self.resource.format not in ["csv", "pandas"]:
+                raise ValueError(
+                    "MutableResource can only be created from resources of format 'csv' or 'pandas'."
+                )
+
+            if self.resource.format == "csv":
+
+                from unitpackage.local import create_df_resource_from_tabular_resource
+
+                self.resource.custom["MutableResource"] = (
+                    create_df_resource_from_tabular_resource(self.resource)
+                )
+
+            elif self.resource.format == "pandas":
+                self.resource.custom["MutableResource"] = self.resource
+
             from frictionless import Schema
 
-            from unitpackage.local import create_df_resource
-
-            self.resource.custom["MutableResource"] = create_df_resource(self.resource)
             self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
                 self.resource.schema.to_dict()
             )
@@ -555,6 +619,18 @@ class Entry:
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry.df
+               x  y
+            0  1  2
+            1  2  3
+            2  3  4
 
         """
         return self.mutable_resource.data
@@ -590,6 +666,13 @@ class Entry:
             >>> new_entry.field_unit('P/A')
             Unit("A V / m2")
 
+        TESTS:
+
+        Validate that the identifier is preserved::
+
+            >>> new_entry.identifier
+            'alves_2011_electrochemistry_6010_f1a_solid'
+
         """
         import pandas as pd
 
@@ -598,9 +681,48 @@ class Entry:
         fields = [field.to_dict() for field in self.mutable_resource.schema.fields]
 
         fields.extend(new_fields)
-        return self.from_df(
-            df=df_, metadata=self._metadata, basename=self.identifier, fields=fields
-        )
+        entry = self.from_df(df=df_, basename=self.identifier).update_fields(fields)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
+
+    def remove_columns(self, *field_names):
+        r"""
+        Removes specified columns from the dataframe
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.remove_columns('E', 'j')
+            >>> new_entry.df
+                          t
+            0      0.000000
+            1      0.020000
+            ...
+
+            >>> 'E' in new_entry.df.columns
+            False
+
+        """
+        df = self.df.copy()
+        df.drop(columns=list(field_names), inplace=True)
+
+        fields = [
+            field.to_dict()
+            for field in self.mutable_resource.schema.fields
+            if field.name not in field_names
+        ]
+        entry = self.from_df(df=df, basename=self.identifier).update_fields(fields)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
 
     def __repr__(self):
         r"""
@@ -676,6 +798,15 @@ class Entry:
             >>> entry.plot(x_label='j', y_label='E')
             Figure(...)
 
+        A plot from data without units::
+
+            >>> import pandas as pd
+            >>> data = {'t': [0, 1, 2], 'E': [0.0, 1.0, 2.0]}
+            >>> df = pd.DataFrame(data)
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry.plot()
+            Figure(...)
+
         """
         import plotly.graph_objects
 
@@ -693,6 +824,9 @@ class Entry:
             )
         )
 
+        x_unit = self.field_unit(x_label)
+        y_unit = self.field_unit(y_label)
+
         fig.update_layout(
             template="simple_white",
             showlegend=True,
@@ -700,8 +834,8 @@ class Entry:
             width=600,
             height=400,
             margin={"l": 70, "r": 70, "b": 70, "t": 70, "pad": 7},
-            xaxis_title=f"{x_label} [{self.field_unit(x_label)}]",
-            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+            xaxis_title=f"{x_label} [{x_unit}]" if x_unit else x_label,
+            yaxis_title=f"{y_label} [{y_unit}]" if y_unit else y_label,
         )
 
         fig.update_xaxes(showline=True, mirror=True)
@@ -709,18 +843,73 @@ class Entry:
 
         return fig
 
-    @classmethod
-    def from_csv(cls, csvname, metadata=None, fields=None):
+    def update_fields(self, fields):
         r"""
-        Returns an entry constructed from a CSV with a single header line.
+        Return a new entry with updated fields in the MutableResource.
 
-        EXAMPLES:
+        The :param fields: list must must be structured such as
+        `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
 
-        Units describing the fields can be provided::
+        EXAMPLES::
 
-            >>> import os
-            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', fields=fields)
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        Updating the fields returns the same entry with updated field metadata::
+
+            >>> fields = [{'name':'E', 'unit': 'mV'},
+            ... {'name':'j', 'unit': 'uA / cm2'},
+            ... {'name':'x', 'unit': 'm'}]
+            >>> entry.update_fields(fields)
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
+
+            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'mV', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
+
+            >>> new_entry = entry.update_fields(fields)
+            >>> new_entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'mV', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
+
+        """
+        from unitpackage.local import update_fields
+
+        updated_fields = update_fields(
+            self.mutable_resource.schema.to_dict()["fields"], fields
+        )
+
+        from frictionless import Schema
+
+        original_schema = self.mutable_resource.schema.to_dict()
+        original_schema["fields"] = updated_fields
+        self.mutable_resource.schema = Schema.from_descriptor(original_schema)
+
+        return self
+
+    @classmethod
+    def from_csv(
+        cls,
+        csvname,
+        encoding=None,
+        header_lines=None,
+        column_header_lines=None,
+        decimal=None,
+        delimiters=None,
+    ):
+        r"""
+        Returns an entry constructed from a CSV.
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
             >>> entry
             Entry('from_csv')
 
@@ -728,23 +917,12 @@ class Entry:
             {'name': 'from_csv',
             ...
 
-        Metadata can be appended::
-
-            >>> import os
-            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-            >>> metadata = {'user':'Max Doe'}
-            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', metadata=metadata, fields=fields)
-            >>> entry.user
-            'Max Doe'
-
         .. important::
             Upper case filenames are converted to lower case entry identifiers!
 
         A filename containing upper case characters::
 
-            >>> import os
-            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-            >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv', fields=fields)
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv')
             >>> entry
             Entry('uppercase')
 
@@ -756,12 +934,40 @@ class Entry:
             'path': 'UpperCase.csv',
             ...
 
+        CSV with a more complex structure, such as multiple header lines can be constructed::
+
+            >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
+            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'from_csv_multiple_headers',
+            'type': 'table',
+            'data': [],
+            'format': 'pandas',
+            'mediatype': 'application/pandas',
+            'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
+                                {'name': 'j / A / cm2', 'type': 'integer'}]}}
+
         """
-        from unitpackage.local import create_unitpackage
+        from unitpackage.local import create_tabular_resource_from_csv
 
-        package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
+        # pylint: disable=duplicate-code
+        resource = create_tabular_resource_from_csv(
+            csvname=csvname,
+            encoding=encoding,
+            header_lines=header_lines,
+            column_header_lines=column_header_lines,
+            decimal=decimal,
+            delimiters=delimiters,
+        )
 
-        return cls(resource=package.resources[0])
+        from pathlib import Path
+
+        if resource.name == "memory":
+            resource.name = Path(
+                csvname
+            ).stem.lower()  # Use stem (filename without extension)
+
+        return cls(resource)
 
     @classmethod
     def _modify_fields(cls, original, alternative, keep_original_name_as=None):
@@ -891,9 +1097,13 @@ class Entry:
         return cls(resource=package.resources[0])
 
     @classmethod
-    def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
+    def from_df(cls, df, *, basename):
         r"""
         Returns an entry constructed from a pandas dataframe.
+        A name `basename` for the entry must be provided.
+        The name must be lower-case and contain only alphanumeric
+        characters along with `.` , `_` or `-` characters'.
+        (Upper case characters are converted to lower case.)
 
         EXAMPLES::
 
@@ -909,9 +1119,10 @@ class Entry:
             >>> import os
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
-            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
-            >>> entry.user
-            'Max Doe'
+            >>> entry = Entry.from_df(df=df, basename='test_df').update_fields(fields=fields)
+            >>> entry.metadata.from_dict(metadata)
+            >>> entry.metadata
+            {'user': 'Max Doe'}
 
         Save the entry::
 
@@ -935,27 +1146,17 @@ class Entry:
         Verify that all fields are properly created even when they are not specified as fields::
 
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
-            >>> metadata = {'user':'Max Doe'}
-            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
+            >>> entry = Entry.from_df(df=df, basename='test_df').update_fields(fields=fields)
             >>> entry.resource.schema.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
-        if outdir is None:
-            import atexit
-            import shutil
-            import tempfile
+        from unitpackage.local import create_df_resource_from_df
 
-            outdir = tempfile.mkdtemp()
-            atexit.register(shutil.rmtree, outdir)
+        resource = create_df_resource_from_df(df)
+        resource.name = basename.lower()
 
-        csvname = basename + ".csv"
-
-        df.to_csv(os.path.join(outdir, csvname), index=False)
-
-        return cls.from_csv(
-            os.path.join(outdir, csvname), metadata=metadata, fields=fields
-        )
+        return cls(resource)
 
     def save(self, *, outdir, basename=None):
         r"""
@@ -1018,7 +1219,8 @@ class Entry:
             >>> from unitpackage.entry import Entry
             >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
             >>> basename = 'save_datetime'
-            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'currentTime':datetime.now()})
+            >>> entry = Entry.from_df(df=df, basename=basename)
+            >>> entry.metadata.from_dict({'currentTime':datetime.now()})
             >>> entry.save(outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
@@ -1028,6 +1230,7 @@ class Entry:
             os.makedirs(outdir)
 
         basename = basename or self.identifier
+        basename = basename.lower()
         csv_name = os.path.join(outdir, basename + ".csv")
         json_name = os.path.join(outdir, basename + ".json")
 
@@ -1037,6 +1240,13 @@ class Entry:
         if basename:
             self.resource.path = basename + ".csv"
             self.resource.name = basename
+
+        # convert a pandas resource into a csv resource
+        if self.resource.format == "pandas":
+            self.resource.format = "csv"
+            self.resource.mediatype = "text/csv"
+            if hasattr(self.resource, "data"):
+                del self.resource.data
 
         resource = self.resource.to_dict()
 
