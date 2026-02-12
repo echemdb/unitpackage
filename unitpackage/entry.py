@@ -364,16 +364,12 @@ class Entry:
             'V'
 
         """
-        try:
-            return (
-                self._ensure_df_resource().schema.get_field(field_name).custom["unit"]
-            )
-        except KeyError:
-            logger.warning(
-                f"Field '{field_name}' in {self.identifier} does not have a unit."
-            )
+        field = self.resource.schema.get_field(field_name).custom.get("unit", "")
+        if not field:
+            logger.warning(f"Field {field_name} has no unit.")
+            return ""
 
-        return ""
+        return field
 
     def rescale(self, units):
         r"""
