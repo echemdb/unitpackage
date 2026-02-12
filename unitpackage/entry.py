@@ -77,6 +77,7 @@ Metadata to the resource can be updated in-place::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import functools
 import logging
 import os.path
 
@@ -602,17 +603,25 @@ class Entry:
 
         return new_resource
 
-    def _ensure_df_resource(self):
+    @functools.cached_property
+    def _df_resource(self):
         r"""
-        Ensure the resource is a pandas dataframe resource and return it.
-        If the resource is a CSV resource, convert it to pandas format.
+        Cached pandas dataframe resource.
+
+        If the resource is a CSV resource, convert it to pandas format on first access
+        and cache the result. This avoids re-reading the CSV file on every .df access.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> resource = entry._ensure_df_resource()
+            >>> resource = entry._df_resource
             >>> resource.format
             'pandas'
+
+            >>> # Second access uses cached value
+            >>> resource2 = entry._df_resource
+            >>> resource is resource2
+            True
         """
         if self.resource.format == "pandas":
             return self.resource
@@ -666,7 +675,7 @@ class Entry:
             2  3  4
 
         """
-        return self._ensure_df_resource().data
+        return self._df_resource.data
 
     def add_columns(self, df, new_fields):
         r"""
