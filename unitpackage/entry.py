@@ -589,14 +589,19 @@ class Entry:
         if schema is not None:
             # Use the provided schema
             new_resource.schema = Schema.from_descriptor(schema, allow_invalid=True)
+        elif field_updates:
+            # Copy schema and apply field-specific updates
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
+            for field_name, updates in field_updates.items():
+                if field_name in new_resource.schema.field_names:
+                    new_resource.schema.update_field(field_name, updates)
         else:
-            # Copy schema from original resource
-            for field_obj in self.resource.schema.fields:
-                field_dict = field_obj.to_dict()
-                # Apply any field-specific updates
-                if field_updates and field_obj.name in field_updates:
-                    field_dict.update(field_updates[field_obj.name])
-                new_resource.schema.update_field(field_obj.name, field_dict)
+            # No schema provided and no updates - copy schema as-is
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
 
         # Copy metadata to new resource
         new_resource.custom["metadata"] = self.resource.custom.get("metadata", {})
