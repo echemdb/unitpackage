@@ -247,7 +247,7 @@ class EchemdbEntry(Entry):
 
             >>> entry = EchemdbEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
@@ -278,7 +278,7 @@ class EchemdbEntry(Entry):
             ValueError: No axis with name 'x' found.
 
         """
-        if field_name in self.mutable_resource.schema.field_names:
+        if field_name in self._ensure_df_resource().schema.field_names:
             return field_name
         if field_name == "j":
             return self._normalize_field_name("I")
@@ -374,7 +374,7 @@ class EchemdbEntry(Entry):
         def reference(label):
             if not label == "E":
                 return ""
-            field = self.mutable_resource.schema.get_field(label).to_dict()
+            field = self._ensure_df_resource().schema.get_field(label).to_dict()
             if "reference" not in field:
                 return ""
             return f" vs. {field['reference']}"
@@ -403,7 +403,7 @@ class EchemdbEntry(Entry):
         EXAMPLES::
 
             >>> entry = EchemdbEntry.create_examples()[0]
-            >>> entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'}
 
             >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
@@ -413,7 +413,7 @@ class EchemdbEntry(Entry):
             ...
 
             >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-sat')
-            >>> rescaled_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-sat'}
 
             >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
@@ -426,11 +426,7 @@ class EchemdbEntry(Entry):
         """
         field_name = field_name or "E"
 
-        from frictionless import Resource
-
-        resource = Resource(self.resource.to_dict())
-
-        field = self.mutable_resource.schema.get_field(field_name)
+        field = self._ensure_df_resource().schema.get_field(field_name)
 
         if "reference" not in field.to_dict():
             raise ValueError(f"No Reference is associated with field '{field_name}'.")
@@ -466,14 +462,10 @@ class EchemdbEntry(Entry):
 
         reference_unit = potential_difference.unit.to_string()
 
-        # generate new resource
-        df_resource = Resource(df)
-        df_resource.infer()
-        df_resource.schema = resource.schema
-        df_resource.schema.update_field(
-            field.name, {"reference": new_reference, "unit": reference_unit}
-        )
+        # Create new resource with modified reference
+        field_updates = {
+            field.name: {"reference": new_reference, "unit": reference_unit}
+        }
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
 
-        resource.custom["MutableResource"] = df_resource
-
-        return type(self)(resource=resource)
+        return type(self)(resource=new_resource)
