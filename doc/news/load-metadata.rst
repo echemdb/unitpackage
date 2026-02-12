@@ -26,7 +26,7 @@
 
 * Removed deprecated module `cv_collection`.
 * Removed deprecated module `cv_entry`.
-* * Removed `metadata` argument from `Entry.from_df()` and `Entry.from_csv()`.
+* Removed `metadata` argument from `Entry.from_df()` and `Entry.from_csv()`.
 
 **Fixed:**
 
