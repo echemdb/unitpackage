@@ -278,7 +278,7 @@ class EchemdbEntry(Entry):
             ValueError: No axis with name 'x' found.
 
         """
-        if field_name in self._ensure_df_resource().schema.field_names:
+        if field_name in self.resource.schema.field_names:
             return field_name
         if field_name == "j":
             return self._normalize_field_name("I")
@@ -374,7 +374,7 @@ class EchemdbEntry(Entry):
         def reference(label):
             if not label == "E":
                 return ""
-            field = self._ensure_df_resource().schema.get_field(label).to_dict()
+            field = self.resource.schema.get_field(label).to_dict()
             if "reference" not in field:
                 return ""
             return f" vs. {field['reference']}"
@@ -426,7 +426,7 @@ class EchemdbEntry(Entry):
         """
         field_name = field_name or "E"
 
-        field = self._ensure_df_resource().schema.get_field(field_name)
+        field = self.resource.schema.get_field(field_name)
 
         if "reference" not in field.to_dict():
             raise ValueError(f"No Reference is associated with field '{field_name}'.")

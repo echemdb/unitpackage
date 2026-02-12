@@ -418,7 +418,7 @@ class Entry:
 
         # Get current dataframe and schema
         df = self.df.copy()
-        fields = self._ensure_df_resource().schema.fields
+        fields = self.resource.schema.fields
 
         # Apply rescaling to dataframe
         for field in fields:
@@ -502,7 +502,7 @@ class Entry:
         """
         import astropy.units as u
 
-        field = self._ensure_df_resource().schema.get_field(field_name)
+        field = self.resource.schema.get_field(field_name)
 
         if field.custom.get("unit") and not unit:
             logger.warning(
@@ -567,7 +567,7 @@ class Entry:
             new_resource.schema = Schema.from_descriptor(schema, allow_invalid=True)
         else:
             # Copy schema from original resource
-            for field_obj in self._ensure_df_resource().schema.fields:
+            for field_obj in self.resource.schema.fields:
                 field_dict = field_obj.to_dict()
                 # Apply any field-specific updates
                 if field_updates and field_obj.name in field_updates:
@@ -688,7 +688,7 @@ class Entry:
 
         df_ = pd.concat([self.df, df], axis=1)
 
-        fields = [field.to_dict() for field in self._ensure_df_resource().schema.fields]
+        fields = [field.to_dict() for field in self.resource.schema.fields]
 
         fields.extend(new_fields)
         entry = self.from_df(df=df_, basename=self.identifier).update_fields(fields)
@@ -726,7 +726,7 @@ class Entry:
 
         fields = [
             field.to_dict()
-            for field in self._ensure_df_resource().schema.fields
+            for field in self.resource.schema.fields
             if field.name not in field_names
         ]
         entry = self.from_df(df=df, basename=self.identifier).update_fields(fields)
@@ -892,13 +892,13 @@ class Entry:
 
         # Get the dataframe and current schema
         df = self.df.copy()
-        current_fields = self._ensure_df_resource().schema.to_dict()["fields"]
+        current_fields = self.resource.schema.to_dict()["fields"]
 
         # Update fields using helper function
         updated_fields = update_fields_helper(current_fields, fields)
 
         # Create new resource with updated schema
-        original_schema = self._ensure_df_resource().schema.to_dict()
+        original_schema = self.resource.schema.to_dict()
         original_schema["fields"] = updated_fields
         new_resource = self._create_new_df_resource(df, schema=original_schema)
 
@@ -1057,7 +1057,7 @@ class Entry:
         df = self.df.rename(columns=field_names).copy()
 
         new_fields = self._modify_fields(
-            self._ensure_df_resource().schema.to_dict()["fields"],
+            self.resource.schema.to_dict()["fields"],
             alternative=field_names,
             keep_original_name_as=keep_original_name_as,
         )
@@ -1242,7 +1242,7 @@ class Entry:
         from frictionless import Resource
 
         # Get current schema from the dataframe resource
-        current_schema = self._ensure_df_resource().schema.to_dict()
+        current_schema = self.resource.schema.to_dict()
 
         # Build resource descriptor
         resource = {
