@@ -128,13 +128,16 @@ class Entry:
     def __init__(self, resource):
         self.resource = resource
 
-    @property
+    @functools.cached_property
     def metadata(self):
         r"""
         Access and manage entry metadata.
 
         Returns a MetadataDescriptor that supports both dict and attribute-style access.
         Allows loading metadata from various sources. Modifications are applied in-place.
+
+        The descriptor is cached for efficiency, but still reflects metadata changes since
+        it delegates to the underlying resource.
 
         EXAMPLES::
 
@@ -151,6 +154,17 @@ class Entry:
             >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
             >>> new_entry.metadata['echemdb']['test']
             'data'
+
+        The descriptor is cached but still sees metadata updates::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> descriptor1 = entry.metadata
+            >>> entry.metadata.from_dict({'custom': {'key': 'value'}})
+            >>> descriptor2 = entry.metadata
+            >>> descriptor1 is descriptor2
+            True
+            >>> descriptor1['custom']['key']
+            'value'
 
         """
         return MetadataDescriptor(self)
