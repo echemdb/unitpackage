@@ -32,7 +32,7 @@ The data of the entry can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Entries can be created from from various sources, such as csv files or pandas dataframes::
+Entries can be created from various sources, such as csv files or pandas dataframes::
 
     >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
     >>> entry
@@ -522,13 +522,18 @@ class Entry:
 
         field = self.resource.schema.get_field(field_name)
 
+        if not field.custom.get("unit") and not unit:
+            raise ValueError(
+                f"Field '{field_name}' has no unit and no unit was provided for the offset."
+            )
+
         if field.custom.get("unit") and not unit:
             logger.warning(
                 f"""No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."""
             )
             unit = field.custom.get("unit")
 
-        field_unit = u.Unit(field.custom.get("unit"))
+        field_unit = u.Unit(field.custom.get("unit") or unit)
 
         # create a new dataframe with offset values
         df = self.df.copy()
@@ -1011,7 +1016,6 @@ class Entry:
 
         CSV with a more complex structure, such as multiple header lines can be constructed::
 
-            >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
             >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
             {'name': 'from_csv_multiple_headers',
