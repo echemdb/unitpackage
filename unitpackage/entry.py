@@ -42,7 +42,7 @@ Information on the fields such as units can be updated::
 
     >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
     >>> entry = entry.update_fields(fields=fields)
-    >>> entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+    >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
     [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
     {'name': 'I', 'type': 'integer', 'unit': 'A'}]
 
@@ -240,7 +240,7 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
+            'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
             'metadata', 'plot', 'remove_columns', 'rename_fields',
             'rescale', 'resource', 'save', 'update_fields', 'yaml']
 
@@ -353,6 +353,24 @@ class Entry:
             return metadata[self.default_metadata_key]
         return metadata
 
+    @property
+    def fields(self):
+        r"""
+        Return the fields of the resource's schema.
+
+        This is a convenience property that returns `self.resource.schema.fields`.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        return self.resource.schema.fields
+
     def field_unit(self, field_name):
         r"""
         Return the unit of the ``field_name`` of the resource.
@@ -382,7 +400,7 @@ class Entry:
         The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.resource.schema.fields
+            >>> entry.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -390,7 +408,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.resource.schema.fields
+            >>> rescaled_entry.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -418,7 +436,7 @@ class Entry:
 
         # Get current dataframe and schema
         df = self.df.copy()
-        fields = self.resource.schema.fields
+        fields = self.fields
 
         # Apply rescaling to dataframe
         for field in fields:
@@ -625,7 +643,7 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            >>> entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -685,13 +703,21 @@ class Entry:
 
         """
         import pandas as pd
+        from frictionless import Schema, Field
 
         df_ = pd.concat([self.df, df], axis=1)
 
-        fields = [field.to_dict() for field in self.resource.schema.fields]
+        # Create new schema with added fields using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        
+        # Add new fields using schema.add_field()
+        for field_descriptor in new_fields:
+            field = Field.from_descriptor(field_descriptor)
+            new_schema.add_field(field)
 
-        fields.extend(new_fields)
-        entry = self.from_df(df=df_, basename=self.identifier).update_fields(fields)
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df_, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
         entry.metadata.from_dict(self._metadata)
 
         return entry
@@ -721,15 +747,21 @@ class Entry:
             False
 
         """
+        from frictionless import Schema
+
+        # Remove columns from dataframe
         df = self.df.copy()
         df.drop(columns=list(field_names), inplace=True)
 
-        fields = [
-            field.to_dict()
-            for field in self.resource.schema.fields
-            if field.name not in field_names
-        ]
-        entry = self.from_df(df=df, basename=self.identifier).update_fields(fields)
+        # Create new schema and remove fields using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        for field_name in field_names:
+            if field_name in [field.name for field in new_schema.fields]:
+                new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
         entry.metadata.from_dict(self._metadata)
 
         return entry
@@ -864,7 +896,7 @@ class Entry:
 
             >>> from unitpackage.entry import Entry
             >>> entry = Entry.create_examples()[0]
-            >>> entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -875,32 +907,35 @@ class Entry:
             ... {'name':'j', 'unit': 'uA / cm2'},
             ... {'name':'x', 'unit': 'm'}]
             >>> new_entry = entry.update_fields(fields)
-            >>> new_entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> new_entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'mV', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
 
         The original entry remains unchanged::
 
-            >>> entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        from unitpackage.local import update_fields as update_fields_helper
+        from frictionless import Schema
 
-        # Get the dataframe and current schema
+        # Get the dataframe and create a new schema
         df = self.df.copy()
-        current_fields = self.resource.schema.to_dict()["fields"]
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
 
-        # Update fields using helper function
-        updated_fields = update_fields_helper(current_fields, fields)
+        # Update fields using schema.update_field()
+        for field_descriptor in fields:
+            field_name = field_descriptor.get('name')
+            if field_name and field_name in [field.name for field in new_schema.fields]:
+                # Extract the updates (excluding 'name' since update_field takes name separately)
+                updates = {k: v for k, v in field_descriptor.items() if k != 'name'}
+                new_schema.update_field(field_name, updates)
 
         # Create new resource with updated schema
-        original_schema = self.resource.schema.to_dict()
-        original_schema["fields"] = updated_fields
-        new_resource = self._create_new_df_resource(df, schema=original_schema)
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
 
         return type(self)(resource=new_resource)
 
@@ -1032,7 +1067,7 @@ class Entry:
 
         Updated fields of the resource::
 
-            >>> renamed_entry.resource.schema.fields
+            >>> renamed_entry.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E_we', 'type': 'number', 'unit': 'V', 'reference': 'RHE', 'originalName': 'E'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -1042,7 +1077,7 @@ class Entry:
         Provide alternatives for non-existing fields::
 
             >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
-            >>> renamed_entry.resource.schema.fields
+            >>> renamed_entry.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -1149,7 +1184,7 @@ class Entry:
 
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> entry = Entry.from_df(df=df, basename='test_df').update_fields(fields=fields)
-            >>> entry.resource.schema.fields
+            >>> entry.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """

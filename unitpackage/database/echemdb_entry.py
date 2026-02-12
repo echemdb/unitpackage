@@ -247,7 +247,7 @@ class EchemdbEntry(Entry):
 
             >>> entry = EchemdbEntry.create_examples()[0]
             >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
