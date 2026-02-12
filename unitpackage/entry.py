@@ -804,10 +804,29 @@ class Entry:
             False
 
         """
-        result = self
+        if not field_names:
+            return self
+
+        from frictionless import Schema
+
+        # Remove all columns from dataframe at once
+        df = self.df.copy()
+        columns_to_remove = [name for name in field_names if name in df.columns]
+        if columns_to_remove:
+            df.drop(columns=columns_to_remove, inplace=True)
+
+        # Create new schema and remove all fields in a single pass
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
         for field_name in field_names:
-            result = result.remove_column(field_name)
-        return result
+            if field_name in [field.name for field in new_schema.fields]:
+                new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
 
     def __repr__(self):
         r"""
@@ -1205,12 +1224,20 @@ class Entry:
             )
             return self
 
-        result = self
-        for old_name, new_name in field_names.items():
-            result = result.rename_field(
-                old_name, new_name, keep_original_name_as=keep_original_name_as
-            )
-        return result
+        # Rename all columns at once in the dataframe
+        df = self.df.rename(columns=field_names).copy()
+
+        # Update all field names in a single pass
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings=field_names,
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
+
+        return type(self)(resource=new_resource)
 
     @classmethod
     def from_local(cls, filename):
