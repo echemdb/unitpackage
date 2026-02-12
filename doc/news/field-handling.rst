@@ -8,13 +8,14 @@
 **Changed:**
 
 * Changed `entry.remove_columns()`, `entry.add_columns()`, and `entry.update_fields()` to use frictionless Schema's built-in methods (`schema.remove_field()`, `schema.add_field()`, `schema.update_field()`).
-* Changed `entry.rename_fields()` to internally use `entry.rename_field()` for each field, improving efficiency.
-* Changed `entry.remove_columns()` to internally use `entry.remove_column()` for each column, improving efficiency.
+* Changed `entry.rename_fields()` to perform batch rename operations on all fields at once instead of creating intermediate entries.
+* Changed `entry.remove_columns()` to perform batch column removal at once instead of creating intermediate entries.
 * Changed `_modify_fields()` to `_modify_fields_names()` for clearer naming, and updated its parameter names (`original` → `fields`, `alternative` → `name_mappings`).
 * Changed `update_fields()` in `unitpackage.local` to use frictionless `schema.update_field()` instead of manual field dictionary manipulation.
-* Changed `create_unitpackage()` in `unitpackage.local` to use frictionless `schema.update_field()` directly instead of calling the `update_fields()` helper function.
+* Changed `Entry.update_fields()` and `create_unitpackage()` in `unitpackage.local` to delegate to `local.update_fields()` for consistent field validation and logging.
 * Changed all docstrings referencing `entry.resource.schema.fields` to use the simpler `entry.fields` property.
 
 **Performance:**
 
-* Improved field handling performance by having singular methods (`rename_field`, `remove_column`) do the core work, with plural methods composing multiple singular operations instead of duplicating logic.
+* Improved field handling performance by performing batch operations for `rename_fields()` and `remove_columns()`, avoiding O(N) intermediate entry creation.
+* Improved schema copying efficiency in `_create_new_df_resource()` by using direct schema descriptor copying when no updates are needed.
