@@ -963,22 +963,19 @@ class Entry:
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        from frictionless import Schema
+        from unitpackage.local import update_fields
 
-        # Get the dataframe and create a new schema
+        # Get the dataframe
         df = self.df.copy()
-        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
 
-        # Update fields using schema.update_field()
-        for field_descriptor in fields:
-            field_name = field_descriptor.get("name")
-            if field_name and field_name in [field.name for field in new_schema.fields]:
-                # Extract the updates (excluding 'name' since update_field takes name separately)
-                updates = {k: v for k, v in field_descriptor.items() if k != "name"}
-                new_schema.update_field(field_name, updates)
+        # Use local.update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in self.resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
 
         # Create new resource with updated schema
-        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        new_resource = self._create_new_df_resource(
+            df, schema={"fields": updated_fields}
+        )
 
         return type(self)(resource=new_resource)
 
