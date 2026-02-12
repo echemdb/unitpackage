@@ -241,7 +241,7 @@ class Entry:
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
             'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
-            'metadata', 'plot', 'remove_columns', 'rename_fields',
+            'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
             'rescale', 'resource', 'save', 'update_fields', 'yaml']
 
         """
@@ -703,13 +703,13 @@ class Entry:
 
         """
         import pandas as pd
-        from frictionless import Schema, Field
+        from frictionless import Field, Schema
 
         df_ = pd.concat([self.df, df], axis=1)
 
         # Create new schema with added fields using frictionless method
         new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
-        
+
         # Add new fields using schema.add_field()
         for field_descriptor in new_fields:
             field = Field.from_descriptor(field_descriptor)
@@ -717,6 +717,49 @@ class Entry:
 
         # Create new entry with updated schema
         new_resource = self._create_new_df_resource(df_, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
+
+    def remove_column(self, field_name):
+        r"""
+        Removes a single column from the dataframe
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.remove_column('E')
+            >>> new_entry.df
+                          t         j
+            0      0.000000 -0.998277
+            1      0.020000 -0.981762
+            ...
+
+            >>> 'E' in new_entry.df.columns
+            False
+
+        """
+        from frictionless import Schema
+
+        # Remove column from dataframe
+        df = self.df.copy()
+        df.drop(columns=[field_name], inplace=True)
+
+        # Create new schema and remove field using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        if field_name in [field.name for field in new_schema.fields]:
+            new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
         entry = type(self)(resource=new_resource)
         entry.metadata.from_dict(self._metadata)
 
@@ -747,24 +790,10 @@ class Entry:
             False
 
         """
-        from frictionless import Schema
-
-        # Remove columns from dataframe
-        df = self.df.copy()
-        df.drop(columns=list(field_names), inplace=True)
-
-        # Create new schema and remove fields using frictionless method
-        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        result = self
         for field_name in field_names:
-            if field_name in [field.name for field in new_schema.fields]:
-                new_schema.remove_field(field_name)
-
-        # Create new entry with updated schema
-        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
-        entry = type(self)(resource=new_resource)
-        entry.metadata.from_dict(self._metadata)
-
-        return entry
+            result = result.remove_column(field_name)
+        return result
 
     def __repr__(self):
         r"""
@@ -928,10 +957,10 @@ class Entry:
 
         # Update fields using schema.update_field()
         for field_descriptor in fields:
-            field_name = field_descriptor.get('name')
+            field_name = field_descriptor.get("name")
             if field_name and field_name in [field.name for field in new_schema.fields]:
                 # Extract the updates (excluding 'name' since update_field takes name separately)
-                updates = {k: v for k, v in field_descriptor.items() if k != 'name'}
+                updates = {k: v for k, v in field_descriptor.items() if k != "name"}
                 new_schema.update_field(field_name, updates)
 
         # Create new resource with updated schema
@@ -1016,27 +1045,104 @@ class Entry:
         return cls(resource)
 
     @classmethod
-    def _modify_fields(cls, original, alternative, keep_original_name_as=None):
-        r"""Updates in a list of fields (original) the field names with those
-        provided in a dictionary. The original name of the fields is kept with
-        the name `original` in the updated fields.
+    def _modify_field_name(cls, field, old_name, new_name, keep_original_name_as=None):
+        r"""Modifies a single field's name if it matches the old_name.
+
+        The original name can optionally be preserved in a custom field property.
+
+        EXAMPLES::
+
+            >>> field = {'name': '<E>', 'unit':'mV'}
+            >>> Entry._modify_field_name(field, '<E>', 'E', keep_original_name_as='original')
+            {'name': 'E', 'unit': 'mV', 'original': '<E>'}
+
+            >>> field = {'name': 'I', 'unit':'mA'}
+            >>> Entry._modify_field_name(field, '<E>', 'E', keep_original_name_as='original')
+            {'name': 'I', 'unit': 'mA'}
+
+        """
+        if field["name"] == old_name:
+            if keep_original_name_as:
+                field.setdefault(keep_original_name_as, old_name)
+            field["name"] = new_name
+        return field
+
+    @classmethod
+    def _modify_fields_names(cls, fields, name_mappings, keep_original_name_as=None):
+        r"""Updates field names in a list of fields based on provided name mappings.
+
+        The original field names can optionally be preserved in a custom property.
 
         EXAMPLES::
 
             >>> fields = [{'name': '<E>', 'unit':'mV'},{'name': 'I', 'unit':'mA'}]
-            >>> alt_fields = {'<E>':'E'}
-            >>> Entry._modify_fields(fields, alt_fields, keep_original_name_as='original')
+            >>> name_mappings = {'<E>':'E'}
+            >>> Entry._modify_fields_names(fields, name_mappings, keep_original_name_as='original')
             [{'name': 'E', 'unit': 'mV', 'original': '<E>'}, {'name': 'I', 'unit': 'mA'}]
 
         """
-        for field in original:
-            for key in alternative.keys():
-                if field["name"] == key:
-                    if keep_original_name_as:
-                        field.setdefault(keep_original_name_as, key)
-                    field["name"] = alternative[key]
+        for field in fields:
+            for old_name, new_name in name_mappings.items():
+                cls._modify_field_name(field, old_name, new_name, keep_original_name_as)
+        return fields
 
-        return original
+    def rename_field(self, field_name, new_name, keep_original_name_as=None):
+        r"""Returns a :class:`~unitpackage.entry.Entry` with a single renamed field and
+        corresponding dataframe column name.
+
+        The original field name can optionally be kept in a new key.
+
+        EXAMPLES:
+
+        The original dataframe::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Dataframe with a single modified column name::
+
+            >>> renamed_entry = entry.rename_field('t', 't_rel', keep_original_name_as='originalName')
+            >>> renamed_entry.df
+                      t_rel         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Updated fields of the resource::
+
+            >>> renamed_entry.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS:
+
+        Renaming a non-existing field has no effect::
+
+            >>> renamed_entry = entry.rename_field('x', 'y', keep_original_name_as='originalName')
+            >>> renamed_entry.fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        df = self.df.rename(columns={field_name: new_name}).copy()
+
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings={field_name: new_name},
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
+
+        return type(self)(resource=new_resource)
 
     def rename_fields(self, field_names, keep_original_name_as=None):
         r"""Returns a :class:`~unitpackage.entry.Entry` with updated field names and dataframe
@@ -1087,20 +1193,14 @@ class Entry:
             logger.warning(
                 "No renaming pattern was provided, such as {'t': 't_rel', 'x':'y'}."
             )
-            field_names = {}
+            return self
 
-        df = self.df.rename(columns=field_names).copy()
-
-        new_fields = self._modify_fields(
-            self.resource.schema.to_dict()["fields"],
-            alternative=field_names,
-            keep_original_name_as=keep_original_name_as,
-        )
-
-        # Create new resource with renamed data
-        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
-
-        return type(self)(resource=new_resource)
+        result = self
+        for old_name, new_name in field_names.items():
+            result = result.rename_field(
+                old_name, new_name, keep_original_name_as=keep_original_name_as
+            )
+        return result
 
     @classmethod
     def from_local(cls, filename):
