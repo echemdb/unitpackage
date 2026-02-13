@@ -260,6 +260,98 @@ class EchemdbEntry(Entry):
 
         return super().rescale(units)
 
+    @property
+    def scan_rate(self):
+        r"""
+        Return the scan rate of the entry as an astropy quantity.
+
+        The scan rate is retrieved from the entry's metadata
+        at ``figureDescription.scanRate``.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.scan_rate
+            <Quantity 0.05 V / s>
+
+            >>> from unitpackage.database.echemdb import Echemdb
+            >>> db = Echemdb.create_example()
+            >>> db['engstfeld_2018_polycrystalline_17743_f4b_1'].scan_rate
+            <Quantity 50. mV / s>
+
+        """
+        return self.figureDescription.scanRate.quantity
+
+    def rescale_scan_rate(self, field_name=None, *, value, unit):
+        r"""
+        Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry`
+        where the current (``I``) or current density (``j``) axis is rescaled
+        according to the ratio of the provided scan rate to the original scan rate.
+
+        Since current (density) scales linearly with scan rate in cyclic voltammetry,
+        this method multiplies the ``j`` (or ``I``) column by ``new_scan_rate / original_scan_rate``.
+        The scaling factor is tracked in the field metadata.
+
+        By default the ``j`` (or ``I``) field is rescaled. A custom ``field_name``
+        can be provided if the current axis has a different name.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.scan_rate
+            <Quantity 0.05 V / s>
+
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+        Rescale from 50 mV/s to 100 mV/s (factor of 2)::
+
+            >>> rescaled = entry.rescale_scan_rate(value=100, unit='mV / s')
+            >>> rescaled.df # doctest: +NORMALIZE_WHITESPACE
+                          t         E         j
+            0      0.000000 -0.103158 -1.996553
+            1      0.020000 -0.102158 -1.963524
+            ...
+
+            >>> rescaled.resource.schema.get_field('j') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'j',
+            'type': 'number',
+            'unit': 'A / m2',
+            'scalingFactor': {'value': 2.0}}
+
+        Rescale using the same unit as the original scan rate::
+
+            >>> rescaled2 = entry.rescale_scan_rate(value=0.1, unit='V / s')
+            >>> rescaled2.df # doctest: +NORMALIZE_WHITESPACE
+                          t         E         j
+            0      0.000000 -0.103158 -1.996553
+            1      0.020000 -0.102158 -1.963524
+            ...
+
+        A custom field name can be provided::
+
+            >>> rescaled3 = entry.rescale_scan_rate('j', value=100, unit='mV / s')
+            >>> rescaled3.df # doctest: +NORMALIZE_WHITESPACE
+                          t         E         j
+            0      0.000000 -0.103158 -1.996553
+            1      0.020000 -0.102158 -1.963524
+            ...
+
+        """
+        import astropy.units as u
+
+        original_scan_rate = self.scan_rate
+        new_scan_rate = (value * u.Unit(unit)).to(original_scan_rate.unit)
+
+        scaling_factor = (new_scan_rate / original_scan_rate).decompose().value
+
+        field_name = field_name or self._normalize_field_name("j")
+
+        return self.apply_scaling_factor(field_name, scaling_factor)
+
     def _normalize_field_name(self, field_name):
         r"""
         Return the name of a field name of the `unitpackage` resource.
