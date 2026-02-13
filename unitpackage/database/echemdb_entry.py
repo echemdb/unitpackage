@@ -152,14 +152,23 @@ class EchemdbEntry(Entry):
             'EC-Lab ASCII FILE\nNb header lines : 62...'
 
         """
-        from unitpackage.loaders.eclab_fields import biologic_fields, biologic_fields_alt_names
+        from unitpackage.loaders.eclab_fields import (
+            biologic_fields,
+            biologic_fields_alt_names,
+        )
 
         entry = cls.from_csv(csvname=csvname, encoding=encoding, device="eclab")
         entry = entry.update_fields(biologic_fields)
-        entry = entry.rename_fields(biologic_fields_alt_names, keep_original_name_as="originalName")
+        entry = entry.rename_fields(
+            biologic_fields_alt_names, keep_original_name_as="originalName"
+        )
 
         # Only keep columns that were renamed via biologic_fields_alt_names
-        columns_to_remove = [f.name for f in entry.fields if f.name not in biologic_fields_alt_names.values()]
+        columns_to_remove = [
+            f.name
+            for f in entry.fields
+            if f.name not in biologic_fields_alt_names.values()
+        ]
         entry = entry.remove_columns(*columns_to_remove)
 
         return entry

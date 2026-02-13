@@ -145,4 +145,3 @@ class ECLabLoader(BaseLoader):
                 matches.append(match)
 
         return int(matches[0][0][1]) - 1
-

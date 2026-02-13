@@ -105,7 +105,12 @@ biologic_fields = [
         "dimension": "|Y|",
         "description": "Admittance magnitude (in Ω-1).",
     },
-    {"name": "|Z|/Ohm", "unit": "Ohm", "dimension": "|Z|", "description": "Phase of Z."},
+    {
+        "name": "|Z|/Ohm",
+        "unit": "Ohm",
+        "dimension": "|Z|",
+        "description": "Phase of Z.",
+    },
     {
         "name": "|Zce|/Ohm",
         "unit": "Ohm",

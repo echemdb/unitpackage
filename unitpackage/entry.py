@@ -1085,7 +1085,7 @@ class Entry:
         return type(self)(resource=new_resource)
 
     @classmethod
-    def from_csv(
+    def from_csv(  # pylint: disable=too-many-locals
         cls,
         csvname,
         encoding=None,
@@ -1154,6 +1154,7 @@ class Entry:
 
         """
         from pathlib import Path
+
         from unitpackage.loaders.baseloader import BaseLoader
         from unitpackage.local import create_df_resource_from_df
 

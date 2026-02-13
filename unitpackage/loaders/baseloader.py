@@ -134,8 +134,14 @@ class BaseLoader:
         r"""
         A dictionary of known loaders.
         """
-        return {"eclab": __import__('unitpackage.loaders.eclabloader').loaders.eclabloader.ECLabLoader,
-                "gamry": __import__('unitpackage.loaders.gamryloader').loaders.gamryloader.GamryLoader}
+        return {
+            "eclab": __import__(
+                "unitpackage.loaders.eclabloader"
+            ).loaders.eclabloader.ECLabLoader,
+            "gamry": __import__(
+                "unitpackage.loaders.gamryloader"
+            ).loaders.gamryloader.GamryLoader,
+        }
 
     @classmethod
     def known_loaders(cls):
@@ -186,7 +192,9 @@ class BaseLoader:
 
             return cls._loaders()[device]
 
-        raise KeyError(f"Device wth name '{device}' is not in the list of supported Loaders ({cls.known_loaders()})'.")
+        raise KeyError(
+            f"Device wth name '{device}' is not in the list of supported Loaders ({cls.known_loaders()})'."
+        )
 
     @property
     def header_lines(self):

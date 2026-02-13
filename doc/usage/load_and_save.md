@@ -109,6 +109,50 @@ csv_entry.fields
 
 For even more complex file formats from laboratory equipment, see the [Loaders](loaders.md) section.
 
+### From specific device file formats
+
+Files from laboratory equipment (devices) often have complex structures with lengthy headers, non-standard delimiters, and instrument-specific column names.
+`Entry.from_csv` supports a `device` parameter that selects the appropriate loader for the file format.
+
+For example, loading a BioLogic EC-Lab MPT file:
+
+```{code-cell} ipython3
+from unitpackage.entry import Entry
+
+entry = Entry.from_csv(csvname='../../test/loader_data/eclab_cv.mpt', device='eclab')
+entry
+```
+
+The loader automatically detects headers and delimiters. The resulting entry contains the raw column names from the instrument:
+
+```{code-cell} ipython3
+entry.fields
+```
+
+Information on the file structure is stored in the entry's metadata under `dsvDescription`:
+
+```{code-cell} ipython3
+entry.metadata['dsvDescription']['loader']
+```
+
+#### Domain-specific loading
+
+For submodules such as `echemdb`, convenience methods provide additional processing.
+`EchemdbEntry.from_mpt` loads an MPT file and then updates the fields with units, renames them to short standardized names, and keeps only the most relevant columns for electrochemistry:
+
+```{code-cell} ipython3
+from unitpackage.database.echemdb_entry import EchemdbEntry
+
+entry = EchemdbEntry.from_mpt('../../test/loader_data/eclab_cv.mpt')
+entry.df.head()
+```
+
+The fields now have units, short names, and a reference to the original BioLogic column name:
+
+```{code-cell} ipython3
+entry.fields
+```
+
 From a pandas DataFrame:
 
 ```{code-cell} ipython3

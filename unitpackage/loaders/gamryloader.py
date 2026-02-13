@@ -177,4 +177,3 @@ class GamryLoader(BaseLoader):
 
         """
         return 2
-
