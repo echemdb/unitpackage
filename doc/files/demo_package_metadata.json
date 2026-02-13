@@ -28,7 +28,7 @@
                 ]
             },
             "metadata": {
-                "echemdb": {
+                "genericSchema1": {
                     "description": "Sample data for the unitpackage module.",
                     "curation": {
                         "process": [
@@ -41,7 +41,7 @@
                         ]
                     }
                 },
-                "generic": {
+                "genericSchema2": {
                     "description": "Sample data for the unitpackage module.",
                     "experimentalist": "John Doe",
                     "laboratory": "Institute of Good Scientific Practice",

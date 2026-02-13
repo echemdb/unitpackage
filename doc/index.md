@@ -42,7 +42,7 @@ A single entry can be retrieved with an identifier available in the database.
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 ```
 
-The metadata of the entry is available from `entry.resource`.
+The metadata of the entry is available from `entry.metadata`, which supports both dict and attribute-style access.
 
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe.
 
