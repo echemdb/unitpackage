@@ -74,13 +74,13 @@ conda install unitpackage
 Install with pixi for development
 --------------------------------
 
-We recommend [pixi](https://pixi.sh) for developers of unitpackage to use a
+We recommend [pixi](https://pixi.prefix.dev) for developers of unitpackage to use a
 curated list of dependencies that are tested to work on all platforms. These
 are also exactly the dependencies that are used in our CI, which makes it
 easier to test things locally.
 
 If you don't have pixi yet, follow the [pixi installation
-instructions](https://pixi.sh/latest/getting_started/).
+instructions](https://pixi.prefix.dev/latest/getting_started/).
 
 Once pixi is installed, get a copy of the latest unitpackage and install the
 dependencies:

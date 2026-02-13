@@ -95,7 +95,7 @@ print(csv.data.read())
 The data can also be converted into frictionless Data Packages using the CLI.
 
 ```{note}
-The input and output files for and from the following commands can be found in the [test folder](https://github.com/echemdb/unitpackage/tree/master/) of the repository.
+The input and output files for and from the following commands can be found in the [test folder](https://github.com/echemdb/unitpackage/tree/main/) of the repository.
 
 The CLI only works for standard CSV without header and a single column header line, and specific converters summarized above.
 ```
