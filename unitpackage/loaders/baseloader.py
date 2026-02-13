@@ -28,9 +28,9 @@ TODO:: Add example
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2025 Albert Engstfeld
-#        Copyright (C) 2022 Johannes Hermann
-#        Copyright (C) 2022 Julian Rüth
+#        Copyright (C) 2025-2026 Albert Engstfeld
+#        Copyright (C) 2025 Johannes Hermann
+#        Copyright (C) 2025 Julian Rüth
 #
 #  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -256,8 +256,10 @@ class BaseLoader:
         )
 
     @property
-    def metadata(self):  # pylint: disable=abstract-method
-        r"""A dict containing the metadata of the file found in its header.
+    def metadata(self):
+        r"""A dict describing the structure of the loaded DSV file, including
+        the dialect (delimiter, decimal separator), header content, and
+        column header names.
 
         EXAMPLES::
 
@@ -266,13 +268,27 @@ class BaseLoader:
             ... 0,0
             ... 1,1''')
             >>> csv = BaseLoader(file)
-            >>> csv.metadata
-            Traceback (most recent call last):
-            ...
-            NotImplementedError
+            >>> csv.metadata # doctest: +NORMALIZE_WHITESPACE
+            {'loader': 'BaseLoader',
+            'delimiter': ',',
+            'decimal': '.',
+            'headerLines': 0,
+            'columnHeaderLines': 1,
+            'header': '',
+            'columnHeaders': 'a,b\n',
+            'columnHeaderNames': ['a', 'b']}
 
         """
-        raise NotImplementedError
+        return {
+            "loader": type(self).__name__,
+            "delimiter": self.delimiter,
+            "decimal": self.decimal,
+            "headerLines": self.header_lines,
+            "columnHeaderLines": self.column_header_lines,
+            "header": self.header.read(),
+            "columnHeaders": self.column_headers.read(),
+            "columnHeaderNames": self.column_header_names,
+        }
 
     @property
     def column_header_lines(self):

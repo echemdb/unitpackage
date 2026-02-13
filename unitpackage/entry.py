@@ -1098,6 +1098,13 @@ class Entry:
         r"""
         Returns an entry constructed from a CSV.
 
+        The file is always parsed through a loader which captures the file's
+        structure (delimiter, decimal separator, header, column headers) in the
+        entry's metadata under ``dsvDescription``.
+
+        A ``device`` can be specified to select a device-specific loader
+        (e.g., ``'eclab'`` or ``'gamry'``).
+
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
@@ -1105,9 +1112,12 @@ class Entry:
             >>> entry
             Entry('from_csv')
 
-            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'from_csv',
-            ...
+        The loader's file structure information is stored in the metadata::
+
+            >>> entry.metadata['dsvDescription']['loader']
+            'BaseLoader'
+            >>> entry.metadata['dsvDescription']['delimiter']
+            ','
 
         .. important::
             Upper case filenames are converted to lower case entry identifiers!
@@ -1118,25 +1128,12 @@ class Entry:
             >>> entry
             Entry('uppercase')
 
-        Casing in the filename is preserved in the metadata::
-
-            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'uppercase',
-            'type': 'table',
-            'path': 'UpperCase.csv',
-            ...
-
         CSV with a more complex structure, such as multiple header lines can be constructed::
 
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
-            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'from_csv_multiple_headers',
-            'type': 'table',
-            'data': [],
-            'format': 'pandas',
-            'mediatype': 'application/pandas',
-            'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
-                                {'name': 'j / A / cm2', 'type': 'integer'}]}}
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 'E / V', 'type': 'integer'},
+            {'name': 'j / A / cm2', 'type': 'integer'}]
 
         A device-specific loader can be used to parse instrument files::
 
@@ -1150,43 +1147,31 @@ class Entry:
             1      2       0      0  ... -3.622761e-08       41 -0.000003
             ...
 
+            >>> entry.metadata['dsvDescription']['loader']
+            'ECLabLoader'
+            >>> entry.metadata['dsvDescription']['delimiter']
+            '\t'
+
         """
         from pathlib import Path
+        from unitpackage.loaders.baseloader import BaseLoader
+        from unitpackage.local import create_df_resource_from_df
 
-        dialect = {"header_lines": header_lines,
-                   "column_header_lines": column_header_lines,
-                   "decimal": decimal,
-                   "delimiters": delimiters}
+        dialect = {
+            "header_lines": header_lines,
+            "column_header_lines": column_header_lines,
+            "decimal": decimal,
+            "delimiters": delimiters,
+        }
 
-        if device:
-            from unitpackage.loaders.baseloader import BaseLoader
+        loader_cls = BaseLoader.create(device) if device else BaseLoader
 
-            with open(csvname, "r", encoding=encoding or "utf-8") as f:
-                loader = BaseLoader.create(device)(
-                    f,
-                    **dialect
-                )
+        with open(csvname, "r", encoding=encoding or "utf-8") as f:
+            loader = loader_cls(f, **dialect)
 
-            from unitpackage.local import create_df_resource_from_df
-
-            resource = create_df_resource_from_df(loader.df)
-            resource.name = Path(csvname).stem.lower()
-
-            return cls(resource)
-
-        from unitpackage.local import create_tabular_resource_from_csv
-
-        # pylint: disable=duplicate-code
-        resource = create_tabular_resource_from_csv(
-            csvname=csvname,
-            encoding=encoding,
-            **dialect,
-        )
-
-        if resource.name == "memory":
-            resource.name = Path(
-                csvname
-            ).stem.lower()  # Use stem (filename without extension)
+        resource = create_df_resource_from_df(loader.df)
+        resource.name = Path(csvname).stem.lower()
+        resource.custom["metadata"] = {"dsvDescription": loader.metadata}
 
         return cls(resource)
 
