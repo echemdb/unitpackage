@@ -604,7 +604,7 @@ class Entry:
             {'name': 'j',
             'type': 'number',
             'unit': 'A / m2',
-            'scalingFactor': {'value': 2}}
+            'scalingFactor': {'value': 2.0}}
 
         A consecutively applied scaling factor::
 
@@ -619,7 +619,7 @@ class Entry:
             {'name': 'j',
             'type': 'number',
             'unit': 'A / m2',
-            'scalingFactor': {'value': 6}}
+            'scalingFactor': {'value': 6.0}}
 
         Scaling by a float::
 
@@ -645,7 +645,7 @@ class Entry:
 
         # Calculate the cumulative scaling factor
         old_scaling_factor = field.custom.get("scalingFactor", {}).get("value", 1)
-        new_scaling_factor = old_scaling_factor * scaling_factor
+        new_scaling_factor = float(old_scaling_factor * scaling_factor)
 
         # Create new resource with scaling factor metadata
         field_updates = {
