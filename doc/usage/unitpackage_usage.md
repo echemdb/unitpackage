@@ -79,7 +79,7 @@ whereby a new collection is created.
 ### Filter the collection
 
 ```{code-cell} ipython3
-filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
+filtered_db = db.filter(lambda entry: entry.echemdb.experimental.tags == ['BCV','HER'])
 len(filtered_db)
 ```
 
@@ -87,7 +87,7 @@ Alternatively parse a custom filter.
 
 ```{code-cell} ipython3
 def custom_filter(entry):
-    for component in entry.system.electrolyte.components:
+    for component in entry.echemdb.system.electrolyte.components:
         if 'ClO4' in component.name:
             return True
     return False
@@ -121,16 +121,16 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 
 The metadata associated with a unitpackage entry is accessible via `entry.metadata`.
 From an `entry` such information can be retrieved by `entry['key']`,
-where `key` is the respective descriptor in the metadata.
-Alternatively, you can write `entry.key` where all spaces should be replaced by underscores.
+where `key` is the respective top-level descriptor in the metadata.
+Nested descriptors can be accessed with chained bracket or attribute-style access.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citationKey']
+entry['echemdb']['source']['citationKey']
 ```
 
 ```{code-cell} ipython3
-entry.source.citationKey
+entry.echemdb.source.citationKey
 ```
 
 `entry.metadata` provides a full list of available descriptors. See [Creating Unitpackages](create_unitpackage.md) for details on how to load and modify metadata.
@@ -142,17 +142,17 @@ entry.source.citationKey
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
-entry.figureDescription.scanRate
+entry.echemdb.figureDescription.scanRate
 ```
 
 The unit and value can be accessed separately
 
 ```{code-cell} ipython3
-entry.figureDescription.scanRate.value
+entry.echemdb.figureDescription.scanRate.value
 ```
 
 ```{code-cell} ipython3
-entry.figureDescription.scanRate.unit
+entry.echemdb.figureDescription.scanRate.unit
 ```
 
 (data)=

@@ -151,9 +151,16 @@ class MetadataDescriptor:
             >>> entry.metadata['custom_key']
             {'data': 'value'}
 
+        Works also when the resource has no pre-existing metadata dict::
+
+            >>> entry = Entry.from_csv(csvname='./examples/from_csv/from_csv.csv')
+            >>> entry.metadata._add_metadata('experiment', {'user': 'Doe'})
+            >>> entry.metadata['experiment']
+            {'user': 'Doe'}
+
         """
         if key:
-            self._entry.resource.custom["metadata"][key] = data
+            self._entry.resource.custom.setdefault("metadata", {})[key] = data
         else:
             self._entry.resource.custom["metadata"] = data
 

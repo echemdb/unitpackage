@@ -14,7 +14,7 @@ kernelspec:
 
 # Creating Unitpackages
 
-[Unitpackages](unipackage.md) (frictionless Data Packages with unit-annotated fields and additional metadata describing the data) can be created from CSV files or pandas DataFrames.
+[Unitpackages](unitpackage.md) (frictionless Data Packages with unit-annotated fields and additional metadata describing the data) can be created from CSV files or pandas DataFrames.
 After creation, metadata and field descriptions (including units) can be added to produce a complete, self-describing data package.
 
 ## Quick start
@@ -78,7 +78,7 @@ entry.df.head()
 or from the resource data
 
 ```{code-cell} ipython3
-entry.resource.schema.data
+entry.resource.schema.to_dict()
 ```
 
 ## From a pandas DataFrame
