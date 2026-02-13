@@ -76,27 +76,23 @@ An individual entry can be loaded from a local datapackage.
 ```{code-cell} ipython3
 from unitpackage.entry import Entry
 
-db = Entry.from_local("../files/demo_package.json")
-db
+entry = Entry.from_local("../files/demo_package.json")
+entry
 ```
 
-Alternatively, entries can be created from CSV or pandas datframes.
-In these cases, metadata and descriptors for the columns in the CSV can be added upon evoking the entry.
+Alternatively, entries can be created from CSV files or pandas DataFrames.
+Metadata and field descriptors can be added after creation using `update_fields()` and `metadata.from_dict()`.
 
-Metadata should be provided as Python dictionary and the fields must be a list, as illustrated in the example below.
-The individual fields must have a name.
-For a CSV
+From a CSV file:
 
 ```{code-cell} ipython3
 from unitpackage.entry import Entry
 
-metadata = {'user': 'Max Doe'}
-fields = [{'name': 't', 'unit':'s'},{'name': 'j', 'unit':'mA/cm²'}]
-
-csv_entry = Entry.from_csv("../files/demo_package.csv", metadata=metadata, fields=fields)
+csv_entry = Entry.from_csv(csvname="../files/demo_package.csv")
+csv_entry
 ```
 
-In a similar way an entry can be created from a pandas resource.
+From a pandas DataFrame:
 
 ```{code-cell} ipython3
 import pandas as pd
@@ -105,15 +101,15 @@ from unitpackage.entry import Entry
 data = {'x': [1,2,3], 'v': [1,3,2]}
 df = pd.DataFrame(data)
 
-metadata = {'user': 'Max Doe'}
-fields = [{'name': 'x', 'unit':'m'},{'name': 'v', 'unit':'m/s', 'description': 'velocity'}]
-
-df_entry = Entry.from_df(df, basename='df_data', metadata=metadata, fields=fields)
+df_entry = Entry.from_df(df, basename='df_data')
+df_entry
 ```
+
+For more details on adding metadata and field descriptions, see [Creating Unitpackages](create_unitpackage.md).
 
 ## Save entries
 
-Entries can be saved as JSON and CSV in a specified folder either directly from collection
+Entries can be saved as JSON and CSV in a specified folder either directly from a collection
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
@@ -131,26 +127,8 @@ entry = Entry.from_local("../files/demo_package.json")
 entry.save(outdir="../generated/files/saved_entry")
 ```
 
-The basename of the entry can be modified
+The basename of the entry can be modified.
 
 ```{code-cell} ipython3
 entry.save(basename=entry.identifier + "_r" , outdir="../generated/files/saved_entry")
-```
-
-## Create local unitpackages
-
-Local Frictionless datapackages (JSON and CSV) can be created by combining the methods to load and save entries above.
-
-Following is an example for a CSV, where the metadata and the field description are stored in a separate metadata file.
-
-```{code-cell} ipython3
-import yaml
-
-with open("../files/demo_package.csv.yaml", "rb") as f:
-    metadata = yaml.load(f, Loader=yaml.SafeLoader)
-
-fields = metadata["figureDescription"]["fields"]
-
-entry = Entry.from_csv(csvname="../files/demo_package.csv", metadata=metadata, fields=fields)
-entry.save(outdir="../generated/files/csv_entry/")
 ```

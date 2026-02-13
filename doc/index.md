@@ -91,6 +91,22 @@ db_filtered.describe()
 The filtering method is also available to the base class `Collection`.
 ```
 
+## Creating Unitpackages
+
+Unitpackages can also be [created from scratch](usage/create_unitpackage.md) using CSV files or pandas DataFrames.
+Metadata and unit descriptions for the fields can be added to produce self-describing data packages.
+
+```{code-cell} ipython3
+from unitpackage.entry import Entry
+
+entry = Entry.from_csv(csvname="files/demo_package.csv")
+entry = entry.load_metadata("files/demo_package.csv.yaml")
+entry = entry.update_fields(fields=[{'name': 't', 'unit': 's'}, {'name': 'j', 'unit': 'A / cm2'}])
+entry.save(outdir="generated/files/csv_entry/")
+```
+
+See [Creating Unitpackages](usage/create_unitpackage.md) for more details on adding metadata from YAML, JSON, or Python dictionaries.
+
 ## Further Usage
 
 Frictionless Data Packages or unitpackges are perfectly machine-readable, making the underlying data and metadata reusable in many ways.
@@ -141,6 +157,7 @@ usage/unitpackage.md
 usage/unitpackage_usage.md
 usage/echemdb_usage.md
 usage/load_and_save.md
+usage/create_unitpackage.md
 usage/loaders.md
 api.md
 ```
