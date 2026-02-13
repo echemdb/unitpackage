@@ -73,7 +73,7 @@ logger = logging.getLogger("unitpackage")
 
 class EchemdbEntry(Entry):
     r"""
-    A `frictionless Data Package <https://github.com/frictionlessdata/framework>`_ describing a CV.
+    A `frictionless Data Package <https://github.com/frictionlessdata/frictionless-py>`_ describing a CV.
 
     EXAMPLES:
 

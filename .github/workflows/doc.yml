@@ -30,6 +30,18 @@ jobs:
           mkdir generated/html
           mv generated/html_ generated/html/unitpackage
           touch generated/html/unitpackage/.nojekyll
+      - name: Show all myst-nb error logs
+        if: always()
+        run: |
+          echo "Searching for notebook error logs..."
+          find doc/generated -type f -name "*.log" -print -exec cat {} \; || true
+      - name: Upload Sphinx error logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sphinx-error-logs
+          path: doc/generated/**/*.log
+          if-no-files-found: ignore
       - uses: JamesIves/github-pages-deploy-action@v4.8.0
         with:
           branch: gh-pages
@@ -37,6 +49,7 @@ jobs:
           target-folder: docs
           single-commit: true
         if: ${{ github.event_name == 'push' }}
+
       - name: detect broken links
         shell: pixi run -e doc bash -e {0}
         run: pixi run linkcheck

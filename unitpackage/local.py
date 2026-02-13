@@ -47,7 +47,7 @@ def create_tabular_resource_from_csv(
     r"""
     Return a resource built from a provided CSV.
 
-    EXAMPLES::
+    EXAMPLES:
 
     For standard CSV files (single header line and subsequent
     lines with data, using `.` as decimal separator.)

@@ -1,5 +1,5 @@
 """
-This module contains the :class:`_ReferenceElectrode` to explore data for tabulated reference electrodes
+This module contains the ``_ReferenceElectrode`` class to explore data for tabulated reference electrodes
 and determine the shift between different potential scales.
 
 TODO:: Add description of certain sources, etc
