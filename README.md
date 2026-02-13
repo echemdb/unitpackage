@@ -1,4 +1,4 @@
-[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.11.2?labpath=tree%2Fdoc%2Findex.md)
+[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.12.0?labpath=tree%2Fdoc%2Findex.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15644101.svg)](https://zenodo.org/records/15644101)
 
 # unitpackage

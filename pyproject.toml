@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "unitpackage"
-version = "0.11.2"
+version = "0.12.0"
 license = "GPL-3.0-or-later"
 description = "a Python library to interact with a collection of frictionless datapackages"
 readme = "README.md"
