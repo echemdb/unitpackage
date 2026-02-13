@@ -20,7 +20,7 @@ EXAMPLES::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2024-2025 Albert Engstfeld
+#        Copyright (C) 2024-2026 Albert Engstfeld
 #        Copyright (C)      2022 Johannes Hermann
 #        Copyright (C) 2022-2025 Julian Rüth
 #
@@ -94,6 +94,7 @@ def convert(csv, device, outdir, metadata):
         ...         os.chdir(cwd)
 
     """
+    import os
     import yaml
 
     from unitpackage.loaders.baseloader import BaseLoader
@@ -113,6 +114,8 @@ def convert(csv, device, outdir, metadata):
         with open(csv, "r") as file:  # pylint: disable=unspecified-encoding
             loader = BaseLoader(file)
 
+    # Ensure output directory exists
+    os.makedirs(outdir, exist_ok=True)
     entry = Entry.from_df(df=loader.df, basename=Path(csv).stem)
     if fields:
         entry = entry.update_fields(fields=fields)
