@@ -66,7 +66,7 @@ print(csv.file.read())
 ```
 
 A pandas Data Frame can be created with limited input data.
-The delimiter of the data part is evaluated using the [`clevercsv`](https://clevercsv.readthedocs.io/en/latest/index.html) module (unless specified as an argument).
+The delimiter of the data part is evaluated automatically (unless specified as an argument).
 Multiple column headers will be flattened.
 
 ```{code-cell} ipython3
