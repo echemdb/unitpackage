@@ -400,13 +400,12 @@ def create_unitpackage(resource, metadata=None, fields=None):
     resource.custom["metadata"] = metadata
 
     if fields:
-        # Update fields in the Resource using frictionless Schema API
-        for field_descriptor in fields:
-            field_name = field_descriptor.get("name")
-            if field_name and field_name in resource.schema.field_names:
-                # Extract updates (excluding 'name' since update_field takes name separately)
-                updates = {k: v for k, v in field_descriptor.items() if k != "name"}
-                resource.schema.update_field(field_name, updates)
+        # Use update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
+
+        # Update the resource schema with the updated fields
+        resource.schema = Schema({"fields": updated_fields})
 
     package = Package(resources=[resource])
 

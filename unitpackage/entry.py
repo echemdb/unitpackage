@@ -32,7 +32,7 @@ The data of the entry can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Entries can be created from from various sources, such as csv files or pandas dataframes::
+Entries can be created from various sources, such as csv files or pandas dataframes::
 
     >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
     >>> entry
@@ -77,6 +77,7 @@ Metadata to the resource can be updated in-place::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import functools
 import logging
 import os.path
 
@@ -127,13 +128,16 @@ class Entry:
     def __init__(self, resource):
         self.resource = resource
 
-    @property
+    @functools.cached_property
     def metadata(self):
         r"""
         Access and manage entry metadata.
 
         Returns a MetadataDescriptor that supports both dict and attribute-style access.
         Allows loading metadata from various sources. Modifications are applied in-place.
+
+        The descriptor is cached for efficiency, but still reflects metadata changes since
+        it delegates to the underlying resource.
 
         EXAMPLES::
 
@@ -150,6 +154,17 @@ class Entry:
             >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
             >>> new_entry.metadata['echemdb']['test']
             'data'
+
+        The descriptor is cached but still sees metadata updates::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> descriptor1 = entry.metadata
+            >>> entry.metadata.from_dict({'custom': {'key': 'value'}})
+            >>> descriptor2 = entry.metadata
+            >>> descriptor1 is descriptor2
+            True
+            >>> descriptor1['custom']['key']
+            'value'
 
         """
         return MetadataDescriptor(self)
@@ -522,13 +537,18 @@ class Entry:
 
         field = self.resource.schema.get_field(field_name)
 
+        if not field.custom.get("unit") and not unit:
+            raise ValueError(
+                f"Field '{field_name}' has no unit and no unit was provided for the offset."
+            )
+
         if field.custom.get("unit") and not unit:
             logger.warning(
                 f"""No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."""
             )
             unit = field.custom.get("unit")
 
-        field_unit = u.Unit(field.custom.get("unit"))
+        field_unit = u.Unit(field.custom.get("unit") or unit)
 
         # create a new dataframe with offset values
         df = self.df.copy()
@@ -583,31 +603,44 @@ class Entry:
         if schema is not None:
             # Use the provided schema
             new_resource.schema = Schema.from_descriptor(schema, allow_invalid=True)
+        elif field_updates:
+            # Copy schema and apply field-specific updates
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
+            for field_name, updates in field_updates.items():
+                if field_name in new_resource.schema.field_names:
+                    new_resource.schema.update_field(field_name, updates)
         else:
-            # Copy schema from original resource
-            for field_obj in self.resource.schema.fields:
-                field_dict = field_obj.to_dict()
-                # Apply any field-specific updates
-                if field_updates and field_obj.name in field_updates:
-                    field_dict.update(field_updates[field_obj.name])
-                new_resource.schema.update_field(field_obj.name, field_dict)
+            # No schema provided and no updates - copy schema as-is
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
 
         # Copy metadata to new resource
         new_resource.custom["metadata"] = self.resource.custom.get("metadata", {})
 
         return new_resource
 
-    def _ensure_df_resource(self):
+    @functools.cached_property
+    def _df_resource(self):
         r"""
-        Ensure the resource is a pandas dataframe resource and return it.
-        If the resource is a CSV resource, convert it to pandas format.
+        Cached pandas dataframe resource.
+
+        If the resource is a CSV resource, convert it to pandas format on first access
+        and cache the result. This avoids re-reading the CSV file on every .df access.
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> resource = entry._ensure_df_resource()
+            >>> resource = entry._df_resource
             >>> resource.format
             'pandas'
+
+            >>> # Second access uses cached value
+            >>> resource2 = entry._df_resource
+            >>> resource is resource2
+            True
         """
         if self.resource.format == "pandas":
             return self.resource
@@ -661,7 +694,7 @@ class Entry:
             2  3  4
 
         """
-        return self._ensure_df_resource().data
+        return self._df_resource.data
 
     def add_columns(self, df, new_fields):
         r"""
@@ -790,10 +823,29 @@ class Entry:
             False
 
         """
-        result = self
+        if not field_names:
+            return self
+
+        from frictionless import Schema
+
+        # Remove all columns from dataframe at once
+        df = self.df.copy()
+        columns_to_remove = [name for name in field_names if name in df.columns]
+        if columns_to_remove:
+            df.drop(columns=columns_to_remove, inplace=True)
+
+        # Create new schema and remove all fields in a single pass
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
         for field_name in field_names:
-            result = result.remove_column(field_name)
-        return result
+            if field_name in [field.name for field in new_schema.fields]:
+                new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
 
     def __repr__(self):
         r"""
@@ -949,22 +1001,19 @@ class Entry:
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        from frictionless import Schema
+        from unitpackage.local import update_fields
 
-        # Get the dataframe and create a new schema
+        # Get the dataframe
         df = self.df.copy()
-        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
 
-        # Update fields using schema.update_field()
-        for field_descriptor in fields:
-            field_name = field_descriptor.get("name")
-            if field_name and field_name in [field.name for field in new_schema.fields]:
-                # Extract the updates (excluding 'name' since update_field takes name separately)
-                updates = {k: v for k, v in field_descriptor.items() if k != "name"}
-                new_schema.update_field(field_name, updates)
+        # Use local.update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in self.resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
 
         # Create new resource with updated schema
-        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        new_resource = self._create_new_df_resource(
+            df, schema={"fields": updated_fields}
+        )
 
         return type(self)(resource=new_resource)
 
@@ -1011,7 +1060,6 @@ class Entry:
 
         CSV with a more complex structure, such as multiple header lines can be constructed::
 
-            >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
             >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
             {'name': 'from_csv_multiple_headers',
@@ -1195,12 +1243,20 @@ class Entry:
             )
             return self
 
-        result = self
-        for old_name, new_name in field_names.items():
-            result = result.rename_field(
-                old_name, new_name, keep_original_name_as=keep_original_name_as
-            )
-        return result
+        # Rename all columns at once in the dataframe
+        df = self.df.rename(columns=field_names).copy()
+
+        # Update all field names in a single pass
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings=field_names,
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
+
+        return type(self)(resource=new_resource)
 
     @classmethod
     def from_local(cls, filename):

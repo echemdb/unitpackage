@@ -1,7 +1,7 @@
 **Added:**
 
 * Added `_create_new_df_resource()`, which returns a new pandas resource when the schema of the resource changed.
-* Added `_ensure_df_resource()`, which transforms a tabular_resource into a pandas resource when the data or schema is modified.
+* Added `_df_resource` as a cached property, which transforms a tabular_resource into a pandas resource when first accessed and caches the result for improved performance.
 
 **Removed:**
 

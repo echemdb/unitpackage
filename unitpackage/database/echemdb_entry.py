@@ -394,8 +394,10 @@ class EchemdbEntry(Entry):
         Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with potentials
         referenced to ``new_reference`` scale.
 
-        ::Warning:: This is an experimental feature working for standard aqueous reference electrodes and electrolytes.
-        We do not include temperature effects or other non-idealities at this point.
+        .. warning::
+
+            This is an experimental feature working for standard aqueous reference electrodes and electrolytes.
+            We do not include temperature effects or other non-idealities at this point.
 
         If a reference is not available, the axis can still be rescaled by adding an offset using the
         :meth:`~unitpackage.entry.Entry.add_offset`.
@@ -438,12 +440,11 @@ class EchemdbEntry(Entry):
 
         import astropy.units as u
 
-        ph = (
-            ph or self.system.electrolyte.ph
-            if hasattr(self.system, "electrolyte")
-            and hasattr(self.system.electrolyte, "ph")
-            else None
-        )
+        if ph is None:
+            if hasattr(self.system, "electrolyte") and hasattr(
+                self.system.electrolyte, "ph"
+            ):
+                ph = self.system.electrolyte.ph
 
         # TODO:: The class should be implemented in an external EC tools module.
         # For now, we need a simple approach for reference scale conversion.
