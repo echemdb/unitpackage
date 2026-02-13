@@ -34,5 +34,5 @@ api/electrochemistry/reference_electrode.md
 api/loaders/baseloader.md
 api/loaders/eclabloader.md
 api/loaders/gamryloader.md
-api/loaders/column_names.md
+api/loaders/eclab_fields.md
 ```
