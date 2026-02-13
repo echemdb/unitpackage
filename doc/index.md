@@ -42,7 +42,7 @@ A single entry can be retrieved with an identifier available in the database.
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 ```
 
-The metadata of the entry is available from `entry.resource`.
+The metadata of the entry is available from `entry.metadata`, which supports both dict and attribute-style access.
 
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe.
 
@@ -90,6 +90,22 @@ db_filtered.describe()
 ```{note}
 The filtering method is also available to the base class `Collection`.
 ```
+
+## Creating Unitpackages
+
+Unitpackages can also be [created from scratch](usage/create_unitpackage.md) using CSV files or pandas DataFrames.
+Metadata and unit descriptions for the fields can be added to produce self-describing data packages.
+
+```{code-cell} ipython3
+from unitpackage.entry import Entry
+
+entry = Entry.from_csv(csvname="files/demo_package.csv")
+entry = entry.load_metadata("files/demo_package.csv.yaml")
+entry = entry.update_fields(fields=[{'name': 't', 'unit': 's'}, {'name': 'j', 'unit': 'A / cm2'}])
+entry.save(outdir="generated/files/csv_entry/")
+```
+
+See [Creating Unitpackages](usage/create_unitpackage.md) for more details on adding metadata from YAML, JSON, or Python dictionaries.
 
 ## Further Usage
 
@@ -141,6 +157,7 @@ usage/unitpackage.md
 usage/unitpackage_usage.md
 usage/echemdb_usage.md
 usage/load_and_save.md
+usage/create_unitpackage.md
 usage/loaders.md
 api.md
 ```

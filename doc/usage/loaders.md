@@ -5,11 +5,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.18.1
 kernelspec:
+  name: python3
   display_name: Python 3 (ipykernel)
   language: python
-  name: python3
 ---
 
 # Loaders
@@ -66,7 +66,7 @@ print(csv.file.read())
 ```
 
 A pandas Data Frame can be created with limited input data.
-The delimiter of the data part is evaluated using the [`clevercsv`](https://clevercsv.readthedocs.io/en/latest/index.html) module (unless specified as an argument).
+The delimiter of the data part is evaluated automatically (unless specified as an argument).
 Multiple column headers will be flattened.
 
 ```{code-cell} ipython3
@@ -92,10 +92,14 @@ print(csv.column_headers.read())
 print(csv.data.read())
 ```
 
+## CLI
+
++++
+
 The data can also be converted into frictionless Data Packages using the CLI.
 
 ```{note}
-The input and output files for and from the following commands can be found in the [test folder](https://github.com/echemdb/unitpackage/tree/master/) of the repository.
+The input and output files for and from the following commands can be found in the [test folder](https://github.com/echemdb/unitpackage/tree/main/) of the repository.
 
 The CLI only works for standard CSV without header and a single column header line, and specific converters summarized above.
 ```
@@ -104,22 +108,4 @@ A "standard" CSV
 
 ```{code-cell} ipython3
 !unitpackage csv ../../test/loader_data/default.csv --outdir ../../test/generated/loader_data
-```
-
-A specific file type, including additional YAML metadata.
-
-```{code-cell} ipython3
-:tags: [remove-output]
-!unitpackage csv ../../test/loader_data/eclab_cv.mpt --device eclab --metadata ../../test/loader_data/eclab_cv.mpt.metadata --outdir ../../test/generated/loader_data/
-```
-
-## Further usage
-
-Use echemdbs' `unitpackage` to browse, modify and visualize the Data Packages.
-
-```{code-cell} ipython3
-from unitpackage.collection import Collection
-db = Collection.from_local('../../test/generated/loader_data/')
-entry = db['eclab_cv']
-entry
 ```

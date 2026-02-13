@@ -74,45 +74,96 @@ conda install unitpackage
 Install with pixi for development
 --------------------------------
 
-We recommend [pixi](https://pixi.sh) for developers of unitpackage to use a
+We recommend [pixi](https://pixi.prefix.dev) for developers of unitpackage to use a
 curated list of dependencies that are tested to work on all platforms. These
 are also exactly the dependencies that are used in our CI, which makes it
 easier to test things locally.
 
-Once you installed pixi itself, get a copy of the latest unitpackage
+If you don't have pixi yet, follow the [pixi installation
+instructions](https://pixi.prefix.dev/latest/getting_started/).
+
+Once pixi is installed, get a copy of the latest unitpackage and install the
+dependencies:
 
 ```sh
 git clone https://github.com/echemdb/unitpackage.git
+cd unitpackage
+pixi install
 ```
 
-Once you made some changes, you can run the test suite with
+### Running tests
+
+Run the full test suite (doctests) with:
 
 ```sh
 pixi run test
 ```
 
-or run the linters
+This is equivalent to running the doctests directly:
+
+```sh
+pixi run doctest
+```
+
+To run the tests against a specific Python version, use one of the
+`python-3XX` environments:
+
+```sh
+pixi run -e python-312 doctest
+```
+
+Available test environments are: `python-310`, `python-311`, `python-312`,
+`python-313`, and `python-314`.
+
+### Linting
+
+Run all linters (pylint, black, isort) at once:
 
 ```sh
 pixi run lint
 ```
 
-or rebuild the documentation
+Or run them individually:
+
+```sh
+pixi run black
+pixi run isort
+pixi run pylint
+```
+
+### Building the documentation
+
+Rebuild the documentation with:
 
 ```sh
 pixi run doc
 ```
 
-You can also explore unitpackage in an interactive session by launching an IPython session
+Check for broken links in the documentation with:
+
+```sh
+pixi run linkcheck
+```
+
+### Interactive development
+
+You can explore unitpackage in an interactive IPython session:
 
 ```sh
 pixi run -e dev ipython
 ```
 
-or a Jupyter notebook
+Or launch a Jupyter notebook:
 
 ```sh
 pixi run -e dev jupyter lab
+```
+
+You can also drop into an interactive shell with all development dependencies
+available:
+
+```sh
+pixi shell -e dev
 ```
 
 Note that any changes you make to the files in your local copy of unitpackage

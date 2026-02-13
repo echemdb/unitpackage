@@ -50,7 +50,7 @@ logger = logging.getLogger("unitpackage")
 
 class Echemdb(Collection):
     r"""
-    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/framework>`__.
+    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/frictionless-py>`__.
 
     Essentially this is just a list of data packages with some additional
     convenience wrap for use in the `echemdb data repository <https://github.com/echemdb/electrochemistry-data>`_

@@ -49,7 +49,19 @@ entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 type(entry)
 ```
 
-`entry.package` provides a full list of available descriptors.
+`entry.metadata` provides a full list of available descriptors.
+
+For `Echemdb` entries, the top-level keys under `entry.metadata['echemdb']` (such as `source`, `system`, `figureDescription`, etc.) are directly accessible as properties on the entry:
+
+```{code-cell} ipython3
+entry.source
+```
+
+```{code-cell} ipython3
+entry.system.electrolyte
+```
+
+Other metadata subsets that are not under the `echemdb` key must be accessed via `entry.metadata`, e.g., `entry.metadata['other_key']`.
 
 As indicated above, electrodes used to record the data are listed in the `system.electrodes` descriptor and are accessible with
 
@@ -91,10 +103,10 @@ rescaled_entry = entry.rescale({'E': 'mV', 'j': 'A / m2' })
 rescaled_entry.df.head(5)
 ```
 
-The information is updated in the field description of the mutable resource.
+The information is updated in the field descriptions.
 
 ```{code-cell} ipython3
-rescaled_entry.mutable_resource.schema
+rescaled_entry.fields
 ```
 
 An entry can be rescaled to its original units.
@@ -104,15 +116,15 @@ original_entry = rescaled_entry.rescale('original')
 original_entry.df.head(5)
 ```
 
-The information in the mutable resource is updated accordingly.
+The field descriptions are updated accordingly.
 
 ```{code-cell} ipython3
-original_entry.mutable_resource.schema
+original_entry.fields
 ```
 
 ### Shifting reference scales
 
-A key issue for comparing electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the potential data is not straight forward unless the data is shifted to a common reference scale. The shift to a different reference scale depends on how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data. 
+A key issue for comparing electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the potential data is not straight forward unless the data is shifted to a common reference scale. The shift to a different reference scale depends on how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data.
 
 #### Separate consideration
 
@@ -139,8 +151,11 @@ A certain `ReferenceElectrode` can contain multiple entries with values from dif
 ref.standard_data
 ```
 
-The shift a certain reference electrode vs that of another known reference electrode can be inferrred. 
+The shift a certain reference electrode vs that of another known reference electrode can be inferrred.
+
+```{note}
 The resulting value is always in `V`!
+```
 
 ```{code-cell} ipython3
 ref.shift(to='CE-1M')

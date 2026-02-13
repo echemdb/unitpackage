@@ -1,17 +1,32 @@
 experiment:
   type: BCV
   comment: intended approach
-data description:
+dataDescription:
   type: raw
-  measurement type: CV
-  scan rate:
-    comment: variable
-  potential scale:
-    unit: V
-    reference: RHE
-  current:
-    unit: mA
-electrochemical system:
+  measurementType: CV
+  comment: A description of the measurement data. # Add whatever you think is important to understand the data. This will be updated by the `svgdigitizer.electrochemistry.cv.CV` module and takes the comment from the svg file.
+  scanRate:
+    value: 50
+    unit: mV / s
+  dialect:
+    delimiters: ','
+    decimal: '.'
+    encoding: utf-8
+    headerLines: 0
+    columnHeaderLines: 2
+  fieldMapping: # Also map fields which should be kept unchanged.
+    E / V vs. RHE: E # If the header consists of multiple lines, separate by " / ".
+    j / mA cm\+(-2): j
+    <I> / mA: I
+  fieldUnits:
+    - name: E
+      unit: V
+      reference: RHE
+    - name: j
+      unit: mA cm-2
+    - name: I
+      unit: mA
+electrochemicalSystem:
   instrumentation:
   - type: potentiostat
     supplier: Biologic VSP-300
@@ -24,10 +39,10 @@ electrochemical system:
         refinement: Merk Milli-Q IQ 7000
       purity:
         grade: ultrapure water
-        total organic carbon:
+        totalOrganicCarbon:
           value: 3
           unit: ppb
-        total ion conductivity:
+        totalIonConductivity:
           value: 18
           unit: MOhm cm
     - name: HClO4

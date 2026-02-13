@@ -29,7 +29,7 @@ data.csv
 datapackage.json
 ```
 
-The CSV file contains some data. For the unitpackge we focus on CSV files containing only numbers.
+The CSV file contains some data. For the unitpackage we focus on CSV files containing only numbers.
 Such data is usually found in natural sciences.
 
 ```sh .noeval
@@ -111,7 +111,7 @@ Tabular scientific data are often time series data, where one or more properties
 In some cases, one variable is changed with time, and one or more variables are recorded to observe the change induced to a system.
 This could, for example, be the change in current $I$ in a load by varying a voltage $V$.
 
-A CVS contains the underlying data.
+A CSV contains the underlying data.
 
 ```sh .noeval
 t,U,I
@@ -120,11 +120,11 @@ t,U,I
 3,4,5
 ```
 
-```{warning}
-The `unitpackage` currently only supports CSV files with a single header line. CSV files with headers, including additional information must be converted before. (see #23)
+```{note}
+The `unitpackage` currently only supports CSV files with a single header line. CSV files with more complex header structures can be loaded using [device-specific loaders](loaders.md), which convert the data into the standard format.
 ```
 
-The units are often not included in the filed/column names. These can be included in the Data Package in the field description of the resource schema.
+The units are often not included in the field/column names. These can be included in the Data Package in the field description of the resource schema.
 
 ```{note}
 We suggest providing the units according to the [astropy unit](https://docs.astropy.org/en/stable/units/index.html) notation.
@@ -143,17 +143,17 @@ We suggest providing the units according to the [astropy unit](https://docs.astr
         "fields": [
           {
             "name": "t",
-            "type": "integer",
+            "type": "number",
             "unit": "s"
           },
           {
             "name": "U",
-            "type": "integer",
+            "type": "number",
             "unit": "mV"
           },
           {
             "name": "I",
-            "type": "integer",
+            "type": "number",
             "unit": "uA"
           }
         ]
@@ -163,7 +163,7 @@ We suggest providing the units according to the [astropy unit](https://docs.astr
 }
 ```
 
-Additional metadata describing the underlying data or its origin is stored in the resource `metadata` descriptor. The `metadata` can contain a list with metadata descriptors following different kinds of metadata schemas. This allows metadata to be stored in different formats or from different sources.
+Additional metadata describing the underlying data or its origin is stored in the resource `metadata` descriptor. The `metadata` can contain metadata descriptors following different kinds of metadata schemas. This allows metadata to be stored in different formats or from different sources, and also allows validation of the metadata subsets independently.
 
 ```json
 {
@@ -180,23 +180,23 @@ Additional metadata describing the underlying data or its origin is stored in th
                 "fields": [
                     {
                         "name": "t",
-                        "type": "integer",
+                        "type": "number",
                         "unit": "s"
                     },
                     {
                         "name": "U",
-                        "type": "integer",
+                        "type": "number",
                         "unit": "mV"
                     },
                     {
                         "name": "I",
-                        "type": "integer",
+                        "type": "number",
                         "unit": "uA"
                     }
                 ]
             },
             "metadata": {
-                "echemdb": {
+                "genericSchema1": {
                     "description": "Sample data for the unitpackage module.",
                     "curation": {
                         "process": [
@@ -209,7 +209,7 @@ Additional metadata describing the underlying data or its origin is stored in th
                         ]
                     }
                 },
-                "generic": {
+                "genericSchema2": {
                     "description": "Sample data for the unitpackage module.",
                     "experimentalist": "John Doe",
                     "laboratory": "Institute of Good Scientific Practice",
@@ -219,10 +219,6 @@ Additional metadata describing the underlying data or its origin is stored in th
         }
     ]
 }
-```
-
-```{warning}
-The `unitpackage` module only provides direct access to the resource metadata stored within the `echemdb` descriptor. (see #20)
 ```
 
 The above example can be found [here](https://github.com/echemdb/unitpackage/tree/main/doc/files) named `demo_package_metadata`.
@@ -236,50 +232,50 @@ entry = db['demo_package_metadata']
 entry
 ```
 
-The keys within the `echemdb` metadata descriptor are directly accessible as properties from the main `entry`.
+The metadata of an entry is accessible via `entry.metadata`, which supports both dict-style and attribute-style access.
 
 ```{code-cell} ipython3
-entry.curation
+entry.metadata
 ```
 
-Other metadata schemas are currently only accessible via the frictionless framework.
+The top-level keys of the metadata correspond to the different metadata schemas stored in the resource.
+These keys are also directly accessible as attributes from the entry itself.
 
 ```{code-cell} ipython3
-entry.resource.custom["metadata"]["generic"]
+entry.genericSchema1.curation
+```
+
+```{code-cell} ipython3
+entry.metadata['genericSchema2']
 ```
 
 ## Unitpackage Interface
 
 A Collection consists of entries, which are resources collected from Data Packages.
-
-Upon closer inspection of the entry created with `unitpackage`, you notice that an additional resource `MutableResource` is included in the original resource.
+The fields of the resource's schema describe the columns in the CSV, including their units.
 
 ```{code-cell} ipython3
-entry.mutable_resource
+entry.fields
 ```
 
-The main resource is named according to the CSV filename. The units provided in that resource describe the data within that CSV.
-
-The included `MutableResource`, is created once the data is loaded. In case of tabular data, a pandas dataframe resource is created.
-The dataframe is directly accessible from the entry and shows the data from the `MutableResource`.
-Upon loading the data, both the numbers and units in the CSV and pandas dataframe are identical.
+The dataframe is directly accessible from the entry.
 
 ```{code-cell} ipython3
 entry.df.head(3)
 ```
 
-The reason for the separation into two resources is as follows.
-With unitpackage we can, for example, transform the values within the dataframe to new units.
-This process leaves the data in the original CSV unchanged.
-The pandas dataframe resource, in turn, is adapted, as well as the units of the different fields of the `MutableResource` resource.
+With `unitpackage` we can transform the values within the dataframe to new units.
+This creates a new entry with rescaled data and updated field units, while leaving the original entry unchanged.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'U': 'V', 'I': 'mA'})
 rescaled_entry.df.head(3)
 ```
 
+The updated units are reflected in the entry's fields.
+
 ```{code-cell} ipython3
-rescaled_entry.mutable_resource
+rescaled_entry.fields
 ```
 
-Refer to the [usage section](unitpackage_usage.md) for a more detail description of the `unitpackage` API.
+Refer to the [usage section](unitpackage_usage.md) for a more detailed description of the `unitpackage` API.
