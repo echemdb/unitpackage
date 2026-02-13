@@ -215,6 +215,19 @@ The offset is indicated in the field descriptions. For subsequent offsets, the v
 offset_entry.resource.schema.get_field('E')
 ```
 
+A scaling factor can be applied to multiply a column by a given value.
+
+```{code-cell} ipython3
+scaled_entry = entry.apply_scaling_factor('j', 2)
+scaled_entry.df.head()
+```
+
+The scaling factor is tracked in the field descriptions. For subsequent scaling factors, the cumulative value is stored.
+
+```{code-cell} ipython3
+scaled_entry.resource.schema.get_field('j')
+```
+
 To add a computed column with proper field descriptions, use `entry.add_columns()`.
 This ensures that the field metadata (such as units) is tracked correctly.
 

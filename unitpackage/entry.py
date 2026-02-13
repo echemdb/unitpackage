@@ -254,7 +254,8 @@ class Entry:
 
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
+            [... 'add_offset', 'apply_scaling_factor', 'create_examples', 'default_metadata_key',
+            'df', 'echemdb', 'field_unit',
             'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
             'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
             'rescale', 'resource', 'save', 'update_fields', 'yaml']
@@ -567,6 +568,90 @@ class Entry:
                 "offset": {
                     "value": float(new_offset),
                     "unit": str(offset_quantity.unit),
+                }
+            }
+        }
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
+
+        return type(self)(resource=new_resource)
+
+    def apply_scaling_factor(self, field_name=None, scaling_factor=None):
+        r"""
+        Return an entry with a ``scaling_factor`` applied to a specified field of the entry.
+        The scaling factor is stored in the fields metadata.
+
+        If scaling factors are applied consecutively, the value is updated
+        (i.e., the cumulative scaling factor is the product of the individual factors).
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.apply_scaling_factor('j', 2)
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -1.996553
+            1  0.02 -0.102158 -1.963524
+            ...
+
+            >>> new_entry.resource.schema.get_field('j') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'j',
+            'type': 'number',
+            'unit': 'A / m2',
+            'scalingFactor': {'value': 2.0}}
+
+        A consecutively applied scaling factor::
+
+            >>> new_entry_1 = new_entry.apply_scaling_factor('j', 3)
+            >>> new_entry_1.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -5.989660
+            1  0.02 -0.102158 -5.890572
+            ...
+
+            >>> new_entry_1.resource.schema.get_field('j') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'j',
+            'type': 'number',
+            'unit': 'A / m2',
+            'scalingFactor': {'value': 6.0}}
+
+        Scaling by a float::
+
+            >>> new_entry_2 = entry.apply_scaling_factor('E', 1e3)
+            >>> new_entry_2.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t           E         j
+            0  0.00 -103.158422 -0.998277
+            1  0.02 -102.158422 -0.981762
+            ...
+
+        """
+        if scaling_factor is None:
+            raise ValueError("A scaling_factor must be provided.")
+
+        if scaling_factor == 0:
+            raise ValueError("A scaling_factor of 0 is not allowed.")
+
+        field = self.resource.schema.get_field(field_name)
+
+        # Create a new dataframe with scaled values
+        df = self.df.copy()
+        df[field_name] *= scaling_factor
+
+        # Calculate the cumulative scaling factor
+        old_scaling_factor = field.custom.get("scalingFactor", {}).get("value", 1)
+        new_scaling_factor = float(old_scaling_factor * scaling_factor)
+
+        # Create new resource with scaling factor metadata
+        field_updates = {
+            field_name: {
+                "scalingFactor": {
+                    "value": new_scaling_factor,
                 }
             }
         }

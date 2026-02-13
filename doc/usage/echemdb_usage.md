@@ -122,6 +122,36 @@ The field descriptions are updated accordingly.
 original_entry.fields
 ```
 
+### Scan rate
+
+The scan rate used to record the data is accessible as an astropy quantity.
+
+```{code-cell} ipython3
+entry.scan_rate
+```
+
+### Rescaling the scan rate
+
+CVs are often recorded with different scan rate. The `rescale_scan_rate` method rescales the `j` (or `I`) axis by the ratio of a given scan rate to the original one, for better comparison of the data, which provides information on transport and kinetic effects. Essentially this applies a scaling factor to the `j` (or `I`), which is tracked in the field metadata.
+
+```{code-cell} ipython3
+rescaled_sr = entry.rescale_scan_rate(value=100, unit='mV / s')
+rescaled_sr.df.head()
+```
+
+The scaling factor is stored in the field description.
+
+```{code-cell} ipython3
+rescaled_sr.resource.schema.get_field('j')
+```
+
+A custom field name can be provided if the current axis has a different name.
+
+```{code-cell} ipython3
+rescaled_sr_custom = entry.rescale_scan_rate('j', value=0.1, unit='V / s')
+rescaled_sr_custom.df.head()
+```
+
 ### Shifting reference scales
 
 A key issue for comparing electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the potential data is not straight forward unless the data is shifted to a common reference scale. The shift to a different reference scale depends on how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data.
