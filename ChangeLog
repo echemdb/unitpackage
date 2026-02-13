@@ -4,6 +4,43 @@ echemdb Change Log
 
 .. current developments
 
+v0.11.2
+====================
+
+**Added:**
+
+* Added `unitpackage.electrochemistry.reference_electrodes` which contains reference electrode data and a dataclass to interact with the data (`_reference_electrodes`), and a `ReferenceElectrode` object, which determining the shift of the potential between different reference scales.
+* Added `Entry.add_offset` which allows shifting the values of a specified column of the entry by a certain offset and tracking the information in the fields description.
+* Added `EchmdbEntry.rescale_reference` which allows shifting the potential scale onto another potential scale known to `unitpackage.electrochemistry._reference_electrodes`.
+
+
+
+v0.11.1
+====================
+
+**Removed:**
+
+* Removed dependency clevercsv and used Python's csv instead.
+
+
+
+v0.11.0
+====================
+
+**Added:**
+
+* Added modules from `echemdb-converters` (https://github.com/echemdb/echemdb-converters v4.0.1) as modules in unitpackage within `unitpackage.loaders`.
+* Added support for Python 3.14.
+* Added dependency `click>=8,<9`
+* Added dependency `clevercsv>=0.7.0,<0.9.0`
+
+**Removed:**
+
+* Removed support for Python 3.9.
+* Removed dependency on iteration_utilities.
+
+
+
 v0.10.1
 ====================
 

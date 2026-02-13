@@ -22,7 +22,7 @@ Search the collection for entries from a single publication::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -41,6 +41,7 @@ Search the collection for entries from a single publication::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
+from functools import cached_property
 
 from unitpackage.collection import Collection
 
@@ -49,7 +50,7 @@ logger = logging.getLogger("unitpackage")
 
 class Echemdb(Collection):
     r"""
-    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/framework>`__.
+    A collection of `frictionless Data Packages <https://github.com/frictionlessdata/frictionless-py>`__.
 
     Essentially this is just a list of data packages with some additional
     convenience wrap for use in the `echemdb data repository <https://github.com/echemdb/electrochemistry-data>`_
@@ -114,3 +115,58 @@ class Echemdb(Collection):
             "number of entries": len(self),
             "materials": self.materials(),
         }
+
+    @cached_property
+    def bibliography(self):
+        r"""
+        Return a pybtex database of all bibtex bibliography files,
+        associated with the entries.
+
+        EXAMPLES::
+
+            >>> from unitpackage.database.echemdb import Echemdb
+            >>> collection = Echemdb.create_example()
+            >>> collection.bibliography
+            BibliographyData(
+              entries=OrderedCaseInsensitiveDict([
+                ('alves_2011_electrochemistry_6010', Entry('article',
+                ...
+                ('engstfeld_2018_polycrystalline_17743', Entry('article',
+                ...
+
+        A derived collection includes only the bibliographic entries of the remaining entries::
+
+            >>> collection.filter(lambda entry: entry.source.citationKey != 'alves_2011_electrochemistry_6010').bibliography
+            BibliographyData(
+              entries=OrderedCaseInsensitiveDict([
+                ('engstfeld_2018_polycrystalline_17743', Entry('article',
+                ...
+
+        A collection with entries without bibliography::
+
+            >>> collection = Echemdb.create_example()["no_bibliography"]
+            >>> collection.bibliography
+            ''
+
+        """
+        from pybtex.database import BibliographyData
+
+        bib_data = BibliographyData(
+            {
+                entry.bibliography.key: entry.bibliography
+                for entry in self
+                if entry.bibliography
+            }
+        )
+
+        if isinstance(bib_data, str):
+            return bib_data
+
+        # Remove duplicates from the bibliography
+        bib_data_ = BibliographyData()
+
+        for key, entry in bib_data.entries.items():
+            if key not in bib_data_.entries:
+                bib_data_.add_entry(key, entry)
+
+        return bib_data_

@@ -14,7 +14,7 @@ kernelspec:
 
 # Welcome to unitpackage's documentation!
 
-[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.10.1?labpath=tree%2Fdoc%2Findex.md)
+[![Binder](https://static.mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/echemdb/unitpackage/0.11.2?labpath=tree%2Fdoc%2Findex.md)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15644101.svg)](https://zenodo.org/records/15644101)
 
 Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated or who performed the experiment. Such information can be stored in [frictionless Data Packages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON (metadata) file.
@@ -42,7 +42,7 @@ A single entry can be retrieved with an identifier available in the database.
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 ```
 
-The metadata of the entry is available from `entry.resource`.
+The metadata of the entry is available from `entry.metadata`, which supports both dict and attribute-style access.
 
 The data related to an entry can be returned as a [pandas](https://pandas.pydata.org/) dataframe.
 
@@ -90,6 +90,22 @@ db_filtered.describe()
 ```{note}
 The filtering method is also available to the base class `Collection`.
 ```
+
+## Creating Unitpackages
+
+Unitpackages can also be [created from scratch](usage/create_unitpackage.md) using CSV files or pandas DataFrames.
+Metadata and unit descriptions for the fields can be added to produce self-describing data packages.
+
+```{code-cell} ipython3
+from unitpackage.entry import Entry
+
+entry = Entry.from_csv(csvname="files/demo_package.csv")
+entry = entry.load_metadata("files/demo_package.csv.yaml")
+entry = entry.update_fields(fields=[{'name': 't', 'unit': 's'}, {'name': 'j', 'unit': 'A / cm2'}])
+entry.save(outdir="generated/files/csv_entry/")
+```
+
+See [Creating Unitpackages](usage/create_unitpackage.md) for more details on adding metadata from YAML, JSON, or Python dictionaries.
 
 ## Further Usage
 
@@ -141,6 +157,7 @@ usage/unitpackage.md
 usage/unitpackage_usage.md
 usage/echemdb_usage.md
 usage/load_and_save.md
+usage/create_unitpackage.md
 usage/loaders.md
 api.md
 ```

@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.18.1
 kernelspec:
   display_name: Python 3 (ipykernel)
   language: python
@@ -49,7 +49,19 @@ entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
 type(entry)
 ```
 
-`entry.package` provides a full list of available descriptors.
+`entry.metadata` provides a full list of available descriptors.
+
+For `Echemdb` entries, the top-level keys under `entry.metadata['echemdb']` (such as `source`, `system`, `figureDescription`, etc.) are directly accessible as properties on the entry:
+
+```{code-cell} ipython3
+entry.source
+```
+
+```{code-cell} ipython3
+entry.system.electrolyte
+```
+
+Other metadata subsets that are not under the `echemdb` key must be accessed via `entry.metadata`, e.g., `entry.metadata['other_key']`.
 
 As indicated above, electrodes used to record the data are listed in the `system.electrodes` descriptor and are accessible with
 
@@ -80,15 +92,143 @@ entry.figureDescription.fields
 entry.figureDescription.scanRate
 ```
 
-An entry can be rescaled to these original units.
+### Changing column units
+
++++
+
+An entry can be rescaled to new units.
 
 ```{code-cell} ipython3
-original_entry = entry.rescale('original')
+rescaled_entry = entry.rescale({'E': 'mV', 'j': 'A / m2' })
+rescaled_entry.df.head(5)
+```
+
+The information is updated in the field descriptions.
+
+```{code-cell} ipython3
+rescaled_entry.fields
+```
+
+An entry can be rescaled to its original units.
+
+```{code-cell} ipython3
+original_entry = rescaled_entry.rescale('original')
 original_entry.df.head(5)
 ```
 
+The field descriptions are updated accordingly.
+
 ```{code-cell} ipython3
-original_entry.mutable_resource.schema
+original_entry.fields
+```
+
+### Scan rate
+
+The scan rate used to record the data is accessible as an astropy quantity.
+
+```{code-cell} ipython3
+entry.scan_rate
+```
+
+### Rescaling the scan rate
+
+CVs are often recorded with different scan rate. The `rescale_scan_rate` method rescales the `j` (or `I`) axis by the ratio of a given scan rate to the original one, for better comparison of the data, which provides information on transport and kinetic effects. Essentially this applies a scaling factor to the `j` (or `I`), which is tracked in the field metadata.
+
+```{code-cell} ipython3
+rescaled_sr = entry.rescale_scan_rate(value=100, unit='mV / s')
+rescaled_sr.df.head()
+```
+
+The scaling factor is stored in the field description.
+
+```{code-cell} ipython3
+rescaled_sr.resource.schema.get_field('j')
+```
+
+A custom field name can be provided if the current axis has a different name.
+
+```{code-cell} ipython3
+rescaled_sr_custom = entry.rescale_scan_rate('j', value=0.1, unit='V / s')
+rescaled_sr_custom.df.head()
+```
+
+### Shifting reference scales
+
+A key issue for comparing electrochemical current potential traces is that data can be recorded with different reference electrodes. Hence direct comparison of the potential data is not straight forward unless the data is shifted to a common reference scale. The shift to a different reference scale depends on how the value of that reference electrode vs the standard hydrogen electrode (SHE) is determined and sometimes depends on the source of the reported data.
+
+#### Separate consideration
+
+To mitigate this issue, the `unitpackage.electrochemistry.reference_electrode` module, contains a collection of commonly used reference electrodes that can be accessed by its API.
+
+```{code-cell} ipython3
+from unitpackage.electrochemistry.reference_electrode import _reference_electrodes
+
+_reference_electrodes.keys()
+```
+
+A `ReferenceElectrode` object can be created by providing the corresponding acronym.
+
+```{code-cell} ipython3
+from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
+
+ref = ReferenceElectrode('CE-sat')
+ref
+```
+
+A certain `ReferenceElectrode` can contain multiple entries with values from different sources. For the echemdb standard data values were chosen based on the discussion of the specified reference electrodes in the literature.
+
+```{code-cell} ipython3
+ref.standard_data
+```
+
+The shift a certain reference electrode vs that of another known reference electrode can be inferrred.
+
+```{note}
+The resulting value is always in `V`!
+```
+
+```{code-cell} ipython3
+ref.shift(to='CE-1M')
+```
+
+The shift can also be calculated for a specific potential.
+
+```{code-cell} ipython3
+ref.shift(to='CE-1M', potential = 0.564)
+```
+
+For conversion to and from the RHE scale, the pH is required.
+
+```{code-cell} ipython3
+ref.shift(to='RHE', potential = 0.564, ph=13)
+```
+
+#### unitpackage implementation
+
+If the reference scale is given for a certain entry, the potentials can directly be shifted
+
+```{code-cell} ipython3
+entry_mse = entry.rescale_reference('MSE-sat')
+entry_mse.df.head()
+```
+
+If a pH value is provided in the metadata, conversion to RHE is straight forward. In other cases the pH must be provide as additional argument.
+
+```{code-cell} ipython3
+entry.system.electrolyte.ph
+```
+
+```{code-cell} ipython3
+entry.get_electrode('REF')
+```
+
+```{code-cell} ipython3
+entry.df.head()
+```
+
+```{code-cell} ipython3
+entry_rhe = entry.rescale_reference('SHE')
+entry_rhe.df.head()
 ```
 
 ## Plotting

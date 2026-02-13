@@ -6,7 +6,7 @@ collecting Data Packages and creating unitpackages.
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C)      2021 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -36,15 +36,155 @@ from frictionless import Package, Resource, Schema
 logger = logging.getLogger("unitpackage")
 
 
-def create_df_resource(resource):
+def create_tabular_resource_from_csv(
+    csvname,
+    encoding=None,
+    header_lines=None,
+    column_header_lines=None,
+    decimal=None,
+    delimiters=None,
+):
+    r"""
+    Return a resource built from a provided CSV.
+
+    EXAMPLES:
+
+    For standard CSV files (single header line and subsequent
+    lines with data, using `.` as decimal separator.)
+    a tabular data resource is created::
+
+        >>> filename = './examples/from_csv/from_csv.csv'
+        >>> resource = create_tabular_resource_from_csv(filename)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'from_csv',
+        'type': 'table',
+        'path': 'from_csv.csv',
+        'scheme': 'file',
+        'format': 'csv',
+        'mediatype': 'text/csv', ...
+
+    For CSV files with a more complex structure (header, multiple column header lines, or other separators)
+    a pandas dataframe resource is created instead::
+
+        >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
+        >>> resource = create_tabular_resource_from_csv(csvname=filename, column_header_lines=2)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'memory',
+        'type': 'table',
+        'data': [],
+        'format': 'pandas',
+        'mediatype': 'application/pandas',
+        'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
+                              {'name': 'j / A / cm2', 'type': 'integer'}]}}
+
+
+    """
+    csv_basename = os.path.basename(csvname)
+
+    if not header_lines and not column_header_lines and not decimal and not delimiters:
+        resource = Resource(
+            path=csv_basename,
+            basepath=os.path.dirname(csvname) or ".",
+        )
+        resource.infer()
+        return resource
+
+    # pylint: disable=duplicate-code
+    return create_df_resource_from_csv(
+        csvname,
+        encoding=encoding,
+        header_lines=header_lines,
+        column_header_lines=column_header_lines,
+        decimal=decimal,
+        delimiters=delimiters,
+    )
+
+
+def create_df_resource_from_csv(
+    csvname,
+    encoding=None,
+    header_lines=None,
+    column_header_lines=None,
+    decimal=None,
+    delimiters=None,
+):
+    r"""
+    Create a pandas dataframe resource from a CSV file.
+
+    EXAMPLES::
+
+        >>> from unitpackage.local import create_df_resource_from_csv
+        >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
+        >>> resource = create_df_resource_from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'memory',
+        'type': 'table',
+        'data': [],
+        'format': 'pandas',
+        'mediatype': 'application/pandas',
+        'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
+                              {'name': 'j / A / cm2', 'type': 'integer'}]}}
+
+    """
+
+    from unitpackage.loaders.baseloader import BaseLoader
+
+    with open(csvname, "r", encoding=encoding or "utf-8") as f:
+        csv = BaseLoader(
+            f,
+            header_lines=header_lines,
+            column_header_lines=column_header_lines,
+            decimal=decimal,
+            delimiters=delimiters,
+        )
+
+    return create_df_resource_from_df(csv.df)
+
+
+def create_df_resource_from_df(df):
+    r"""
+    Return a pandas dataframe resource for a pandas DataFrame.
+
+    EXAMPLES::
+
+        >>> data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
+        >>> import pandas as pd
+        >>> df = pd.DataFrame(data)
+        >>> from unitpackage.local import create_df_resource_from_df
+        >>> resource = create_df_resource_from_df(df)
+        >>> resource # doctest: +NORMALIZE_WHITESPACE
+        {'name': 'memory',
+        'type': 'table',
+        'data': [],
+        'format': 'pandas', ...
+
+        >>> resource.data
+           x  y
+        0  1  4
+        1  2  5
+        2  3  6
+
+        >>> resource.format
+        'pandas'
+
+
+    """
+    df_resource = Resource(df)
+    df_resource.infer()
+
+    return df_resource
+
+
+def create_df_resource_from_tabular_resource(resource):
     r"""
     Return a pandas dataframe resource for a frictionless Tabular Resource.
 
     EXAMPLES::
 
         >>> from frictionless import Package
-        >>> resource = Package("./examples/local/no_bibliography/no_bibliography.json").resources[0]
-        >>> df_resource = create_df_resource(resource) # doctest: +NORMALIZE_WHITESPACE
+        >>> from unitpackage.local import create_df_resource_from_tabular_resource
+        >>> tabular_resource = Package("./examples/local/no_bibliography/no_bibliography.json").resources[0]
+        >>> df_resource = create_df_resource_from_tabular_resource(tabular_resource) # doctest: +NORMALIZE_WHITESPACE
         >>> df_resource
         {'name': 'memory',
         ...
@@ -70,10 +210,6 @@ def create_df_resource(resource):
             2  3  6
 
     """
-    if not resource:
-        raise ValueError(
-            "dataframe resource can not be created since the Data Package has no resources."
-        )
     descriptor_path = (
         resource.basepath + "/" + resource.path if resource.basepath else resource.path
     )
@@ -123,28 +259,38 @@ def collect_datapackages(data):
     return [Package(package) for package in packages]
 
 
-def create_unitpackage(csvname, metadata=None, fields=None):
+def update_fields(original_fields, new_fields):
     r"""
-    Return a Data Package built from a :param metadata: dict and tabular data
-    in :param csvname: str.
+    Return a new list of fields where a list of fields has been updated
+    based on a new list of fields.
 
-    The :param fields: list must must be structured such as
-    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
+    The :param: original_fields: list and :param new_fields: list
+    must must be structured such as
+    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`
+    and each entry must contain a key `name` corresponding to a field name
+    in the original fields.
 
     EXAMPLES::
 
-        >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields)
-        >>> package # doctest: +NORMALIZE_WHITESPACE
-        {'resources': [{'name':
-        ...
+        >>> from unitpackage.local import update_fields, create_tabular_resource_from_csv
+        >>> schema = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv").schema
+        >>> original_fields = schema.to_dict()['fields']
+        >>> original_fields # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer'},
+        {'name': 'I', 'type': 'integer'}]
+
+        >>> new_fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
+        >>> updated_fields = update_fields(original_fields, new_fields)
+        >>> updated_fields # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+        {'name': 'I', 'type': 'integer', 'unit': 'A'}]
 
     TESTS:
 
     Invalid fields::
 
         >>> fields = 'not a list'
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> updated_fields = update_fields(original_fields, fields)
         Traceback (most recent call last):
         ...
         ValueError: 'fields' must be a list such as
@@ -154,30 +300,22 @@ def create_unitpackage(csvname, metadata=None, fields=None):
     More fields than required::
 
         >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}, {'name':'x', 'unit': 'm'}]
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> updated_fields = update_fields(original_fields, fields)
+        >>> updated_fields  # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+        {'name': 'I', 'type': 'integer', 'unit': 'A'}]
 
     Part of the fields specified:
 
         >>> fields = [{'name':'E', 'unit': 'mV'}]
-        >>> package = create_unitpackage("./examples/from_csv/from_csv.csv", fields=fields) # doctest: +NORMALIZE_WHITESPACE
+        >>> updated_fields = update_fields(original_fields, fields)
+        >>> updated_fields  # doctest: +NORMALIZE_WHITESPACE
+        [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+        {'name': 'I', 'type': 'integer'}]
 
     """
 
-    csv_basename = os.path.basename(csvname)
-
-    resource = Resource(
-        path=csv_basename,
-        basepath=os.path.dirname(csvname) or ".",
-    )
-
-    resource.infer()
-
-    resource.custom.setdefault("metadata", {})
-    resource.custom["metadata"].setdefault("echemdb", metadata)
-
-    if fields:
-        # Update fields in the Resource describing the data in the CSV
-        resource_schema = resource.schema
+    def validate_field_structure(fields):
         if not isinstance(fields, list):
             raise ValueError(
                 "'fields' must be a list such as \
@@ -195,35 +333,79 @@ def create_unitpackage(csvname, metadata=None, fields=None):
                     e.g., `{'name':'j', 'unit': 'uA / cm2'}`"
                 )
 
-        provided_schema = Schema.from_descriptor({"fields": fields}, allow_invalid=True)
+    validate_field_structure(original_fields)
+    validate_field_structure(new_fields)
 
-        new_fields = []
-        unspecified_fields = []
+    # Use frictionless Schema for field management
+    schema = Schema({"fields": original_fields})
 
-        for name in resource_schema.field_names:
-            if name in provided_schema.field_names:
-                new_fields.append(
-                    provided_schema.get_field(name).to_dict()
-                    | resource_schema.get_field(name).to_dict()
-                )
-            else:
-                new_fields.append(resource_schema.get_field(name).to_dict())
+    # Create a lookup dict for provided fields by name
+    provided_fields_dict = {
+        field["name"]: field for field in new_fields if "name" in field
+    }
 
-        if len(unspecified_fields) != 0:
-            logger.warning(
-                f"Additional information were not provided for fields {unspecified_fields}."
-            )
+    unspecified_fields = []
+    unused_provided_fields = []
 
-        unused_provided_fields = []
-        for name in provided_schema.field_names:
-            if name not in resource_schema.field_names:
-                unused_provided_fields.append(name)
-        if len(unused_provided_fields) != 0:
-            logger.warning(
-                f"Fields with names {unused_provided_fields} was provided but does not appear in the field names of tabular resource {resource_schema.field_names}."
-            )
+    # Update fields that exist in the original schema using schema.update_field()
+    for field_name in schema.field_names:
+        if field_name in provided_fields_dict:
+            # Extract updates (excluding 'name' since update_field takes name separately)
+            updates = {
+                k: v for k, v in provided_fields_dict[field_name].items() if k != "name"
+            }
+            schema.update_field(field_name, updates)
+        else:
+            unspecified_fields.append(field_name)
 
-        resource.schema = Schema.from_descriptor({"fields": new_fields})
+    # Record any provided fields that are not present in the original schema
+    for name in provided_fields_dict.keys():
+        if name not in schema.field_names:
+            unused_provided_fields.append(name)
+
+    if len(unspecified_fields) != 0:
+        logger.warning(
+            f"Additional information was not provided for fields {unspecified_fields}."
+        )
+
+    if len(unused_provided_fields) != 0:
+        logger.warning(
+            f"Fields with names {unused_provided_fields} were provided but do not appear in the field names of tabular resource {schema.field_names}."
+        )
+
+    # Return the updated fields as a list of dicts
+    return [field.to_dict() for field in schema.fields]
+
+
+def create_unitpackage(resource, metadata=None, fields=None):
+    r"""
+    Return a Data Package built from a :param metadata: dict and tabular data
+    in :param resource: frictionless.Resource.
+
+    The :param fields: list must be structured such as
+    `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
+
+    EXAMPLES::
+
+        >>> from unitpackage.local import create_tabular_resource_from_csv, create_unitpackage
+        >>> resource = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv")
+        >>> new_fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+        >>> package = create_unitpackage(resource=resource, fields=new_fields)
+        >>> package # doctest: +NORMALIZE_WHITESPACE
+        {'resources': [{'name':
+        ...
+
+    """
+    resource.custom.setdefault("metadata", {})
+    resource.custom["metadata"] = metadata
+
+    if fields:
+        # Use update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
+
+        # Update the resource schema with the updated fields
+        resource.schema = Schema({"fields": updated_fields})
 
     package = Package(resources=[resource])
 
