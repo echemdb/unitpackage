@@ -10,7 +10,7 @@ EXAMPLES:
 Access metadata with dict-style or attribute-style syntax::
 
     >>> from unitpackage.entry import Entry
-    >>> entry = Entry.create_examples()[0]
+    >>> entry = Entry.create_example()
     >>> entry.metadata['echemdb']['source']['citationKey']
     'alves_2011_electrochemistry_6010'
 
@@ -55,7 +55,7 @@ class MetadataDescriptor:
     EXAMPLES::
 
         >>> from unitpackage.entry import Entry
-        >>> entry = Entry.create_examples()[0]
+        >>> entry = Entry.create_example()
         >>> entry.metadata # doctest: +ELLIPSIS
         {'echemdb': {'experimental': ...
 
@@ -88,7 +88,7 @@ class MetadataDescriptor:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.metadata['echemdb']['source']['citationKey']
             'alves_2011_electrochemistry_6010'
 
@@ -102,7 +102,7 @@ class MetadataDescriptor:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.metadata['custom_key'] = {'data': 'value'}
             >>> entry.metadata['custom_key']
             {'data': 'value'}
@@ -117,7 +117,7 @@ class MetadataDescriptor:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.metadata.echemdb.source.citationKey
             'alves_2011_electrochemistry_6010'
 
@@ -131,7 +131,7 @@ class MetadataDescriptor:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.metadata.from_dict({'echemdb': {'source': {'citationKey': 'test'}}})
             >>> entry.metadata['echemdb']['source']['citationKey']
             'test'
@@ -146,7 +146,7 @@ class MetadataDescriptor:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.metadata._add_metadata('custom_key', {'data': 'value'})
             >>> entry.metadata['custom_key']
             {'data': 'value'}
@@ -177,7 +177,7 @@ class MetadataDescriptor:
             >>> import tempfile
             >>> import yaml
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
             ...     yaml.dump({'source': {'citationKey': 'yaml_test'}}, f)
             ...     temp_path = f.name
@@ -207,7 +207,7 @@ class MetadataDescriptor:
             >>> import json
             >>> import tempfile
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             ...     json.dump({'source': {'citationKey': 'json_test'}}, f)
             ...     temp_path = f.name

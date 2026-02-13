@@ -170,7 +170,7 @@ class QuantityDescriptor(GenericDescriptor):
     EXAMPLES::
 
         >>> from unitpackage.entry import Entry
-        >>> entry = Entry.create_examples()[0]
+        >>> entry = Entry.create_example()
         >>> temperature = entry.echemdb.system.electrolyte.temperature
         >>> temperature
         298.15 K
@@ -187,7 +187,7 @@ class QuantityDescriptor(GenericDescriptor):
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> temperature = entry.echemdb.system.electrolyte.temperature
             >>> temperature.quantity
             <Quantity 298.15 K>
@@ -204,7 +204,7 @@ class QuantityDescriptor(GenericDescriptor):
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> temperature = entry.echemdb.system.electrolyte.temperature
             >>> temperature
             298.15 K

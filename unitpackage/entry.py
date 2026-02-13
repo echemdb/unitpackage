@@ -15,7 +15,7 @@ EXAMPLES:
 Metadata included in an entry is accessible as an attribute::
 
     >>> from unitpackage.entry import Entry
-    >>> entry = Entry.create_examples()[0]
+    >>> entry = Entry.create_example()
     >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     {'citationKey': 'alves_2011_electrochemistry_6010',
     'url': 'https://doi.org/10.1039/C0CP01001D',
@@ -25,7 +25,7 @@ Metadata included in an entry is accessible as an attribute::
 
 The data of the entry can be called as a pandas dataframe::
 
-    >>> entry = Entry.create_examples()[0]
+    >>> entry = Entry.create_example()
     >>> entry.df
                   t         E         j
     0      0.000000 -0.103158 -0.998277
@@ -141,7 +141,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.metadata['echemdb']['source']['citationKey']
             'alves_2011_electrochemistry_6010'
 
@@ -150,14 +150,14 @@ class Entry:
 
         Load metadata from a dict::
 
-            >>> new_entry = Entry.create_examples()[0]
+            >>> new_entry = Entry.create_example()
             >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
             >>> new_entry.metadata['echemdb']['test']
             'data'
 
         The descriptor is cached but still sees metadata updates::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> descriptor1 = entry.metadata
             >>> entry.metadata.from_dict({'custom': {'key': 'value'}})
             >>> descriptor2 = entry.metadata
@@ -183,7 +183,7 @@ class Entry:
             >>> import os
             >>> import tempfile
             >>> import yaml
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
             ...     yaml.dump({'source': {'citationKey': 'chain_test'}}, f)
             ...     temp_path = f.name
@@ -196,7 +196,7 @@ class Entry:
             >>> import os
             >>> import json
             >>> import tempfile
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
             ...     json.dump({'custom': {'data': 'value'}}, f)
             ...     temp_path = f.name
@@ -237,7 +237,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.identifier
             'alves_2011_electrochemistry_6010_f1a_solid'
 
@@ -252,9 +252,9 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            [... 'add_offset', 'apply_scaling_factor', 'create_examples', 'default_metadata_key',
+            [... 'add_offset', 'apply_scaling_factor', 'create_example', 'default_metadata_key',
             'df', 'echemdb', 'field_unit',
             'fields', 'from_csv', 'from_df', 'from_loader', 'from_local', 'identifier', 'load_metadata',
             'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
@@ -269,7 +269,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
@@ -291,7 +291,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry["echemdb"]["source"] # doctest: +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
@@ -319,7 +319,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry._descriptor # doctest: +ELLIPSIS
             {'echemdb': ...}
 
@@ -340,7 +340,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry._metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
@@ -359,7 +359,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry._default_metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
@@ -378,7 +378,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
@@ -393,7 +393,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.field_unit('E')
             'V'
 
@@ -415,7 +415,7 @@ class Entry:
 
         The units without any rescaling::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
@@ -477,7 +477,7 @@ class Entry:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
             0  0.00 -0.103158 -0.998277
@@ -586,7 +586,7 @@ class Entry:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
             0  0.00 -0.103158 -0.998277
@@ -673,7 +673,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> df = entry.df.copy()
             >>> new_resource = entry._create_new_df_resource(df)
             >>> new_resource.name == entry.resource.name
@@ -717,7 +717,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> resource = entry._df_resource
             >>> resource.format
             'pandas'
@@ -752,7 +752,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -788,7 +788,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -847,7 +847,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -890,7 +890,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -938,7 +938,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
@@ -946,48 +946,30 @@ class Entry:
         return f"Entry({repr(self.identifier)})"
 
     @classmethod
-    def create_examples(cls, name=""):
+    def create_example(cls, name=None):
         r"""
-        Return some example entries for use in automated tests.
+        Return an example entry for use in automated tests.
 
         The examples are created from Data Packages in the unitpackage's examples directory.
         These are only available from the development environment.
 
         EXAMPLES::
 
-            >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1'), Entry('no_bibliography')]
+            >>> Entry.create_example()
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
-        An entry without associated BIB file.
-
-            >>> Entry.create_examples(name="no_bibliography")
-            [Entry('no_bibliography')]
+            >>> Entry.create_example(name="no_bibliography")
+            Entry('no_bibliography')
 
         """
-        example_dir = os.path.join(
-            os.path.dirname(__file__), "..", "examples", "local", name
-        )
+        if name is None:
+            name = "alves_2011_electrochemistry_6010_f1a_solid"
 
-        if not os.path.exists(example_dir):
-            raise ValueError(
-                f"No subdirectory in examples/ for {name}, i.e., could not find {example_dir}."
-            )
+        from unitpackage.collection import Collection
 
-        from unitpackage.local import collect_datapackages
+        collection = Collection.create_example()
 
-        packages = collect_datapackages(example_dir)
-
-        if len(packages) == 0:
-            from glob import glob
-
-            raise ValueError(
-                f"No literature data found for {name}. The directory for this data {example_dir} exists. But we could not find any datapackages in there. "
-                f"There is probably some outdated data in {example_dir}. The contents of that directory are: { glob(os.path.join(example_dir,'**')) }"
-            )
-
-        from unitpackage.local import collect_resources
-
-        return [cls(resource=resource) for resource in collect_resources(packages)]
+        return cls(resource=collection[name].resource)
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
@@ -997,7 +979,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.plot()
             Figure(...)
 
@@ -1061,7 +1043,7 @@ class Entry:
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
@@ -1230,7 +1212,7 @@ class Entry:
         The original dataframe::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -1288,7 +1270,7 @@ class Entry:
         The original dataframe::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -1495,7 +1477,7 @@ class Entry:
         The output files are named ``identifier.csv`` and ``identifier.json`` using the identifier of the original resource::
 
             >>> import os
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.save(outdir='./test/generated')
             >>> basename = entry.identifier
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
@@ -1511,7 +1493,7 @@ class Entry:
         A valid basename::
 
             >>> import os
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> basename = 'save_basename'
             >>> entry.save(basename=basename, outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')

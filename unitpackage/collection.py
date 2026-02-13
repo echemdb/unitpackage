@@ -47,6 +47,7 @@ from a single publication providing its DOI::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
+import os.path
 
 from frictionless import Package
 
@@ -121,21 +122,9 @@ class Collection:
             Entry('no_bibliography')]
 
         """
+        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", "local")
 
-        entries = (
-            cls.Entry.create_examples("alves_2011_electrochemistry_6010")
-            + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
-            + cls.Entry.create_examples("no_bibliography")
-        )
-
-        package = Package()
-
-        for entry in entries:
-            package.add_resource(entry.resource)
-
-        return cls(
-            package=package,
-        )
+        return cls.from_local(example_dir)
 
     def filter(self, predicate):
         r"""
