@@ -95,7 +95,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry
             Echemdb('alves_2011_electrochemistry_6010_f1a_solid')
 
@@ -109,14 +109,14 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
             Entry('article',
             fields=[
                 ('title', ...
                 ...
 
-            >>> entry_no_bib = EchemdbEntry.create_examples(name="no_bibliography")[0]
+            >>> entry_no_bib = EchemdbEntry.create_example(name="no_bibliography")
             >>> entry_no_bib.bibliography
             ''
 
@@ -144,7 +144,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.citation(backend='text')
             'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
             >>> print(entry.citation(backend='md'))
@@ -210,7 +210,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.get_electrode('WE') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'WE', 'function': 'workingElectrode', 'type': 'single crystal',
             'crystallographicOrientation': '0001', 'material': 'Ru',
@@ -245,7 +245,7 @@ class EchemdbEntry(Entry):
         These units must be defined in the metadata of the resource,
         within the key ``figureDescription.fields``::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> rescaled_entry = entry.rescale(units='original')
             >>> rescaled_entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
@@ -270,7 +270,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.scan_rate
             <Quantity 0.05 V / s>
 
@@ -297,7 +297,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.scan_rate
             <Quantity 0.05 V / s>
 
@@ -361,7 +361,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry._normalize_field_name('j')
             'j'
             >>> entry._normalize_field_name('x')
@@ -382,7 +382,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> thumb = entry.thumbnail()
             >>> thumb.startswith(b'\x89PNG')
             True
@@ -432,7 +432,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.plot()
             Figure(...)
 
@@ -496,7 +496,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'}
 
