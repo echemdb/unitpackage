@@ -19,13 +19,14 @@
 * Changed `Entry.from_df()` to directly create entries from pandas DataFrames without temporary CSV files.
 * Changed `Entry.from_df()` to require `basename` as a keyword-only argument.
 * Changed `Entry.save()` to automatically convert pandas resources to CSV format.
-* Changed `Entry.metadata` to return a `MetadataDescriptor` object supporting enhanced metadata operations.
+* Changed `Entry.metadata` to return a cached `MetadataDescriptor` object supporting enhanced metadata operations while still reflecting metadata changes.
 * Changed workflows to use pixi v0.63.2.
 
 **Removed:**
 
 * Removed deprecated module `cv_collection`.
 * Removed deprecated module `cv_entry`.
+* Removed `metadata` argument from `Entry.from_df()` and `Entry.from_csv()`.
 
 **Fixed:**
 

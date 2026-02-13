@@ -1,5 +1,5 @@
 """
-This module contains the :class: `_ReferenceElectrode` to explore data for tabulated reference electrodes
+This module contains the :class:`_ReferenceElectrode` to explore data for tabulated reference electrodes
 and determine the shift between different potential scales.
 
 TODO:: Add description of certain sources, etc
@@ -587,7 +587,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1078,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 uncertainty=0.0006,
                 approach="experimental",
                 unit="V",
@@ -595,14 +595,14 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1079,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 approach="calculated",
                 unit="V",
                 vs="SHE",
             ),
             _ReferenceElectrodeEntry(
                 value=0.1135,
-                source="https://doi.org/10.1039/CT9119900845",
+                source={"doi": "https://doi.org/10.1039/CT9119900845"},
                 approach="experimental",
                 unit="V",
                 vs="SHE",
@@ -625,7 +625,7 @@ _reference_electrodes = {
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1414,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 uncertainty=0.0027,
                 approach="experimental",
                 unit="V",
@@ -633,7 +633,7 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.1635,
-                source="https://doi.org/10.1021/acscatal.2c05655",
+                source={"doi": "https://doi.org/10.1021/acscatal.2c05655"},
                 approach="calculated",
                 unit="V",
                 vs="SHE",
@@ -690,7 +690,7 @@ _reference_electrodes = {
     ),
     "Hg/HgO-1M-KOH": _ReferenceElectrode(
         name="Hg/HgO-1M-KOH",
-        full_name="Mercury / mercury oxide electrode with internal 0.5 M NaOH solution",
+        full_name="Mercury / mercury oxide electrode with internal 1 M KOH solution",
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.1027,
@@ -760,7 +760,7 @@ _reference_electrodes = {
             ),
             _ReferenceElectrodeEntry(
                 value=0.6125,
-                source="https://doi.org/10.1039/TF9656102050",
+                source={"doi": "https://doi.org/10.1039/TF9656102050"},
                 unit="V",
                 vs="SHE",
                 approach="unknown",

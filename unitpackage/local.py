@@ -336,33 +336,33 @@ def update_fields(original_fields, new_fields):
     validate_field_structure(original_fields)
     validate_field_structure(new_fields)
 
-    original_schema = Schema({"fields": original_fields})
+    # Use frictionless Schema for field management
+    schema = Schema({"fields": original_fields})
 
     # Create a lookup dict for provided fields by name
     provided_fields_dict = {
         field["name"]: field for field in new_fields if "name" in field
     }
 
-    updated_fields = []
     unspecified_fields = []
     unused_provided_fields = []
 
-    # First, update fields that exist in the original schema,
-    # and record which original fields have no additional information provided.
-    for name in original_schema.field_names:
-        if name in provided_fields_dict:
-            # Start with original field, then update only the keys provided in the input
-            updated_field = original_schema.get_field(name).to_dict()
-            updated_field.update(provided_fields_dict[name])
-            updated_fields.append(updated_field)
+    # Update fields that exist in the original schema using schema.update_field()
+    for field_name in schema.field_names:
+        if field_name in provided_fields_dict:
+            # Extract updates (excluding 'name' since update_field takes name separately)
+            updates = {
+                k: v for k, v in provided_fields_dict[field_name].items() if k != "name"
+            }
+            schema.update_field(field_name, updates)
         else:
-            unspecified_fields.append(name)
-            updated_fields.append(original_schema.get_field(name).to_dict())
+            unspecified_fields.append(field_name)
 
-    # Then, record any provided fields that are not present in the original schema.
+    # Record any provided fields that are not present in the original schema
     for name in provided_fields_dict.keys():
-        if name not in original_schema.field_names:
+        if name not in schema.field_names:
             unused_provided_fields.append(name)
+
     if len(unspecified_fields) != 0:
         logger.warning(
             f"Additional information was not provided for fields {unspecified_fields}."
@@ -370,10 +370,11 @@ def update_fields(original_fields, new_fields):
 
     if len(unused_provided_fields) != 0:
         logger.warning(
-            f"Fields with names {unused_provided_fields} were provided but do not appear in the field names of tabular resource {original_schema.field_names}."
+            f"Fields with names {unused_provided_fields} were provided but do not appear in the field names of tabular resource {schema.field_names}."
         )
 
-    return updated_fields
+    # Return the updated fields as a list of dicts
+    return [field.to_dict() for field in schema.fields]
 
 
 def create_unitpackage(resource, metadata=None, fields=None):
@@ -399,11 +400,12 @@ def create_unitpackage(resource, metadata=None, fields=None):
     resource.custom["metadata"] = metadata
 
     if fields:
-        # Update fields in the Resource describing the data in the CSV
-        updated_fields = update_fields(resource.schema.to_dict()["fields"], fields)
-        original_schema = resource.schema.to_dict()
-        original_schema["fields"] = updated_fields
-        resource.schema = Schema.from_descriptor(original_schema)
+        # Use update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
+
+        # Update the resource schema with the updated fields
+        resource.schema = Schema({"fields": updated_fields})
 
     package = Package(resources=[resource])
 

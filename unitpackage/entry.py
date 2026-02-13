@@ -32,7 +32,7 @@ The data of the entry can be called as a pandas dataframe::
     1      0.020000 -0.102158 -0.981762
     ...
 
-Entries can be created from from various sources, such as csv files or pandas dataframes::
+Entries can be created from various sources, such as csv files or pandas dataframes::
 
     >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
     >>> entry
@@ -42,7 +42,7 @@ Information on the fields such as units can be updated::
 
     >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
     >>> entry = entry.update_fields(fields=fields)
-    >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+    >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
     [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
     {'name': 'I', 'type': 'integer', 'unit': 'A'}]
 
@@ -77,6 +77,7 @@ Metadata to the resource can be updated in-place::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import functools
 import logging
 import os.path
 
@@ -127,13 +128,16 @@ class Entry:
     def __init__(self, resource):
         self.resource = resource
 
-    @property
+    @functools.cached_property
     def metadata(self):
         r"""
         Access and manage entry metadata.
 
         Returns a MetadataDescriptor that supports both dict and attribute-style access.
         Allows loading metadata from various sources. Modifications are applied in-place.
+
+        The descriptor is cached for efficiency, but still reflects metadata changes since
+        it delegates to the underlying resource.
 
         EXAMPLES::
 
@@ -150,6 +154,17 @@ class Entry:
             >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
             >>> new_entry.metadata['echemdb']['test']
             'data'
+
+        The descriptor is cached but still sees metadata updates::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> descriptor1 = entry.metadata
+            >>> entry.metadata.from_dict({'custom': {'key': 'value'}})
+            >>> descriptor2 = entry.metadata
+            >>> descriptor1 is descriptor2
+            True
+            >>> descriptor1['custom']['key']
+            'value'
 
         """
         return MetadataDescriptor(self)
@@ -240,8 +255,8 @@ class Entry:
             >>> entry = Entry.create_examples()[0]
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             [... 'create_examples', 'default_metadata_key', 'df', 'echemdb', 'field_unit',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
-            'metadata', 'mutable_resource', 'plot', 'remove_columns', 'rename_fields',
+            'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
+            'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
             'rescale', 'resource', 'save', 'update_fields', 'yaml']
 
         """
@@ -353,9 +368,27 @@ class Entry:
             return metadata[self.default_metadata_key]
         return metadata
 
+    @property
+    def fields(self):
+        r"""
+        Return the fields of the resource's schema.
+
+        This is a convenience property that returns `self.resource.schema.fields`.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        return self.resource.schema.fields
+
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the ``MutableResource`` resource.
+        Return the unit of the ``field_name`` of the resource.
 
         EXAMPLES::
 
@@ -364,14 +397,12 @@ class Entry:
             'V'
 
         """
-        try:
-            return self.mutable_resource.schema.get_field(field_name).custom["unit"]
-        except KeyError:
-            logger.warning(
-                f"Field '{field_name}' in {self.identifier} does not have a unit."
-            )
+        field = self.resource.schema.get_field(field_name).custom.get("unit", "")
+        if not field:
+            logger.warning(f"Field {field_name} has no unit.")
+            return ""
 
-        return ""
+        return field
 
     def rescale(self, units):
         r"""
@@ -384,7 +415,7 @@ class Entry:
         The units without any rescaling::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.resource.schema.fields
+            >>> entry.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -392,7 +423,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.mutable_resource.schema.fields
+            >>> rescaled_entry.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -417,29 +448,23 @@ class Entry:
             units = {}
 
         from astropy import units as u
-        from frictionless import Resource
 
-        resource = Resource(self.resource.to_dict())
-        fields = self.mutable_resource.schema.fields
+        # Get current dataframe and schema
         df = self.df.copy()
+        fields = self.fields
 
+        # Apply rescaling to dataframe
         for field in fields:
             if field.name in units:
                 df[field.name] *= u.Unit(field.custom["unit"]).to(
                     u.Unit(units[field.name])
                 )
-                resource.schema.update_field(field.name, {"unit": units[field.name]})
 
-        # create a new dataframe resource
-        df_resource = Resource(df)
-        df_resource.infer()
-        # update units in the schema of the df resource
-        df_resource.schema = resource.schema
+        # Create new resource with rescaled data and updated units
+        field_updates = {name: {"unit": unit} for name, unit in units.items()}
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
 
-        # Update the "MutableResource"
-        resource.custom["MutableResource"] = df_resource
-
-        return type(self)(resource=resource)
+        return type(self)(resource=new_resource)
 
     def add_offset(self, field_name=None, offset=None, unit=""):
         r"""
@@ -465,7 +490,7 @@ class Entry:
             1  0.02 -0.002158 -0.981762
             ...
 
-            >>> new_entry.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            >>> new_entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E',
             'type': 'number',
             'unit': 'V',
@@ -490,7 +515,7 @@ class Entry:
             1  0.02  0.297842 -0.981762
             ...
 
-            >>> new_entry_1.mutable_resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            >>> new_entry_1.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E',
             'type': 'number',
             'unit': 'V',
@@ -510,7 +535,12 @@ class Entry:
         """
         import astropy.units as u
 
-        field = self.mutable_resource.schema.get_field(field_name)
+        field = self.resource.schema.get_field(field_name)
+
+        if not field.custom.get("unit") and not unit:
+            raise ValueError(
+                f"Field '{field_name}' has no unit and no unit was provided for the offset."
+            )
 
         if field.custom.get("unit") and not unit:
             logger.warning(
@@ -518,91 +548,122 @@ class Entry:
             )
             unit = field.custom.get("unit")
 
-        field_unit = u.Unit(field.custom.get("unit"))
+        field_unit = u.Unit(field.custom.get("unit") or unit)
 
         # create a new dataframe with offset values
         df = self.df.copy()
-
         offset_quantity = (offset * u.Unit(unit)).to(u.Unit(field_unit))
-
         df[field_name] += offset_quantity.value
 
-        # create new resource
-        from frictionless import Resource
-
-        resource = Resource(self.resource.to_dict())
-
-        df_resource = Resource(df)
-        df_resource.infer()
-        df_resource.schema = resource.schema
-
-        resource.custom["MutableResource"] = df_resource
-
-        # include or update the offset in the fields metadata
+        # Calculate the new offset value
         old_offset_quantity = field.custom.get("offset", {}).get("value", 0.0) * u.Unit(
             field.custom.get("offset", {}).get("unit", field.custom.get("unit"))
         )
         new_offset = old_offset_quantity.value + offset_quantity.value
 
-        df_resource.schema.update_field(
-            field_name,
-            {"offset": {"value": float(new_offset), "unit": str(offset_quantity.unit)}},
-        )
+        # Create new resource with offset metadata
+        field_updates = {
+            field_name: {
+                "offset": {
+                    "value": float(new_offset),
+                    "unit": str(offset_quantity.unit),
+                }
+            }
+        }
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
 
-        return type(self)(resource=resource)
+        return type(self)(resource=new_resource)
 
-    @property
-    def mutable_resource(self):
+    def _create_new_df_resource(self, df, schema=None, field_updates=None):
         r"""
-        Return the entry's "MutableResource".
+        Create a new dataframe resource from a dataframe, preserving metadata and schema.
+
+        Args:
+            df: pandas DataFrame to create resource from
+            schema: Optional schema descriptor dict. If None, copies schema from original resource
+            field_updates: Optional dict mapping field names to update dicts
+
+        Returns:
+            A new frictionless Resource
 
         EXAMPLES::
 
             >>> entry = Entry.create_examples()[0]
-            >>> entry.mutable_resource
-            {'name': 'memory',
-            'type': 'table',
-            'data': [],
-            'format': 'pandas',
-            'mediatype': 'application/pandas',
-            'schema': {'fields': [{'name': 't', 'type': 'number', 'unit': 's'},
-                                {'name': 'E',
-                                    'type': 'number',
-                                    'unit': 'V',
-                                    'reference': 'RHE'},
-                                {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]}}
+            >>> df = entry.df.copy()
+            >>> new_resource = entry._create_new_df_resource(df)
+            >>> new_resource.name == entry.resource.name
+            True
         """
-        self.resource.custom.setdefault("MutableResource", "")
+        from frictionless import Resource, Schema
 
-        if not self.resource.custom["MutableResource"]:
-            if self.resource.format not in ["csv", "pandas"]:
-                raise ValueError(
-                    "MutableResource can only be created from resources of format 'csv' or 'pandas'."
-                )
+        new_resource = Resource(df)
+        new_resource.infer()
+        new_resource.name = self.resource.name
 
-            if self.resource.format == "csv":
-
-                from unitpackage.local import create_df_resource_from_tabular_resource
-
-                self.resource.custom["MutableResource"] = (
-                    create_df_resource_from_tabular_resource(self.resource)
-                )
-
-            elif self.resource.format == "pandas":
-                self.resource.custom["MutableResource"] = self.resource
-
-            from frictionless import Schema
-
-            self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
-                self.resource.schema.to_dict()
+        if schema is not None:
+            # Use the provided schema
+            new_resource.schema = Schema.from_descriptor(schema, allow_invalid=True)
+        elif field_updates:
+            # Copy schema and apply field-specific updates
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
+            for field_name, updates in field_updates.items():
+                if field_name in new_resource.schema.field_names:
+                    new_resource.schema.update_field(field_name, updates)
+        else:
+            # No schema provided and no updates - copy schema as-is
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
             )
 
-        return self.resource.custom["MutableResource"]
+        # Copy metadata to new resource
+        new_resource.custom["metadata"] = self.resource.custom.get("metadata", {})
+
+        return new_resource
+
+    @functools.cached_property
+    def _df_resource(self):
+        r"""
+        Cached pandas dataframe resource.
+
+        If the resource is a CSV resource, convert it to pandas format on first access
+        and cache the result. This avoids re-reading the CSV file on every .df access.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> resource = entry._df_resource
+            >>> resource.format
+            'pandas'
+
+            >>> # Second access uses cached value
+            >>> resource2 = entry._df_resource
+            >>> resource is resource2
+            True
+        """
+        if self.resource.format == "pandas":
+            return self.resource
+
+        if self.resource.format == "csv":
+            from unitpackage.local import create_df_resource_from_tabular_resource
+
+            # Create pandas resource from CSV
+            df_resource = create_df_resource_from_tabular_resource(self.resource)
+            # Copy schema from original resource
+            from frictionless import Schema
+
+            df_resource.schema = Schema.from_descriptor(self.resource.schema.to_dict())
+            return df_resource
+
+        raise ValueError(
+            f"Cannot convert resource of format '{self.resource.format}' to pandas dataframe."
+        )
 
     @property
     def df(self):
         r"""
-        Return the data of this entry's "MutableResource" as a data frame.
+        Return the data of this entry's resource as a data frame.
 
         EXAMPLES::
 
@@ -615,7 +676,7 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -633,7 +694,7 @@ class Entry:
             2  3  4
 
         """
-        return self.mutable_resource.data
+        return self._df_resource.data
 
     def add_columns(self, df, new_fields):
         r"""
@@ -675,13 +736,64 @@ class Entry:
 
         """
         import pandas as pd
+        from frictionless import Field, Schema
 
         df_ = pd.concat([self.df, df], axis=1)
 
-        fields = [field.to_dict() for field in self.mutable_resource.schema.fields]
+        # Create new schema with added fields using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
 
-        fields.extend(new_fields)
-        entry = self.from_df(df=df_, basename=self.identifier).update_fields(fields)
+        # Add new fields using schema.add_field()
+        for field_descriptor in new_fields:
+            field = Field.from_descriptor(field_descriptor)
+            new_schema.add_field(field)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df_, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
+
+    def remove_column(self, field_name):
+        r"""
+        Removes a single column from the dataframe
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.remove_column('E')
+            >>> new_entry.df
+                          t         j
+            0      0.000000 -0.998277
+            1      0.020000 -0.981762
+            ...
+
+            >>> 'E' in new_entry.df.columns
+            False
+
+        """
+        from frictionless import Schema
+
+        # Remove column from dataframe
+        df = self.df.copy()
+        df.drop(columns=[field_name], inplace=True)
+
+        # Create new schema and remove field using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        if field_name in [field.name for field in new_schema.fields]:
+            new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
         entry.metadata.from_dict(self._metadata)
 
         return entry
@@ -711,15 +823,26 @@ class Entry:
             False
 
         """
-        df = self.df.copy()
-        df.drop(columns=list(field_names), inplace=True)
+        if not field_names:
+            return self
 
-        fields = [
-            field.to_dict()
-            for field in self.mutable_resource.schema.fields
-            if field.name not in field_names
-        ]
-        entry = self.from_df(df=df, basename=self.identifier).update_fields(fields)
+        from frictionless import Schema
+
+        # Remove all columns from dataframe at once
+        df = self.df.copy()
+        columns_to_remove = [name for name in field_names if name in df.columns]
+        if columns_to_remove:
+            df.drop(columns=columns_to_remove, inplace=True)
+
+        # Create new schema and remove all fields in a single pass
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        for field_name in field_names:
+            if field_name in [field.name for field in new_schema.fields]:
+                new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
         entry.metadata.from_dict(self._metadata)
 
         return entry
@@ -845,7 +968,7 @@ class Entry:
 
     def update_fields(self, fields):
         r"""
-        Return a new entry with updated fields in the MutableResource.
+        Return a new entry with updated fields in the resource.
 
         The :param fields: list must must be structured such as
         `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
@@ -854,44 +977,45 @@ class Entry:
 
             >>> from unitpackage.entry import Entry
             >>> entry = Entry.create_examples()[0]
-            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
-        Updating the fields returns the same entry with updated field metadata::
+        Updating the fields returns a new entry with updated field metadata::
 
             >>> fields = [{'name':'E', 'unit': 'mV'},
             ... {'name':'j', 'unit': 'uA / cm2'},
             ... {'name':'x', 'unit': 'm'}]
-            >>> entry.update_fields(fields)
-            Entry('alves_2011_electrochemistry_6010_f1a_solid')
-
-            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'type': 'number', 'unit': 's'},
-            {'name': 'E', 'type': 'number', 'unit': 'mV', 'reference': 'RHE'},
-            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
-
             >>> new_entry = entry.update_fields(fields)
-            >>> new_entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> new_entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'mV', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
+
+        The original entry remains unchanged::
+
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
         from unitpackage.local import update_fields
 
-        updated_fields = update_fields(
-            self.mutable_resource.schema.to_dict()["fields"], fields
+        # Get the dataframe
+        df = self.df.copy()
+
+        # Use local.update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in self.resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
+
+        # Create new resource with updated schema
+        new_resource = self._create_new_df_resource(
+            df, schema={"fields": updated_fields}
         )
 
-        from frictionless import Schema
-
-        original_schema = self.mutable_resource.schema.to_dict()
-        original_schema["fields"] = updated_fields
-        self.mutable_resource.schema = Schema.from_descriptor(original_schema)
-
-        return self
+        return type(self)(resource=new_resource)
 
     @classmethod
     def from_csv(
@@ -936,7 +1060,6 @@ class Entry:
 
         CSV with a more complex structure, such as multiple header lines can be constructed::
 
-            >>> filename = 'examples/from_csv/from_csv_multiple_headers.csv'
             >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
             >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
             {'name': 'from_csv_multiple_headers',
@@ -970,27 +1093,104 @@ class Entry:
         return cls(resource)
 
     @classmethod
-    def _modify_fields(cls, original, alternative, keep_original_name_as=None):
-        r"""Updates in a list of fields (original) the field names with those
-        provided in a dictionary. The original name of the fields is kept with
-        the name `original` in the updated fields.
+    def _modify_field_name(cls, field, old_name, new_name, keep_original_name_as=None):
+        r"""Modifies a single field's name if it matches the old_name.
+
+        The original name can optionally be preserved in a custom field property.
+
+        EXAMPLES::
+
+            >>> field = {'name': '<E>', 'unit':'mV'}
+            >>> Entry._modify_field_name(field, '<E>', 'E', keep_original_name_as='original')
+            {'name': 'E', 'unit': 'mV', 'original': '<E>'}
+
+            >>> field = {'name': 'I', 'unit':'mA'}
+            >>> Entry._modify_field_name(field, '<E>', 'E', keep_original_name_as='original')
+            {'name': 'I', 'unit': 'mA'}
+
+        """
+        if field["name"] == old_name:
+            if keep_original_name_as:
+                field.setdefault(keep_original_name_as, old_name)
+            field["name"] = new_name
+        return field
+
+    @classmethod
+    def _modify_fields_names(cls, fields, name_mappings, keep_original_name_as=None):
+        r"""Updates field names in a list of fields based on provided name mappings.
+
+        The original field names can optionally be preserved in a custom property.
 
         EXAMPLES::
 
             >>> fields = [{'name': '<E>', 'unit':'mV'},{'name': 'I', 'unit':'mA'}]
-            >>> alt_fields = {'<E>':'E'}
-            >>> Entry._modify_fields(fields, alt_fields, keep_original_name_as='original')
+            >>> name_mappings = {'<E>':'E'}
+            >>> Entry._modify_fields_names(fields, name_mappings, keep_original_name_as='original')
             [{'name': 'E', 'unit': 'mV', 'original': '<E>'}, {'name': 'I', 'unit': 'mA'}]
 
         """
-        for field in original:
-            for key in alternative.keys():
-                if field["name"] == key:
-                    if keep_original_name_as:
-                        field.setdefault(keep_original_name_as, key)
-                    field["name"] = alternative[key]
+        for field in fields:
+            for old_name, new_name in name_mappings.items():
+                cls._modify_field_name(field, old_name, new_name, keep_original_name_as)
+        return fields
 
-        return original
+    def rename_field(self, field_name, new_name, keep_original_name_as=None):
+        r"""Returns a :class:`~unitpackage.entry.Entry` with a single renamed field and
+        corresponding dataframe column name.
+
+        The original field name can optionally be kept in a new key.
+
+        EXAMPLES:
+
+        The original dataframe::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_examples()[0]
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Dataframe with a single modified column name::
+
+            >>> renamed_entry = entry.rename_field('t', 't_rel', keep_original_name_as='originalName')
+            >>> renamed_entry.df
+                      t_rel         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Updated fields of the resource::
+
+            >>> renamed_entry.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS:
+
+        Renaming a non-existing field has no effect::
+
+            >>> renamed_entry = entry.rename_field('x', 'y', keep_original_name_as='originalName')
+            >>> renamed_entry.fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        df = self.df.rename(columns={field_name: new_name}).copy()
+
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings={field_name: new_name},
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
+
+        return type(self)(resource=new_resource)
 
     def rename_fields(self, field_names, keep_original_name_as=None):
         r"""Returns a :class:`~unitpackage.entry.Entry` with updated field names and dataframe
@@ -1019,9 +1219,9 @@ class Entry:
             1      0.020000 -0.102158 -0.981762
             ...
 
-        Updated fields of the "MutableResource"::
+        Updated fields of the resource::
 
-            >>> renamed_entry.mutable_resource.schema.fields
+            >>> renamed_entry.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E_we', 'type': 'number', 'unit': 'V', 'reference': 'RHE', 'originalName': 'E'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -1031,7 +1231,7 @@ class Entry:
         Provide alternatives for non-existing fields::
 
             >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
-            >>> renamed_entry.mutable_resource.schema.fields
+            >>> renamed_entry.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -1041,29 +1241,22 @@ class Entry:
             logger.warning(
                 "No renaming pattern was provided, such as {'t': 't_rel', 'x':'y'}."
             )
-            field_names = {}
+            return self
 
-        from frictionless import Resource, Schema
-
-        resource = Resource(self.resource.to_dict())
-
+        # Rename all columns at once in the dataframe
         df = self.df.rename(columns=field_names).copy()
 
-        new_fields = self._modify_fields(
-            self.mutable_resource.schema.to_dict()["fields"],
-            alternative=field_names,
+        # Update all field names in a single pass
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings=field_names,
             keep_original_name_as=keep_original_name_as,
         )
 
-        df_resource = Resource(df)
-        df_resource.infer()
-        df_resource.schema = Schema.from_descriptor(
-            {"fields": new_fields}, allow_invalid=True
-        )
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
 
-        resource.custom["MutableResource"] = df_resource
-
-        return type(self)(resource=resource)
+        return type(self)(resource=new_resource)
 
     @classmethod
     def from_local(cls, filename):
@@ -1082,7 +1275,7 @@ class Entry:
             Entry('no_bibliography')
 
         """
-        from unitpackage.local import Package
+        from frictionless import Package
 
         package = Package(filename)
 
@@ -1091,7 +1284,7 @@ class Entry:
 
         if len(package.resources) > 1:
             raise ValueError(
-                f"No than one resource available in '{filename}'. Use collection.from_local()`"
+                f"More than one resource available in '{filename}'. Use collection.from_local()`"
             )
 
         return cls(resource=package.resources[0])
@@ -1147,7 +1340,7 @@ class Entry:
 
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> entry = Entry.from_df(df=df, basename='test_df').update_fields(fields=fields)
-            >>> entry.resource.schema.fields
+            >>> entry.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
@@ -1236,26 +1429,27 @@ class Entry:
 
         self.df.to_csv(csv_name, index=False)
 
-        # update the identifier and filepath of the resource
-        if basename:
-            self.resource.path = basename + ".csv"
-            self.resource.name = basename
+        # Create resource descriptor for saving
+        from frictionless import Resource
 
-        # convert a pandas resource into a csv resource
-        if self.resource.format == "pandas":
-            self.resource.format = "csv"
-            self.resource.mediatype = "text/csv"
-            if hasattr(self.resource, "data"):
-                del self.resource.data
+        # Get current schema from the dataframe resource
+        current_schema = self.resource.schema.to_dict()
 
-        resource = self.resource.to_dict()
+        # Build resource descriptor
+        resource = {
+            "name": basename,
+            "type": "table",
+            "path": basename + ".csv",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "schema": current_schema,
+        }
 
-        # update the fields from the main resource with those from the "MutableResource"resource
-        resource["schema"]["fields"] = self.mutable_resource.schema.fields
-        resource["schema"] = resource["MutableResource"].schema.to_dict()
-        del resource["MutableResource"]
+        # Add metadata if present
+        if self.resource.custom.get("metadata"):
+            resource["metadata"] = self.resource.custom["metadata"]
 
-        from frictionless import Package, Resource
+        from frictionless import Package
 
         package = Package(
             resources=[Resource.from_descriptor(resource)],
