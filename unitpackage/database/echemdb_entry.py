@@ -108,13 +108,13 @@ class EchemdbEntry(Entry):
         Return an :class:`EchemdbEntry` from a BioLogic EC-Lab MPT file.
 
         The file is parsed with the ECLabLoader. Fields are updated with
-        units from :data:`~unitpackage.loaders.column_names.biologic_fields`
+        units from :data:`~unitpackage.loaders.eclab_fields.biologic_fields`
         and renamed according to
-        :data:`~unitpackage.loaders.column_names.biologic_fields_alt_names`.
+        :data:`~unitpackage.loaders.eclab_fields.biologic_fields_alt_names`.
         The original field names are preserved as ``originalName``.
 
         Only columns whose original names appear in
-        :data:`~unitpackage.loaders.column_names.biologic_fields_alt_names`
+        :data:`~unitpackage.loaders.eclab_fields.biologic_fields_alt_names`
         are kept; all other columns are removed.
 
         EXAMPLES::
@@ -132,11 +132,11 @@ class EchemdbEntry(Entry):
         Fields have units and the original BioLogic column names::
 
             >>> [f for f in entry.fields if f.name == 'E'] # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 'E', 'type': 'number', 'description': 'WE potential versus REF',
+            [{'name': 'E', 'type': 'number', 'description': 'WE potential versus REF.',
             'unit': 'V', 'dimension': 'E', 'originalName': 'Ewe/V'}]
 
             >>> [f for f in entry.fields if f.name == 't'] # doctest: +NORMALIZE_WHITESPACE
-            [{'name': 't', 'type': 'number', 'description': 'time',
+            [{'name': 't', 'type': 'number', 'description': 'Time.',
             'unit': 's', 'dimension': 't', 'originalName': 'time/s'}]
 
             >>> [f for f in entry.fields if f.name == 'I'] # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
@@ -152,7 +152,7 @@ class EchemdbEntry(Entry):
             'EC-Lab ASCII FILE\nNb header lines : 62...'
 
         """
-        from unitpackage.loaders.column_names import biologic_fields, biologic_fields_alt_names
+        from unitpackage.loaders.eclab_fields import biologic_fields, biologic_fields_alt_names
 
         entry = cls.from_csv(csvname=csvname, encoding=encoding, device="eclab")
         entry = entry.update_fields(biologic_fields)
