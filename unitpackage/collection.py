@@ -587,6 +587,60 @@ class Collection:
 
         return cls(package=package)
 
+    def rescale(self, units):
+        r"""
+        Return a rescaled collection with all entries rescaled to the specified ``units``.
+
+        Reuses the interface of :meth:`~unitpackage.entry.Entry.rescale`.
+        Provide a dict, where the key is the field name and the value
+        the new unit, such as ``{'j': 'uA / cm2', 't': 'h'}``.
+
+        Fields that are not present in an entry are silently ignored for that entry.
+
+        EXAMPLES:
+
+        The units without any rescaling::
+
+            >>> collection = Collection.create_example()
+            >>> collection[0].fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        A rescaled collection::
+
+            >>> rescaled = collection.rescale({'j': 'uA / cm2', 't': 'h'})
+            >>> rescaled[0].fields
+            [{'name': 't', 'type': 'number', 'unit': 'h'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
+
+        The number of entries in the collection is preserved::
+
+            >>> len(rescaled) == len(collection)
+            True
+
+        """
+        from collections.abc import Mapping
+
+        if not isinstance(units, Mapping):
+            raise ValueError(
+                "'units' must have the format {'dimension': 'new unit'}, e.g., `{'j': 'uA / cm2', 't': 'h'}`"
+            )
+
+        package = Package()
+
+        for entry in self:
+            # Only rescale fields that exist on this entry
+            entry_field_names = {f.name for f in entry.resource.schema.fields}
+            applicable_units = {
+                k: v for k, v in units.items() if k in entry_field_names
+            }
+            rescaled_entry = entry.rescale(applicable_units)
+            package.add_resource(rescaled_entry.resource)
+
+        return type(self)(package=package)
+
     @property
     def identifiers(self):
         """Return a list of identifiers of the collection,
