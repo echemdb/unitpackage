@@ -122,9 +122,7 @@ class Collection:
             Entry('no_bibliography')]
 
         """
-        example_dir = os.path.join(
-            os.path.dirname(__file__), "..", "examples", "local"
-        )
+        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", "local")
 
         return cls.from_local(example_dir)
 
