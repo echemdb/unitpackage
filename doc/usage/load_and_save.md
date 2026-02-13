@@ -92,6 +92,23 @@ csv_entry = Entry.from_csv(csvname="../files/demo_package.csv")
 csv_entry
 ```
 
+For CSV files with more complex structures, additional arguments can be provided:
+
+- `header_lines` — number of header lines to skip before the data
+- `column_header_lines` — number of lines containing column headers (multiple lines are flattened and separated by ` / `)
+- `decimal` — decimal separator (e.g., `','` for European-style numbers)
+- `delimiters` — column delimiter (auto-detected if not specified)
+- `encoding` — file encoding
+
+For example, a CSV with multiple header lines:
+
+```{code-cell} ipython3
+csv_entry = Entry.from_csv(csvname='../../examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
+csv_entry.fields
+```
+
+For even more complex file formats from laboratory equipment, see the [Loaders](loaders.md) section.
+
 From a pandas DataFrame:
 
 ```{code-cell} ipython3
