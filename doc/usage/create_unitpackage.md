@@ -78,7 +78,7 @@ entry.df.head()
 or from the resource data
 
 ```{code-cell} ipython3
-entry.resource.schema.to_dict()
+entry.resource.data
 ```
 
 ## From a pandas DataFrame

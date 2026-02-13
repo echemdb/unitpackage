@@ -94,18 +94,7 @@ def convert(csv, device, outdir, metadata):
         ...         os.chdir(cwd)
 
     """
-    import os
-    import yaml
-
     from unitpackage.loaders.baseloader import BaseLoader
-
-    fields = None
-
-    if metadata:
-        metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
-        fields = metadata["figure description"].get("fields")
-        if not fields:
-            logger.warning("No units to the fields provided in the metadata")
 
     if device:
         with open(csv, "r") as file:  # pylint: disable=unspecified-encoding
@@ -114,13 +103,36 @@ def convert(csv, device, outdir, metadata):
         with open(csv, "r") as file:  # pylint: disable=unspecified-encoding
             loader = BaseLoader(file)
 
+    import os
+
+    import yaml
+
+    fields = None
+
+    if metadata:
+        metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
+        if "dataDescription" not in metadata:
+            logger.warning(
+                "No 'dataDescription' key found in metadata; setting empty dataDescription."
+            )
+            metadata["dataDescription"] = {"fields": []}
+        fields = metadata["dataDescription"].get("fields", [])
+        if not fields:
+            logger.warning("No units to the fields provided in the metadata")
+
+    entry = Entry.from_df(df=loader.df, basename=Path(csv).stem)
+
+    # load metadata
+    if metadata:
+        entry.load_metadata(metadata)
+        if not device:
+            entry.metadata.set_default("dataDescription", "")
+            entry.metadata["dataDescription"].get("fields", [])
+        if fields:
+            entry = entry.update_fields(fields=fields)
+
     # Ensure output directory exists
     os.makedirs(outdir, exist_ok=True)
-    entry = Entry.from_df(df=loader.df, basename=Path(csv).stem)
-    if fields:
-        entry = entry.update_fields(fields=fields)
-    if metadata:
-        entry.metadata.from_dict(metadata)
     entry.save(outdir=outdir)
 
 

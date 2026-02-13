@@ -1,17 +1,17 @@
 experiment:
   type: BCV
   comment: intended approach
-data description:
+dataDescription:
   type: raw
-  measurement type: CV
-  scan rate:
+  measurementType: CV
+  scanRate:
     comment: variable
-  potential scale:
+  potentialScale:
     unit: V
     reference: RHE
   current:
     unit: mA
-electrochemical system:
+electrochemicalSystem:
   instrumentation:
   - type: potentiostat
     supplier: Biologic VSP-300
@@ -24,10 +24,10 @@ electrochemical system:
         refinement: Merk Milli-Q IQ 7000
       purity:
         grade: ultrapure water
-        total organic carbon:
+        totalOrganicCarbon:
           value: 3
           unit: ppb
-        total ion conductivity:
+        totalIonConductivity:
           value: 18
           unit: MOhm cm
     - name: HClO4

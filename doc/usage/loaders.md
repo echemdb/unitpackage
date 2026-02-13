@@ -5,11 +5,11 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.16.6
+    jupytext_version: 1.18.1
 kernelspec:
+  name: python3
   display_name: Python 3 (ipykernel)
   language: python
-  name: python3
 ---
 
 # Loaders
@@ -92,6 +92,10 @@ print(csv.column_headers.read())
 print(csv.data.read())
 ```
 
+## CLI
+
++++
+
 The data can also be converted into frictionless Data Packages using the CLI.
 
 ```{note}
@@ -104,22 +108,4 @@ A "standard" CSV
 
 ```{code-cell} ipython3
 !unitpackage csv ../../test/loader_data/default.csv --outdir ../../test/generated/loader_data
-```
-
-A specific file type, including additional YAML metadata.
-
-```{code-cell} ipython3
-:tags: [remove-output]
-!unitpackage csv ../../test/loader_data/eclab_cv.mpt --device eclab --metadata ../../test/loader_data/eclab_cv.mpt.metadata --outdir ../../test/generated/loader_data/
-```
-
-## Further usage
-
-Use echemdbs' `unitpackage` to browse, modify and visualize the Data Packages.
-
-```{code-cell} ipython3
-from unitpackage.collection import Collection
-db = Collection.from_local('../../test/generated/loader_data/')
-entry = db['eclab_cv']
-entry
 ```
