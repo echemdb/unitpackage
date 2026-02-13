@@ -105,16 +105,17 @@ class EchemdbEntry(Entry):
     @classmethod
     def from_mpt(cls, csvname, encoding=None):
         r"""
-        Return an :class:`EchemdbEntry` from a BioLogic EC-Lab MPT file.
+        Return an :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` from a BioLogic EC-Lab MPT file.
 
         The file is parsed with the ECLabLoader. Fields are updated with
-        units from :data:`~unitpackage.loaders.eclab_fields.biologic_fields`
+        units from ``biologic_fields``
         and renamed according to
-        :data:`~unitpackage.loaders.eclab_fields.biologic_fields_alt_names`.
+        ``biologic_fields_alt_names``
+        (both defined in :mod:`unitpackage.loaders.eclab_fields`).
         The original field names are preserved as ``originalName``.
 
         Only columns whose original names appear in
-        :data:`~unitpackage.loaders.eclab_fields.biologic_fields_alt_names`
+        ``biologic_fields_alt_names``
         are kept; all other columns are removed.
 
         EXAMPLES::

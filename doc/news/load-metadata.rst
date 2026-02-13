@@ -5,7 +5,7 @@
 * Added `MetadataDescriptor` class for enhanced metadata handling with dict and attribute-style access.
 * Added `Entry.default_metadata_key` class attribute to control metadata access patterns in subclasses.
 * Added `Entry._default_metadata` property to access the appropriate metadata subset.
-* Added `encoding`, `header_lines`, `column_header_lines`, `decimal`, and `delimiters` parameters to `Entry.from_csv()` for handling complex CSV formats.
+* Added `encoding`, `header_lines`, `column_header_lines`, `decimal`, `delimiters`, and `device` parameters to `Entry.from_csv()` for handling complex CSV formats and instrument-specific file types.
 * Added `create_tabular_resource_from_csv()` to create resources from CSV files with auto-detection of standard vs. complex formats.
 * Added `create_df_resource_from_csv()` for creating pandas dataframe resources from CSV files with custom formats.
 * Added `create_df_resource_from_df()` for creating resources directly from pandas DataFrames.
