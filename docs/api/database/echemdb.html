@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unitpackage.database.echemdb &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="unitpackage.database.echemdb_entry" href="echemdb_entry.html" />
+    <link rel="prev" title="unitpackage.local" href="../local.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.database.echemdb.Echemdb"><code class="docutils literal notranslate"><span class="pre">Echemdb</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.database.echemdb.Echemdb.Entry"><code class="docutils literal notranslate"><span class="pre">Echemdb.Entry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.database.echemdb.Echemdb.bibliography"><code class="docutils literal notranslate"><span class="pre">Echemdb.bibliography</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.database.echemdb.Echemdb.describe"><code class="docutils literal notranslate"><span class="pre">Echemdb.describe()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.database.echemdb.Echemdb.materials"><code class="docutils literal notranslate"><span class="pre">Echemdb.materials()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../loaders/baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../loaders/eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../loaders/gamryloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../loaders/eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../api.html">API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/echemdb/unitpackage/blob/master/unitpackage/database/echemdb.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-unitpackage.database.echemdb">
+<span id="unitpackage-database-echemdb"></span><h1><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code><a class="headerlink" href="#module-unitpackage.database.echemdb" title="Link to this heading"></a></h1>
+<p>A Collection of data from the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a> displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>. It provides additional functionalities compared to
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code> specific to the data in the echemdb repository.</p>
+<p>EXAMPLES:</p>
+<p>Create a collection from the Data Packages published in the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a> displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Search the collection for entries from a single publication:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="s1">&#39;https://doi.org/10.1039/C0CP01001D&#39;</span><span class="p">)</span>
+<span class="go">[Echemdb(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;), ...</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unitpackage.database.echemdb.</span></span><span class="sig-name descname"><span class="pre">Echemdb</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb" title="Link to this definition"></a></dt>
+<dd><p>A collection of <a class="reference external" href="https://github.com/frictionlessdata/frictionless-py">frictionless Data Packages</a>.</p>
+<p>Essentially this is just a list of data packages with some additional
+convenience wrap for use in the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a>
+displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>.</p>
+<p>EXAMPLES:</p>
+<p>An example collection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">resource_names</span>
+<span class="go">[&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;,</span>
+<span class="go">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;,</span>
+<span class="go">&#39;no_bibliography&#39;]</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">EchemdbEntry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry" title="Link to this definition"></a></dt>
+<dd><p>A <a class="reference external" href="https://github.com/frictionlessdata/frictionless-py">frictionless Data Package</a> describing a CV.</p>
+<p>EXAMPLES:</p>
+<p>Entries are normally obtained by opening a <a class="reference internal" href="#unitpackage.database.echemdb.Echemdb" title="unitpackage.database.echemdb.Echemdb"><code class="xref py py-class docutils literal notranslate"><span class="pre">Echemdb</span></code></a> of entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">collection</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.bibliography">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bibliography</span></span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.bibliography" title="Link to this definition"></a></dt>
+<dd><p>Return a pybtex bibliography object associated with this entry.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">bibliography</span>
+<span class="go">Entry(&#39;article&#39;,</span>
+<span class="go">fields=[</span>
+<span class="go">    (&#39;title&#39;, ...</span>
+<span class="go">    ...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_no_bib</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;no_bibliography&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_no_bib</span><span class="o">.</span><span class="n">bibliography</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.citation">
+<span class="sig-name descname"><span class="pre">citation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'text'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.citation" title="Link to this definition"></a></dt>
+<dd><p>Return a formatted reference for the entry’s bibliography such as:</p>
+<ol class="upperalpha simple" start="10">
+<li><p>Doe, et al., Journal Name, volume (YEAR) page, “Title”</p></li>
+</ol>
+<p>Rendering default is plain text ‘text’, but can be changed to any format
+supported by pybtex, such as markdown ‘md’, ‘latex’ or ‘html’.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">citation</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
+<span class="go">&#39;O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">citation</span><span class="p">(</span><span class="n">backend</span><span class="o">=</span><span class="s1">&#39;md&#39;</span><span class="p">))</span>
+<span class="go">O\. B\. Alves *et al\.*</span>
+<span class="go">*Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.</span>
+<span class="go">*Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.default_metadata_key">
+<span class="sig-name descname"><span class="pre">default_metadata_key</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'echemdb'</span></em><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.default_metadata_key" title="Link to this definition"></a></dt>
+<dd><p>Use ‘echemdb’ key to access descriptor metadata.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.from_mpt">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_mpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csvname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.from_mpt" title="Link to this definition"></a></dt>
+<dd><p>Return an <a class="reference internal" href="echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry" title="unitpackage.database.echemdb_entry.EchemdbEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></a> from a BioLogic EC-Lab MPT file.</p>
+<p>The file is parsed with the ECLabLoader. Fields are updated with
+units from <code class="docutils literal notranslate"><span class="pre">biologic_fields</span></code>
+and renamed according to
+<code class="docutils literal notranslate"><span class="pre">biologic_fields_alt_names</span></code>
+(both defined in <a class="reference internal" href="../loaders/eclab_fields.html#module-unitpackage.loaders.eclab_fields" title="unitpackage.loaders.eclab_fields"><code class="xref py py-mod docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a>).
+The original field names are preserved as <code class="docutils literal notranslate"><span class="pre">originalName</span></code>.</p>
+<p>Only columns whose original names appear in
+<code class="docutils literal notranslate"><span class="pre">biologic_fields_alt_names</span></code>
+are kept; all other columns are removed.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">from_mpt</span><span class="p">(</span><span class="s1">&#39;test/loader_data/eclab_cv.mpt&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Echemdb(&#39;eclab_cv&#39;)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">            t         E         I  cycle</span>
+<span class="go">0  86.761598  0.849737  0.001722    1.0</span>
+<span class="go">1  86.772598  0.849149 -0.003851    1.0</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Fields have units and the original BioLogic column names:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;E&#39;</span><span class="p">]</span>
+<span class="go">[{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;description&#39;: &#39;WE potential versus REF.&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;V&#39;, &#39;dimension&#39;: &#39;E&#39;, &#39;originalName&#39;: &#39;Ewe/V&#39;}]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;t&#39;</span><span class="p">]</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;description&#39;: &#39;Time.&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;s&#39;, &#39;dimension&#39;: &#39;t&#39;, &#39;originalName&#39;: &#39;time/s&#39;}]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">entry</span><span class="o">.</span><span class="n">fields</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;I&#39;</span><span class="p">]</span>
+<span class="go">[{&#39;name&#39;: &#39;I&#39;, &#39;type&#39;: &#39;number&#39;, &#39;description&#39;: ...,</span>
+<span class="go">&#39;unit&#39;: &#39;mA&#39;, &#39;dimension&#39;: &#39;I&#39;, &#39;originalName&#39;: &#39;&lt;I&gt;/mA&#39;}]</span>
+</pre></div>
+</div>
+<p>The loader metadata is stored in the entry’s metadata:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;loader&#39;</span><span class="p">]</span>
+<span class="go">&#39;ECLabLoader&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;header&#39;</span><span class="p">]</span>
+<span class="go">&#39;EC-Lab ASCII FILE\nNb header lines : 62...&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.get_electrode">
+<span class="sig-name descname"><span class="pre">get_electrode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.get_electrode" title="Link to this definition"></a></dt>
+<dd><p>Returns an electrode with the specified name.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;WE&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;WE&#39;, &#39;function&#39;: &#39;workingElectrode&#39;, &#39;type&#39;: &#39;single crystal&#39;,</span>
+<span class="go">&#39;crystallographicOrientation&#39;: &#39;0001&#39;, &#39;material&#39;: &#39;Ru&#39;,</span>
+<span class="go">&#39;preparationProcedure&#39;: &#39;Sputtering and flash annealing under UHV</span>
+<span class="go">conditions with repeated cycles of oxygen adsorption and desorption.&#39;,</span>
+<span class="go">&#39;shape&#39;: {&#39;height&#39;: {&#39;unit&#39;: &#39;mm&#39;, &#39;value&#39;: 2}, &#39;type&#39;: &#39;hat shaped&#39;},</span>
+<span class="go">&#39;source&#39;: {&#39;supplier&#39;: &#39;Mateck&#39;}}</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">get_electrode</span><span class="p">(</span><span class="s1">&#39;foo&#39;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">KeyError</span>: <span class="n">&quot;Electrode with name &#39;foo&#39; does not exist&quot;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'E'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'j'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.plot" title="Link to this definition"></a></dt>
+<dd><p>Return a plot of this entry.
+The default plot is a Cyclic Voltammogram (‘j vs E’).
+When <cite>j</cite> is not present in the data, <cite>I</cite> is used instead.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+<p>The plot can also be returned with custom axis dimensions (field names) available in the resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+<p>A plot resembling the original figure can be obtained by first rescaling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">(</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale">
+<span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale" title="Link to this definition"></a></dt>
+<dd><p>Return a rescaled <a class="reference internal" href="echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry" title="unitpackage.database.echemdb_entry.EchemdbEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></a> with axes in the specified <code class="docutils literal notranslate"><span class="pre">units</span></code>.</p>
+<p>Usage is essentially the same as for <a class="reference internal" href="../entry.html#unitpackage.entry.Entry.rescale" title="unitpackage.entry.Entry.rescale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rescale()</span></code></a>, i.e.,
+new units are expected as dict, where the key is the axis name and the value
+the new unit, such as <code class="docutils literal notranslate"><span class="pre">{'j':</span> <span class="pre">'uA</span> <span class="pre">/</span> <span class="pre">cm2',</span> <span class="pre">'t':</span> <span class="pre">'h'}</span></code>.</p>
+<p>Additionally, the entry can be rescaled to the axes’ units of the original data.
+These units must be defined in the metadata of the resource,
+within the key <code class="docutils literal notranslate"><span class="pre">figureDescription.fields</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="s1">&#39;original&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;mA / cm2&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale_reference">
+<span class="sig-name descname"><span class="pre">rescale_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale_reference" title="Link to this definition"></a></dt>
+<dd><p>Return a rescaled <a class="reference internal" href="echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry" title="unitpackage.database.echemdb_entry.EchemdbEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></a> with potentials
+referenced to <code class="docutils literal notranslate"><span class="pre">new_reference</span></code> scale.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is an experimental feature working for standard aqueous reference electrodes and electrolytes.
+We do not include temperature effects or other non-idealities at this point.</p>
+</div>
+<p>If a reference is not available, the axis can still be rescaled by adding an offset using the
+<a class="reference internal" href="../entry.html#unitpackage.entry.Entry.add_offset" title="unitpackage.entry.Entry.add_offset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_offset()</span></code></a>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.103158 -0.998277</span>
+<span class="go">1  0.02 -0.102158 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale_reference</span><span class="p">(</span><span class="n">new_reference</span><span class="o">=</span><span class="s1">&#39;Ag/AgCl-sat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;Ag/AgCl-sat&#39;}</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00  0.152942 -0.998277</span>
+<span class="go">1  0.02  0.153942 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale_scan_rate">
+<span class="sig-name descname"><span class="pre">rescale_scan_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale_scan_rate" title="Link to this definition"></a></dt>
+<dd><p>Return a rescaled <a class="reference internal" href="echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry" title="unitpackage.database.echemdb_entry.EchemdbEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></a>
+where the current (<code class="docutils literal notranslate"><span class="pre">I</span></code>) or current density (<code class="docutils literal notranslate"><span class="pre">j</span></code>) axis is rescaled
+according to the ratio of the provided scan rate to the original scan rate.</p>
+<p>Since current (density) scales linearly with scan rate in cyclic voltammetry,
+this method multiplies the <code class="docutils literal notranslate"><span class="pre">j</span></code> (or <code class="docutils literal notranslate"><span class="pre">I</span></code>) column by <code class="docutils literal notranslate"><span class="pre">new_scan_rate</span> <span class="pre">/</span> <span class="pre">original_scan_rate</span></code>.
+The scaling factor is tracked in the field metadata.</p>
+<p>By default the <code class="docutils literal notranslate"><span class="pre">j</span></code> (or <code class="docutils literal notranslate"><span class="pre">I</span></code>) field is rescaled. A custom <code class="docutils literal notranslate"><span class="pre">field_name</span></code>
+can be provided if the current axis has a different name.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">scan_rate</span>
+<span class="go">&lt;Quantity 0.05 V / s&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.103158 -0.998277</span>
+<span class="go">1  0.02 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Rescale from 50 mV/s to 100 mV/s (factor of 2):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale_scan_rate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;mV / s&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -1.996553</span>
+<span class="go">1      0.020000 -0.102158 -1.963524</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;number&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;A / m2&#39;,</span>
+<span class="go">&#39;scalingFactor&#39;: {&#39;value&#39;: 2.0}}</span>
+</pre></div>
+</div>
+<p>Rescale using the same unit as the original scan rate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled2</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale_scan_rate</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;V / s&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled2</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -1.996553</span>
+<span class="go">1      0.020000 -0.102158 -1.963524</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>A custom field name can be provided:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled3</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale_scan_rate</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s1">&#39;mV / s&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled3</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -1.996553</span>
+<span class="go">1      0.020000 -0.102158 -1.963524</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.scan_rate">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scan_rate</span></span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.scan_rate" title="Link to this definition"></a></dt>
+<dd><p>Return the scan rate of the entry as an astropy quantity.</p>
+<p>The scan rate is retrieved from the entry’s metadata
+at <code class="docutils literal notranslate"><span class="pre">figureDescription.scanRate</span></code>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">scan_rate</span>
+<span class="go">&lt;Quantity 0.05 V / s&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="p">[</span><span class="s1">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">scan_rate</span>
+<span class="go">&lt;Quantity 50. mV / s&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.EchemdbEntry.thumbnail">
+<span class="sig-name descname"><span class="pre">thumbnail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">96</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">72</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">72</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.EchemdbEntry.thumbnail" title="Link to this definition"></a></dt>
+<dd><p>Return a thumbnail of the entry’s curve as a PNG byte stream.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">thumb</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">thumb</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x89</span><span class="s1">PNG&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>The PNG’s <code class="docutils literal notranslate"><span class="pre">width</span></code> and <code class="docutils literal notranslate"><span class="pre">height</span></code> can be specified in pixels.
+Additional keyword arguments are passed to the data frame plotting
+method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">thumb</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">thumbnail</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">thumb</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x89</span><span class="s1">PNG&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.Entry">
+<span class="sig-name descname"><span class="pre">Entry</span></span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.Entry" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry" title="unitpackage.database.echemdb_entry.EchemdbEntry"><code class="xref py py-class docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></a></p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.bibliography">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bibliography</span></span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.bibliography" title="Link to this definition"></a></dt>
+<dd><p>Return a pybtex database of all bibtex bibliography files,
+associated with the entries.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">bibliography</span>
+<span class="go">BibliographyData(</span>
+<span class="go">  entries=OrderedCaseInsensitiveDict([</span>
+<span class="go">    (&#39;alves_2011_electrochemistry_6010&#39;, Entry(&#39;article&#39;,</span>
+<span class="go">    ...</span>
+<span class="go">    (&#39;engstfeld_2018_polycrystalline_17743&#39;, Entry(&#39;article&#39;,</span>
+<span class="go">    ...</span>
+</pre></div>
+</div>
+<p>A derived collection includes only the bibliographic entries of the remaining entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">citationKey</span> <span class="o">!=</span> <span class="s1">&#39;alves_2011_electrochemistry_6010&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">bibliography</span>
+<span class="go">BibliographyData(</span>
+<span class="go">  entries=OrderedCaseInsensitiveDict([</span>
+<span class="go">    (&#39;engstfeld_2018_polycrystalline_17743&#39;, Entry(&#39;article&#39;,</span>
+<span class="go">    ...</span>
+</pre></div>
+</div>
+<p>A collection with entries without bibliography:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">create_example</span><span class="p">()[</span><span class="s2">&quot;no_bibliography&quot;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">bibliography</span>
+<span class="go">&#39;&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.describe" title="Link to this definition"></a></dt>
+<dd><p>Return some statistics about the echemdb database.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span> <span class="o">==</span> \
+<span class="gp">... </span><span class="p">{</span><span class="s1">&#39;number of references&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+<span class="gp">... </span><span class="s1">&#39;number of entries&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+<span class="gp">... </span><span class="s1">&#39;materials&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;Cu&#39;</span><span class="p">,</span> <span class="s1">&#39;Ru&#39;</span><span class="p">}}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.database.echemdb.Echemdb.materials">
+<span class="sig-name descname"><span class="pre">materials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.database.echemdb.Echemdb.materials" title="Link to this definition"></a></dt>
+<dd><p>Return the substrate materials in the collection.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb</span><span class="w"> </span><span class="kn">import</span> <span class="n">Echemdb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Echemdb</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">materials</span><span class="p">()</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;Cu&#39;</span><span class="p">,</span> <span class="s1">&#39;Ru&#39;</span><span class="p">}</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../local.html" class="btn btn-neutral float-left" title="unitpackage.local" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="echemdb_entry.html" class="btn btn-neutral float-right" title="unitpackage.database.echemdb_entry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

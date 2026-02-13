@@ -1,0 +1,349 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="unitpackage.collection" href="api/collection.html" />
+    <link rel="prev" title="Loaders" href="usage/loaders.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/database/echemdb.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/database/echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/gamryloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/api.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="api">
+<h1>API<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
+<p>This API allows interacting with a collection of
+<a class="reference external" href="https://frictionlessdata.io/">frictionless datapackages</a>, stored in a <a class="reference internal" href="usage/unitpackage.html"><span class="std std-doc">specific format</span></a>, explore the content of its entries and visualize the underlying data.</p>
+<p>A <a class="reference internal" href="api/collection.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Collection</span></code></span></a> of datapackages, denoted as <a class="reference internal" href="api/entry.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">entries</span></code></span></a> can be created from <a class="reference internal" href="api/local.html"><span class="std std-doc">local</span></a> files or a <a class="reference internal" href="api/remote.html"><span class="std std-doc">remote</span></a> repository. The metadata describing the data are stored as <a class="reference internal" href="api/descriptor.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">descriptors</span></code></span></a> and can be accessed via <a class="reference internal" href="api/metadata.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></span></a> objects.
+For collections containing a certain type of data, collections with specific methods can be created, such as with <a class="reference internal" href="api/database/echemdb.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">Echemdb</span></code></span></a>. In a same way, specific types of entries can be created, such as with <a class="reference internal" href="api/database/echemdb_entry.html"><span class="std std-doc"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></span></a></p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Core Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection"><code class="docutils literal notranslate"><span class="pre">Collection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry"><code class="docutils literal notranslate"><span class="pre">Collection.Entry</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.add_columns"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.add_columns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.add_offset"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.add_offset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.apply_scaling_factor"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.apply_scaling_factor()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.create_example"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.create_example()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.default_metadata_key"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.default_metadata_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.df"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.df</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.field_unit"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.field_unit()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.fields"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.from_csv"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.from_csv()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.from_df"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.from_df()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.from_local"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.from_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.identifier"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.identifier</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.load_metadata"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.load_metadata()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.metadata"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.metadata</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.plot"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.remove_column"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.remove_column()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.remove_columns"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.remove_columns()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.rename_field"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.rename_field()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.rename_fields"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.rename_fields()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.rescale"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.rescale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.save"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.Entry.update_fields"><code class="docutils literal notranslate"><span class="pre">Collection.Entry.update_fields()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.create_example"><code class="docutils literal notranslate"><span class="pre">Collection.create_example()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.filter"><code class="docutils literal notranslate"><span class="pre">Collection.filter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.from_local"><code class="docutils literal notranslate"><span class="pre">Collection.from_local()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.from_local_file"><code class="docutils literal notranslate"><span class="pre">Collection.from_local_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.from_remote"><code class="docutils literal notranslate"><span class="pre">Collection.from_remote()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.identifiers"><code class="docutils literal notranslate"><span class="pre">Collection.identifiers</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.rescale"><code class="docutils literal notranslate"><span class="pre">Collection.rescale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/collection.html#unitpackage.collection.Collection.save_entries"><code class="docutils literal notranslate"><span class="pre">Collection.save_entries()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry"><code class="docutils literal notranslate"><span class="pre">Entry</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.add_columns"><code class="docutils literal notranslate"><span class="pre">Entry.add_columns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.add_offset"><code class="docutils literal notranslate"><span class="pre">Entry.add_offset()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.apply_scaling_factor"><code class="docutils literal notranslate"><span class="pre">Entry.apply_scaling_factor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.create_example"><code class="docutils literal notranslate"><span class="pre">Entry.create_example()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.default_metadata_key"><code class="docutils literal notranslate"><span class="pre">Entry.default_metadata_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.df"><code class="docutils literal notranslate"><span class="pre">Entry.df</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.field_unit"><code class="docutils literal notranslate"><span class="pre">Entry.field_unit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.fields"><code class="docutils literal notranslate"><span class="pre">Entry.fields</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.from_csv"><code class="docutils literal notranslate"><span class="pre">Entry.from_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.from_df"><code class="docutils literal notranslate"><span class="pre">Entry.from_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.from_local"><code class="docutils literal notranslate"><span class="pre">Entry.from_local()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.identifier"><code class="docutils literal notranslate"><span class="pre">Entry.identifier</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.load_metadata"><code class="docutils literal notranslate"><span class="pre">Entry.load_metadata()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.metadata"><code class="docutils literal notranslate"><span class="pre">Entry.metadata</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.plot"><code class="docutils literal notranslate"><span class="pre">Entry.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.remove_column"><code class="docutils literal notranslate"><span class="pre">Entry.remove_column()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.remove_columns"><code class="docutils literal notranslate"><span class="pre">Entry.remove_columns()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.rename_field"><code class="docutils literal notranslate"><span class="pre">Entry.rename_field()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.rename_fields"><code class="docutils literal notranslate"><span class="pre">Entry.rename_fields()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.rescale"><code class="docutils literal notranslate"><span class="pre">Entry.rescale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.save"><code class="docutils literal notranslate"><span class="pre">Entry.save()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/entry.html#unitpackage.entry.Entry.update_fields"><code class="docutils literal notranslate"><span class="pre">Entry.update_fields()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/descriptor.html#unitpackage.descriptor.Descriptor"><code class="docutils literal notranslate"><span class="pre">Descriptor()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/descriptor.html#unitpackage.descriptor.GenericDescriptor"><code class="docutils literal notranslate"><span class="pre">GenericDescriptor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/descriptor.html#unitpackage.descriptor.GenericDescriptor.yaml"><code class="docutils literal notranslate"><span class="pre">GenericDescriptor.yaml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api/descriptor.html#unitpackage.descriptor.QuantityDescriptor"><code class="docutils literal notranslate"><span class="pre">QuantityDescriptor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/descriptor.html#unitpackage.descriptor.QuantityDescriptor.quantity"><code class="docutils literal notranslate"><span class="pre">QuantityDescriptor.quantity</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/metadata.html#unitpackage.metadata.MetadataDescriptor"><code class="docutils literal notranslate"><span class="pre">MetadataDescriptor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/metadata.html#unitpackage.metadata.MetadataDescriptor.from_dict"><code class="docutils literal notranslate"><span class="pre">MetadataDescriptor.from_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/metadata.html#unitpackage.metadata.MetadataDescriptor.from_json"><code class="docutils literal notranslate"><span class="pre">MetadataDescriptor.from_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/metadata.html#unitpackage.metadata.MetadataDescriptor.from_yaml"><code class="docutils literal notranslate"><span class="pre">MetadataDescriptor.from_yaml()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/remote.html#unitpackage.remote.collect_datapackages"><code class="docutils literal notranslate"><span class="pre">collect_datapackages()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/remote.html#unitpackage.remote.collect_zipfile_from_url"><code class="docutils literal notranslate"><span class="pre">collect_zipfile_from_url()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.collect_datapackages"><code class="docutils literal notranslate"><span class="pre">collect_datapackages()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.collect_resources"><code class="docutils literal notranslate"><span class="pre">collect_resources()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.create_df_resource_from_csv"><code class="docutils literal notranslate"><span class="pre">create_df_resource_from_csv()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.create_df_resource_from_df"><code class="docutils literal notranslate"><span class="pre">create_df_resource_from_df()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.create_df_resource_from_tabular_resource"><code class="docutils literal notranslate"><span class="pre">create_df_resource_from_tabular_resource()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.create_tabular_resource_from_csv"><code class="docutils literal notranslate"><span class="pre">create_tabular_resource_from_csv()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.create_unitpackage"><code class="docutils literal notranslate"><span class="pre">create_unitpackage()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.update_fields"><code class="docutils literal notranslate"><span class="pre">update_fields()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="api/local.html#unitpackage.local.write_metadata"><code class="docutils literal notranslate"><span class="pre">write_metadata()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Database Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/database/echemdb.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb"><code class="docutils literal notranslate"><span class="pre">Echemdb</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.bibliography"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.bibliography</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.citation"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.citation()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.default_metadata_key"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.default_metadata_key</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.from_mpt"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.from_mpt()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.get_electrode"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.get_electrode()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.plot"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.rescale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale_reference"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.rescale_reference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.rescale_scan_rate"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.rescale_scan_rate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.scan_rate"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.scan_rate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.EchemdbEntry.thumbnail"><code class="docutils literal notranslate"><span class="pre">Echemdb.EchemdbEntry.thumbnail()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.Entry"><code class="docutils literal notranslate"><span class="pre">Echemdb.Entry</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.bibliography"><code class="docutils literal notranslate"><span class="pre">Echemdb.bibliography</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.describe"><code class="docutils literal notranslate"><span class="pre">Echemdb.describe()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb.html#unitpackage.database.echemdb.Echemdb.materials"><code class="docutils literal notranslate"><span class="pre">Echemdb.materials()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/database/echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.bibliography"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.bibliography</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.citation"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.citation()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.default_metadata_key"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.default_metadata_key</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.from_mpt"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.from_mpt()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.get_electrode"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.get_electrode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.plot"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.rescale"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.rescale()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.rescale_reference"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.rescale_reference()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.rescale_scan_rate"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.rescale_scan_rate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.scan_rate"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.scan_rate</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/database/echemdb_entry.html#unitpackage.database.echemdb_entry.EchemdbEntry.thumbnail"><code class="docutils literal notranslate"><span class="pre">EchemdbEntry.thumbnail()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Electrochemistry Modules:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/electrochemistry/reference_electrode.html#unitpackage.electrochemistry.reference_electrode.ReferenceElectrode"><code class="docutils literal notranslate"><span class="pre">ReferenceElectrode()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Loaders:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/loaders/baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader"><code class="docutils literal notranslate"><span class="pre">BaseLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.column_header_lines"><code class="docutils literal notranslate"><span class="pre">BaseLoader.column_header_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.column_header_names"><code class="docutils literal notranslate"><span class="pre">BaseLoader.column_header_names</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.column_headers"><code class="docutils literal notranslate"><span class="pre">BaseLoader.column_headers</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.create"><code class="docutils literal notranslate"><span class="pre">BaseLoader.create()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.data"><code class="docutils literal notranslate"><span class="pre">BaseLoader.data</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.decimal"><code class="docutils literal notranslate"><span class="pre">BaseLoader.decimal</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.delimiter"><code class="docutils literal notranslate"><span class="pre">BaseLoader.delimiter</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.df"><code class="docutils literal notranslate"><span class="pre">BaseLoader.df</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.file"><code class="docutils literal notranslate"><span class="pre">BaseLoader.file</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.header"><code class="docutils literal notranslate"><span class="pre">BaseLoader.header</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.header_lines"><code class="docutils literal notranslate"><span class="pre">BaseLoader.header_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.known_loaders"><code class="docutils literal notranslate"><span class="pre">BaseLoader.known_loaders()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/baseloader.html#unitpackage.loaders.baseloader.BaseLoader.metadata"><code class="docutils literal notranslate"><span class="pre">BaseLoader.metadata</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/loaders/eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/eclabloader.html#unitpackage.loaders.eclabloader.ECLabLoader"><code class="docutils literal notranslate"><span class="pre">ECLabLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/eclabloader.html#unitpackage.loaders.eclabloader.ECLabLoader.header_lines"><code class="docutils literal notranslate"><span class="pre">ECLabLoader.header_lines</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/loaders/gamryloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/loaders/gamryloader.html#unitpackage.loaders.gamryloader.GamryLoader"><code class="docutils literal notranslate"><span class="pre">GamryLoader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/gamryloader.html#unitpackage.loaders.gamryloader.GamryLoader.column_header_lines"><code class="docutils literal notranslate"><span class="pre">GamryLoader.column_header_lines</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/loaders/gamryloader.html#unitpackage.loaders.gamryloader.GamryLoader.header_lines"><code class="docutils literal notranslate"><span class="pre">GamryLoader.header_lines</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api/loaders/eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage/loaders.html" class="btn btn-neutral float-left" title="Loaders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api/collection.html" class="btn btn-neutral float-right" title="unitpackage.collection" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

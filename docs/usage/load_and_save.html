@@ -1,0 +1,501 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Load and Save &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Creating Unitpackages" href="create_unitpackage.html" />
+    <link rel="prev" title="echemdb" href="echemdb_usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Load and Save</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#load-collections">Load collections</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-local-files">From local files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-url">From URL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#load-entries">Load entries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#from-specific-device-file-formats">From specific device file formats</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#domain-specific-loading">Domain-specific loading</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#save-entries">Save entries</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loaders.html">Loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Load and Save</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/usage/load_and_save.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="load-and-save">
+<h1>Load and Save<a class="headerlink" href="#load-and-save" title="Link to this heading"></a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> Entries and Collections can be loaded from different sources and stored as datapackages (CSV and JSON) to a specified output directory.</p>
+<section id="load-collections">
+<h2>Load collections<a class="headerlink" href="#load-collections" title="Link to this heading"></a></h2>
+<section id="from-local-files">
+<h3>From local files<a class="headerlink" href="#from-local-files" title="Link to this heading"></a></h3>
+<p>A local collection of datapackages can be created by collecting datapackages recursively, which are stored in a specific folder in the file system.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files&quot;</span><span class="p">)</span>
+<span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Entry(&#39;demo_package&#39;), Entry(&#39;demo_package_cv&#39;), Entry(&#39;demo_package_metadata&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<!-- We might want to reinclude this part, if we have specific examples. The CV module is now deprecated-->
+<!-- In case your files have a specific structure or contain a specific type of data, such as cyclic voltammograms, use the respective class to create your collection instead, such as
+
+```{code-cell} ipython3
+from unitpackage.cv.cv_collection import CVCollection
+
+cv_db = CVCollection.from_local("../files")
+cv_db
+```
+
+```{note}
+Without providing any argument to the `Collection` class, the data from [echemdb.org](https://www.echemdb.org/cv) will be downloaded and stored as collection instead.
+```
+-->
+</section>
+<section id="from-url">
+<h3>From URL<a class="headerlink" href="#from-url" title="Link to this heading"></a></h3>
+<p>A collection of datapackages can be created by collecting datapackages recursively from a url to a ZIP file. The data is extracted to a temporary directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Without providing the argument <code class="docutils literal notranslate"><span class="pre">url</span></code> to the <code class="docutils literal notranslate"><span class="pre">from_remote</span></code> method, the data shown on <a class="reference external" href="https://www.echemdb.org/cv">echemdb.org</a> will be downloaded from the
+<a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a> and stored as collection instead.</p>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+<span class="n">db</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;), Entry(&#39;alves_2011_electrochemistry_6010_f2_red&#39;), Entry(&#39;atkin_2009_afm_13266_f4a_solid&#39;), Entry(&#39;atkin_2009_afm_13266_f4b_solid&#39;), Entry(&#39;berger_2017_lithium_261_f1_black&#39;), Entry(&#39;berger_2017_lithium_261_f1_inset&#39;), Entry(&#39;berger_2017_lithium_261_f1_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_black&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_blue&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_green&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1cs_red&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_black&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_blue&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_green&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1li_red&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_black&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_blue&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_green&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_pink&#39;), Entry(&#39;briega-martos_2021_cation_48_f1na_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1a_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1b_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1c_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1d_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1e_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1f_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1g_red&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_black&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_blue&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_green&#39;), Entry(&#39;briega_martos_2018_understanding_j3045_f1h_red&#39;), Entry(&#39;clavilier_1980_preparation_205_f2_solid&#39;), Entry(&#39;clavilier_1990_insitu_1_f1_solid&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_10-10-9&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_110&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_554&#39;), Entry(&#39;clavilier_1990_insitu_1_f5_775&#39;), Entry(&#39;domke_2003_determination_113_f2_dash-dot&#39;), Entry(&#39;domke_2003_determination_113_f2_dash-dot-dot&#39;), Entry(&#39;domke_2003_determination_113_f2_dashed&#39;), Entry(&#39;domke_2003_determination_113_f2_dotted&#39;), Entry(&#39;domke_2003_determination_113_f2_solid&#39;), Entry(&#39;domke_2003_determination_113_f3b_dotted&#39;), Entry(&#39;durand_1992_insitu_1977_f1a_solid&#39;), Entry(&#39;endo_1999_in-situ_19_f1_a&#39;), Entry(&#39;endo_1999_in-situ_19_f1_b&#39;), Entry(&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;), Entry(&#39;garcia_2011_enthalpic_501_f1a_black&#39;), Entry(&#39;garcia_2011_enthalpic_501_f1a_green&#39;), Entry(&#39;garcia_2011_enthalpic_501_f1a_red&#39;), Entry(&#39;gasparotto_2009_in_11140_f1_dashed&#39;), Entry(&#39;gomez-marin_2012_surface_558_f1_black&#39;), Entry(&#39;gomez-marin_2012_surface_558_f1_blue&#39;), Entry(&#39;gomez-marin_2012_surface_558_f1_red&#39;), Entry(&#39;gomez-marin_2012_surface_558_f2_blue&#39;), Entry(&#39;gomez-marin_2012_surface_558_f2_pink&#39;), Entry(&#39;gomez-marin_2012_surface_558_f2_red&#39;), Entry(&#39;gomez_1993_electrochemical_189_f1_solid&#39;), Entry(&#39;gomez_2003_effect_228_f1_dotted&#39;), Entry(&#39;gomez_2003_effect_228_f2_dotted&#39;), Entry(&#39;gomez_2003_effect_228_f3_dotted&#39;), Entry(&#39;hamad_2003_electrosorption_211_f1a_dotted&#39;), Entry(&#39;hamad_2003_electrosorption_211_f1a_solid&#39;), Entry(&#39;horswell_2004_a_10970_f1a_dashed&#39;), Entry(&#39;horswell_2004_a_10970_f1a_dotted&#39;), Entry(&#39;horswell_2004_a_10970_f1a_solid&#39;), Entry(&#39;jerkiewicz_2009_effect_12309_f1a_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f1_dashed&#39;), Entry(&#39;jovic_1999_cyclic_247_f1_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f4_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f6_dashed&#39;), Entry(&#39;jovic_1999_cyclic_247_f6_solid&#39;), Entry(&#39;jovic_1999_cyclic_247_f7_dashed&#39;), Entry(&#39;jovic_1999_cyclic_247_f7_solid&#39;), Entry(&#39;kerner_2002_measurement_2055_f2a_solid&#39;), Entry(&#39;kerner_2002_measurement_2055_f3a_thick&#39;), Entry(&#39;kerner_2002_measurement_2055_f3a_thin&#39;), Entry(&#39;kerner_2002_measurement_2055_f4a_thick&#39;), Entry(&#39;kerner_2002_measurement_2055_f4a_thin&#39;), Entry(&#39;kerner_2002_measurement_2055_f5a_thick&#39;), Entry(&#39;kerner_2002_measurement_2055_f5a_thin&#39;), Entry(&#39;kerner_2002_measurement_2055_f6a_1&#39;), Entry(&#39;kerner_2002_measurement_2055_f6a_2&#39;), Entry(&#39;kibler_2000_in-situ_73_f4a_black&#39;), Entry(&#39;kibler_2000_in-situ_73_f5a_black&#39;), Entry(&#39;kibler_2000_in-situ_73_f7a_black&#39;), Entry(&#39;kibler_2000_in-situ_73_f8a_black&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_dash-dotted&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_dashed&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_dotted&#39;), Entry(&#39;li_2000_chronocoulometric_95_f1_solid&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_br&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_cl&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_i&#39;), Entry(&#39;lipkowski_1998_ionic_2875_f1a_so4&#39;), Entry(&#39;mello_2018_bromide_18562_f1a_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1a_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1b_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1b_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1c_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1c_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1d_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1d_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1e_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1e_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1f_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1f_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1g_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1g_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1h_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1h_red&#39;), Entry(&#39;mello_2018_bromide_18562_f1i_black&#39;), Entry(&#39;mello_2018_bromide_18562_f1i_red&#39;), Entry(&#39;nakamura_2011_structure_165433_f1a_blue&#39;), Entry(&#39;nakamura_2011_structure_165433_f1a_green&#39;), Entry(&#39;nakamura_2011_structure_165433_f1a_red&#39;), Entry(&#39;nakamura_2011_structure_165433_f1b_blue&#39;), Entry(&#39;nakamura_2011_structure_165433_f1b_red&#39;), Entry(&#39;nakamura_2014_structural_22136_f1a_inset&#39;), Entry(&#39;nishihara_1994_underpotential_75_f1a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f1b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f2a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f2b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f3a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f3b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f4a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f4b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f5a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f5b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f6a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f6b_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f7a_solid&#39;), Entry(&#39;nishihara_1994_underpotential_75_f7b_solid&#39;), Entry(&#39;ocko_1997_halide_55_f6a_solid&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1a_dotted&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1a_solid&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1b_dotted&#39;), Entry(&#39;pajkossy_1996_impedance_209_f1b_solid&#39;), Entry(&#39;pajkossy_1996_impedance_209_f3a_a&#39;), Entry(&#39;pajkossy_1996_impedance_209_f3a_b&#39;), Entry(&#39;pajkossy_1996_impedance_209_f3a_dashed&#39;), Entry(&#39;pajkossy_1996_impedance_209_f8a_a&#39;), Entry(&#39;pajkossy_1996_impedance_209_f8a_b&#39;), Entry(&#39;pajkossy_1996_impedance_209_f8a_dashed&#39;), Entry(&#39;pajkossy_2001_double_3063_f2_inset&#39;), Entry(&#39;pajkossy_2001_double_3063_f5a_solid&#39;), Entry(&#39;pajkossy_2001_double_3063_f6a_solid&#39;), Entry(&#39;rehim_1998_electrochemical_1103_f1_solid&#39;), Entry(&#39;rudnev_2020_structural_501_f2c_1&#39;), Entry(&#39;sandbeck_2019_dissolution_2997_f1a_solid_red&#39;), Entry(&#39;sandbeck_2019_dissolution_2997_f1b_solid_blue&#39;), Entry(&#39;sandbeck_2019_dissolution_2997_f1c_solid_green&#39;), Entry(&#39;sato_2006_effect_725_f4a_red&#39;), Entry(&#39;sato_2006_effect_725_f4b_red&#39;), Entry(&#39;sato_2006_effect_725_f4c_red&#39;), Entry(&#39;sato_2006_effect_725_f4d_red&#39;), Entry(&#39;schnaidt_2017_a_4141_f2_solid&#39;), Entry(&#39;schuett_2021_electrodeposition_20461_fs1_blue&#39;), Entry(&#39;shi_1996_chloride_225_f1_dotted&#39;), Entry(&#39;shi_1996_chloride_225_f1_solid&#39;), Entry(&#39;shi_1996_chloride_225_f1a_dashed&#39;), Entry(&#39;shi_1996_chloride_225_f1a_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2a_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2b_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2c_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2d_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2e_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2f_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2g_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2h_solid&#39;), Entry(&#39;taguchi_2007_electrochemical_6023_f2i_solid&#39;), Entry(&#39;wandlowski_1996_structural_10277_f1a_dashed&#39;), Entry(&#39;wandlowski_1996_structural_10277_f1a_solid&#39;), Entry(&#39;wang_1996_ordered_6672_f1_solid&#39;), Entry(&#39;wang_1996_ordered_6672_f2a_solid&#39;), Entry(&#39;wang_1996_ordered_6672_f2b_solid&#39;), Entry(&#39;wang_1997_lateral_1_f1a_solid&#39;), Entry(&#39;wen_2015_potential-dependent_6062_f1_black&#39;), Entry(&#39;wen_2015_potential-dependent_6062_f1_blueinset&#39;), Entry(&#39;wen_2015_potential-dependent_6062_fs1_black&#39;), Entry(&#39;zei_1991_the_295_f3a_solid&#39;), Entry(&#39;zei_1991_the_295_f3b_solid&#39;)]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Providing an output directory with the parameter <code class="docutils literal notranslate"><span class="pre">outdir</span></code> allows saving the packages in a specific output directory.
+A parameter <code class="docutils literal notranslate"><span class="pre">data</span></code> allows specifying the folder within the ZIP containing the datapackages.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;generated/from_url&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="load-entries">
+<h2>Load entries<a class="headerlink" href="#load-entries" title="Link to this heading"></a></h2>
+<p>An individual entry can be loaded from a local datapackage.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files/demo_package.json&quot;</span><span class="p">)</span>
+<span class="n">entry</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entry(&#39;demo_package&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>Alternatively, entries can be created from CSV files or pandas DataFrames.
+Metadata and field descriptors can be added after creation using <code class="docutils literal notranslate"><span class="pre">update_fields()</span></code> and <code class="docutils literal notranslate"><span class="pre">metadata.from_dict()</span></code>.</p>
+<p>From a CSV file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">csv_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s2">&quot;../files/demo_package.csv&quot;</span><span class="p">)</span>
+<span class="n">csv_entry</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entry(&#39;demo_package&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For CSV files with more complex structures, additional arguments can be provided:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">header_lines</span></code> — number of header lines to skip before the data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">column_header_lines</span></code> — number of lines containing column headers (multiple lines are flattened and separated by <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">decimal</span></code> — decimal separator (e.g., <code class="docutils literal notranslate"><span class="pre">','</span></code> for European-style numbers)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">delimiters</span></code> — column delimiter (auto-detected if not specified)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">encoding</span></code> — file encoding</p></li>
+</ul>
+<p>For example, a CSV with multiple header lines:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">csv_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;../../examples/from_csv/from_csv_multiple_headers.csv&#39;</span><span class="p">,</span> <span class="n">column_header_lines</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">csv_entry</span><span class="o">.</span><span class="n">fields</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;name&#39;: &#39;E / V&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;j / A / cm2&#39;, &#39;type&#39;: &#39;integer&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<p>For even more complex file formats from laboratory equipment, see the <a class="reference internal" href="loaders.html"><span class="std std-doc">Loaders</span></a> section.</p>
+<section id="from-specific-device-file-formats">
+<h3>From specific device file formats<a class="headerlink" href="#from-specific-device-file-formats" title="Link to this heading"></a></h3>
+<p>Files from laboratory equipment (devices) often have complex structures with lengthy headers, non-standard delimiters, and instrument-specific column names.
+<code class="docutils literal notranslate"><span class="pre">Entry.from_csv</span></code> supports a <code class="docutils literal notranslate"><span class="pre">device</span></code> parameter that selects the appropriate loader for the file format.</p>
+<p>For example, loading a BioLogic EC-Lab MPT file:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;../../test/loader_data/eclab_cv.mpt&#39;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;eclab&#39;</span><span class="p">)</span>
+<span class="n">entry</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entry(&#39;eclab_cv&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>The loader automatically detects headers and delimiters. The resulting entry contains the raw column names from the instrument:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;name&#39;: &#39;mode&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;ox/red&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;error&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;control changes&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;counter inc.&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;time/s&#39;, &#39;type&#39;: &#39;number&#39;},
+ {&#39;name&#39;: &#39;control/V&#39;, &#39;type&#39;: &#39;number&#39;},
+ {&#39;name&#39;: &#39;Ewe/V&#39;, &#39;type&#39;: &#39;number&#39;},
+ {&#39;name&#39;: &#39;&lt;I&gt;/mA&#39;, &#39;type&#39;: &#39;number&#39;},
+ {&#39;name&#39;: &#39;cycle number&#39;, &#39;type&#39;: &#39;number&#39;},
+ {&#39;name&#39;: &#39;(Q-Qo)/C&#39;, &#39;type&#39;: &#39;number&#39;},
+ {&#39;name&#39;: &#39;I Range&#39;, &#39;type&#39;: &#39;integer&#39;},
+ {&#39;name&#39;: &#39;P/W&#39;, &#39;type&#39;: &#39;number&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Information on the file structure is stored in the entry’s metadata under <code class="docutils literal notranslate"><span class="pre">dsvDescription</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;loader&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;ECLabLoader&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="domain-specific-loading">
+<h4>Domain-specific loading<a class="headerlink" href="#domain-specific-loading" title="Link to this heading"></a></h4>
+<p>For submodules such as <code class="docutils literal notranslate"><span class="pre">echemdb</span></code>, convenience methods provide additional processing.
+<code class="docutils literal notranslate"><span class="pre">EchemdbEntry.from_mpt</span></code> loads an MPT file and then updates the fields with units, renames them to short standardized names, and keeps only the most relevant columns for electrochemistry:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.database.echemdb_entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">EchemdbEntry</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">EchemdbEntry</span><span class="o">.</span><span class="n">from_mpt</span><span class="p">(</span><span class="s1">&#39;../../test/loader_data/eclab_cv.mpt&#39;</span><span class="p">)</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fields with names [&#39;Ri/Ohm&#39;, &#39;-Im(Z)/Ohm&#39;, &#39;-Im(Zce)/Ohm&#39;, &#39;-Im(Zwe-ce)/Ohm&#39;, &#39;(Q-Qo)/mA.h&#39;, &#39;&lt;Ece&gt;/V&#39;, &#39;&lt;Ewe&gt;/V&#39;, &#39;|Ece|/V&#39;, &#39;|Energy|/W.h&#39;, &#39;|Ewe|/V&#39;, &#39;|I|/A&#39;, &#39;|Y|/Ohm-1&#39;, &#39;|Z|/Ohm&#39;, &#39;|Zce|/Ohm&#39;, &#39;|Zwe-ce|/Ohm&#39;, &#39;Analog IN 1/V&#39;, &#39;Analog IN 2/V&#39;, &#39;Analog IN 3/V&#39;, &#39;Capacitance charge/µF&#39;, &#39;Capacitance discharge/µF&#39;, &#39;Capacity/mA.h&#39;, &#39;charge time/s&#39;, &#39;Conductivity/S.cm-1&#39;, &#39;control/mA&#39;, &#39;control/V/mA&#39;, &#39;Cp-2/µF-2&#39;, &#39;Cp/µF&#39;, &#39;Cs-2/µF-2&#39;, &#39;Cs/µF&#39;, &#39;cycle time/s&#39;, &#39;d(Q-Qo)/dE/mA.h/V&#39;, &#39;dI/dt/mA/s&#39;, &#39;discharge time/s&#39;, &#39;dQ/C&#39;, &#39;dq/mA.h&#39;, &#39;dQ/mA.h&#39;, &#39;Ece/V&#39;, &#39;Ecell/V&#39;, &#39;Efficiency/%&#39;, &#39;Energy charge/W.h&#39;, &#39;Energy discharge/W.h&#39;, &#39;Energy/W.h&#39;, &#39;Ewe-Ece/V&#39;, &#39;freq/Hz&#39;, &#39;half cycle&#39;, &#39;I/mA&#39;, &#39;Im(Y)/Ohm-1&#39;, &#39;Ns changes&#39;, &#39;Ns&#39;, &#39;NSD Ewe/%&#39;, &#39;NSD I/%&#39;, &#39;NSR Ewe/%&#39;, &#39;NSR I/%&#39;, &#39;Phase(Y)/deg&#39;, &#39;Phase(Z)/deg&#39;, &#39;Phase(Zce)/deg&#39;, &#39;Phase(Zwe-ce)/deg&#39;, &#39;Q charge/discharge/mA.h&#39;, &#39;Q charge/mA.h&#39;, &#39;Q charge/mA.h/g&#39;, &#39;Q discharge/mA.h&#39;, &#39;Q discharge/mA.h/g&#39;, &#39;R/Ohm&#39;, &#39;Rcmp/Ohm&#39;, &#39;Re(Y)/Ohm-1&#39;, &#39;Re(Z)/Ohm&#39;, &#39;Re(Zce)/Ohm&#39;, &#39;Re(Zwe-ce)/Ohm&#39;, &#39;step time/s&#39;, &#39;THD Ewe/%&#39;, &#39;THD I/%&#39;, &#39;x&#39;, &#39;z cycle&#39;] were provided but do not appear in the field names of tabular resource [&#39;mode&#39;, &#39;ox/red&#39;, &#39;error&#39;, &#39;control changes&#39;, &#39;counter inc.&#39;, &#39;time/s&#39;, &#39;control/V&#39;, &#39;Ewe/V&#39;, &#39;&lt;I&gt;/mA&#39;, &#39;cycle number&#39;, &#39;(Q-Qo)/C&#39;, &#39;I Range&#39;, &#39;P/W&#39;].
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>t</th>
+      <th>E</th>
+      <th>I</th>
+      <th>cycle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>86.761598</td>
+      <td>0.849737</td>
+      <td>0.001722</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>86.772598</td>
+      <td>0.849149</td>
+      <td>-0.003851</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>86.792598</td>
+      <td>0.848137</td>
+      <td>-0.004390</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>86.812598</td>
+      <td>0.847135</td>
+      <td>-0.004741</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>86.832598</td>
+      <td>0.846144</td>
+      <td>-0.004914</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>The fields now have units, short names, and a reference to the original BioLogic column name:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;name&#39;: &#39;t&#39;,
+  &#39;type&#39;: &#39;number&#39;,
+  &#39;description&#39;: &#39;Time.&#39;,
+  &#39;unit&#39;: &#39;s&#39;,
+  &#39;dimension&#39;: &#39;t&#39;,
+  &#39;originalName&#39;: &#39;time/s&#39;},
+ {&#39;name&#39;: &#39;E&#39;,
+  &#39;type&#39;: &#39;number&#39;,
+  &#39;description&#39;: &#39;WE potential versus REF.&#39;,
+  &#39;unit&#39;: &#39;V&#39;,
+  &#39;dimension&#39;: &#39;E&#39;,
+  &#39;originalName&#39;: &#39;Ewe/V&#39;},
+ {&#39;name&#39;: &#39;I&#39;,
+  &#39;type&#39;: &#39;number&#39;,
+  &#39;description&#39;: &#39;Average current over the potential step (calculated from I = &#39;
+                 &#39;dQ/dt).&#39;,
+  &#39;unit&#39;: &#39;mA&#39;,
+  &#39;dimension&#39;: &#39;I&#39;,
+  &#39;originalName&#39;: &#39;&lt;I&gt;/mA&#39;},
+ {&#39;name&#39;: &#39;cycle&#39;,
+  &#39;type&#39;: &#39;number&#39;,
+  &#39;description&#39;: &#39;Cycle number.&#39;,
+  &#39;originalName&#39;: &#39;cycle number&#39;}]
+</pre></div>
+</div>
+</div>
+</div>
+<p>From a pandas DataFrame:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;v&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">]}</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+<span class="n">df_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;df_data&#39;</span><span class="p">)</span>
+<span class="n">df_entry</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Entry(&#39;df_data&#39;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>For more details on adding metadata and field descriptions, see <a class="reference internal" href="create_unitpackage.html"><span class="std std-doc">Creating Unitpackages</span></a>.</p>
+</section>
+</section>
+</section>
+<section id="save-entries">
+<h2>Save entries<a class="headerlink" href="#save-entries" title="Link to this heading"></a></h2>
+<p>Entries can be saved as JSON and CSV in a specified folder either directly from a collection</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+
+<span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files&quot;</span><span class="p">)</span>
+<span class="n">db</span><span class="o">.</span><span class="n">save_entries</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>or from a single entry.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+
+<span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;../files/demo_package.json&quot;</span><span class="p">)</span>
+<span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files/saved_entry&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The basename of the entry can be modified.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">basename</span><span class="o">=</span><span class="n">entry</span><span class="o">.</span><span class="n">identifier</span> <span class="o">+</span> <span class="s2">&quot;_r&quot;</span> <span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;../generated/files/saved_entry&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="echemdb_usage.html" class="btn btn-neutral float-left" title="echemdb" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="create_unitpackage.html" class="btn btn-neutral float-right" title="Creating Unitpackages" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

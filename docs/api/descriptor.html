@@ -1,0 +1,271 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unitpackage.descriptor &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="unitpackage.metadata" href="metadata.html" />
+    <link rel="prev" title="unitpackage.entry" href="entry.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.descriptor.Descriptor"><code class="docutils literal notranslate"><span class="pre">Descriptor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.descriptor.GenericDescriptor"><code class="docutils literal notranslate"><span class="pre">GenericDescriptor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.descriptor.GenericDescriptor.yaml"><code class="docutils literal notranslate"><span class="pre">GenericDescriptor.yaml</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.descriptor.QuantityDescriptor"><code class="docutils literal notranslate"><span class="pre">QuantityDescriptor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.descriptor.QuantityDescriptor.quantity"><code class="docutils literal notranslate"><span class="pre">QuantityDescriptor.quantity</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/echemdb.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/gamryloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/echemdb/unitpackage/blob/master/unitpackage/descriptor.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-unitpackage.descriptor">
+<span id="unitpackage-descriptor"></span><h1><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code><a class="headerlink" href="#module-unitpackage.descriptor" title="Link to this heading"></a></h1>
+<p>Wrappers for a Data Package’s metadata stored within the metadata descriptor
+property of a resource.</p>
+<p>These wrappers are automatically applied to all metadata of each <a class="reference internal" href="collection.html#unitpackage.collection.Collection.Entry" title="unitpackage.entry.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entry</span></code></a>
+in our <code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code>.</p>
+<p>Metadata in data packages is stored as a JSON object. In Python, such a nested
+JSON object gets turned into a hierarchy of dictionaries and lists. Such raw
+data structures can be a bit tedious to work with, so the descriptors in this
+module provide some convenience wrappers for it, e.g., better tab-completion
+when working in an interactive session.</p>
+<p>EXAMPLES:</p>
+<p>To add convenience methods to a data package’s descriptor, run it through the
+<a class="reference internal" href="#unitpackage.descriptor.Descriptor" title="unitpackage.descriptor.Descriptor"><code class="xref py py-func docutils literal notranslate"><span class="pre">Descriptor()</span></code></a> factory function:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;some&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;nested&#39;</span><span class="p">:</span> <span class="s1">&#39;metadata&#39;</span><span class="p">}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">Descriptor</span><span class="p">(</span><span class="n">descriptor</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Such a descriptor has some added convenience methods that make it more
+convenient to work with.</p>
+<p>For example, it can be easily dumped to YAML:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">descriptor</span><span class="o">.</span><span class="n">yaml</span><span class="p">)</span>
+<span class="go">some:</span>
+<span class="go">    nested: metadata</span>
+</pre></div>
+</div>
+<p>It can be explored with attributes that are more tab-completion friendly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">nested</span>
+<span class="go">&#39;metadata&#39;</span>
+</pre></div>
+</div>
+<p>Extra methods are added if the descriptor satisfies a certain interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;some&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;nested&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="mf">13.37</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;parsec&#39;</span><span class="p">}}}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">Descriptor</span><span class="p">(</span><span class="n">descriptor</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">some</span><span class="o">.</span><span class="n">nested</span><span class="o">.</span><span class="n">quantity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;km&#39;</span><span class="p">)</span>
+<span class="go">&lt;Quantity 4.12555093e+14 km&gt;</span>
+</pre></div>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.descriptor.Descriptor">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.descriptor.</span></span><span class="sig-name descname"><span class="pre">Descriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">descriptor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.descriptor.Descriptor" title="Link to this definition"></a></dt>
+<dd><p>Return <cite>descriptor</cite> augmented with additional convenience methods.</p>
+<p>EXAMPLES:</p>
+<p>Primitive types are returned unchanged:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Descriptor</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">)</span>
+<span class="go">&#39;string&#39;</span>
+</pre></div>
+</div>
+<p>Dictionaries are augmented with attribute access:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">Descriptor</span><span class="p">({</span><span class="s2">&quot;an attribute&quot;</span><span class="p">:</span> <span class="mf">13.37</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">an_attribute</span>
+<span class="go">13.37</span>
+</pre></div>
+</div>
+<p>Lists are recursively augmented:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">Descriptor</span><span class="p">([{</span><span class="s2">&quot;an attribute&quot;</span><span class="p">:</span> <span class="mf">13.37</span><span class="p">},</span> <span class="p">{}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">an_attribute</span>
+<span class="go">13.37</span>
+</pre></div>
+</div>
+<p>Dictionaries encoding a unit and value are augmented with astropy
+convenience methods:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">Descriptor</span><span class="p">({</span><span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;unit&quot;</span><span class="p">:</span> <span class="s2">&quot;liter&quot;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">quantity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;m^3&quot;</span><span class="p">)</span>
+<span class="go">&lt;Quantity 0.001 m3&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.descriptor.GenericDescriptor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unitpackage.descriptor.</span></span><span class="sig-name descname"><span class="pre">GenericDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">descriptor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.descriptor.GenericDescriptor" title="Link to this definition"></a></dt>
+<dd><p>Wrapper for a data package’s descriptor to make searching in metadata easier.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">GenericDescriptor</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="go">{&#39;a&#39;: 0}</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.descriptor.GenericDescriptor.yaml">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">yaml</span></span><a class="headerlink" href="#unitpackage.descriptor.GenericDescriptor.yaml" title="Link to this definition"></a></dt>
+<dd><p>Return a printable representation of this descriptor in yaml format.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span> <span class="o">=</span> <span class="n">GenericDescriptor</span><span class="p">({</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor</span><span class="o">.</span><span class="n">yaml</span>
+<span class="go">&#39;a: 0\n&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.descriptor.QuantityDescriptor">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unitpackage.descriptor.</span></span><span class="sig-name descname"><span class="pre">QuantityDescriptor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">descriptor</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.descriptor.QuantityDescriptor" title="Link to this definition"></a></dt>
+<dd><p>Extends a descriptor with convenience methods when it is encoding a
+quantity, i.e., unit and value.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">echemdb</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">electrolyte</span><span class="o">.</span><span class="n">temperature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span>
+<span class="go">298.15 K</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.descriptor.QuantityDescriptor.quantity">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">quantity</span></span><a class="headerlink" href="#unitpackage.descriptor.QuantityDescriptor.quantity" title="Link to this definition"></a></dt>
+<dd><p>This quantity as an <a class="reference external" href="https://docs.astropy.org/en/stable/_modules/astropy/units/quantity.html">astropy quantity</a>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">echemdb</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">electrolyte</span><span class="o">.</span><span class="n">temperature</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">temperature</span><span class="o">.</span><span class="n">quantity</span>
+<span class="go">&lt;Quantity 298.15 K&gt;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="entry.html" class="btn btn-neutral float-left" title="unitpackage.entry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="metadata.html" class="btn btn-neutral float-right" title="unitpackage.metadata" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

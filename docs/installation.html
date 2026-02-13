@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Installation &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unitpackage Structure" href="usage/unitpackage.html" />
+    <link rel="prev" title="Welcome to unitpackage’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install-with-pip-from-pypi">Install with pip from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-with-conda-from-conda-forge">Install with conda from conda-forge</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-with-pixi-for-development">Install with pixi for development</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-tests">Running tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linting">Linting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-documentation">Building the documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#interactive-development">Interactive development</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Installation</li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/echemdb/unitpackage/blob/main/doc/installation.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h1>
+<p>The recommended way to install the unitpackage is to use your package manager,
+(e.g., <code class="docutils literal notranslate"><span class="pre">apt-get</span></code> on Debian or Ubuntu, <code class="docutils literal notranslate"><span class="pre">pacman</span></code> on Arch Linux, <code class="docutils literal notranslate"><span class="pre">brew</span></code> on macOS.)</p>
+<p>You can consult <a class="reference external" href="https://repology.org/project/python:unitpackage/packages">repology</a>
+to see if the unitpackage is available for your package manager.</p>
+<p>Alternatively, the unitpackage can be installed by one of the following
+approaches.</p>
+<section id="install-with-pip-from-pypi">
+<h2>Install with pip from PyPI<a class="headerlink" href="#install-with-pip-from-pypi" title="Link to this heading"></a></h2>
+<p>The latest stable version of the unitpackage is available on
+<a class="reference external" href="https://pypi.org/project/unitpackage/">PyPI</a> for all platforms and can be
+installed if you have Python and pip installed already:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>This command downloads and installs the unitpackage and its dependencies into
+your local Python installation.</p>
+<p>If the above command fails because you do not have permission to modify your
+Python installation, you can install the unitpackage into your user account:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>You can instead also install the latest unreleased version of the unitpackage
+from our <a class="reference external" href="https://github.com/echemdb/unitpackage">GitHub Repository</a> with</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>git+https://github.com/echemdb/unitpackage@main
+</pre></div>
+</div>
+</section>
+<section id="install-with-conda-from-conda-forge">
+<h2>Install with conda from conda-forge<a class="headerlink" href="#install-with-conda-from-conda-forge" title="Link to this heading"></a></h2>
+<p>The unitpackage is <a class="reference external" href="https://github.com/conda-forge/unitpackage-feedstock">available on
+conda-forge</a> for all
+platforms.</p>
+<p>If you don’t have conda yet, we recommend to install
+<a class="reference external" href="https://github.com/conda-forge/miniforge">Miniforge</a>.</p>
+<p>Miniforge is already pre-configured for conda-forge. If you already had another
+release of conda installed, make sure the conda-forge channel is
+<a class="reference external" href="https://conda-forge.org/docs/user/introduction/#how-can-i-install-packages-from-conda-forge">configured correctly</a></p>
+<p>Once your conda setup is ready, create a new <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> environment with
+the latest stable version of the unitpackage:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>create<span class="w"> </span>-n<span class="w"> </span>unitpackage<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>To use the unitpackage, activate the <code class="docutils literal notranslate"><span class="pre">unitpackage</span></code> environment:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>activate<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+<p>To install the unitpackage into an existing environment, activate that environment and then</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>unitpackage
+</pre></div>
+</div>
+</section>
+<section id="install-with-pixi-for-development">
+<h2>Install with pixi for development<a class="headerlink" href="#install-with-pixi-for-development" title="Link to this heading"></a></h2>
+<p>We recommend <a class="reference external" href="https://pixi.prefix.dev">pixi</a> for developers of unitpackage to use a
+curated list of dependencies that are tested to work on all platforms. These
+are also exactly the dependencies that are used in our CI, which makes it
+easier to test things locally.</p>
+<p>If you don’t have pixi yet, follow the <a class="reference external" href="https://pixi.prefix.dev/latest/getting_started/">pixi installation
+instructions</a>.</p>
+<p>Once pixi is installed, get a copy of the latest unitpackage and install the
+dependencies:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/echemdb/unitpackage.git
+<span class="nb">cd</span><span class="w"> </span>unitpackage
+pixi<span class="w"> </span>install
+</pre></div>
+</div>
+<section id="running-tests">
+<h3>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading"></a></h3>
+<p>Run the full test suite (doctests) with:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+<p>This is equivalent to running the doctests directly:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>doctest
+</pre></div>
+</div>
+<p>To run the tests against a specific Python version, use one of the
+<code class="docutils literal notranslate"><span class="pre">python-3XX</span></code> environments:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>python-312<span class="w"> </span>doctest
+</pre></div>
+</div>
+<p>Available test environments are: <code class="docutils literal notranslate"><span class="pre">python-310</span></code>, <code class="docutils literal notranslate"><span class="pre">python-311</span></code>, <code class="docutils literal notranslate"><span class="pre">python-312</span></code>,
+<code class="docutils literal notranslate"><span class="pre">python-313</span></code>, and <code class="docutils literal notranslate"><span class="pre">python-314</span></code>.</p>
+</section>
+<section id="linting">
+<h3>Linting<a class="headerlink" href="#linting" title="Link to this heading"></a></h3>
+<p>Run all linters (pylint, black, isort) at once:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>lint
+</pre></div>
+</div>
+<p>Or run them individually:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>black
+pixi<span class="w"> </span>run<span class="w"> </span>isort
+pixi<span class="w"> </span>run<span class="w"> </span>pylint
+</pre></div>
+</div>
+</section>
+<section id="building-the-documentation">
+<h3>Building the documentation<a class="headerlink" href="#building-the-documentation" title="Link to this heading"></a></h3>
+<p>Rebuild the documentation with:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>doc
+</pre></div>
+</div>
+<p>Check for broken links in the documentation with:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>linkcheck
+</pre></div>
+</div>
+</section>
+<section id="interactive-development">
+<h3>Interactive development<a class="headerlink" href="#interactive-development" title="Link to this heading"></a></h3>
+<p>You can explore unitpackage in an interactive IPython session:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>dev<span class="w"> </span>ipython
+</pre></div>
+</div>
+<p>Or launch a Jupyter notebook:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span>dev<span class="w"> </span>jupyter<span class="w"> </span>lab
+</pre></div>
+</div>
+<p>You can also drop into an interactive shell with all development dependencies
+available:</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>shell<span class="w"> </span>-e<span class="w"> </span>dev
+</pre></div>
+</div>
+<p>Note that any changes you make to the files in your local copy of unitpackage
+should be immediately available when you restart your Python kernel.</p>
+<p>We would love to see your contribution to unitpackage.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to unitpackage’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usage/unitpackage.html" class="btn btn-neutral float-right" title="Unitpackage Structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

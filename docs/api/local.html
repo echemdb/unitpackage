@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unitpackage.local &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="unitpackage.database.echemdb" href="database/echemdb.html" />
+    <link rel="prev" title="unitpackage.remote" href="remote.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.collect_datapackages"><code class="docutils literal notranslate"><span class="pre">collect_datapackages()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.collect_resources"><code class="docutils literal notranslate"><span class="pre">collect_resources()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.create_df_resource_from_csv"><code class="docutils literal notranslate"><span class="pre">create_df_resource_from_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.create_df_resource_from_df"><code class="docutils literal notranslate"><span class="pre">create_df_resource_from_df()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.create_df_resource_from_tabular_resource"><code class="docutils literal notranslate"><span class="pre">create_df_resource_from_tabular_resource()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.create_tabular_resource_from_csv"><code class="docutils literal notranslate"><span class="pre">create_tabular_resource_from_csv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.create_unitpackage"><code class="docutils literal notranslate"><span class="pre">create_unitpackage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.update_fields"><code class="docutils literal notranslate"><span class="pre">update_fields()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.local.write_metadata"><code class="docutils literal notranslate"><span class="pre">write_metadata()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="database/echemdb.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/gamryloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/echemdb/unitpackage/blob/master/unitpackage/local.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-unitpackage.local">
+<span id="unitpackage-local"></span><h1><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code><a class="headerlink" href="#module-unitpackage.local" title="Link to this heading"></a></h1>
+<p>Utilities to work with local frictionless Data Packages such as
+collecting Data Packages and creating unitpackages.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.collect_datapackages">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">collect_datapackages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.collect_datapackages" title="Link to this definition"></a></dt>
+<dd><p>Return a list of data packages defined in the directory <cite>data</cite> and its
+subdirectories.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">packages</span> <span class="o">=</span> <span class="n">collect_datapackages</span><span class="p">(</span><span class="s2">&quot;./examples/local&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">packages</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">{&#39;resources&#39;: [{&#39;name&#39;:</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.collect_resources">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">collect_resources</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datapackages</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.collect_resources" title="Link to this definition"></a></dt>
+<dd><p>Return a list of resources from a list of Data Packages.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">packages</span> <span class="o">=</span> <span class="n">collect_datapackages</span><span class="p">(</span><span class="s2">&quot;./examples/local&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resources</span> <span class="o">=</span> <span class="n">collect_resources</span><span class="p">(</span><span class="n">packages</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">resource</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">resource</span> <span class="ow">in</span> <span class="n">resources</span><span class="p">]</span>
+<span class="go">[&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;,</span>
+<span class="go">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;,</span>
+<span class="go">&#39;no_bibliography&#39;]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.create_df_resource_from_csv">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">create_df_resource_from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csvname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.create_df_resource_from_csv" title="Link to this definition"></a></dt>
+<dd><p>Create a pandas dataframe resource from a CSV file.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.local</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_df_resource_from_csv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;examples/from_csv/from_csv_multiple_headers.csv&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">create_df_resource_from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;examples/from_csv/from_csv_multiple_headers.csv&#39;</span><span class="p">,</span> <span class="n">column_header_lines</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span>
+<span class="go">{&#39;name&#39;: &#39;memory&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;table&#39;,</span>
+<span class="go">&#39;data&#39;: [],</span>
+<span class="go">&#39;format&#39;: &#39;pandas&#39;,</span>
+<span class="go">&#39;mediatype&#39;: &#39;application/pandas&#39;,</span>
+<span class="go">&#39;schema&#39;: {&#39;fields&#39;: [{&#39;name&#39;: &#39;E / V&#39;, &#39;type&#39;: &#39;integer&#39;},</span>
+<span class="go">                      {&#39;name&#39;: &#39;j / A / cm2&#39;, &#39;type&#39;: &#39;integer&#39;}]}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.create_df_resource_from_df">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">create_df_resource_from_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.create_df_resource_from_df" title="Link to this definition"></a></dt>
+<dd><p>Return a pandas dataframe resource for a pandas DataFrame.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.local</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_df_resource_from_df</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">create_df_resource_from_df</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span>
+<span class="go">{&#39;name&#39;: &#39;memory&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;table&#39;,</span>
+<span class="go">&#39;data&#39;: [],</span>
+<span class="go">&#39;format&#39;: &#39;pandas&#39;, ...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span><span class="o">.</span><span class="n">data</span>
+<span class="go">   x  y</span>
+<span class="go">0  1  4</span>
+<span class="go">1  2  5</span>
+<span class="go">2  3  6</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span><span class="o">.</span><span class="n">format</span>
+<span class="go">&#39;pandas&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.create_df_resource_from_tabular_resource">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">create_df_resource_from_tabular_resource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.create_df_resource_from_tabular_resource" title="Link to this definition"></a></dt>
+<dd><p>Return a pandas dataframe resource for a frictionless Tabular Resource.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">frictionless</span><span class="w"> </span><span class="kn">import</span> <span class="n">Package</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.local</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_df_resource_from_tabular_resource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tabular_resource</span> <span class="o">=</span> <span class="n">Package</span><span class="p">(</span><span class="s2">&quot;./examples/local/no_bibliography/no_bibliography.json&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">resources</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_resource</span> <span class="o">=</span> <span class="n">create_df_resource_from_tabular_resource</span><span class="p">(</span><span class="n">tabular_resource</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_resource</span>
+<span class="go">{&#39;name&#39;: &#39;memory&#39;,</span>
+<span class="go">...</span>
+<span class="go">&#39;format&#39;: &#39;pandas&#39;,</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df_resource</span><span class="o">.</span><span class="n">data</span>
+<span class="go">              t         E         j</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;test_parent_directory&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s1">&#39;test_parent_directory.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry_</span><span class="o">.</span><span class="n">df</span>
+<span class="go">       x  y</span>
+<span class="go">    0  1  4</span>
+<span class="go">    1  2  5</span>
+<span class="go">    2  3  6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.create_tabular_resource_from_csv">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">create_tabular_resource_from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csvname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.create_tabular_resource_from_csv" title="Link to this definition"></a></dt>
+<dd><p>Return a resource built from a provided CSV.</p>
+<p>EXAMPLES:</p>
+<p>For standard CSV files (single header line and subsequent
+lines with data, using <cite>.</cite> as decimal separator.)
+a tabular data resource is created:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;./examples/from_csv/from_csv.csv&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">create_tabular_resource_from_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span>
+<span class="go">{&#39;name&#39;: &#39;from_csv&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;table&#39;,</span>
+<span class="go">&#39;path&#39;: &#39;from_csv.csv&#39;,</span>
+<span class="go">&#39;scheme&#39;: &#39;file&#39;,</span>
+<span class="go">&#39;format&#39;: &#39;csv&#39;,</span>
+<span class="go">&#39;mediatype&#39;: &#39;text/csv&#39;, ...</span>
+</pre></div>
+</div>
+<p>For CSV files with a more complex structure (header, multiple column header lines, or other separators)
+a pandas dataframe resource is created instead:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;examples/from_csv/from_csv_multiple_headers.csv&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">create_tabular_resource_from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="n">filename</span><span class="p">,</span> <span class="n">column_header_lines</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span>
+<span class="go">{&#39;name&#39;: &#39;memory&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;table&#39;,</span>
+<span class="go">&#39;data&#39;: [],</span>
+<span class="go">&#39;format&#39;: &#39;pandas&#39;,</span>
+<span class="go">&#39;mediatype&#39;: &#39;application/pandas&#39;,</span>
+<span class="go">&#39;schema&#39;: {&#39;fields&#39;: [{&#39;name&#39;: &#39;E / V&#39;, &#39;type&#39;: &#39;integer&#39;},</span>
+<span class="go">                      {&#39;name&#39;: &#39;j / A / cm2&#39;, &#39;type&#39;: &#39;integer&#39;}]}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.create_unitpackage">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">create_unitpackage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.create_unitpackage" title="Link to this definition"></a></dt>
+<dd><p>Return a Data Package built from a :param metadata: dict and tabular data
+in :param resource: frictionless.Resource.</p>
+<p>The :param fields: list must be structured such as
+<cite>[{‘name’:’E’, ‘unit’: ‘mV’}, {‘name’:’T’, ‘unit’: ‘K’}]</cite>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.local</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_tabular_resource_from_csv</span><span class="p">,</span> <span class="n">create_unitpackage</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">resource</span> <span class="o">=</span> <span class="n">create_tabular_resource_from_csv</span><span class="p">(</span><span class="s2">&quot;./examples/from_csv/from_csv.csv&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">package</span> <span class="o">=</span> <span class="n">create_unitpackage</span><span class="p">(</span><span class="n">resource</span><span class="o">=</span><span class="n">resource</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">new_fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">package</span>
+<span class="go">{&#39;resources&#39;: [{&#39;name&#39;:</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.update_fields">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">update_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original_fields</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_fields</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.update_fields" title="Link to this definition"></a></dt>
+<dd><p>Return a new list of fields where a list of fields has been updated
+based on a new list of fields.</p>
+<p>The :param: original_fields: list and :param new_fields: list
+must must be structured such as
+<cite>[{‘name’:’E’, ‘unit’: ‘mV’}, {‘name’:’T’, ‘unit’: ‘K’}]</cite>
+and each entry must contain a key <cite>name</cite> corresponding to a field name
+in the original fields.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.local</span><span class="w"> </span><span class="kn">import</span> <span class="n">update_fields</span><span class="p">,</span> <span class="n">create_tabular_resource_from_csv</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">schema</span> <span class="o">=</span> <span class="n">create_tabular_resource_from_csv</span><span class="p">(</span><span class="s2">&quot;./examples/from_csv/from_csv.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">schema</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">original_fields</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;fields&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">original_fields</span>
+<span class="go">[{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;integer&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;I&#39;, &#39;type&#39;: &#39;integer&#39;}]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span> <span class="o">=</span> <span class="n">update_fields</span><span class="p">(</span><span class="n">original_fields</span><span class="p">,</span> <span class="n">new_fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span>
+<span class="go">[{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;unit&#39;: &#39;mV&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;I&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;unit&#39;: &#39;A&#39;}]</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Invalid fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="s1">&#39;not a list&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span> <span class="o">=</span> <span class="n">update_fields</span><span class="p">(</span><span class="n">original_fields</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">&#39;fields&#39; must be a list such as</span>
+<span class="x">[{&#39;name&#39;: &#39;&lt;fieldname&gt;&#39;, &#39;unit&#39;:&#39;&lt;field unit&gt;&#39;}]`,</span>
+<span class="x">e.g., `[{&#39;name&#39;:&#39;E&#39;, &#39;unit&#39;: &#39;mV}, {&#39;name&#39;:&#39;T&#39;, &#39;unit&#39;: &#39;K}]`</span>
+</pre></div>
+</div>
+<p>More fields than required:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;A&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span> <span class="o">=</span> <span class="n">update_fields</span><span class="p">(</span><span class="n">original_fields</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span>
+<span class="go">[{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;unit&#39;: &#39;mV&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;I&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;unit&#39;: &#39;A&#39;}]</span>
+</pre></div>
+</div>
+<p>Part of the fields specified:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span> <span class="o">=</span> <span class="n">update_fields</span><span class="p">(</span><span class="n">original_fields</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">updated_fields</span>
+<span class="go">[{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;unit&#39;: &#39;mV&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;I&#39;, &#39;type&#39;: &#39;integer&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="unitpackage.local.write_metadata">
+<span class="sig-prename descclassname"><span class="pre">unitpackage.local.</span></span><span class="sig-name descname"><span class="pre">write_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.local.write_metadata" title="Link to this definition"></a></dt>
+<dd><p>Write <cite>metadata</cite> to the <cite>out</cite> stream in JSON format.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="remote.html" class="btn btn-neutral float-left" title="unitpackage.remote" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="database/echemdb.html" class="btn btn-neutral float-right" title="unitpackage.database.echemdb" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

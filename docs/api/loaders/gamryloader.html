@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unitpackage.loaders.gamryloader &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="unitpackage.loaders.eclab_fields" href="eclab_fields.html" />
+    <link rel="prev" title="unitpackage.loaders.eclabloader" href="eclabloader.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../api.html">API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../collection.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/echemdb.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../database/echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.loaders.gamryloader.GamryLoader"><code class="docutils literal notranslate"><span class="pre">GamryLoader</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.loaders.gamryloader.GamryLoader.column_header_lines"><code class="docutils literal notranslate"><span class="pre">GamryLoader.column_header_lines</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.loaders.gamryloader.GamryLoader.header_lines"><code class="docutils literal notranslate"><span class="pre">GamryLoader.header_lines</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../api.html">API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/echemdb/unitpackage/blob/master/unitpackage/loaders/gamryloader.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-unitpackage.loaders.gamryloader">
+<span id="unitpackage-loaders-gamryloader"></span><h1><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code><a class="headerlink" href="#module-unitpackage.loaders.gamryloader" title="Link to this heading"></a></h1>
+<p>Loads DAT files recorded with the Gamry Instruments Framework software
+from Gamry for Gamry potentiostats.</p>
+<p>EXAMPLES:</p>
+<p>The file can be loaded with the GamryLoader:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;EXPLAIN</span>
+<span class="gp">... </span><span class="s1">TAG</span><span class="se">\t</span><span class="s1">CV</span>
+<span class="gp">... </span><span class="s1">TITLE</span><span class="se">\t</span><span class="s1">LABEL</span><span class="se">\t</span><span class="s1">Cyclic Voltammetry</span><span class="se">\t</span><span class="s1">Test &amp;Identifier</span>
+<span class="gp">... </span><span class="s1">CURVE</span><span class="se">\t</span><span class="s1">TABLE</span><span class="se">\t</span><span class="s1">3597</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">Pt</span><span class="se">\t</span><span class="s1">T</span><span class="se">\t</span><span class="s1">Vf</span><span class="se">\t</span><span class="s1">Im</span><span class="se">\t</span><span class="s1">Vu</span><span class="se">\t</span><span class="s1">Sig</span><span class="se">\t</span><span class="s1">Ach</span><span class="se">\t</span><span class="s1">IERange</span><span class="se">\t</span><span class="s1">Over</span><span class="se">\t</span><span class="s1">Cycle</span><span class="se">\t</span><span class="s1">Temp</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">s</span><span class="se">\t</span><span class="s1">V vs. Ref.</span><span class="se">\t</span><span class="s1">A</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">bits</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">deg C</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">0,06</span><span class="se">\t</span><span class="s1">2,00054E-001</span><span class="se">\t</span><span class="s1">1,72821E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">2,00000E-001</span><span class="se">\t</span><span class="s1">6,45222E-004</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">1</span><span class="se">\t</span><span class="s1">0,12</span><span class="se">\t</span><span class="s1">1,97170E-001</span><span class="se">\t</span><span class="s1">1,04547E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">1,97000E-001</span><span class="se">\t</span><span class="s1">-1,17889E-003</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.loaders.gamryloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">GamryLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span> <span class="o">=</span> <span class="n">GamryLoader</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">df</span>
+<span class="go">   Pt / #  T / s  Vf / V vs. Ref.  ...  Over / bits  Cycle / #  Temp / deg C</span>
+<span class="go">0       0   0.06         0.200054  ...  ..........a          0       -327.75</span>
+<span class="go">1       1   0.12         0.197170  ...  ..........a          0       -327.75</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>The file can also be loaded from the base loader:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;EXPLAIN</span>
+<span class="gp">... </span><span class="s1">TAG</span><span class="se">\t</span><span class="s1">CV</span>
+<span class="gp">... </span><span class="s1">TITLE</span><span class="se">\t</span><span class="s1">LABEL</span><span class="se">\t</span><span class="s1">Cyclic Voltammetry</span><span class="se">\t</span><span class="s1">Test &amp;Identifier</span>
+<span class="gp">... </span><span class="s1">CURVE</span><span class="se">\t</span><span class="s1">TABLE</span><span class="se">\t</span><span class="s1">3597</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">Pt</span><span class="se">\t</span><span class="s1">T</span><span class="se">\t</span><span class="s1">Vf</span><span class="se">\t</span><span class="s1">Im</span><span class="se">\t</span><span class="s1">Vu</span><span class="se">\t</span><span class="s1">Sig</span><span class="se">\t</span><span class="s1">Ach</span><span class="se">\t</span><span class="s1">IERange</span><span class="se">\t</span><span class="s1">Over</span><span class="se">\t</span><span class="s1">Cycle</span><span class="se">\t</span><span class="s1">Temp</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">s</span><span class="se">\t</span><span class="s1">V vs. Ref.</span><span class="se">\t</span><span class="s1">A</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">bits</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">deg C</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">0,06</span><span class="se">\t</span><span class="s1">2,00054E-001</span><span class="se">\t</span><span class="s1">1,72821E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">2,00000E-001</span><span class="se">\t</span><span class="s1">6,45222E-004</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">1</span><span class="se">\t</span><span class="s1">0,12</span><span class="se">\t</span><span class="s1">1,97170E-001</span><span class="se">\t</span><span class="s1">1,04547E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">1,97000E-001</span><span class="se">\t</span><span class="s1">-1,17889E-003</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.loaders.baseloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span> <span class="o">=</span> <span class="n">BaseLoader</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;gamry&#39;</span><span class="p">)(</span><span class="n">file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">df</span>
+<span class="go">   Pt / #  T / s  Vf / V vs. Ref.  ...  Over / bits  Cycle / #  Temp / deg C</span>
+<span class="go">0       0   0.06         0.200054  ...  ..........a          0       -327.75</span>
+<span class="go">1       1   0.12         0.197170  ...  ..........a          0       -327.75</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="go">[&#39;EXPLAIN\n&#39;, &#39;TAG\tCV\n&#39;, &#39;TITLE\tLABEL\tCyclic Voltammetry\tTest &amp;Identifier\n&#39;, &#39;CURVE\tTABLE\t3597\n&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">column_header_names</span>
+<span class="go">[&#39;Pt / #&#39;, &#39;T / s&#39;, &#39;Vf / V vs. Ref.&#39;, &#39;Im / A&#39;, &#39;Vu / V&#39;, &#39;Sig / V&#39;, &#39;Ach / V&#39;, &#39;IERange / #&#39;, &#39;Over / bits&#39;, &#39;Cycle / #&#39;, &#39;Temp / deg C&#39;]</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.loaders.gamryloader.GamryLoader">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unitpackage.loaders.gamryloader.</span></span><span class="sig-name descname"><span class="pre">GamryLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.loaders.gamryloader.GamryLoader" title="Link to this definition"></a></dt>
+<dd><p>Loads Gamry Instruments Framework DAT files.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;EXPLAIN</span>
+<span class="gp">... </span><span class="s1">TAG</span><span class="se">\t</span><span class="s1">CV</span>
+<span class="gp">... </span><span class="s1">TITLE</span><span class="se">\t</span><span class="s1">LABEL</span><span class="se">\t</span><span class="s1">Cyclic Voltammetry</span><span class="se">\t</span><span class="s1">Test &amp;Identifier</span>
+<span class="gp">... </span><span class="s1">CURVE</span><span class="se">\t</span><span class="s1">TABLE</span><span class="se">\t</span><span class="s1">3597</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">Pt</span><span class="se">\t</span><span class="s1">T</span><span class="se">\t</span><span class="s1">Vf</span><span class="se">\t</span><span class="s1">Im</span><span class="se">\t</span><span class="s1">Vu</span><span class="se">\t</span><span class="s1">Sig</span><span class="se">\t</span><span class="s1">Ach</span><span class="se">\t</span><span class="s1">IERange</span><span class="se">\t</span><span class="s1">Over</span><span class="se">\t</span><span class="s1">Cycle</span><span class="se">\t</span><span class="s1">Temp</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">s</span><span class="se">\t</span><span class="s1">V vs. Ref.</span><span class="se">\t</span><span class="s1">A</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">bits</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">deg C</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">0,06</span><span class="se">\t</span><span class="s1">2,00054E-001</span><span class="se">\t</span><span class="s1">1,72821E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">2,00000E-001</span><span class="se">\t</span><span class="s1">6,45222E-004</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">1</span><span class="se">\t</span><span class="s1">0,12</span><span class="se">\t</span><span class="s1">1,97170E-001</span><span class="se">\t</span><span class="s1">1,04547E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">1,97000E-001</span><span class="se">\t</span><span class="s1">-1,17889E-003</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.loaders.baseloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span> <span class="o">=</span> <span class="n">BaseLoader</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;gamry&#39;</span><span class="p">)(</span><span class="n">file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">df</span>
+<span class="go">   Pt / #  T / s  Vf / V vs. Ref.  ...  Over / bits  Cycle / #  Temp / deg C</span>
+<span class="go">0       0   0.06         0.200054  ...  ..........a          0       -327.75</span>
+<span class="go">1       1   0.12         0.197170  ...  ..........a          0       -327.75</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+<span class="go">[&#39;EXPLAIN\n&#39;, &#39;TAG\tCV\n&#39;, &#39;TITLE\tLABEL\tCyclic Voltammetry\tTest &amp;Identifier\n&#39;, &#39;CURVE\tTABLE\t3597\n&#39;]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">column_header_names</span>
+<span class="go">[&#39;Pt / #&#39;, &#39;T / s&#39;, &#39;Vf / V vs. Ref.&#39;, &#39;Im / A&#39;, &#39;Vu / V&#39;, &#39;Sig / V&#39;, &#39;Ach / V&#39;, &#39;IERange / #&#39;, &#39;Over / bits&#39;, &#39;Cycle / #&#39;, &#39;Temp / deg C&#39;]</span>
+</pre></div>
+</div>
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.loaders.gamryloader.GamryLoader.column_header_lines">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">column_header_lines</span></span><a class="headerlink" href="#unitpackage.loaders.gamryloader.GamryLoader.column_header_lines" title="Link to this definition"></a></dt>
+<dd><p>The number of lines containing descriptive information
+on the columns of Gamry DAT files is 2.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;EXPLAIN</span>
+<span class="gp">... </span><span class="s1">TAG</span><span class="se">\t</span><span class="s1">CV</span>
+<span class="gp">... </span><span class="s1">TITLE</span><span class="se">\t</span><span class="s1">LABEL</span><span class="se">\t</span><span class="s1">Cyclic Voltammetry</span><span class="se">\t</span><span class="s1">Test &amp;Identifier</span>
+<span class="gp">... </span><span class="s1">CURVE</span><span class="se">\t</span><span class="s1">TABLE</span><span class="se">\t</span><span class="s1">3597</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">Pt</span><span class="se">\t</span><span class="s1">T</span><span class="se">\t</span><span class="s1">Vf</span><span class="se">\t</span><span class="s1">Im</span><span class="se">\t</span><span class="s1">Vu</span><span class="se">\t</span><span class="s1">Sig</span><span class="se">\t</span><span class="s1">Ach</span><span class="se">\t</span><span class="s1">IERange</span><span class="se">\t</span><span class="s1">Over</span><span class="se">\t</span><span class="s1">Cycle</span><span class="se">\t</span><span class="s1">Temp</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">s</span><span class="se">\t</span><span class="s1">V vs. Ref.</span><span class="se">\t</span><span class="s1">A</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">bits</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">deg C</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">0,06</span><span class="se">\t</span><span class="s1">2,00054E-001</span><span class="se">\t</span><span class="s1">1,72821E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">2,00000E-001</span><span class="se">\t</span><span class="s1">6,45222E-004</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">1</span><span class="se">\t</span><span class="s1">0,12</span><span class="se">\t</span><span class="s1">1,97170E-001</span><span class="se">\t</span><span class="s1">1,04547E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">1,97000E-001</span><span class="se">\t</span><span class="s1">-1,17889E-003</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.loaders.baseloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span> <span class="o">=</span> <span class="n">BaseLoader</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;gamry&#39;</span><span class="p">)(</span><span class="n">file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">column_header_lines</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.loaders.gamryloader.GamryLoader.header_lines">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">header_lines</span></span><a class="headerlink" href="#unitpackage.loaders.gamryloader.GamryLoader.header_lines" title="Link to this definition"></a></dt>
+<dd><p>The number of header lines of an EC-Lab MPT file without column names.
+The number is provided in the header of the MPT file, which contains, however,
+also the line with the data column names.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">StringIO</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;EXPLAIN</span>
+<span class="gp">... </span><span class="s1">TAG</span><span class="se">\t</span><span class="s1">CV</span>
+<span class="gp">... </span><span class="s1">TITLE</span><span class="se">\t</span><span class="s1">LABEL</span><span class="se">\t</span><span class="s1">Cyclic Voltammetry</span><span class="se">\t</span><span class="s1">Test &amp;Identifier</span>
+<span class="gp">... </span><span class="s1">CURVE</span><span class="se">\t</span><span class="s1">TABLE</span><span class="se">\t</span><span class="s1">3597</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">Pt</span><span class="se">\t</span><span class="s1">T</span><span class="se">\t</span><span class="s1">Vf</span><span class="se">\t</span><span class="s1">Im</span><span class="se">\t</span><span class="s1">Vu</span><span class="se">\t</span><span class="s1">Sig</span><span class="se">\t</span><span class="s1">Ach</span><span class="se">\t</span><span class="s1">IERange</span><span class="se">\t</span><span class="s1">Over</span><span class="se">\t</span><span class="s1">Cycle</span><span class="se">\t</span><span class="s1">Temp</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">s</span><span class="se">\t</span><span class="s1">V vs. Ref.</span><span class="se">\t</span><span class="s1">A</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">V</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">bits</span><span class="se">\t</span><span class="s1">#</span><span class="se">\t</span><span class="s1">deg C</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">0,06</span><span class="se">\t</span><span class="s1">2,00054E-001</span><span class="se">\t</span><span class="s1">1,72821E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">2,00000E-001</span><span class="se">\t</span><span class="s1">6,45222E-004</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="se">\t</span><span class="s1">1</span><span class="se">\t</span><span class="s1">0,12</span><span class="se">\t</span><span class="s1">1,97170E-001</span><span class="se">\t</span><span class="s1">1,04547E-005</span><span class="se">\t</span><span class="s1">0,00000E+000</span><span class="se">\t</span><span class="s1">1,97000E-001</span><span class="se">\t</span><span class="s1">-1,17889E-003</span><span class="se">\t</span><span class="s1">9</span><span class="se">\t</span><span class="s1">..........a</span><span class="se">\t</span><span class="s1">0</span><span class="se">\t</span><span class="s1">-327,75</span>
+<span class="gp">... </span><span class="s1">&#39;&#39;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.loaders.baseloader</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLoader</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span> <span class="o">=</span> <span class="n">BaseLoader</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s1">&#39;gamry&#39;</span><span class="p">)(</span><span class="n">file</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">csv</span><span class="o">.</span><span class="n">header_lines</span>
+<span class="go">4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="eclabloader.html" class="btn btn-neutral float-left" title="unitpackage.loaders.eclabloader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="eclab_fields.html" class="btn btn-neutral float-right" title="unitpackage.loaders.eclab_fields" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

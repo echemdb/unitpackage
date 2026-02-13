@@ -1,0 +1,1141 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>unitpackage.collection &mdash; unitpackage 0.12.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=61ccb1f1"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="unitpackage.entry" href="entry.html" />
+    <link rel="prev" title="API" href="../api.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            unitpackage
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/unitpackage.html">Unitpackage Structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/unitpackage_usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/echemdb_usage.html">echemdb</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/load_and_save.html">Load and Save</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/create_unitpackage.html">Creating Unitpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage/loaders.html">Loaders</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#unitpackage.collection.Collection"><code class="docutils literal notranslate"><span class="pre">Collection</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.Entry"><code class="docutils literal notranslate"><span class="pre">Collection.Entry</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.create_example"><code class="docutils literal notranslate"><span class="pre">Collection.create_example()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.filter"><code class="docutils literal notranslate"><span class="pre">Collection.filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.from_local"><code class="docutils literal notranslate"><span class="pre">Collection.from_local()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.from_local_file"><code class="docutils literal notranslate"><span class="pre">Collection.from_local_file()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.from_remote"><code class="docutils literal notranslate"><span class="pre">Collection.from_remote()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.identifiers"><code class="docutils literal notranslate"><span class="pre">Collection.identifiers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.rescale"><code class="docutils literal notranslate"><span class="pre">Collection.rescale()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unitpackage.collection.Collection.save_entries"><code class="docutils literal notranslate"><span class="pre">Collection.save_entries()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="descriptor.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.descriptor</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="metadata.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.metadata</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="entrypoint.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.entrypoint</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="remote.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.remote</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="local.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.local</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/echemdb.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="database/echemdb_entry.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.database.echemdb_entry</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="electrochemistry/reference_electrode.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.electrochemistry.reference_electrode</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/baseloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.baseloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/eclabloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclabloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/gamryloader.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.gamryloader</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="loaders/eclab_fields.html"><code class="docutils literal notranslate"><span class="pre">unitpackage.loaders.eclab_fields</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">unitpackage</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API</a></li>
+      <li class="breadcrumb-item active"><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code></li>
+  
+  
+    
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/echemdb/unitpackage/blob/master/unitpackage/collection.py" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  
+
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="module-unitpackage.collection">
+<span id="unitpackage-collection"></span><h1><code class="docutils literal notranslate"><span class="pre">unitpackage.collection</span></code><a class="headerlink" href="#module-unitpackage.collection" title="Link to this heading"></a></h1>
+<dl class="simple">
+<dt>A collection of frictionless Resources that can be accessed and stored as</dt><dd><p>a [frictionless Data Package](<a class="reference external" href="https://github.com/frictionlessdata/datapackage-py">https://github.com/frictionlessdata/datapackage-py</a>).</p>
+</dd>
+</dl>
+<p>EXAMPLES:</p>
+<p>Create a collection from frictionless Resources stored within local
+<a class="reference external" href="https://framework.frictionlessdata.io/">frictionless Data Packages</a>
+in the <cite>data/</cite> directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s1">&#39;data/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a collection from the Data Packages published in the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a>, and
+that are displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Search the collection for entries, for example,
+from a single publication providing its DOI:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">echemdb</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="s1">&#39;https://doi.org/10.1039/C0CP01001D&#39;</span><span class="p">)</span>
+<span class="go">[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;), ...</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">unitpackage.collection.</span></span><span class="sig-name descname"><span class="pre">Collection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">package</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection" title="Link to this definition"></a></dt>
+<dd><p>A collection of frictionless Resources,
+that can be accessed and stored as
+a [frictionless Data Package](<a class="reference external" href="https://github.com/frictionlessdata/datapackage-py">https://github.com/frictionlessdata/datapackage-py</a>).</p>
+<p>EXAMPLES:</p>
+<p>An empty collection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="p">([])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+<p>An example collection (only available from the development environment):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">resource_names</span>
+<span class="go">[&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;,</span>
+<span class="go">&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;,</span>
+<span class="go">&#39;no_bibliography&#39;]</span>
+</pre></div>
+</div>
+<p>Collections must contain Resources with unique identifiers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s2">&quot;./examples/duplicates&quot;</span><span class="p">)</span>
+<span class="gt">Traceback (most recent call last):</span>
+<span class="c">...</span>
+<span class="gr">ValueError</span>: <span class="n">Collection contains duplicate entries: [&#39;duplicate&#39;]</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Entry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">resource</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry" title="Link to this definition"></a></dt>
+<dd><p>A <a class="reference external" href="https://github.com/frictionlessdata/frictionless-py">frictionless Resource</a>
+describing tabulated data.</p>
+<p>EXAMPLES:</p>
+<p>Entries can be directly created from a frictionless Data Package containing a single
+frictionless Resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s1">&#39;./examples/local/no_bibliography/no_bibliography.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;no_bibliography&#39;)</span>
+</pre></div>
+</div>
+<p>or directly form a frictionless Resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">frictionless</span><span class="w"> </span><span class="kn">import</span> <span class="n">Resource</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="p">(</span><span class="n">Resource</span><span class="p">(</span><span class="s1">&#39;./examples/local/no_bibliography/no_bibliography.json&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;no_bibliography&#39;)</span>
+</pre></div>
+</div>
+<p>Entries can also be created by other means such as,
+a CSV <code class="docutils literal notranslate"><span class="pre">Entry.from_csv</span></code> or a pandas dataframe <code class="docutils literal notranslate"><span class="pre">Entry.from_df</span></code>.</p>
+<p>Normally, entries are obtained by opening a <a class="reference internal" href="#unitpackage.collection.Collection" title="unitpackage.collection.Collection"><code class="xref py py-class docutils literal notranslate"><span class="pre">Collection</span></code></a> of entries:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">collection</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.add_columns">
+<span class="sig-name descname"><span class="pre">add_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_fields</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.add_columns" title="Link to this definition"></a></dt>
+<dd><p>Adds a column to the dataframe with specified field properties
+and returns an updated entry.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>The units and descriptions of the axes in the data frame can be recovered:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">astropy.units</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">u</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P/A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;E&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;j&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_field_unit</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">field_unit</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">))</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">Unit</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">field_unit</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">add_columns</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;P/A&#39;</span><span class="p">],</span> <span class="n">new_fields</span><span class="o">=</span><span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;P/A&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="n">new_field_unit</span><span class="p">}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j       P/A</span>
+<span class="go">0      0.000000 -0.103158 -0.998277  0.102981</span>
+<span class="go">1      0.020000 -0.102158 -0.981762  0.100295</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">field_unit</span><span class="p">(</span><span class="s1">&#39;P/A&#39;</span><span class="p">)</span>
+<span class="go">Unit(&quot;A V / m2&quot;)</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Validate that the identifier is preserved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">identifier</span>
+<span class="go">&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.add_offset">
+<span class="sig-name descname"><span class="pre">add_offset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.add_offset" title="Link to this definition"></a></dt>
+<dd><p>Return an entry with an offset (with specified units) to a specified field of the entry.
+The offset properties are stored in the fields metadata.</p>
+<p>If offsets are applied consecutively, the value is updated.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.103158 -0.998277</span>
+<span class="go">1  0.02 -0.102158 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">add_offset</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.003158 -0.998277</span>
+<span class="go">1  0.02 -0.002158 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;number&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;V&#39;,</span>
+<span class="go">&#39;reference&#39;: &#39;RHE&#39;,</span>
+<span class="go">&#39;offset&#39;: {&#39;value&#39;: 0.1, &#39;unit&#39;: &#39;V&#39;}}</span>
+</pre></div>
+</div>
+<p>An offset with a different unit than that of the field.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">add_offset</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="s1">&#39;mV&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00  0.146842 -0.998277</span>
+<span class="go">1  0.02  0.147842 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>A consecutively added offset:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_1</span> <span class="o">=</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">add_offset</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="mf">0.150</span><span class="p">,</span> <span class="s1">&#39;V&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_1</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00  0.296842 -0.998277</span>
+<span class="go">1  0.02  0.297842 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_1</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;number&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;V&#39;,</span>
+<span class="go">&#39;reference&#39;: &#39;RHE&#39;,</span>
+<span class="go">&#39;offset&#39;: {&#39;value&#39;: 0.4, &#39;unit&#39;: &#39;V&#39;}}</span>
+</pre></div>
+</div>
+<p>If no unit is provided, the field unit is used instead.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_2</span> <span class="o">=</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">add_offset</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="mf">0.150</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_2</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00  0.296842 -0.998277</span>
+<span class="go">1  0.02  0.297842 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.apply_scaling_factor">
+<span class="sig-name descname"><span class="pre">apply_scaling_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scaling_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.apply_scaling_factor" title="Link to this definition"></a></dt>
+<dd><p>Return an entry with a <code class="docutils literal notranslate"><span class="pre">scaling_factor</span></code> applied to a specified field of the entry.
+The scaling factor is stored in the fields metadata.</p>
+<p>If scaling factors are applied consecutively, the value is updated
+(i.e., the cumulative scaling factor is the product of the individual factors).</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.103158 -0.998277</span>
+<span class="go">1  0.02 -0.102158 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">apply_scaling_factor</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.103158 -1.996553</span>
+<span class="go">1  0.02 -0.102158 -1.963524</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;number&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;A / m2&#39;,</span>
+<span class="go">&#39;scalingFactor&#39;: {&#39;value&#39;: 2.0}}</span>
+</pre></div>
+</div>
+<p>A consecutively applied scaling factor:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_1</span> <span class="o">=</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">apply_scaling_factor</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_1</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t         E         j</span>
+<span class="go">0  0.00 -0.103158 -5.989660</span>
+<span class="go">1  0.02 -0.102158 -5.890572</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_1</span><span class="o">.</span><span class="n">resource</span><span class="o">.</span><span class="n">schema</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;j&#39;</span><span class="p">)</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;number&#39;,</span>
+<span class="go">&#39;unit&#39;: &#39;A / m2&#39;,</span>
+<span class="go">&#39;scalingFactor&#39;: {&#39;value&#39;: 6.0}}</span>
+</pre></div>
+</div>
+<p>Scaling by a float:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_2</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">apply_scaling_factor</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="mf">1e3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry_2</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="go">      t           E         j</span>
+<span class="go">0  0.00 -103.158422 -0.998277</span>
+<span class="go">1  0.02 -102.158422 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.create_example">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.create_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example entry for use in automated tests.</p>
+<p>The examples are created from Data Packages in the unitpackage’s examples directory.
+These are only available from the development environment.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="go">Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;no_bibliography&quot;</span><span class="p">)</span>
+<span class="go">Entry(&#39;no_bibliography&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.default_metadata_key">
+<span class="sig-name descname"><span class="pre">default_metadata_key</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#unitpackage.collection.Collection.Entry.default_metadata_key" title="Link to this definition"></a></dt>
+<dd><p>Default metadata key to use when accessing the descriptor.
+If empty string, the entire metadata dict is used. Subclasses can override this.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.df">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">df</span></span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.df" title="Link to this definition"></a></dt>
+<dd><p>Return the data of this entry’s resource as a data frame.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>The units and descriptions of the axes in the data frame can be recovered:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;test_df&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">   x  y</span>
+<span class="go">0  1  2</span>
+<span class="go">1  2  3</span>
+<span class="go">2  3  4</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.field_unit">
+<span class="sig-name descname"><span class="pre">field_unit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.field_unit" title="Link to this definition"></a></dt>
+<dd><p>Return the unit of the <code class="docutils literal notranslate"><span class="pre">field_name</span></code> of the resource.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">field_unit</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">&#39;V&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.fields">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fields</span></span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.fields" title="Link to this definition"></a></dt>
+<dd><p>Return the fields of the resource’s schema.</p>
+<p>This is a convenience property that returns <cite>self.resource.schema.fields</cite>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.from_csv">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">csvname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_header_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.from_csv" title="Link to this definition"></a></dt>
+<dd><p>Returns an entry constructed from a CSV.</p>
+<p>The file is always parsed through a loader which captures the file’s
+structure (delimiter, decimal separator, header, column headers) in the
+entry’s metadata under <code class="docutils literal notranslate"><span class="pre">dsvDescription</span></code>.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">device</span></code> can be specified to select a device-specific loader
+(e.g., <code class="docutils literal notranslate"><span class="pre">'eclab'</span></code> or <code class="docutils literal notranslate"><span class="pre">'gamry'</span></code>).</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;examples/from_csv/from_csv.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;from_csv&#39;)</span>
+</pre></div>
+</div>
+<p>The loader’s file structure information is stored in the metadata:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;loader&#39;</span><span class="p">]</span>
+<span class="go">&#39;BaseLoader&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]</span>
+<span class="go">&#39;,&#39;</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Upper case filenames are converted to lower case entry identifiers!</p>
+</div>
+<p>A filename containing upper case characters:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;examples/from_csv/UpperCase.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;uppercase&#39;)</span>
+</pre></div>
+</div>
+<p>CSV with a more complex structure, such as multiple header lines can be constructed:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;examples/from_csv/from_csv_multiple_headers.csv&#39;</span><span class="p">,</span> <span class="n">column_header_lines</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;E / V&#39;, &#39;type&#39;: &#39;integer&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j / A / cm2&#39;, &#39;type&#39;: &#39;integer&#39;}]</span>
+</pre></div>
+</div>
+<p>A device-specific loader can be used to parse instrument files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">csvname</span><span class="o">=</span><span class="s1">&#39;test/loader_data/eclab_cv.mpt&#39;</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;eclab&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;eclab_cv&#39;)</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">    mode  ox/red  error  ...      (Q-Qo)/C  I Range       P/W</span>
+<span class="go">0      2       1      0  ...  0.000000e+00       41  0.000001</span>
+<span class="go">1      2       0      0  ... -3.622761e-08       41 -0.000003</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;loader&#39;</span><span class="p">]</span>
+<span class="go">&#39;ECLabLoader&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;dsvDescription&#39;</span><span class="p">][</span><span class="s1">&#39;delimiter&#39;</span><span class="p">]</span>
+<span class="go">&#39;\t&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.from_df">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">basename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.from_df" title="Link to this definition"></a></dt>
+<dd><p>Returns an entry constructed from a pandas dataframe.
+A name <cite>basename</cite> for the entry must be provided.
+The name must be lower-case and contain only alphanumeric
+characters along with <cite>.</cite> , <cite>_</cite> or <cite>-</cite> characters’.
+(Upper case characters are converted to lower case.)</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;test_df&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;test_df&#39;)</span>
+</pre></div>
+</div>
+<p>Metadata and field descriptions can be added:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;um&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;V&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;user&#39;</span><span class="p">:</span><span class="s1">&#39;Max Doe&#39;</span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;test_df&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">update_fields</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span>
+<span class="go">{&#39;user&#39;: &#39;Max Doe&#39;}</span>
+</pre></div>
+</div>
+<p>Save the entry:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;./test/generated/from_df&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Basenames with upper case characters are stored with lower case characters!
+To separate words use underscores.</p>
+</div>
+<p>The basename will always be converted to lowercase entry identifiers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;TEST_DF&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;test_df&#39;)</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Verify that all fields are properly created even when they are not specified as fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;P&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;um&#39;</span><span class="p">},</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;V&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;test_df&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">update_fields</span><span class="p">(</span><span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;x&#39;, &#39;type&#39;: &#39;integer&#39;, &#39;unit&#39;: &#39;m&#39;}, {&#39;name&#39;: &#39;y&#39;, &#39;type&#39;: &#39;integer&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.from_local">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.from_local" title="Link to this definition"></a></dt>
+<dd><p>Return an entry from a :param filename containing a frictionless Data Package.
+The Data Package must contain a single resource.</p>
+<p>Otherwise use <cite>collection.from_local_file</cite> to create a collection from
+all resources within.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s1">&#39;./examples/local/no_bibliography/no_bibliography.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span>
+<span class="go">Entry(&#39;no_bibliography&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.identifier">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identifier</span></span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.identifier" title="Link to this definition"></a></dt>
+<dd><p>Return a unique identifier for this entry, i.e., its basename.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">identifier</span>
+<span class="go">&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.load_metadata">
+<span class="sig-name descname"><span class="pre">load_metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.load_metadata" title="Link to this definition"></a></dt>
+<dd><p>Load metadata from a file and return self for method chaining.</p>
+<p>The file format is auto-detected from the extension if not specified.
+Supported formats are ‘yaml’ and ‘json’.</p>
+<p>EXAMPLES:</p>
+<p>Load metadata from a YAML file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.yaml&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s1">&#39;source&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;citationKey&#39;</span><span class="p">:</span> <span class="s1">&#39;chain_test&#39;</span><span class="p">}},</span> <span class="n">f</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">temp_path</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">load_metadata</span><span class="p">(</span><span class="n">temp_path</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="s1">&#39;echemdb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">echemdb</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">citationKey</span>
+<span class="go">&#39;chain_test&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Load metadata from a JSON file with auto-detection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.json&#39;</span><span class="p">,</span> <span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s1">&#39;custom&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">}},</span> <span class="n">f</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">temp_path</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">name</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">load_metadata</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">custom</span><span class="o">.</span><span class="n">data</span>
+<span class="go">&#39;value&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">temp_path</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.metadata">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.metadata" title="Link to this definition"></a></dt>
+<dd><p>Access and manage entry metadata.</p>
+<p>Returns a MetadataDescriptor that supports both dict and attribute-style access.
+Allows loading metadata from various sources. Modifications are applied in-place.</p>
+<p>The descriptor is cached for efficiency, but still reflects metadata changes since
+it delegates to the underlying resource.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;echemdb&#39;</span><span class="p">][</span><span class="s1">&#39;source&#39;</span><span class="p">][</span><span class="s1">&#39;citationKey&#39;</span><span class="p">]</span>
+<span class="go">&#39;alves_2011_electrochemistry_6010&#39;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">echemdb</span><span class="p">[</span><span class="s1">&#39;source&#39;</span><span class="p">][</span><span class="s1">&#39;citationKey&#39;</span><span class="p">]</span>
+<span class="go">&#39;alves_2011_electrochemistry_6010&#39;</span>
+</pre></div>
+</div>
+<p>Load metadata from a dict:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s1">&#39;echemdb&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;test&#39;</span><span class="p">:</span> <span class="s1">&#39;data&#39;</span><span class="p">}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;echemdb&#39;</span><span class="p">][</span><span class="s1">&#39;test&#39;</span><span class="p">]</span>
+<span class="go">&#39;data&#39;</span>
+</pre></div>
+</div>
+<p>The descriptor is cached but still sees metadata updates:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor1</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">metadata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s1">&#39;custom&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;key&#39;</span><span class="p">:</span> <span class="s1">&#39;value&#39;</span><span class="p">}})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor2</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">metadata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor1</span> <span class="ow">is</span> <span class="n">descriptor2</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">descriptor1</span><span class="p">[</span><span class="s1">&#39;custom&#39;</span><span class="p">][</span><span class="s1">&#39;key&#39;</span><span class="p">]</span>
+<span class="go">&#39;value&#39;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.plot" title="Link to this definition"></a></dt>
+<dd><p>Return a 2D plot of this entry.</p>
+<p>The default plot is constructed from the first two columns of the dataframe.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+<p>The 2D plot can also be returned with custom axis units available in the resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_label</span><span class="o">=</span><span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="n">y_label</span><span class="o">=</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+<p>A plot from data without units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="s1">&#39;test_df&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="go">Figure(...)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.remove_column">
+<span class="sig-name descname"><span class="pre">remove_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.remove_column" title="Link to this definition"></a></dt>
+<dd><p>Removes a single column from the dataframe
+and returns an updated entry.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">remove_column</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         j</span>
+<span class="go">0      0.000000 -0.998277</span>
+<span class="go">1      0.020000 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.remove_columns">
+<span class="sig-name descname"><span class="pre">remove_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">field_names</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.remove_columns" title="Link to this definition"></a></dt>
+<dd><p>Removes specified columns from the dataframe
+and returns an updated entry.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">remove_columns</span><span class="p">(</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t</span>
+<span class="go">0      0.000000</span>
+<span class="go">1      0.020000</span>
+<span class="go">...</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="s1">&#39;E&#39;</span> <span class="ow">in</span> <span class="n">new_entry</span><span class="o">.</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.rename_field">
+<span class="sig-name descname"><span class="pre">rename_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_original_name_as</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.rename_field" title="Link to this definition"></a></dt>
+<dd><p>Returns a <a class="reference internal" href="#unitpackage.collection.Collection.Entry" title="unitpackage.entry.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entry</span></code></a> with a single renamed field and
+corresponding dataframe column name.</p>
+<p>The original field name can optionally be kept in a new key.</p>
+<p>EXAMPLES:</p>
+<p>The original dataframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Dataframe with a single modified column name:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rename_field</span><span class="p">(</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;t_rel&#39;</span><span class="p">,</span> <span class="n">keep_original_name_as</span><span class="o">=</span><span class="s1">&#39;originalName&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">          t_rel         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Updated fields of the resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t_rel&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;, &#39;originalName&#39;: &#39;t&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Renaming a non-existing field has no effect:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rename_field</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">keep_original_name_as</span><span class="o">=</span><span class="s1">&#39;originalName&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.rename_fields">
+<span class="sig-name descname"><span class="pre">rename_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_original_name_as</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.rename_fields" title="Link to this definition"></a></dt>
+<dd><p>Returns a <a class="reference internal" href="#unitpackage.collection.Collection.Entry" title="unitpackage.entry.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entry</span></code></a> with updated field names and dataframe
+column names. Provide a dict, where the key is the previous field name and the
+value the new name, such as <code class="docutils literal notranslate"><span class="pre">{'t':'t_rel',</span> <span class="pre">'E':'E_we'}</span></code>.
+The original field names can be kept in a new key.</p>
+<p>EXAMPLES:</p>
+<p>The original dataframe:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">              t         E         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Dataframe with modified column names:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rename_fields</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;t_rel&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="s1">&#39;E_we&#39;</span><span class="p">},</span> <span class="n">keep_original_name_as</span><span class="o">=</span><span class="s1">&#39;originalName&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">          t_rel      E_we         j</span>
+<span class="go">0      0.000000 -0.103158 -0.998277</span>
+<span class="go">1      0.020000 -0.102158 -0.981762</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>Updated fields of the resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t_rel&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;, &#39;originalName&#39;: &#39;t&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E_we&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;, &#39;originalName&#39;: &#39;E&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Provide alternatives for non-existing fields:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rename_fields</span><span class="p">({</span><span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;t_rel&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">:</span><span class="s1">&#39;y&#39;</span><span class="p">},</span> <span class="n">keep_original_name_as</span><span class="o">=</span><span class="s1">&#39;originalName&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">renamed_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t_rel&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;, &#39;originalName&#39;: &#39;t&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.rescale">
+<span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.rescale" title="Link to this definition"></a></dt>
+<dd><p>Returns a rescaled <a class="reference internal" href="#unitpackage.collection.Collection.Entry" title="unitpackage.entry.Entry"><code class="xref py py-class docutils literal notranslate"><span class="pre">Entry</span></code></a> with axes in the specified <code class="docutils literal notranslate"><span class="pre">units</span></code>.
+Provide a dict, where the key is the axis name and the value
+the new unit, such as <cite>{‘j’: ‘uA / cm2’, ‘t’: ‘h’}</cite>.</p>
+<p>EXAMPLES:</p>
+<p>The units without any rescaling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+<p>A rescaled entry using different units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">rescale</span><span class="p">({</span><span class="s1">&#39;j&#39;</span><span class="p">:</span><span class="s1">&#39;uA / cm2&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span><span class="s1">&#39;h&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;h&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;uA / cm2&#39;}]</span>
+</pre></div>
+</div>
+<p>The values in the data frame are scaled to match the new units:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled_entry</span><span class="o">.</span><span class="n">df</span>
+<span class="go">             t         E          j</span>
+<span class="go">0     0.000000 -0.103158 -99.827664</span>
+<span class="go">1     0.000006 -0.102158 -98.176205</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">basename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.save" title="Link to this definition"></a></dt>
+<dd><p>Create a Data Package, i.e., a CSV file and a JSON file, in the directory <code class="docutils literal notranslate"><span class="pre">outdir</span></code>.</p>
+<p>EXAMPLES:</p>
+<p>The output files are named <code class="docutils literal notranslate"><span class="pre">identifier.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">identifier.json</span></code> using the identifier of the original resource:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;./test/generated&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basename</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">identifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>When a <code class="docutils literal notranslate"><span class="pre">basename</span></code> is set, the files are named <code class="docutils literal notranslate"><span class="pre">basename.csv</span></code> and <code class="docutils literal notranslate"><span class="pre">basename.json</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For a valid frictionless Data Package the basename
+MUST be lower-case and contain only alphanumeric
+characters along with <code class="docutils literal notranslate"><span class="pre">.</span></code>, <code class="docutils literal notranslate"><span class="pre">_</span></code> or <code class="docutils literal notranslate"><span class="pre">-</span></code> characters’</p>
+</div>
+<p>A valid basename:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basename</span> <span class="o">=</span> <span class="s1">&#39;save_basename&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">basename</span><span class="o">=</span><span class="n">basename</span><span class="p">,</span> <span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;./test/generated&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>Upper case characters are saved lower case:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basename</span> <span class="o">=</span> <span class="s1">&#39;Upper_Case_Save&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">basename</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;./test/generated&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">resource</span>
+<span class="go">{&#39;name&#39;: &#39;upper_case_save&#39;,</span>
+<span class="go">&#39;type&#39;: &#39;table&#39;,</span>
+<span class="go">&#39;path&#39;: &#39;upper_case_save.csv&#39;,</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>TESTS:</p>
+<p>Save the entry as Data Package with metadata containing datetime format,
+which is not natively supported by JSON.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="s1">&#39;y&#39;</span><span class="p">:[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">basename</span> <span class="o">=</span> <span class="s1">&#39;save_datetime&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">from_df</span><span class="p">(</span><span class="n">df</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">basename</span><span class="o">=</span><span class="n">basename</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">from_dict</span><span class="p">({</span><span class="s1">&#39;currentTime&#39;</span><span class="p">:</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;./test/generated&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.json&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;test/generated/</span><span class="si">{</span><span class="n">basename</span><span class="si">}</span><span class="s1">.csv&#39;</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.Entry.update_fields">
+<span class="sig-name descname"><span class="pre">update_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.Entry.update_fields" title="Link to this definition"></a></dt>
+<dd><p>Return a new entry with updated fields in the resource.</p>
+<p>The :param fields: list must must be structured such as
+<cite>[{‘name’:’E’, ‘unit’: ‘mV’}, {‘name’:’T’, ‘unit’: ‘K’}]</cite>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.entry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Entry</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span> <span class="o">=</span> <span class="n">Entry</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+<p>Updating the fields returns a new entry with updated field metadata:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">fields</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;mV&#39;</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;uA / cm2&#39;</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;unit&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">update_fields</span><span class="p">(</span><span class="n">fields</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">new_entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;mV&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;uA / cm2&#39;}]</span>
+</pre></div>
+</div>
+<p>The original entry remains unchanged:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">entry</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.create_example">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.create_example" title="Link to this definition"></a></dt>
+<dd><p>Return a sample collection for use in automated tests
+(only accessible from the development environment).</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="go">[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;),</span>
+<span class="go">Entry(&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;),</span>
+<span class="go">Entry(&#39;no_bibliography&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.filter" title="Link to this definition"></a></dt>
+<dd><p>Return the subset of the collection that satisfies predicate.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">echemdb</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="s1">&#39;https://doi.org/10.1039/C0CP01001D&#39;</span><span class="p">)</span>
+<span class="go">[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;)]</span>
+</pre></div>
+</div>
+<p>The filter predicate can use properties that are not present on all
+entries in the collection. If a property is missing the element is
+removed from the collection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">non</span><span class="o">.</span><span class="n">existing</span><span class="o">.</span><span class="n">property</span><span class="p">)</span>
+<span class="go">[]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.from_local">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">datadir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.from_local" title="Link to this definition"></a></dt>
+<dd><p>Create a collection from local Data Packages.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local</span><span class="p">(</span><span class="s1">&#39;./examples/local/&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span>
+<span class="go">[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;),</span>
+<span class="go">Entry(&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;),</span>
+<span class="go">Entry(&#39;no_bibliography&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.from_local_file">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_local_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.from_local_file" title="Link to this definition"></a></dt>
+<dd><p>Create a collection from a local Data Package.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_local_file</span><span class="p">(</span><span class="s1">&#39;./examples/local/engstfeld_2018_polycrystalline_17743/engstfeld_2018_polycrystalline_17743_f4b_1.json&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span>
+<span class="go">[Entry(&#39;engstfeld_2018_polycrystalline_17743_f4b_1&#39;)]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.from_remote">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_remote</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.from_remote" title="Link to this definition"></a></dt>
+<dd><p>Create a collection from a url containing a zip.</p>
+<p>When no url is provided a collection is created from the Data Packages published
+on the <a class="reference external" href="https://github.com/echemdb/electrochemistry-data">echemdb data repository</a>
+displayed on the <a class="reference external" href="https://www.echemdb.org/cv">echemdb website</a>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">unitpackage.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">from_remote</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">entry</span><span class="p">:</span> <span class="n">entry</span><span class="o">.</span><span class="n">echemdb</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">url</span> <span class="o">==</span> <span class="s1">&#39;https://doi.org/10.1039/C0CP01001D&#39;</span><span class="p">)</span>
+<span class="go">[Entry(&#39;alves_2011_electrochemistry_6010_f1a_solid&#39;), Entry(&#39;alves_2011_electrochemistry_6010_f2_red&#39;)]</span>
+</pre></div>
+</div>
+<p>The folder containing the data in the zip can be specified with the :param data:.
+An output directory for the extracted data can be specified with the :param outdir:.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.identifiers">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">identifiers</span></span><a class="headerlink" href="#unitpackage.collection.Collection.identifiers" title="Link to this definition"></a></dt>
+<dd><p>Return a list of identifiers of the collection,
+i.e., the names of the resources in the datapackage.</p>
+<p>This method is basically equivalent to <cite>package.resource_names</cite>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="o">.</span><span class="n">identifiers</span><span class="p">)</span>
+<span class="go">3</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.rescale">
+<span class="sig-name descname"><span class="pre">rescale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">units</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.rescale" title="Link to this definition"></a></dt>
+<dd><p>Return a rescaled collection with all entries rescaled to the specified <code class="docutils literal notranslate"><span class="pre">units</span></code>.</p>
+<p>Reuses the interface of <a class="reference internal" href="entry.html#unitpackage.entry.Entry.rescale" title="unitpackage.entry.Entry.rescale"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rescale()</span></code></a>.
+Provide a dict, where the key is the field name and the value
+the new unit, such as <code class="docutils literal notranslate"><span class="pre">{'j':</span> <span class="pre">'uA</span> <span class="pre">/</span> <span class="pre">cm2',</span> <span class="pre">'t':</span> <span class="pre">'h'}</span></code>.</p>
+<p>Fields that are not present in an entry are silently ignored for that entry.</p>
+<p>EXAMPLES:</p>
+<p>The units without any rescaling:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">collection</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;s&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;A / m2&#39;}]</span>
+</pre></div>
+</div>
+<p>A rescaled collection:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">rescale</span><span class="p">({</span><span class="s1">&#39;j&#39;</span><span class="p">:</span> <span class="s1">&#39;uA / cm2&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">:</span> <span class="s1">&#39;h&#39;</span><span class="p">})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rescaled</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fields</span>
+<span class="go">[{&#39;name&#39;: &#39;t&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;h&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;E&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;V&#39;, &#39;reference&#39;: &#39;RHE&#39;},</span>
+<span class="go">{&#39;name&#39;: &#39;j&#39;, &#39;type&#39;: &#39;number&#39;, &#39;unit&#39;: &#39;uA / cm2&#39;}]</span>
+</pre></div>
+</div>
+<p>The number of entries in the collection is preserved:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">rescaled</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">collection</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="unitpackage.collection.Collection.save_entries">
+<span class="sig-name descname"><span class="pre">save_entries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#unitpackage.collection.Collection.save_entries" title="Link to this definition"></a></dt>
+<dd><p>Save the entries of this collection as Data Packages (CSV and JSON)
+to the output directory :param outdir:.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">db</span> <span class="o">=</span> <span class="n">Collection</span><span class="o">.</span><span class="n">create_example</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">db</span><span class="o">.</span><span class="n">save_entries</span><span class="p">(</span><span class="n">outdir</span><span class="o">=</span><span class="s1">&#39;./test/generated/saved_collection&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;test/generated/saved_collection/**.json&#39;</span><span class="p">)</span>
+<span class="go">[&#39;test...</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../api.html" class="btn btn-neutral float-left" title="API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="entry.html" class="btn btn-neutral float-right" title="unitpackage.entry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, the unitpackage authors.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
