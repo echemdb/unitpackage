@@ -1,9 +1,9 @@
-r"""Fields describing specific csv data, such as biologic MPT files."""
+r"""Description of fields found in biologic MPT files."""
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2024-2025 Albert Engstfeld
+#        Copyright (C) 2024-2026 Albert Engstfeld
 #        Copyright (C)      2024 Justus Leist
 #
 #  unitpackage is free software: you can redistribute it and/or modify
@@ -103,7 +103,7 @@ biologic_fields = [
         "name": "|Y|/Ohm-1",
         "unit": "S",
         "dimension": "|Y|",
-        "description": "Admittance magnitude (in Ω-1",
+        "description": "Admittance magnitude (in Ω-1)",
     },
     {"name": "|Z|/Ohm", "unit": "Ohm", "dimension": "|Z|", "description": "Phase of Z"},
     {
@@ -441,6 +441,7 @@ biologic_fields = [
     {"name": "time/s", "unit": "s", "dimension": "t", "description": "time"},
     {"name": "x", "description": "x: normalized charge "},
     {"name": "z cycle", "description": "z cycle"},
+    {"name": "cycle number", "description": "cycle number"},
 ]
 
 biologic_fields_alt_names = {
@@ -453,4 +454,6 @@ biologic_fields_alt_names = {
     "-Im(Z)/Ohm": "-Im(Z)",
     "freq/Hz": "f",
     "Phase(Z)/deg": "Phase(Z)",
+    "Ece/V": "E_CE",
+    "cycle number": "cycle",
 }

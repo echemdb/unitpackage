@@ -102,6 +102,68 @@ class EchemdbEntry(Entry):
         """
         return f"Echemdb({self.identifier!r})"
 
+    @classmethod
+    def from_mpt(cls, csvname, encoding=None):
+        r"""
+        Return an :class:`EchemdbEntry` from a BioLogic EC-Lab MPT file.
+
+        The file is parsed with the ECLabLoader. Fields are updated with
+        units from :data:`~unitpackage.loaders.column_names.biologic_fields`
+        and renamed according to
+        :data:`~unitpackage.loaders.column_names.biologic_fields_alt_names`.
+        The original field names are preserved as ``originalName``.
+
+        Only columns whose original names appear in
+        :data:`~unitpackage.loaders.column_names.biologic_fields_alt_names`
+        are kept; all other columns are removed.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.from_mpt('test/loader_data/eclab_cv.mpt')
+            >>> entry
+            Echemdb('eclab_cv')
+
+            >>> entry.df.head()  # doctest: +NORMALIZE_WHITESPACE
+                        t         E         I  cycle
+            0  86.761598  0.849737  0.001722    1.0
+            1  86.772598  0.849149 -0.003851    1.0
+            ...
+
+        Fields have units and the original BioLogic column names::
+
+            >>> [f for f in entry.fields if f.name == 'E'] # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 'E', 'type': 'number', 'description': 'WE potential versus REF',
+            'unit': 'V', 'dimension': 'E', 'originalName': 'Ewe/V'}]
+
+            >>> [f for f in entry.fields if f.name == 't'] # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'description': 'time',
+            'unit': 's', 'dimension': 't', 'originalName': 'time/s'}]
+
+            >>> [f for f in entry.fields if f.name == 'I'] # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+            [{'name': 'I', 'type': 'number', 'description': ...,
+            'unit': 'mA', 'dimension': 'I', 'originalName': '<I>/mA'}]
+
+        The loader metadata is stored in the entry's metadata::
+
+            >>> entry.metadata['dsvDescription']['loader']
+            'ECLabLoader'
+
+            >>> entry.metadata['dsvDescription']['header'] # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+            'EC-Lab ASCII FILE\nNb header lines : 62...'
+
+        """
+        from unitpackage.loaders.column_names import biologic_fields, biologic_fields_alt_names
+
+        entry = cls.from_csv(csvname=csvname, encoding=encoding, device="eclab")
+        entry = entry.update_fields(biologic_fields)
+        entry = entry.rename_fields(biologic_fields_alt_names, keep_original_name_as="originalName")
+
+        # Only keep columns that were renamed via biologic_fields_alt_names
+        columns_to_remove = [f.name for f in entry.fields if f.name not in biologic_fields_alt_names.values()]
+        entry = entry.remove_columns(*columns_to_remove)
+
+        return entry
+
     @property
     def bibliography(self):
         r"""
