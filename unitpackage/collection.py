@@ -633,7 +633,9 @@ class Collection:
         for entry in self:
             # Only rescale fields that exist on this entry
             entry_field_names = {f.name for f in entry.resource.schema.fields}
-            applicable_units = {k: v for k, v in units.items() if k in entry_field_names}
+            applicable_units = {
+                k: v for k, v in units.items() if k in entry_field_names
+            }
             rescaled_entry = entry.rescale(applicable_units)
             package.add_resource(rescaled_entry.resource)
 

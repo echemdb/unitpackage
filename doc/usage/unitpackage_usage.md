@@ -96,6 +96,21 @@ filtered_db = db.filter(custom_filter)
 len(filtered_db)
 ```
 
++++
+
+### Rescaling Units in Collections
+
+The `collection.rescale` method allows you to rescale the units of all entries within a collection at once.
+Provide a dict where the key is the field name and the value is the desired unit.
+Fields that are not present in an entry are silently ignored for that entry.
+
+```{code-cell} ipython3
+rescaled_db = db.rescale({'E': 'mV', 'j': 'uA / cm2'})
+rescaled_db[0].fields
+```
+
+For more details on rescaling individual entries, see the [data](#data) section below.
+
 ## Entry
 
 Each entry consists of descriptors describing the data in the resource of the datapackage.
