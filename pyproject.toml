@@ -84,6 +84,7 @@ pytest = "*"
 pytest-xdist = "*"
 pytest-doctestplus = "*"
 pytest-remotedata = "*"
+pytest-env = "*"
 
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
