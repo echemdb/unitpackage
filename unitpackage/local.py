@@ -317,11 +317,9 @@ def update_fields(original_fields, new_fields):
 
     def validate_field_structure(fields):
         if not isinstance(fields, list):
-            raise ValueError(
-                "'fields' must be a list such as \
+            raise ValueError("'fields' must be a list such as \
                 [{'name': '<fieldname>', 'unit':'<field unit>'}]`, \
-                e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`"
-            )
+                e.g., `[{'name':'E', 'unit': 'mV}, {'name':'T', 'unit': 'K}]`")
 
         # remove field if it is not a Mapping instance
         from collections.abc import Mapping
