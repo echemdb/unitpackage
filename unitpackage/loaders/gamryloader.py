@@ -18,7 +18,7 @@ The file can be loaded with the GamryLoader::
     ... ''')
     >>> from unitpackage.loaders.gamryloader import GamryLoader
     >>> csv = GamryLoader(file)
-    >>> csv.df # doctest: +NORMALIZE_WHITESPACE
+    >>> csv.df
        Pt / #  T / s  Vf / V vs. Ref.  ...  Over / bits  Cycle / #  Temp / deg C
     0       0   0.06         0.200054  ...  ..........a          0       -327.75
     1       1   0.12         0.197170  ...  ..........a          0       -327.75
