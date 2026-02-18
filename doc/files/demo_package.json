@@ -24,6 +24,12 @@
             },
             "metadata": {
                 "echemdb": {
+                    "dataDescription": {
+                        "fields": [
+                            {"name": "t", "type": "number", "unit": "s"},
+                            {"name": "j", "type": "number", "unit": "A / m2"}
+                        ]
+                    },
                     "description": "Sample data for the unitpackage module.",
                     "curation": {
                         "process": [

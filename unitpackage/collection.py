@@ -20,7 +20,7 @@ that are displayed on the `echemdb website
 Search the collection for entries, for example,
 from a single publication providing its DOI::
 
-    >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+    >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
     [Entry('alves_2011_electrochemistry_6010_f1a_solid'), ...
 
 """
@@ -28,7 +28,7 @@ from a single publication providing its DOI::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C) 2021      Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C) 2021      Nicolas Hörmann
@@ -47,7 +47,7 @@ from a single publication providing its DOI::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
-from functools import cached_property
+import os.path
 
 from frictionless import Package
 
@@ -122,75 +122,9 @@ class Collection:
             Entry('no_bibliography')]
 
         """
+        example_dir = os.path.join(os.path.dirname(__file__), "..", "examples", "local")
 
-        entries = (
-            cls.Entry.create_examples("alves_2011_electrochemistry_6010")
-            + cls.Entry.create_examples("engstfeld_2018_polycrystalline_17743")
-            + cls.Entry.create_examples("no_bibliography")
-        )
-
-        package = Package()
-
-        for entry in entries:
-            package.add_resource(entry.resource)
-
-        return cls(
-            package=package,
-        )
-
-    @cached_property
-    def bibliography(self):
-        r"""
-        Return a pybtex database of all bibtex bibliography files,
-        associated with the entries.
-
-        EXAMPLES::
-
-            >>> collection = Collection.create_example()
-            >>> collection.bibliography
-            BibliographyData(
-              entries=OrderedCaseInsensitiveDict([
-                ('alves_2011_electrochemistry_6010', Entry('article',
-                ...
-                ('engstfeld_2018_polycrystalline_17743', Entry('article',
-                ...
-
-        A derived collection includes only the bibliographic entries of the remaining entries::
-
-            >>> collection.filter(lambda entry: entry.source.citationKey != 'alves_2011_electrochemistry_6010').bibliography
-            BibliographyData(
-              entries=OrderedCaseInsensitiveDict([
-                ('engstfeld_2018_polycrystalline_17743', Entry('article',
-                ...
-
-        A collection with entries without bibliography::
-
-            >>> collection = Collection.create_example()["no_bibliography"]
-            >>> collection.bibliography
-            ''
-
-        """
-        from pybtex.database import BibliographyData
-
-        bib_data = BibliographyData(
-            {
-                entry.bibliography.key: entry.bibliography
-                for entry in self
-                if entry.bibliography
-            }
-        )
-
-        if isinstance(bib_data, str):
-            return bib_data
-
-        # Remove duplicates from the bibliography
-        bib_data_ = BibliographyData()
-
-        for key, entry in bib_data.entries.items():
-            if key not in bib_data_.entries:
-                bib_data_.add_entry(key, entry)
-
-        return bib_data_
+        return cls.from_local(example_dir)
 
     def filter(self, predicate):
         r"""
@@ -199,7 +133,7 @@ class Collection:
         EXAMPLES::
 
             >>> collection = Collection.create_example()
-            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')
+            >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')
             [Entry('alves_2011_electrochemistry_6010_f1a_solid')]
 
 
@@ -610,7 +544,7 @@ class Collection:
 
             >>> from unitpackage.collection import Collection
             >>> collection = Collection.from_remote()  # doctest: +REMOTE_DATA
-            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
+            >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('alves_2011_electrochemistry_6010_f2_red')]
 
         The folder containing the data in the zip can be specified with the :param data:.
@@ -641,6 +575,60 @@ class Collection:
             package.add_resource(resource)
 
         return cls(package=package)
+
+    def rescale(self, units):
+        r"""
+        Return a rescaled collection with all entries rescaled to the specified ``units``.
+
+        Reuses the interface of :meth:`~unitpackage.entry.Entry.rescale`.
+        Provide a dict, where the key is the field name and the value
+        the new unit, such as ``{'j': 'uA / cm2', 't': 'h'}``.
+
+        Fields that are not present in an entry are silently ignored for that entry.
+
+        EXAMPLES:
+
+        The units without any rescaling::
+
+            >>> collection = Collection.create_example()
+            >>> collection[0].fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        A rescaled collection::
+
+            >>> rescaled = collection.rescale({'j': 'uA / cm2', 't': 'h'})
+            >>> rescaled[0].fields
+            [{'name': 't', 'type': 'number', 'unit': 'h'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
+
+        The number of entries in the collection is preserved::
+
+            >>> len(rescaled) == len(collection)
+            True
+
+        """
+        from collections.abc import Mapping
+
+        if not isinstance(units, Mapping):
+            raise ValueError(
+                "'units' must have the format {'dimension': 'new unit'}, e.g., `{'j': 'uA / cm2', 't': 'h'}`"
+            )
+
+        package = Package()
+
+        for entry in self:
+            # Only rescale fields that exist on this entry
+            entry_field_names = {f.name for f in entry.resource.schema.fields}
+            applicable_units = {
+                k: v for k, v in units.items() if k in entry_field_names
+            }
+            rescaled_entry = entry.rescale(applicable_units)
+            package.add_resource(rescaled_entry.resource)
+
+        return type(self)(package=package)
 
     @property
     def identifiers(self):

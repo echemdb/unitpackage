@@ -3,5 +3,8 @@ max-line-length=256
 max-module-lines=65536
 good-names=x,y,z,A,t,df,cv,e
 
+[DESIGN]
+max-public-methods=25
+
 [MESSAGES CONTROL]
 disable=import-outside-toplevel,too-many-arguments,logging-fstring-interpolation,use-maxsplit-arg,fixme,cyclic-import,too-many-positional-arguments,abstract-method

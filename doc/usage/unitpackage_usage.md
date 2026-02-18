@@ -5,7 +5,7 @@ jupytext:
     extension: .md
     format_name: myst
     format_version: 0.13
-    jupytext_version: 1.17.2
+    jupytext_version: 1.18.1
 kernelspec:
   name: python3
   display_name: Python 3 (ipykernel)
@@ -36,35 +36,12 @@ len(db)
 
 The identifiers can also be returned as a list.
 
++++
+
+### Slice the collection
+
 ```{code-cell} ipython3
 db.identifiers[0:3]
-```
-
-You can iterate over these entries
-
-```{code-cell} ipython3
-next(iter(db))
-```
-
-The collection can be filtered for specific descriptors,
-whereby a new collection is created.
-
-```{code-cell} ipython3
-filtered_db = db.filter(lambda entry: entry.experimental.tags == ['BCV','HER'])
-len(filtered_db)
-```
-
-Alternatively parse a custom filter.
-
-```{code-cell} ipython3
-def custom_filter(entry):
-    for component in entry.system.electrolyte.components:
-        if 'ClO4' in component.name:
-            return True
-    return False
-
-filtered_db = db.filter(custom_filter)
-len(filtered_db)
 ```
 
 A new collection from an existing collection can be created from a list of selected identifiers
@@ -88,9 +65,55 @@ sliced_db = db[:2]
 sliced_db
 ```
 
+You can iterate over these entries
+
+```{code-cell} ipython3
+next(iter(db))
+```
+
+The collection can be filtered for specific descriptors,
+whereby a new collection is created.
+
++++
+
+### Filter the collection
+
+```{code-cell} ipython3
+filtered_db = db.filter(lambda entry: entry.echemdb.experimental.tags == ['BCV','HER'])
+len(filtered_db)
+```
+
+Alternatively parse a custom filter.
+
+```{code-cell} ipython3
+def custom_filter(entry):
+    for component in entry.echemdb.system.electrolyte.components:
+        if 'ClO4' in component.name:
+            return True
+    return False
+
+filtered_db = db.filter(custom_filter)
+len(filtered_db)
+```
+
++++
+
+### Rescaling Units in Collections
+
+The `collection.rescale` method allows you to rescale the units of all entries within a collection at once.
+Provide a dict where the key is the field name and the value is the desired unit.
+Fields that are not present in an entry are silently ignored for that entry.
+
+```{code-cell} ipython3
+rescaled_db = db.rescale({'E': 'mV', 'j': 'uA / cm2'})
+rescaled_db[0].fields
+```
+
+For more details on rescaling individual entries, see the [data](#data) section below.
+
 ## Entry
 
-Each entry consists of descriptors describing the data in the resource of the datapackage. Packages describing literature data can also contain a bibliography reference (see [Bibliography](#bibliography)).
+Each entry consists of descriptors describing the data in the resource of the datapackage.
 The entry also has additional methods for descriptor representation, data manipulation, and data visualization.
 
 Entries can be selected by their identifier from a collection. For our example database, such identifiers can directly be inferred from [echemdb.org/cv](https://www.echemdb.org/cv) for each entry.
@@ -109,23 +132,23 @@ entry_pos
 
 Other approaches to create entries from CSV or pandas dataframes directly are described [here](load_and_save.md).
 
-### Resource Metadata
+### Metadata
 
-The metadata associated with the resource is located in `entry.resource.custom['metadata']`.
+The metadata associated with a unitpackage entry is accessible via `entry.metadata`.
 From an `entry` such information can be retrieved by `entry['key']`,
-where `key` is the respective descriptor in the metadata descriptor.
-Alternatively, you can write `entry.key` where all spaces should be replaced by underscores.
+where `key` is the respective top-level descriptor in the metadata.
+Nested descriptors can be accessed with chained bracket or attribute-style access.
 
 ```{code-cell} ipython3
 entry = db['engstfeld_2018_polycrystalline_17743_f4b_1']
-entry['source']['citationKey']
+entry['echemdb']['source']['citationKey']
 ```
 
 ```{code-cell} ipython3
-entry.source.citationKey
+entry.echemdb.source.citationKey
 ```
 
-`entry.resource` provides a full list of available descriptors.
+`entry.metadata` provides a full list of available descriptors. See [Creating Unitpackages](create_unitpackage.md) for details on how to load and modify metadata.
 
 +++
 
@@ -134,33 +157,21 @@ entry.source.citationKey
 Entries containing both a unit and a value are returned as [astropy units or quantities](https://docs.astropy.org/en/stable/units/index.html).
 
 ```{code-cell} ipython3
-entry.figureDescription.scanRate
+entry.echemdb.figureDescription.scanRate
 ```
 
 The unit and value can be accessed separately
 
 ```{code-cell} ipython3
-entry.figureDescription.scanRate.value
+entry.echemdb.figureDescription.scanRate.value
 ```
 
 ```{code-cell} ipython3
-entry.figureDescription.scanRate.unit
+entry.echemdb.figureDescription.scanRate.unit
 ```
 
 (data)=
 ### Data
-
-The resource is named according to the entry's identifier. It describes the data in the CSV.
-
-An additional `mutableResource` is added to the loaded resource, named "echemdb".
-It contains the data as a pandas dataframe used by the unitpackage module (see [Unitpackage Structure](unitpackage.md) for more details.)
-
-```{note}
-The content of the CSV never changes unless it is explicitly overwritten.
-Changes to the data with the `unitpackage` module are only applied to the `mutableResource`.
-```
-
-+++
 
 The data can be returned as a pandas dataframe.
 
@@ -168,24 +179,90 @@ The data can be returned as a pandas dataframe.
 entry.df.head()
 ```
 
-The description of the fields (column names) including units and/or other information are included in the resource schema.
+The description of the fields (column names) including units and/or other information are accessible via `entry.fields`.
 
 ```{code-cell} ipython3
-entry.resource.schema
+entry.fields
 ```
 
-The units of the dataframe can be rescaled.
+### Data manipulation
+
++++
+
+The units of the dataframe can be rescaled to different convertible units.
 
 ```{code-cell} ipython3
 rescaled_entry = entry.rescale({'t' : 'h', 'E': 'mV', 'j' : 'uA / cm2'})
 rescaled_entry.df.head()
 ```
 
-The units are updated in the schema of the 'MutableResource'.
+The units are updated in the field descriptions.
 
 ```{code-cell} ipython3
-rescaled_entry.mutable_resource
+rescaled_entry.fields
 ```
+
+An offset can be applied to a certain axis.
+
+```{code-cell} ipython3
+offset_entry = entry.add_offset('E', 0.32, 'V')
+offset_entry.df.head()
+```
+
+The offset is indicated in the field descriptions. For subsequent offsets, the value is updated.
+
+```{code-cell} ipython3
+offset_entry.resource.schema.get_field('E')
+```
+
+A scaling factor can be applied to multiply a column by a given value.
+
+```{code-cell} ipython3
+scaled_entry = entry.apply_scaling_factor('j', 2)
+scaled_entry.df.head()
+```
+
+The scaling factor is tracked in the field descriptions. For subsequent scaling factors, the cumulative value is stored.
+
+```{code-cell} ipython3
+scaled_entry.resource.schema.get_field('j')
+```
+
+To add a computed column with proper field descriptions, use `entry.add_columns()`.
+This ensures that the field metadata (such as units) is tracked correctly.
+
+```{code-cell} ipython3
+import pandas as pd
+import astropy.units as u
+
+df = pd.DataFrame()
+df['P/A'] = entry.df['E'] * entry.df['j']
+
+new_field_unit = u.Unit(entry.field_unit('E')) * u.Unit(entry.field_unit('j'))
+new_entry = entry.add_columns(df['P/A'], new_fields=[{'name':'P/A', 'unit': new_field_unit}])
+new_entry.df.head()
+```
+
+The new field is now included in the field descriptions.
+
+```{code-cell} ipython3
+new_entry.fields
+```
+
+Columns can also be removed with `entry.remove_column()`.
+
+```{code-cell} ipython3
+reduced_entry = new_entry.remove_column('P/A')
+reduced_entry.fields
+```
+
+```{code-cell} ipython3
+reduced_entry.df.head()
+```
+
+### Column information
+
++++
 
 The units of a specific field can be retrieved.
 
@@ -213,53 +290,18 @@ A plot with rescaled axis is obtained by rescaling the entry first.
 entry.rescale({'E':'mV', 'j':'uA / cm2'}).plot(x_label='t', y_label='j')
 ```
 
-## Bibliography
-
-An entry can be associated with bibliography data. The bibliography must must be prvided as abibtex string nested in source.bib_data. The bibliography to all entries is stored as a [pybtex database](https://docs.pybtex.org/api) `db.bibliography`,
-which contains bibtex entries.
+We can also use the matplotlib interface.
 
 ```{code-cell} ipython3
-len(db.bibliography.entries)
-```
+import matplotlib.pyplot as plt
 
-Each entry in the echemdb databse can be cited.
+fig, ax = plt.subplots(1,1)
 
-```{code-cell} ipython3
-entry.citation(backend='text') # other available backends: 'latex' or 'markdown'. 'text' is default.
-```
+x = 'E'
+y = 'j'
 
-Individual `db.bibliography` entries can be accessed with the citation key associated with a unitpackage entry.
-
-```{code-cell} ipython3
-bibtex_key = entry.source.citationKey
-bibtex_key
-```
-
-```{code-cell} ipython3
-citation_entry = db.bibliography.entries[bibtex_key]
-citation_entry
-```
-
-Individiual `fields` are accessible, such as `year` or `title`.
-
-```{code-cell} ipython3
-citation_entry.fields['year']
-```
-
-```{code-cell} ipython3
-citation_entry.fields['title']
-```
-
-The authors are accessible via `persons`. Read more in the [pybtex documentation](https://docs.pybtex.org/api/parsing.html?highlight=persons#pybtex.database.Entry.persons).
-
-```{code-cell} ipython3
-citation_entry.persons['author']
-```
-
-```{code-cell} ipython3
-citation_entry.persons['author'][0]
-```
-
-```{code-cell} ipython3
-print(citation_entry.persons['author'][0])
+entry.df.plot(x, y, ax=ax)
+plt.title(entry.identifier)
+ax.set_xlabel(f"{x} [{entry.field_unit(x)}]")
+ax.set_ylabel(f"{y} [{entry.field_unit(y)}]")
 ```

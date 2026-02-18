@@ -28,7 +28,14 @@
                 ]
             },
             "metadata": {
-                "echemdb": {
+                "dataDescription": {
+                    "fields": [
+                        {"name": "t", "type": "number", "unit": "s"},
+                        {"name": "U", "type": "number", "unit": "mV"},
+                        {"name": "I", "type": "number", "unit": "uA"}
+                    ]
+                },
+                "genericSchema1": {
                     "description": "Sample data for the unitpackage module.",
                     "curation": {
                         "process": [
@@ -41,7 +48,7 @@
                         ]
                     }
                 },
-                "generic": {
+                "genericSchema2": {
                     "description": "Sample data for the unitpackage module.",
                     "experimentalist": "John Doe",
                     "laboratory": "Institute of Good Scientific Practice",

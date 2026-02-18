@@ -45,7 +45,7 @@ Extra methods are added if the descriptor satisfies a certain interface::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2023 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C) 2021             Johannes Hermann
 #        Copyright (C) 2021             Julian Rüth
 #        Copyright (C) 2021             Nicolas Hörmann
@@ -170,8 +170,8 @@ class QuantityDescriptor(GenericDescriptor):
     EXAMPLES::
 
         >>> from unitpackage.entry import Entry
-        >>> entry = Entry.create_examples()[0]
-        >>> temperature = entry.system.electrolyte.temperature
+        >>> entry = Entry.create_example()
+        >>> temperature = entry.echemdb.system.electrolyte.temperature
         >>> temperature
         298.15 K
 
@@ -187,8 +187,8 @@ class QuantityDescriptor(GenericDescriptor):
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
-            >>> temperature = entry.system.electrolyte.temperature
+            >>> entry = Entry.create_example()
+            >>> temperature = entry.echemdb.system.electrolyte.temperature
             >>> temperature.quantity
             <Quantity 298.15 K>
 
@@ -204,8 +204,8 @@ class QuantityDescriptor(GenericDescriptor):
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
-            >>> temperature = entry.system.electrolyte.temperature
+            >>> entry = Entry.create_example()
+            >>> temperature = entry.echemdb.system.electrolyte.temperature
             >>> temperature
             298.15 K
 

@@ -8,4 +8,4 @@ dependencies:
   - notebook
   - pip
   - python>=3.9,<3.11
-  - unitpackage==0.11.1
+  - unitpackage==0.12.0

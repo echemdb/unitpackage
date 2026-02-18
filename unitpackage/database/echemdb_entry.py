@@ -21,12 +21,32 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
     >>> entry.plot()
     Figure(...)
 
+    Data Entries containing published data,
+    also contain information on the source of the data.::
+
+    >>> from unitpackage.database.echemdb import Echemdb
+    >>> db = Echemdb.create_example()
+    >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
+    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
+    Entry('article',
+      fields=[
+        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
+        ('journal', 'Physical Chemistry Chemical Physics'),
+        ('volume', '13'),
+        ('number', '13'),
+        ('pages', '6010--6021'),
+        ('year', '2011'),
+        ('publisher', 'Royal Society of Chemistry'),
+        ('abstract', 'We investigated ...')],
+      persons={'author': [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')]})
+
+
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -53,7 +73,7 @@ logger = logging.getLogger("unitpackage")
 
 class EchemdbEntry(Entry):
     r"""
-    A `frictionless Data Package <https://github.com/frictionlessdata/framework>`_ describing a CV.
+    A `frictionless Data Package <https://github.com/frictionlessdata/frictionless-py>`_ describing a CV.
 
     EXAMPLES:
 
@@ -66,18 +86,195 @@ class EchemdbEntry(Entry):
 
     """
 
+    default_metadata_key = "echemdb"
+    """Use 'echemdb' key to access descriptor metadata."""
+
     def __repr__(self):
         r"""
         Return a printable representation of this entry.
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry
             Echemdb('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
         return f"Echemdb({self.identifier!r})"
+
+    @classmethod
+    def from_mpt(cls, csvname, encoding=None):
+        r"""
+        Return an :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` from a BioLogic EC-Lab MPT file.
+
+        The file is parsed with the ECLabLoader. Fields are updated with
+        units from ``biologic_fields``
+        and renamed according to
+        ``biologic_fields_alt_names``
+        (both defined in :mod:`unitpackage.loaders.eclab_fields`).
+        The original field names are preserved as ``originalName``.
+
+        Only columns whose original names appear in
+        ``biologic_fields_alt_names``
+        are kept; all other columns are removed.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.from_mpt('test/loader_data/eclab_cv.mpt')
+            >>> entry
+            Echemdb('eclab_cv')
+
+            >>> entry.df.head()  # doctest: +NORMALIZE_WHITESPACE
+                        t         E         I  cycle
+            0  86.761598  0.849737  0.001722    1.0
+            1  86.772598  0.849149 -0.003851    1.0
+            ...
+
+        Fields have units and the original BioLogic column names::
+
+            >>> [f for f in entry.fields if f.name == 'E'] # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 'E', 'type': 'number', 'description': 'WE potential versus REF.',
+            'unit': 'V', 'dimension': 'E', 'originalName': 'Ewe/V'}]
+
+            >>> [f for f in entry.fields if f.name == 't'] # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'description': 'Time.',
+            'unit': 's', 'dimension': 't', 'originalName': 'time/s'}]
+
+            >>> [f for f in entry.fields if f.name == 'I'] # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+            [{'name': 'I', 'type': 'number', 'description': ...,
+            'unit': 'mA', 'dimension': 'I', 'originalName': '<I>/mA'}]
+
+        The loader metadata is stored in the entry's metadata::
+
+            >>> entry.metadata['dsvDescription']['loader']
+            'ECLabLoader'
+
+            >>> entry.metadata['dsvDescription']['header'] # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
+            'EC-Lab ASCII FILE\nNb header lines : 62...'
+
+        """
+        from unitpackage.loaders.eclab_fields import (
+            biologic_fields,
+            biologic_fields_alt_names,
+        )
+
+        entry = cls.from_csv(csvname=csvname, encoding=encoding, device="eclab")
+        entry = entry.update_fields(biologic_fields)
+        entry = entry.rename_fields(
+            biologic_fields_alt_names, keep_original_name_as="originalName"
+        )
+
+        # Only keep columns that were renamed via biologic_fields_alt_names
+        columns_to_remove = [
+            f.name
+            for f in entry.fields
+            if f.name not in biologic_fields_alt_names.values()
+        ]
+        entry = entry.remove_columns(*columns_to_remove)
+
+        return entry
+
+    @property
+    def bibliography(self):
+        r"""
+        Return a pybtex bibliography object associated with this entry.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
+            Entry('article',
+            fields=[
+                ('title', ...
+                ...
+
+            >>> entry_no_bib = EchemdbEntry.create_example(name="no_bibliography")
+            >>> entry_no_bib.bibliography
+            ''
+
+        """
+        metadata = self._default_metadata.setdefault("source", {})
+        citation = metadata.setdefault("bibdata", "")
+
+        if not citation:
+            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
+            return citation
+
+        from pybtex.database import parse_string
+
+        bibliography = parse_string(citation, "bibtex")
+        return bibliography.entries[self.source.citationKey]
+
+    def citation(self, backend="text"):
+        r"""
+        Return a formatted reference for the entry's bibliography such as:
+
+        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+
+        Rendering default is plain text 'text', but can be changed to any format
+        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.citation(backend='text')
+            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
+            >>> print(entry.citation(backend='md'))
+            O\. B\. Alves *et al\.*
+            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
+            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
+
+        """
+        from pybtex.style.formatting.unsrt import Style
+
+        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
+        class EchemdbStyle(Style):
+            r"""
+            A citation style for the echemdb website.
+            """
+
+            def format_names(self, role, as_sentence=True):
+                from pybtex.style.template import node
+
+                @node
+                def names(_, context, role):
+                    persons = context["entry"].persons[role]
+                    style = context["style"]
+
+                    names = [
+                        style.format_name(person, style.abbreviate_names)
+                        for person in persons
+                    ]
+
+                    if len(names) == 1:
+                        return names[0].format_data(context)
+
+                    from pybtex.style.template import tag, words
+
+                    # pylint: disable=no-value-for-parameter
+                    return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
+                        context
+                    )
+
+                # pylint: disable=no-value-for-parameter
+                names = names(role)
+
+                from pybtex.style.template import sentence
+
+                return sentence[names] if as_sentence else names
+
+            def format_title(self, e, which_field, as_sentence=True):
+                from pybtex.style.template import field, sentence, tag
+
+                # pylint: disable=no-value-for-parameter
+                title = tag("i")[field(which_field)]
+                return sentence[title] if as_sentence else title
+
+        return (
+            EchemdbStyle(abbreviate_names=True)
+            .format_entry("unused", self.bibliography)
+            .text.render_as(backend)
+        )
 
     def get_electrode(self, name):
         r"""
@@ -85,7 +282,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.get_electrode('WE') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'WE', 'function': 'workingElectrode', 'type': 'single crystal',
             'crystallographicOrientation': '0001', 'material': 'Ru',
@@ -120,9 +317,9 @@ class EchemdbEntry(Entry):
         These units must be defined in the metadata of the resource,
         within the key ``figureDescription.fields``::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> rescaled_entry = entry.rescale(units='original')
-            >>> rescaled_entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> rescaled_entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
@@ -135,6 +332,98 @@ class EchemdbEntry(Entry):
 
         return super().rescale(units)
 
+    @property
+    def scan_rate(self):
+        r"""
+        Return the scan rate of the entry as an astropy quantity.
+
+        The scan rate is retrieved from the entry's metadata
+        at ``figureDescription.scanRate``.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.scan_rate
+            <Quantity 0.05 V / s>
+
+            >>> from unitpackage.database.echemdb import Echemdb
+            >>> db = Echemdb.create_example()
+            >>> db['engstfeld_2018_polycrystalline_17743_f4b_1'].scan_rate
+            <Quantity 50. mV / s>
+
+        """
+        return self.figureDescription.scanRate.quantity
+
+    def rescale_scan_rate(self, field_name=None, *, value, unit):
+        r"""
+        Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry`
+        where the current (``I``) or current density (``j``) axis is rescaled
+        according to the ratio of the provided scan rate to the original scan rate.
+
+        Since current (density) scales linearly with scan rate in cyclic voltammetry,
+        this method multiplies the ``j`` (or ``I``) column by ``new_scan_rate / original_scan_rate``.
+        The scaling factor is tracked in the field metadata.
+
+        By default the ``j`` (or ``I``) field is rescaled. A custom ``field_name``
+        can be provided if the current axis has a different name.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.scan_rate
+            <Quantity 0.05 V / s>
+
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+        Rescale from 50 mV/s to 100 mV/s (factor of 2)::
+
+            >>> rescaled = entry.rescale_scan_rate(value=100, unit='mV / s')
+            >>> rescaled.df # doctest: +NORMALIZE_WHITESPACE
+                          t         E         j
+            0      0.000000 -0.103158 -1.996553
+            1      0.020000 -0.102158 -1.963524
+            ...
+
+            >>> rescaled.resource.schema.get_field('j') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'j',
+            'type': 'number',
+            'unit': 'A / m2',
+            'scalingFactor': {'value': 2.0}}
+
+        Rescale using the same unit as the original scan rate::
+
+            >>> rescaled2 = entry.rescale_scan_rate(value=0.1, unit='V / s')
+            >>> rescaled2.df # doctest: +NORMALIZE_WHITESPACE
+                          t         E         j
+            0      0.000000 -0.103158 -1.996553
+            1      0.020000 -0.102158 -1.963524
+            ...
+
+        A custom field name can be provided::
+
+            >>> rescaled3 = entry.rescale_scan_rate('j', value=100, unit='mV / s')
+            >>> rescaled3.df # doctest: +NORMALIZE_WHITESPACE
+                          t         E         j
+            0      0.000000 -0.103158 -1.996553
+            1      0.020000 -0.102158 -1.963524
+            ...
+
+        """
+        import astropy.units as u
+
+        original_scan_rate = self.scan_rate
+        new_scan_rate = (value * u.Unit(unit)).to(original_scan_rate.unit)
+
+        scaling_factor = (new_scan_rate / original_scan_rate).decompose().value
+
+        field_name = field_name or self._normalize_field_name("j")
+
+        return self.apply_scaling_factor(field_name, scaling_factor)
+
     def _normalize_field_name(self, field_name):
         r"""
         Return the name of a field name of the `unitpackage` resource.
@@ -144,7 +433,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry._normalize_field_name('j')
             'j'
             >>> entry._normalize_field_name('x')
@@ -153,7 +442,7 @@ class EchemdbEntry(Entry):
             ValueError: No axis with name 'x' found.
 
         """
-        if field_name in self.mutable_resource.schema.field_names:
+        if field_name in self.resource.schema.field_names:
             return field_name
         if field_name == "j":
             return self._normalize_field_name("I")
@@ -165,7 +454,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> thumb = entry.thumbnail()
             >>> thumb.startswith(b'\x89PNG')
             True
@@ -215,7 +504,7 @@ class EchemdbEntry(Entry):
 
         EXAMPLES::
 
-            >>> entry = EchemdbEntry.create_examples()[0]
+            >>> entry = EchemdbEntry.create_example()
             >>> entry.plot()
             Figure(...)
 
@@ -249,7 +538,7 @@ class EchemdbEntry(Entry):
         def reference(label):
             if not label == "E":
                 return ""
-            field = self.mutable_resource.schema.get_field(label).to_dict()
+            field = self.resource.schema.get_field(label).to_dict()
             if "reference" not in field:
                 return ""
             return f" vs. {field['reference']}"
@@ -263,3 +552,85 @@ class EchemdbEntry(Entry):
         )
 
         return fig
+
+    def rescale_reference(self, new_reference=None, field_name=None, ph=None):
+        r"""
+        Return a rescaled :class:`~unitpackage.database.echemdb_entry.EchemdbEntry` with potentials
+        referenced to ``new_reference`` scale.
+
+        .. warning::
+
+            This is an experimental feature working for standard aqueous reference electrodes and electrolytes.
+            We do not include temperature effects or other non-idealities at this point.
+
+        If a reference is not available, the axis can still be rescaled by adding an offset using the
+        :meth:`~unitpackage.entry.Entry.add_offset`.
+
+        EXAMPLES::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'}
+
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-sat')
+            >>> rescaled_entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-sat'}
+
+            >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.152942 -0.998277
+            1  0.02  0.153942 -0.981762
+            ...
+
+
+        """
+        field_name = field_name or "E"
+
+        field = self.resource.schema.get_field(field_name)
+
+        if "reference" not in field.to_dict():
+            raise ValueError(f"No Reference is associated with field '{field_name}'.")
+
+        old_reference = field.to_dict()["reference"]
+
+        if old_reference == new_reference:
+            return self
+
+        import astropy.units as u
+
+        if ph is None:
+            if hasattr(self.system, "electrolyte") and hasattr(
+                self.system.electrolyte, "ph"
+            ):
+                ph = self.system.electrolyte.ph
+
+        # TODO:: The class should be implemented in an external EC tools module.
+        # For now, we need a simple approach for reference scale conversion.
+        from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
+
+        # The potential difference is returned in V
+        potential_difference_value = ReferenceElectrode(old_reference).shift(
+            to=new_reference, ph=ph.value
+        )
+
+        # create an astropy quantity
+        potential_difference = potential_difference_value * u.Unit(field.custom["unit"])
+
+        df = self.df.copy()
+        df[field_name] += potential_difference.value
+
+        reference_unit = potential_difference.unit.to_string()
+
+        # Create new resource with modified reference
+        field_updates = {
+            field.name: {"reference": new_reference, "unit": reference_unit}
+        }
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
+
+        return type(self)(resource=new_resource)

@@ -4,6 +4,87 @@ echemdb Change Log
 
 .. current developments
 
+v0.12.0
+====================
+
+**Added:**
+
+* Added ``Entry.apply_scaling_factor`` which multiplies a column by a given value and tracks the cumulative scaling factor in the field metadata.
+* Added ``EchemdbEntry.scan_rate`` property returning the scan rate as an astropy quantity from ``figureDescription.scanRate``.
+* Added ``EchemdbEntry.rescale_scan_rate`` which rescales the current (density) axis by the ratio of a new scan rate to the original one, which is essentially like applying a scaling factor.
+* Added `entry.fields` as a property to access the list of fields in the entry's schema (`entry.resource.schema.fields`).
+* Added `entry.rename_field(field_name, new_name, keep_original_name_as=None)` for renaming a single field.
+* Added `entry.remove_column(field_name)` for removing a single column.
+* Added `_modify_field_name()` helper method for modifying a single field's name.
+* Added `device` parameter to `Entry.from_csv()` to select instrument-specific loaders (e.g., ``device='eclab'`` for BioLogic MPT files, ``device='gamry'`` for Gamry DTA files).
+* Added `BaseLoader.metadata` property, which returns file structure information (loader name, delimiter, decimal, header, column headers) stored as ``dsvDescription`` in the entry's metadata.
+* Added `EchemdbEntry.from_mpt()` classmethod to load BioLogic EC-Lab MPT files with automatic field updates, renaming, and filtering.
+* Added `eclab_fields.py` module (renamed from ``column_names.py``) containing ``biologic_fields`` and ``biologic_fields_alt_names`` for standardized electrochemistry field definitions.
+* Added `Entry.remove_columns()`, which removes both a column from the dataframe and the fields.
+* Added `Entry.load_metadata()` for loading metadata from YAML or JSON files with method chaining support.
+* Added `MetadataDescriptor` class for enhanced metadata handling with dict and attribute-style access.
+* Added `Entry.default_metadata_key` class attribute to control metadata access patterns in subclasses.
+* Added `Entry._default_metadata` property to access the appropriate metadata subset.
+* Added `encoding`, `header_lines`, `column_header_lines`, `decimal`, `delimiters`, and `device` parameters to `Entry.from_csv()` for handling complex CSV formats and instrument-specific file types.
+* Added `create_tabular_resource_from_csv()` to create resources from CSV files with auto-detection of standard vs. complex formats.
+* Added `create_df_resource_from_csv()` for creating pandas dataframe resources from CSV files with custom formats.
+* Added `create_df_resource_from_df()` for creating resources directly from pandas DataFrames.
+* Added `create_df_resource_from_tabular_resource()` for converting tabular resources to pandas dataframe resources.
+* Added `update_fields()` function to update schema fields with additional information.
+* Added ``Entry.create_example(name=None)`` which returns a single example entry. Defaults to ``'alves_2011_electrochemistry_6010_f1a_solid'`` when no name is provided.
+* Added `_create_new_df_resource()`, which returns a new pandas resource when the schema of the resource changed.
+* Added `_df_resource` as a cached property, which transforms a tabular_resource into a pandas resource when first accessed and caches the result for improved performance.
+* Added `collection.rescale(units)` method to rescale the units of all entries in a collection at once. Accepts a dict of `{field_name: new_unit}` and silently ignores fields not present in an entry.
+
+**Changed:**
+
+* Changed `entry.remove_columns()`, `entry.add_columns()`, and `entry.update_fields()` to use frictionless Schema's built-in methods (`schema.remove_field()`, `schema.add_field()`, `schema.update_field()`).
+* Changed `entry.rename_fields()` to perform batch rename operations on all fields at once instead of creating intermediate entries.
+* Changed `entry.remove_columns()` to perform batch column removal at once instead of creating intermediate entries.
+* Changed `_modify_fields()` to `_modify_fields_names()` for clearer naming, and updated its parameter names (`original` → `fields`, `alternative` → `name_mappings`).
+* Changed `update_fields()` in `unitpackage.local` to use frictionless `schema.update_field()` instead of manual field dictionary manipulation.
+* Changed `Entry.update_fields()` and `create_unitpackage()` in `unitpackage.local` to delegate to `local.update_fields()` for consistent field validation and logging.
+* Changed all docstrings referencing `entry.resource.schema.fields` to use the simpler `entry.fields` property.
+* Changed `Entry.field_unit()` to return an empty string instead of raising a KeyError when a field does not have a unit.
+* Changed `Entry.from_df()` to no longer require the `outdir` parameter.
+* Changed `Entry.from_df()` to directly create entries from pandas DataFrames without temporary CSV files.
+* Changed `Entry.from_df()` to require `basename` as a keyword-only argument.
+* Changed `Entry.save()` to automatically convert pandas resources to CSV format.
+* Changed `Entry.metadata` to return a cached `MetadataDescriptor` object supporting enhanced metadata operations while still reflecting metadata changes.
+* Changed workflows to use pixi v0.63.2.
+* Changed ``Collection.create_example`` to use ``Collection.from_local`` internally.
+
+**Removed:**
+
+* Removed deprecated module `cv_collection`.
+* Removed deprecated module `cv_entry`.
+* Removed `metadata` argument from `Entry.from_df()` and `Entry.from_csv()`.
+* Removed ``Entry.create_examples``. Use ``Entry.create_example`` instead.
+* Removed `entry.mutable_resource`.
+
+**Fixed:**
+
+* Fixed creating plots from entries without units in the fields (#128).
+* Fixed resource naming when importing complex CSV files with multiple headers.
+
+**Performance:**
+
+* Improved field handling performance by performing batch operations for `rename_fields()` and `remove_columns()`, avoiding O(N) intermediate entry creation.
+* Improved schema copying efficiency in `_create_new_df_resource()` by using direct schema descriptor copying when no updates are needed.
+
+
+
+v0.11.2
+====================
+
+**Added:**
+
+* Added `unitpackage.electrochemistry.reference_electrodes` which contains reference electrode data and a dataclass to interact with the data (`_reference_electrodes`), and a `ReferenceElectrode` object, which determining the shift of the potential between different reference scales.
+* Added `Entry.add_offset` which allows shifting the values of a specified column of the entry by a certain offset and tracking the information in the fields description.
+* Added `EchmdbEntry.rescale_reference` which allows shifting the potential scale onto another potential scale known to `unitpackage.electrochemistry._reference_electrodes`.
+
+
+
 v0.11.1
 ====================
 

@@ -14,8 +14,9 @@ EXAMPLES:
 
 Metadata included in an entry is accessible as an attribute::
 
-    >>> entry = Entry.create_examples()[0]
-    >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    >>> from unitpackage.entry import Entry
+    >>> entry = Entry.create_example()
+    >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
     {'citationKey': 'alves_2011_electrochemistry_6010',
     'url': 'https://doi.org/10.1039/C0CP01001D',
     'figure': '1a',
@@ -24,38 +25,41 @@ Metadata included in an entry is accessible as an attribute::
 
 The data of the entry can be called as a pandas dataframe::
 
-    >>> entry = Entry.create_examples()[0]
+    >>> entry = Entry.create_example()
     >>> entry.df
                   t         E         j
     0      0.000000 -0.103158 -0.998277
     1      0.020000 -0.102158 -0.981762
     ...
 
-Data Entries containing published data,
-also contain information on the source of the data.::
+Entries can be created from various sources, such as csv files or pandas dataframes::
 
-    >>> from unitpackage.collection import Collection
-    >>> db = Collection.create_example()
-    >>> entry = db['alves_2011_electrochemistry_6010_f1a_solid']
-    >>> entry.bibliography  # doctest: +NORMALIZE_WHITESPACE +REMOTE_DATA
-    Entry('article',
-      fields=[
-        ('title', 'Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases'),
-        ('journal', 'Physical Chemistry Chemical Physics'),
-        ('volume', '13'),
-        ('number', '13'),
-        ('pages', '6010--6021'),
-        ('year', '2011'),
-        ('publisher', 'Royal Society of Chemistry'),
-        ('abstract', 'We investigated ...')],
-      persons={'author': [Person('Alves, Otavio B'), Person('Hoster, Harry E'), Person('Behm, Rolf J{\\"u}rgen')]})
+    >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
+    >>> entry
+    Entry('from_csv')
+
+Information on the fields such as units can be updated::
+
+    >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
+    >>> entry = entry.update_fields(fields=fields)
+    >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
+    [{'name': 'E', 'type': 'integer', 'unit': 'mV'},
+    {'name': 'I', 'type': 'integer', 'unit': 'A'}]
+
+Metadata to the resource can be updated in-place::
+
+    >>> metadata = {'echemdb': {'source': {'citationKey': 'new_key'}}}
+    >>> entry.metadata.from_dict(metadata)
+    >>> entry.metadata
+    {'echemdb': {'source': {'citationKey': 'new_key'}}}
+
 
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2021-2025 Albert Engstfeld
+#        Copyright (C) 2021-2026 Albert Engstfeld
 #        Copyright (C)      2021 Johannes Hermann
 #        Copyright (C) 2021-2022 Julian Rüth
 #        Copyright (C)      2021 Nicolas Hörmann
@@ -73,10 +77,12 @@ also contain information on the source of the data.::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import functools
 import logging
 import os.path
 
 from unitpackage.descriptor import Descriptor
+from unitpackage.metadata import MetadataDescriptor
 
 logger = logging.getLogger("unitpackage")
 
@@ -115,8 +121,114 @@ class Entry:
 
     """
 
+    default_metadata_key = ""
+    """Default metadata key to use when accessing the descriptor.
+    If empty string, the entire metadata dict is used. Subclasses can override this."""
+
     def __init__(self, resource):
         self.resource = resource
+
+    @functools.cached_property
+    def metadata(self):
+        r"""
+        Access and manage entry metadata.
+
+        Returns a MetadataDescriptor that supports both dict and attribute-style access.
+        Allows loading metadata from various sources. Modifications are applied in-place.
+
+        The descriptor is cached for efficiency, but still reflects metadata changes since
+        it delegates to the underlying resource.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_example()
+            >>> entry.metadata['echemdb']['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+            >>> entry.metadata.echemdb['source']['citationKey']
+            'alves_2011_electrochemistry_6010'
+
+        Load metadata from a dict::
+
+            >>> new_entry = Entry.create_example()
+            >>> new_entry.metadata.from_dict({'echemdb': {'test': 'data'}})
+            >>> new_entry.metadata['echemdb']['test']
+            'data'
+
+        The descriptor is cached but still sees metadata updates::
+
+            >>> entry = Entry.create_example()
+            >>> descriptor1 = entry.metadata
+            >>> entry.metadata.from_dict({'custom': {'key': 'value'}})
+            >>> descriptor2 = entry.metadata
+            >>> descriptor1 is descriptor2
+            True
+            >>> descriptor1['custom']['key']
+            'value'
+
+        """
+        return MetadataDescriptor(self)
+
+    def load_metadata(self, filename, file_format=None, key=None):
+        r"""
+        Load metadata from a file and return self for method chaining.
+
+        The file format is auto-detected from the extension if not specified.
+        Supported formats are 'yaml' and 'json'.
+
+        EXAMPLES:
+
+        Load metadata from a YAML file::
+
+            >>> import os
+            >>> import tempfile
+            >>> import yaml
+            >>> entry = Entry.create_example()
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+            ...     yaml.dump({'source': {'citationKey': 'chain_test'}}, f)
+            ...     temp_path = f.name
+            >>> entry.load_metadata(temp_path, key='echemdb').metadata.echemdb.source.citationKey
+            'chain_test'
+            >>> os.unlink(temp_path)
+
+        Load metadata from a JSON file with auto-detection::
+
+            >>> import os
+            >>> import json
+            >>> import tempfile
+            >>> entry = Entry.create_example()
+            >>> with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+            ...     json.dump({'custom': {'data': 'value'}}, f)
+            ...     temp_path = f.name
+            >>> entry.load_metadata(temp_path).metadata.custom.data
+            'value'
+            >>> os.unlink(temp_path)
+
+
+        """
+        # Auto-detect format from file extension if not specified
+        if file_format is None:
+            if filename.endswith(".yaml") or filename.endswith(".yml"):
+                file_format = "yaml"
+            elif filename.endswith(".json"):
+                file_format = "json"
+            else:
+                raise ValueError(
+                    f"Cannot auto-detect format for '{filename}'. "
+                    "Please specify file_format='yaml' or file_format='json'"
+                )
+
+        # Load metadata using the appropriate method
+        if file_format == "yaml":
+            self.metadata.from_yaml(filename, key=key)
+        elif file_format == "json":
+            self.metadata.from_json(filename, key=key)
+        else:
+            raise ValueError(
+                f"Unsupported format '{file_format}'. Use 'yaml' or 'json'"
+            )
+
+        return self
 
     @property
     def identifier(self):
@@ -125,7 +237,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.identifier
             'alves_2011_electrochemistry_6010_f1a_solid'
 
@@ -140,12 +252,13 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> dir(entry) # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-            [... 'bibliography', 'citation', 'create_examples', 'curation',
-            'dataDescription', 'df', 'experimental', 'field_unit', 'figureDescription',
-            'from_csv', 'from_df', 'from_local', 'identifier', 'mutable_resource',  'plot',
-            'rename_fields', 'rescale', 'resource',  'save', 'source', 'system', 'yaml']
+            [... 'add_offset', 'apply_scaling_factor', 'create_example', 'default_metadata_key',
+            'df', 'echemdb', 'field_unit',
+            'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
+            'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
+            'rescale', 'resource', 'save', 'update_fields', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -156,8 +269,8 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            >>> entry = Entry.create_example()
+            >>> entry.echemdb.source # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
@@ -166,7 +279,7 @@ class Entry:
 
         The returned descriptor can again be accessed in the same way::
 
-            >>> entry.system.electrolyte.components[0].name
+            >>> entry.echemdb.system.electrolyte.components[0].name
             'H2O'
 
         """
@@ -178,8 +291,8 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry["source"] # doctest: +NORMALIZE_WHITESPACE
+            >>> entry = Entry.create_example()
+            >>> entry["echemdb"]["source"] # doctest: +NORMALIZE_WHITESPACE
             {'citationKey': 'alves_2011_electrochemistry_6010',
             'url': 'https://doi.org/10.1039/C0CP01001D',
             'figure': '1a',
@@ -191,136 +304,106 @@ class Entry:
 
     @property
     def _descriptor(self):
-        return Descriptor(self.resource.custom["metadata"]["echemdb"])
+        r"""
+        Return a Descriptor object wrapping the entry's metadata.
+
+        The metadata structure depends on the :attr:`default_metadata_key` class attribute:
+
+        - If ``default_metadata_key`` is an empty string (default in :class:`Entry`),
+          the entire ``metadata`` dict is wrapped as the descriptor.
+        - If ``default_metadata_key`` is set to a non-empty string (e.g., "echemdb" in subclasses),
+          the descriptor wraps only the metadata under that specific key.
+
+        This allows subclasses to work with different metadata structures while maintaining
+        a consistent interface through the Descriptor class.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_example()
+            >>> entry._descriptor # doctest: +ELLIPSIS
+            {'echemdb': ...}
+
+            >>> entry.echemdb.source.citationKey
+            'alves_2011_electrochemistry_6010'
+
+
+        """
+        return Descriptor(self._default_metadata)
 
     @property
     def _metadata(self):
         r"""
-        Returns the metadata named "echemdb" associated with this entry.
+        Returns the metadata associated with this entry.
+
+        The metadata may contain keys which nest entire metadata schemas (e.g., "echemdb", "myExperiment", etc.).
+        Use :attr:`_default_metadata` to access the subset determined by :attr:`default_metadata_key`.
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry._metadata # doctest: +NORMALIZE_WHITESPACE
-            {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}
+            >>> entry = Entry.create_example()
+            >>> entry._metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
         """
-        return self.resource.custom["metadata"]["echemdb"]
+        return self.resource.custom.setdefault("metadata", {})
 
     @property
-    def bibliography(self):
+    def _default_metadata(self):
         r"""
-        Return a pybtex bibliography object associated with this entry.
+        Returns the metadata subset based on :attr:`default_metadata_key`.
+
+        If :attr:`default_metadata_key` is empty, returns the entire metadata dict.
+        Otherwise, returns the metadata under the specified key.
+
+        This is useful for subclasses that want to work with a specific metadata structure.
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.bibliography # doctest: +NORMALIZE_WHITESPACE
-            Entry('article',
-            fields=[
-                ('title', ...
-                ...
-
-            >>> entry_no_bib = Entry.create_examples(name="no_bibliography")[0]
-            >>> entry_no_bib.bibliography
-            ''
+            >>> entry = Entry.create_example()
+            >>> entry._default_metadata # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+            {...'echemdb': {...'source': {'citationKey': 'alves_2011_electrochemistry_6010',...}...}
 
         """
-        metadata = self._metadata.setdefault("source", {})
-        citation = metadata.setdefault("bibdata", "")
+        metadata = self._metadata
+        if self.default_metadata_key and self.default_metadata_key in metadata:
+            return metadata[self.default_metadata_key]
+        return metadata
 
-        if not citation:
-            logger.warning(f"Entry with name {self.identifier} has no bibliography.")
-            return citation
-
-        from pybtex.database import parse_string
-
-        bibliography = parse_string(citation, "bibtex")
-        return bibliography.entries[self.source.citationKey]
-
-    def citation(self, backend="text"):
+    @property
+    def fields(self):
         r"""
-        Return a formatted reference for the entry's bibliography such as:
+        Return the fields of the resource's schema.
 
-        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
-
-        Rendering default is plain text 'text', but can be changed to any format
-        supported by pybtex, such as markdown 'md', 'latex' or 'html'.
+        This is a convenience property that returns `self.resource.schema.fields`.
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.citation(backend='text')
-            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
-            >>> print(entry.citation(backend='md'))
-            O\. B\. Alves *et al\.*
-            *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
-            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
+            >>> entry = Entry.create_example()
+            >>> entry.fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
         """
-        from pybtex.style.formatting.unsrt import Style
-
-        # TODO:: Remove `class EchemdbStyle` from citation and improve citation style. (see #104)
-        class EchemdbStyle(Style):
-            r"""
-            A citation style for the echemdb website.
-            """
-
-            def format_names(self, role, as_sentence=True):
-                from pybtex.style.template import node
-
-                @node
-                def names(_, context, role):
-                    persons = context["entry"].persons[role]
-                    style = context["style"]
-
-                    names = [
-                        style.format_name(person, style.abbreviate_names)
-                        for person in persons
-                    ]
-
-                    if len(names) == 1:
-                        return names[0].format_data(context)
-
-                    from pybtex.style.template import tag, words
-
-                    # pylint: disable=no-value-for-parameter
-                    return words(sep=" ")[names[0], tag("i")["et al."]].format_data(
-                        context
-                    )
-
-                # pylint: disable=no-value-for-parameter
-                names = names(role)
-
-                from pybtex.style.template import sentence
-
-                return sentence[names] if as_sentence else names
-
-            def format_title(self, e, which_field, as_sentence=True):
-                from pybtex.style.template import field, sentence, tag
-
-                # pylint: disable=no-value-for-parameter
-                title = tag("i")[field(which_field)]
-                return sentence[title] if as_sentence else title
-
-        return (
-            EchemdbStyle(abbreviate_names=True)
-            .format_entry("unused", self.bibliography)
-            .text.render_as(backend)
-        )
+        return self.resource.schema.fields
 
     def field_unit(self, field_name):
         r"""
-        Return the unit of the ``field_name`` of the ``MutableResource`` resource.
+        Return the unit of the ``field_name`` of the resource.
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.field_unit('E')
             'V'
 
         """
-        return self.mutable_resource.schema.get_field(field_name).custom["unit"]
+        field = self.resource.schema.get_field(field_name).custom.get("unit", "")
+        if not field:
+            logger.warning(f"Field {field_name} has no unit.")
+            return ""
+
+        return field
 
     def rescale(self, units):
         r"""
@@ -332,8 +415,8 @@ class Entry:
 
         The units without any rescaling::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.resource.schema.fields
+            >>> entry = Entry.create_example()
+            >>> entry.fields
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -341,7 +424,7 @@ class Entry:
         A rescaled entry using different units::
 
             >>> rescaled_entry = entry.rescale({'j':'uA / cm2', 't':'h'})
-            >>> rescaled_entry.mutable_resource.schema.fields
+            >>> rescaled_entry.fields
             [{'name': 't', 'type': 'number', 'unit': 'h'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
@@ -366,73 +449,310 @@ class Entry:
             units = {}
 
         from astropy import units as u
-        from frictionless import Resource
 
-        resource = Resource(self.resource.to_dict())
-        fields = self.mutable_resource.schema.fields
+        # Get current dataframe and schema
         df = self.df.copy()
+        fields = self.fields
 
+        # Apply rescaling to dataframe
         for field in fields:
             if field.name in units:
                 df[field.name] *= u.Unit(field.custom["unit"]).to(
                     u.Unit(units[field.name])
                 )
-                resource.schema.update_field(field.name, {"unit": units[field.name]})
 
-        # create a new dataframe resource
-        df_resource = Resource(df)
-        df_resource.infer()
-        # update units in the schema of the df resource
-        df_resource.schema = resource.schema
+        # Create new resource with rescaled data and updated units
+        field_updates = {name: {"unit": unit} for name, unit in units.items()}
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
 
-        # Update the "MutableResource"
-        resource.custom["MutableResource"] = df_resource
+        return type(self)(resource=new_resource)
 
-        return type(self)(resource=resource)
-
-    @property
-    def mutable_resource(self):
+    def add_offset(self, field_name=None, offset=None, unit=""):
         r"""
-        Return the data of this entry's "MutableResource" as a data frame.
+        Return an entry with an offset (with specified units) to a specified field of the entry.
+        The offset properties are stored in the fields metadata.
+
+        If offsets are applied consecutively, the value is updated.
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
-            >>> entry.mutable_resource
-            {'name': 'memory',
-            'type': 'table',
-            'data': [],
-            'format': 'pandas',
-            'mediatype': 'application/pandas',
-            'schema': {'fields': [{'name': 't', 'type': 'number', 'unit': 's'},
-                                {'name': 'E',
-                                    'type': 'number',
-                                    'unit': 'V',
-                                    'reference': 'RHE'},
-                                {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]}}
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_example()
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.add_offset('E', 0.1, 'V')
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.003158 -0.998277
+            1  0.02 -0.002158 -0.981762
+            ...
+
+            >>> new_entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E',
+            'type': 'number',
+            'unit': 'V',
+            'reference': 'RHE',
+            'offset': {'value': 0.1, 'unit': 'V'}}
+
+        An offset with a different unit than that of the field.::
+
+            >>> new_entry = entry.add_offset('E', 250, 'mV')
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.146842 -0.998277
+            1  0.02  0.147842 -0.981762
+            ...
+
+        A consecutively added offset::
+
+            >>> new_entry_1 = new_entry.add_offset('E', 0.150, 'V')
+            >>> new_entry_1.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.296842 -0.998277
+            1  0.02  0.297842 -0.981762
+            ...
+
+            >>> new_entry_1.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'E',
+            'type': 'number',
+            'unit': 'V',
+            'reference': 'RHE',
+            'offset': {'value': 0.4, 'unit': 'V'}}
+
+        If no unit is provided, the field unit is used instead.::
+
+            >>> new_entry_2 = new_entry.add_offset('E', 0.150)
+            >>> new_entry_2.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00  0.296842 -0.998277
+            1  0.02  0.297842 -0.981762
+            ...
+
+
         """
-        self.resource.custom.setdefault("MutableResource", "")
+        import astropy.units as u
 
-        if not self.resource.custom["MutableResource"]:
-            from frictionless import Schema
+        field = self.resource.schema.get_field(field_name)
 
-            from unitpackage.local import create_df_resource
-
-            self.resource.custom["MutableResource"] = create_df_resource(self.resource)
-            self.resource.custom["MutableResource"].schema = Schema.from_descriptor(
-                self.resource.schema.to_dict()
+        if not field.custom.get("unit") and not unit:
+            raise ValueError(
+                f"Field '{field_name}' has no unit and no unit was provided for the offset."
             )
 
-        return self.resource.custom["MutableResource"]
+        if field.custom.get("unit") and not unit:
+            logger.warning(
+                f"""No unit provided for the offset, using field unit '{field.custom.get("unit")}' instead."""
+            )
+            unit = field.custom.get("unit")
+
+        field_unit = u.Unit(field.custom.get("unit") or unit)
+
+        # create a new dataframe with offset values
+        df = self.df.copy()
+        offset_quantity = (offset * u.Unit(unit)).to(u.Unit(field_unit))
+        df[field_name] += offset_quantity.value
+
+        # Calculate the new offset value
+        old_offset_quantity = field.custom.get("offset", {}).get("value", 0.0) * u.Unit(
+            field.custom.get("offset", {}).get("unit", field.custom.get("unit"))
+        )
+        new_offset = old_offset_quantity.value + offset_quantity.value
+
+        # Create new resource with offset metadata
+        field_updates = {
+            field_name: {
+                "offset": {
+                    "value": float(new_offset),
+                    "unit": str(offset_quantity.unit),
+                }
+            }
+        }
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
+
+        return type(self)(resource=new_resource)
+
+    def apply_scaling_factor(self, field_name=None, scaling_factor=None):
+        r"""
+        Return an entry with a ``scaling_factor`` applied to a specified field of the entry.
+        The scaling factor is stored in the fields metadata.
+
+        If scaling factors are applied consecutively, the value is updated
+        (i.e., the cumulative scaling factor is the product of the individual factors).
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_example()
+            >>> entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -0.998277
+            1  0.02 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.apply_scaling_factor('j', 2)
+            >>> new_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -1.996553
+            1  0.02 -0.102158 -1.963524
+            ...
+
+            >>> new_entry.resource.schema.get_field('j') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'j',
+            'type': 'number',
+            'unit': 'A / m2',
+            'scalingFactor': {'value': 2.0}}
+
+        A consecutively applied scaling factor::
+
+            >>> new_entry_1 = new_entry.apply_scaling_factor('j', 3)
+            >>> new_entry_1.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t         E         j
+            0  0.00 -0.103158 -5.989660
+            1  0.02 -0.102158 -5.890572
+            ...
+
+            >>> new_entry_1.resource.schema.get_field('j') # doctest: +NORMALIZE_WHITESPACE
+            {'name': 'j',
+            'type': 'number',
+            'unit': 'A / m2',
+            'scalingFactor': {'value': 6.0}}
+
+        Scaling by a float::
+
+            >>> new_entry_2 = entry.apply_scaling_factor('E', 1e3)
+            >>> new_entry_2.df.head() # doctest: +NORMALIZE_WHITESPACE
+                  t           E         j
+            0  0.00 -103.158422 -0.998277
+            1  0.02 -102.158422 -0.981762
+            ...
+
+        """
+        if scaling_factor is None:
+            raise ValueError("A scaling_factor must be provided.")
+
+        if scaling_factor == 0:
+            raise ValueError("A scaling_factor of 0 is not allowed.")
+
+        field = self.resource.schema.get_field(field_name)
+
+        # Create a new dataframe with scaled values
+        df = self.df.copy()
+        df[field_name] *= scaling_factor
+
+        # Calculate the cumulative scaling factor
+        old_scaling_factor = field.custom.get("scalingFactor", {}).get("value", 1)
+        new_scaling_factor = float(old_scaling_factor * scaling_factor)
+
+        # Create new resource with scaling factor metadata
+        field_updates = {
+            field_name: {
+                "scalingFactor": {
+                    "value": new_scaling_factor,
+                }
+            }
+        }
+        new_resource = self._create_new_df_resource(df, field_updates=field_updates)
+
+        return type(self)(resource=new_resource)
+
+    def _create_new_df_resource(self, df, schema=None, field_updates=None):
+        r"""
+        Create a new dataframe resource from a dataframe, preserving metadata and schema.
+
+        Args:
+            df: pandas DataFrame to create resource from
+            schema: Optional schema descriptor dict. If None, copies schema from original resource
+            field_updates: Optional dict mapping field names to update dicts
+
+        Returns:
+            A new frictionless Resource
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_example()
+            >>> df = entry.df.copy()
+            >>> new_resource = entry._create_new_df_resource(df)
+            >>> new_resource.name == entry.resource.name
+            True
+        """
+        from frictionless import Resource, Schema
+
+        new_resource = Resource(df)
+        new_resource.infer()
+        new_resource.name = self.resource.name
+
+        if schema is not None:
+            # Use the provided schema
+            new_resource.schema = Schema.from_descriptor(schema, allow_invalid=True)
+        elif field_updates:
+            # Copy schema and apply field-specific updates
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
+            for field_name, updates in field_updates.items():
+                if field_name in new_resource.schema.field_names:
+                    new_resource.schema.update_field(field_name, updates)
+        else:
+            # No schema provided and no updates - copy schema as-is
+            new_resource.schema = Schema.from_descriptor(
+                self.resource.schema.to_dict(), allow_invalid=True
+            )
+
+        # Copy metadata to new resource
+        new_resource.custom["metadata"] = self.resource.custom.get("metadata", {})
+
+        return new_resource
+
+    @functools.cached_property
+    def _df_resource(self):
+        r"""
+        Cached pandas dataframe resource.
+
+        If the resource is a CSV resource, convert it to pandas format on first access
+        and cache the result. This avoids re-reading the CSV file on every .df access.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_example()
+            >>> resource = entry._df_resource
+            >>> resource.format
+            'pandas'
+
+            >>> # Second access uses cached value
+            >>> resource2 = entry._df_resource
+            >>> resource is resource2
+            True
+        """
+        if self.resource.format == "pandas":
+            return self.resource
+
+        if self.resource.format == "csv":
+            from unitpackage.local import create_df_resource_from_tabular_resource
+
+            # Create pandas resource from CSV
+            df_resource = create_df_resource_from_tabular_resource(self.resource)
+            # Copy schema from original resource
+            from frictionless import Schema
+
+            df_resource.schema = Schema.from_descriptor(self.resource.schema.to_dict())
+            return df_resource
+
+        raise ValueError(
+            f"Cannot convert resource of format '{self.resource.format}' to pandas dataframe."
+        )
 
     @property
     def df(self):
         r"""
-        Return the data of this entry's "MutableResource" as a data frame.
+        Return the data of this entry's resource as a data frame.
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -441,13 +761,25 @@ class Entry:
 
         The units and descriptions of the axes in the data frame can be recovered::
 
-            >>> entry.mutable_resource.schema.fields # doctest: +NORMALIZE_WHITESPACE
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 't', 'type': 'number', 'unit': 's'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
 
+        TESTS::
+
+            >>> import pandas as pd
+            >>> from unitpackage.entry import Entry
+            >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry.df
+               x  y
+            0  1  2
+            1  2  3
+            2  3  4
+
         """
-        return self.mutable_resource.data
+        return self._df_resource.data
 
     def add_columns(self, df, new_fields):
         r"""
@@ -456,7 +788,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -480,17 +812,125 @@ class Entry:
             >>> new_entry.field_unit('P/A')
             Unit("A V / m2")
 
+        TESTS:
+
+        Validate that the identifier is preserved::
+
+            >>> new_entry.identifier
+            'alves_2011_electrochemistry_6010_f1a_solid'
+
         """
         import pandas as pd
+        from frictionless import Field, Schema
 
         df_ = pd.concat([self.df, df], axis=1)
 
-        fields = [field.to_dict() for field in self.mutable_resource.schema.fields]
+        # Create new schema with added fields using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
 
-        fields.extend(new_fields)
-        return self.from_df(
-            df=df_, metadata=self._metadata, basename=self.identifier, fields=fields
-        )
+        # Add new fields using schema.add_field()
+        for field_descriptor in new_fields:
+            field = Field.from_descriptor(field_descriptor)
+            new_schema.add_field(field)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df_, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
+
+    def remove_column(self, field_name):
+        r"""
+        Removes a single column from the dataframe
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_example()
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.remove_column('E')
+            >>> new_entry.df
+                          t         j
+            0      0.000000 -0.998277
+            1      0.020000 -0.981762
+            ...
+
+            >>> 'E' in new_entry.df.columns
+            False
+
+        """
+        from frictionless import Schema
+
+        # Remove column from dataframe
+        df = self.df.copy()
+        df.drop(columns=[field_name], inplace=True)
+
+        # Create new schema and remove field using frictionless method
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        if field_name in [field.name for field in new_schema.fields]:
+            new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
+
+    def remove_columns(self, *field_names):
+        r"""
+        Removes specified columns from the dataframe
+        and returns an updated entry.
+
+        EXAMPLES::
+
+            >>> entry = Entry.create_example()
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+            >>> new_entry = entry.remove_columns('E', 'j')
+            >>> new_entry.df
+                          t
+            0      0.000000
+            1      0.020000
+            ...
+
+            >>> 'E' in new_entry.df.columns
+            False
+
+        """
+        if not field_names:
+            return self
+
+        from frictionless import Schema
+
+        # Remove all columns from dataframe at once
+        df = self.df.copy()
+        columns_to_remove = [name for name in field_names if name in df.columns]
+        if columns_to_remove:
+            df.drop(columns=columns_to_remove, inplace=True)
+
+        # Create new schema and remove all fields in a single pass
+        new_schema = Schema.from_descriptor(self.resource.schema.to_dict())
+        for field_name in field_names:
+            if field_name in [field.name for field in new_schema.fields]:
+                new_schema.remove_field(field_name)
+
+        # Create new entry with updated schema
+        new_resource = self._create_new_df_resource(df, schema=new_schema.to_dict())
+        entry = type(self)(resource=new_resource)
+        entry.metadata.from_dict(self._metadata)
+
+        return entry
 
     def __repr__(self):
         r"""
@@ -498,7 +938,7 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
@@ -506,48 +946,30 @@ class Entry:
         return f"Entry({repr(self.identifier)})"
 
     @classmethod
-    def create_examples(cls, name=""):
+    def create_example(cls, name=None):
         r"""
-        Return some example entries for use in automated tests.
+        Return an example entry for use in automated tests.
 
         The examples are created from Data Packages in the unitpackage's examples directory.
         These are only available from the development environment.
 
         EXAMPLES::
 
-            >>> Entry.create_examples()
-            [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('engstfeld_2018_polycrystalline_17743_f4b_1'), Entry('no_bibliography')]
+            >>> Entry.create_example()
+            Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
-        An entry without associated BIB file.
-
-            >>> Entry.create_examples(name="no_bibliography")
-            [Entry('no_bibliography')]
+            >>> Entry.create_example(name="no_bibliography")
+            Entry('no_bibliography')
 
         """
-        example_dir = os.path.join(
-            os.path.dirname(__file__), "..", "examples", "local", name
-        )
+        if name is None:
+            name = "alves_2011_electrochemistry_6010_f1a_solid"
 
-        if not os.path.exists(example_dir):
-            raise ValueError(
-                f"No subdirectory in examples/ for {name}, i.e., could not find {example_dir}."
-            )
+        from unitpackage.collection import Collection
 
-        from unitpackage.local import collect_datapackages
+        collection = Collection.create_example()
 
-        packages = collect_datapackages(example_dir)
-
-        if len(packages) == 0:
-            from glob import glob
-
-            raise ValueError(
-                f"No literature data found for {name}. The directory for this data {example_dir} exists. But we could not find any datapackages in there. "
-                f"There is probably some outdated data in {example_dir}. The contents of that directory are: { glob(os.path.join(example_dir,'**')) }"
-            )
-
-        from unitpackage.local import collect_resources
-
-        return [cls(resource=resource) for resource in collect_resources(packages)]
+        return cls(resource=collection[name].resource)
 
     def plot(self, x_label=None, y_label=None, name=None):
         r"""
@@ -557,13 +979,22 @@ class Entry:
 
         EXAMPLES::
 
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.plot()
             Figure(...)
 
         The 2D plot can also be returned with custom axis units available in the resource::
 
             >>> entry.plot(x_label='j', y_label='E')
+            Figure(...)
+
+        A plot from data without units::
+
+            >>> import pandas as pd
+            >>> data = {'t': [0, 1, 2], 'E': [0.0, 1.0, 2.0]}
+            >>> df = pd.DataFrame(data)
+            >>> entry = Entry.from_df(df=df, basename='test_df')
+            >>> entry.plot()
             Figure(...)
 
         """
@@ -583,6 +1014,9 @@ class Entry:
             )
         )
 
+        x_unit = self.field_unit(x_label)
+        y_unit = self.field_unit(y_label)
+
         fig.update_layout(
             template="simple_white",
             showlegend=True,
@@ -590,8 +1024,8 @@ class Entry:
             width=600,
             height=400,
             margin={"l": 70, "r": 70, "b": 70, "t": 70, "pad": 7},
-            xaxis_title=f"{x_label} [{self.field_unit(x_label)}]",
-            yaxis_title=f"{y_label} [{self.field_unit(y_label)}]",
+            xaxis_title=f"{x_label} [{x_unit}]" if x_unit else x_label,
+            yaxis_title=f"{y_label} [{y_unit}]" if y_unit else y_label,
         )
 
         fig.update_xaxes(showline=True, mirror=True)
@@ -599,82 +1033,248 @@ class Entry:
 
         return fig
 
-    @classmethod
-    def from_csv(cls, csvname, metadata=None, fields=None):
+    def update_fields(self, fields):
         r"""
-        Returns an entry constructed from a CSV with a single header line.
+        Return a new entry with updated fields in the resource.
 
-        EXAMPLES:
+        The :param fields: list must must be structured such as
+        `[{'name':'E', 'unit': 'mV'}, {'name':'T', 'unit': 'K'}]`.
 
-        Units describing the fields can be provided::
+        EXAMPLES::
 
-            >>> import os
-            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', fields=fields)
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_example()
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        Updating the fields returns a new entry with updated field metadata::
+
+            >>> fields = [{'name':'E', 'unit': 'mV'},
+            ... {'name':'j', 'unit': 'uA / cm2'},
+            ... {'name':'x', 'unit': 'm'}]
+            >>> new_entry = entry.update_fields(fields)
+            >>> new_entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'mV', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'uA / cm2'}]
+
+        The original entry remains unchanged::
+
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        from unitpackage.local import update_fields
+
+        # Get the dataframe
+        df = self.df.copy()
+
+        # Use local.update_fields() for field updates with proper validation and logging
+        original_fields = [field.to_dict() for field in self.resource.schema.fields]
+        updated_fields = update_fields(original_fields, fields)
+
+        # Create new resource with updated schema
+        new_resource = self._create_new_df_resource(
+            df, schema={"fields": updated_fields}
+        )
+
+        return type(self)(resource=new_resource)
+
+    @classmethod
+    def from_csv(  # pylint: disable=too-many-locals
+        cls,
+        csvname,
+        encoding=None,
+        header_lines=None,
+        column_header_lines=None,
+        decimal=None,
+        delimiters=None,
+        device=None,
+    ):
+        r"""
+        Returns an entry constructed from a CSV.
+
+        The file is always parsed through a loader which captures the file's
+        structure (delimiter, decimal separator, header, column headers) in the
+        entry's metadata under ``dsvDescription``.
+
+        A ``device`` can be specified to select a device-specific loader
+        (e.g., ``'eclab'`` or ``'gamry'``).
+
+        EXAMPLES::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv')
             >>> entry
             Entry('from_csv')
 
-            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'from_csv',
-            ...
+        The loader's file structure information is stored in the metadata::
 
-        Metadata can be appended::
-
-            >>> import os
-            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-            >>> metadata = {'user':'Max Doe'}
-            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv.csv', metadata=metadata, fields=fields)
-            >>> entry.user
-            'Max Doe'
+            >>> entry.metadata['dsvDescription']['loader']
+            'BaseLoader'
+            >>> entry.metadata['dsvDescription']['delimiter']
+            ','
 
         .. important::
             Upper case filenames are converted to lower case entry identifiers!
 
         A filename containing upper case characters::
 
-            >>> import os
-            >>> fields = [{'name':'E', 'unit': 'mV'}, {'name':'I', 'unit': 'A'}]
-            >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv', fields=fields)
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/UpperCase.csv')
             >>> entry
             Entry('uppercase')
 
-        Casing in the filename is preserved in the metadata::
+        CSV with a more complex structure, such as multiple header lines can be constructed::
 
-            >>> entry.resource # doctest: +NORMALIZE_WHITESPACE
-            {'name': 'uppercase',
-            'type': 'table',
-            'path': 'UpperCase.csv',
+            >>> entry = Entry.from_csv(csvname='examples/from_csv/from_csv_multiple_headers.csv', column_header_lines=2)
+            >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 'E / V', 'type': 'integer'},
+            {'name': 'j / A / cm2', 'type': 'integer'}]
+
+        A device-specific loader can be used to parse instrument files::
+
+            >>> entry = Entry.from_csv(csvname='test/loader_data/eclab_cv.mpt', device='eclab')
+            >>> entry
+            Entry('eclab_cv')
+
+            >>> entry.df  # doctest: +NORMALIZE_WHITESPACE
+                mode  ox/red  error  ...      (Q-Qo)/C  I Range       P/W
+            0      2       1      0  ...  0.000000e+00       41  0.000001
+            1      2       0      0  ... -3.622761e-08       41 -0.000003
             ...
 
+            >>> entry.metadata['dsvDescription']['loader']
+            'ECLabLoader'
+            >>> entry.metadata['dsvDescription']['delimiter']
+            '\t'
+
         """
-        from unitpackage.local import create_unitpackage
+        from pathlib import Path
 
-        package = create_unitpackage(csvname=csvname, metadata=metadata, fields=fields)
+        from unitpackage.loaders.baseloader import BaseLoader
+        from unitpackage.local import create_df_resource_from_df
 
-        return cls(resource=package.resources[0])
+        dialect = {
+            "header_lines": header_lines,
+            "column_header_lines": column_header_lines,
+            "decimal": decimal,
+            "delimiters": delimiters,
+        }
+
+        loader_cls = BaseLoader.create(device) if device else BaseLoader
+
+        with open(csvname, "r", encoding=encoding or "utf-8") as f:
+            loader = loader_cls(f, **dialect)
+
+        resource = create_df_resource_from_df(loader.df)
+        resource.name = Path(csvname).stem.lower()
+        resource.custom["metadata"] = {"dsvDescription": loader.metadata}
+
+        return cls(resource)
 
     @classmethod
-    def _modify_fields(cls, original, alternative, keep_original_name_as=None):
-        r"""Updates in a list of fields (original) the field names with those
-        provided in a dictionary. The original name of the fields is kept with
-        the name `original` in the updated fields.
+    def _modify_field_name(cls, field, old_name, new_name, keep_original_name_as=None):
+        r"""Modifies a single field's name if it matches the old_name.
+
+        The original name can optionally be preserved in a custom field property.
+
+        EXAMPLES::
+
+            >>> field = {'name': '<E>', 'unit':'mV'}
+            >>> Entry._modify_field_name(field, '<E>', 'E', keep_original_name_as='original')
+            {'name': 'E', 'unit': 'mV', 'original': '<E>'}
+
+            >>> field = {'name': 'I', 'unit':'mA'}
+            >>> Entry._modify_field_name(field, '<E>', 'E', keep_original_name_as='original')
+            {'name': 'I', 'unit': 'mA'}
+
+        """
+        if field["name"] == old_name:
+            if keep_original_name_as:
+                field.setdefault(keep_original_name_as, old_name)
+            field["name"] = new_name
+        return field
+
+    @classmethod
+    def _modify_fields_names(cls, fields, name_mappings, keep_original_name_as=None):
+        r"""Updates field names in a list of fields based on provided name mappings.
+
+        The original field names can optionally be preserved in a custom property.
 
         EXAMPLES::
 
             >>> fields = [{'name': '<E>', 'unit':'mV'},{'name': 'I', 'unit':'mA'}]
-            >>> alt_fields = {'<E>':'E'}
-            >>> Entry._modify_fields(fields, alt_fields, keep_original_name_as='original')
+            >>> name_mappings = {'<E>':'E'}
+            >>> Entry._modify_fields_names(fields, name_mappings, keep_original_name_as='original')
             [{'name': 'E', 'unit': 'mV', 'original': '<E>'}, {'name': 'I', 'unit': 'mA'}]
 
         """
-        for field in original:
-            for key in alternative.keys():
-                if field["name"] == key:
-                    if keep_original_name_as:
-                        field.setdefault(keep_original_name_as, key)
-                    field["name"] = alternative[key]
+        for field in fields:
+            for old_name, new_name in name_mappings.items():
+                cls._modify_field_name(field, old_name, new_name, keep_original_name_as)
+        return fields
 
-        return original
+    def rename_field(self, field_name, new_name, keep_original_name_as=None):
+        r"""Returns a :class:`~unitpackage.entry.Entry` with a single renamed field and
+        corresponding dataframe column name.
+
+        The original field name can optionally be kept in a new key.
+
+        EXAMPLES:
+
+        The original dataframe::
+
+            >>> from unitpackage.entry import Entry
+            >>> entry = Entry.create_example()
+            >>> entry.df
+                          t         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Dataframe with a single modified column name::
+
+            >>> renamed_entry = entry.rename_field('t', 't_rel', keep_original_name_as='originalName')
+            >>> renamed_entry.df
+                      t_rel         E         j
+            0      0.000000 -0.103158 -0.998277
+            1      0.020000 -0.102158 -0.981762
+            ...
+
+        Updated fields of the resource::
+
+            >>> renamed_entry.fields
+            [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        TESTS:
+
+        Renaming a non-existing field has no effect::
+
+            >>> renamed_entry = entry.rename_field('x', 'y', keep_original_name_as='originalName')
+            >>> renamed_entry.fields
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
+
+        """
+        df = self.df.rename(columns={field_name: new_name}).copy()
+
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings={field_name: new_name},
+            keep_original_name_as=keep_original_name_as,
+        )
+
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
+
+        return type(self)(resource=new_resource)
 
     def rename_fields(self, field_names, keep_original_name_as=None):
         r"""Returns a :class:`~unitpackage.entry.Entry` with updated field names and dataframe
@@ -687,7 +1287,7 @@ class Entry:
         The original dataframe::
 
             >>> from unitpackage.entry import Entry
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.df
                           t         E         j
             0      0.000000 -0.103158 -0.998277
@@ -703,9 +1303,9 @@ class Entry:
             1      0.020000 -0.102158 -0.981762
             ...
 
-        Updated fields of the "MutableResource"::
+        Updated fields of the resource::
 
-            >>> renamed_entry.mutable_resource.schema.fields
+            >>> renamed_entry.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E_we', 'type': 'number', 'unit': 'V', 'reference': 'RHE', 'originalName': 'E'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -715,7 +1315,7 @@ class Entry:
         Provide alternatives for non-existing fields::
 
             >>> renamed_entry = entry.rename_fields({'t': 't_rel', 'x':'y'}, keep_original_name_as='originalName')
-            >>> renamed_entry.mutable_resource.schema.fields
+            >>> renamed_entry.fields
             [{'name': 't_rel', 'type': 'number', 'unit': 's', 'originalName': 't'},
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'A / m2'}]
@@ -725,29 +1325,22 @@ class Entry:
             logger.warning(
                 "No renaming pattern was provided, such as {'t': 't_rel', 'x':'y'}."
             )
-            field_names = {}
+            return self
 
-        from frictionless import Resource, Schema
-
-        resource = Resource(self.resource.to_dict())
-
+        # Rename all columns at once in the dataframe
         df = self.df.rename(columns=field_names).copy()
 
-        new_fields = self._modify_fields(
-            self.mutable_resource.schema.to_dict()["fields"],
-            alternative=field_names,
+        # Update all field names in a single pass
+        new_fields = self._modify_fields_names(
+            self.resource.schema.to_dict()["fields"],
+            name_mappings=field_names,
             keep_original_name_as=keep_original_name_as,
         )
 
-        df_resource = Resource(df)
-        df_resource.infer()
-        df_resource.schema = Schema.from_descriptor(
-            {"fields": new_fields}, allow_invalid=True
-        )
+        # Create new resource with renamed data
+        new_resource = self._create_new_df_resource(df, schema={"fields": new_fields})
 
-        resource.custom["MutableResource"] = df_resource
-
-        return type(self)(resource=resource)
+        return type(self)(resource=new_resource)
 
     @classmethod
     def from_local(cls, filename):
@@ -766,7 +1359,7 @@ class Entry:
             Entry('no_bibliography')
 
         """
-        from unitpackage.local import Package
+        from frictionless import Package
 
         package = Package(filename)
 
@@ -775,15 +1368,19 @@ class Entry:
 
         if len(package.resources) > 1:
             raise ValueError(
-                f"No than one resource available in '{filename}'. Use collection.from_local()`"
+                f"More than one resource available in '{filename}'. Use collection.from_local()`"
             )
 
         return cls(resource=package.resources[0])
 
     @classmethod
-    def from_df(cls, df, metadata=None, fields=None, outdir=None, *, basename):
+    def from_df(cls, df, *, basename):
         r"""
         Returns an entry constructed from a pandas dataframe.
+        A name `basename` for the entry must be provided.
+        The name must be lower-case and contain only alphanumeric
+        characters along with `.` , `_` or `-` characters'.
+        (Upper case characters are converted to lower case.)
 
         EXAMPLES::
 
@@ -799,9 +1396,10 @@ class Entry:
             >>> import os
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
             >>> metadata = {'user':'Max Doe'}
-            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
-            >>> entry.user
-            'Max Doe'
+            >>> entry = Entry.from_df(df=df, basename='test_df').update_fields(fields=fields)
+            >>> entry.metadata.from_dict(metadata)
+            >>> entry.metadata
+            {'user': 'Max Doe'}
 
         Save the entry::
 
@@ -825,27 +1423,17 @@ class Entry:
         Verify that all fields are properly created even when they are not specified as fields::
 
             >>> fields = [{'name':'x', 'unit': 'm'}, {'name':'P', 'unit': 'um'}, {'name':'E', 'unit': 'V'}]
-            >>> metadata = {'user':'Max Doe'}
-            >>> entry = Entry.from_df(df=df, basename='test_df', metadata=metadata, fields=fields)
-            >>> entry.resource.schema.fields
+            >>> entry = Entry.from_df(df=df, basename='test_df').update_fields(fields=fields)
+            >>> entry.fields
             [{'name': 'x', 'type': 'integer', 'unit': 'm'}, {'name': 'y', 'type': 'integer'}]
 
         """
-        if outdir is None:
-            import atexit
-            import shutil
-            import tempfile
+        from unitpackage.local import create_df_resource_from_df
 
-            outdir = tempfile.mkdtemp()
-            atexit.register(shutil.rmtree, outdir)
+        resource = create_df_resource_from_df(df)
+        resource.name = basename.lower()
 
-        csvname = basename + ".csv"
-
-        df.to_csv(os.path.join(outdir, csvname), index=False)
-
-        return cls.from_csv(
-            os.path.join(outdir, csvname), metadata=metadata, fields=fields
-        )
+        return cls(resource)
 
     def save(self, *, outdir, basename=None):
         r"""
@@ -856,7 +1444,7 @@ class Entry:
         The output files are named ``identifier.csv`` and ``identifier.json`` using the identifier of the original resource::
 
             >>> import os
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> entry.save(outdir='./test/generated')
             >>> basename = entry.identifier
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
@@ -872,7 +1460,7 @@ class Entry:
         A valid basename::
 
             >>> import os
-            >>> entry = Entry.create_examples()[0]
+            >>> entry = Entry.create_example()
             >>> basename = 'save_basename'
             >>> entry.save(basename=basename, outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
@@ -908,7 +1496,8 @@ class Entry:
             >>> from unitpackage.entry import Entry
             >>> df = pd.DataFrame({'x':[1,2,3], 'y':[2,3,4]})
             >>> basename = 'save_datetime'
-            >>> entry = Entry.from_df(df=df, basename=basename, metadata={'currentTime':datetime.now()})
+            >>> entry = Entry.from_df(df=df, basename=basename)
+            >>> entry.metadata.from_dict({'currentTime':datetime.now()})
             >>> entry.save(outdir='./test/generated')
             >>> os.path.exists(f'test/generated/{basename}.json') and os.path.exists(f'test/generated/{basename}.csv')
             True
@@ -918,24 +1507,33 @@ class Entry:
             os.makedirs(outdir)
 
         basename = basename or self.identifier
+        basename = basename.lower()
         csv_name = os.path.join(outdir, basename + ".csv")
         json_name = os.path.join(outdir, basename + ".json")
 
         self.df.to_csv(csv_name, index=False)
 
-        # update the identifier and filepath of the resource
-        if basename:
-            self.resource.path = basename + ".csv"
-            self.resource.name = basename
+        # Create resource descriptor for saving
+        from frictionless import Resource
 
-        resource = self.resource.to_dict()
+        # Get current schema from the dataframe resource
+        current_schema = self.resource.schema.to_dict()
 
-        # update the fields from the main resource with those from the "MutableResource"resource
-        resource["schema"]["fields"] = self.mutable_resource.schema.fields
-        resource["schema"] = resource["MutableResource"].schema.to_dict()
-        del resource["MutableResource"]
+        # Build resource descriptor
+        resource = {
+            "name": basename,
+            "type": "table",
+            "path": basename + ".csv",
+            "format": "csv",
+            "mediatype": "text/csv",
+            "schema": current_schema,
+        }
 
-        from frictionless import Package, Resource
+        # Add metadata if present
+        if self.resource.custom.get("metadata"):
+            resource["metadata"] = self.resource.custom["metadata"]
+
+        from frictionless import Package
 
         package = Package(
             resources=[Resource.from_descriptor(resource)],

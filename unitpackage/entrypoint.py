@@ -20,7 +20,7 @@ EXAMPLES::
 # ********************************************************************
 #  This file is part of unitpackage.
 #
-#        Copyright (C) 2024-2025 Albert Engstfeld
+#        Copyright (C) 2024-2026 Albert Engstfeld
 #        Copyright (C)      2022 Johannes Hermann
 #        Copyright (C) 2022-2025 Julian Rüth
 #
@@ -94,18 +94,7 @@ def convert(csv, device, outdir, metadata):
         ...         os.chdir(cwd)
 
     """
-    import yaml
-
     from unitpackage.loaders.baseloader import BaseLoader
-
-    fields = None
-
-    if metadata:
-        metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
-        try:
-            fields = metadata["figure description"]["fields"]
-        except (KeyError, AttributeError):
-            logger.warning("No units to the fields provided in the metadata")
 
     if device:
         with open(csv, "r") as file:  # pylint: disable=unspecified-encoding
@@ -114,9 +103,36 @@ def convert(csv, device, outdir, metadata):
         with open(csv, "r") as file:  # pylint: disable=unspecified-encoding
             loader = BaseLoader(file)
 
-    entry = Entry.from_df(
-        df=loader.df, basename=Path(csv).stem, metadata=metadata, fields=fields
-    )
+    import os
+
+    import yaml
+
+    fields = None
+
+    if metadata:
+        metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
+        if "dataDescription" not in metadata:
+            logger.warning(
+                "No 'dataDescription' key found in metadata; setting empty dataDescription."
+            )
+            metadata["dataDescription"] = {"fields": []}
+        fields = metadata["dataDescription"].get("fields", [])
+        if not fields:
+            logger.warning("No units to the fields provided in the metadata")
+
+    entry = Entry.from_df(df=loader.df, basename=Path(csv).stem)
+
+    # load metadata
+    if metadata:
+        entry.load_metadata(metadata)
+        if not device:
+            entry.metadata.set_default("dataDescription", "")
+            entry.metadata["dataDescription"].get("fields", [])
+        if fields:
+            entry = entry.update_fields(fields=fields)
+
+    # Ensure output directory exists
+    os.makedirs(outdir, exist_ok=True)
     entry.save(outdir=outdir)
 
 
