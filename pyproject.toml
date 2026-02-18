@@ -52,11 +52,11 @@ matplotlib-base = "*"
 pandas = "*"
 pybtex = "*"
 python = "*"
-pixi-kernel = ">=0.6.1,<0.7"
-ipykernel = ">=6.29.5,<7"
-pip = ">=25.0,<26"
-jupyterlab = ">=4.3.4,<5"
-jupytext = ">=1.16.6,<2"
+pixi-kernel = "*"
+ipykernel = "*"
+pip = "*"
+jupyterlab = "*"
+jupytext = "*"
 
 [tool.pixi.tasks]
 unitpackage = "unitpackage"
@@ -113,7 +113,7 @@ sphinx-design = "*"
 sphinx_rtd_theme = "*"
 
 [tool.pixi.feature.doc.pypi-options.dependency-overrides]
-plotly = ">=5,<6"
+plotly = ">=5,<6" # workaround for https://github.com/echemdb/unitpackage/issues/100
 
 [tool.pixi.feature.doc.tasks]
 doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"
