@@ -146,6 +146,18 @@ class GenericDescriptor:
         """
         return repr(self._descriptor)
 
+    def to_builtin(self):
+        r"""Return this descriptor converted to plain Python built-ins.
+
+        EXAMPLES::
+
+            >>> GenericDescriptor({'a': 0}).to_builtin()
+            {'a': 0}
+
+        """
+
+        return {key: _to_builtin(value) for key, value in self._descriptor.items()}
+
     @property
     def yaml(self):
         r"""Return a printable representation of this descriptor in yaml format.
@@ -165,7 +177,7 @@ class GenericDescriptor:
         """
         import yaml
 
-        return yaml.dump(_to_builtin(self._descriptor))
+        return yaml.dump(self.to_builtin())
 
 
 class GenericListDescriptor(list):
@@ -183,6 +195,18 @@ class GenericListDescriptor(list):
     def __init__(self, descriptor):
         super().__init__(Descriptor(item) for item in descriptor)
 
+    def to_builtin(self):
+        r"""Return this descriptor converted to plain Python built-ins.
+
+        EXAMPLES::
+
+            >>> GenericListDescriptor([{"a": 0}, {"b": 1}]).to_builtin()
+            [{'a': 0}, {'b': 1}]
+
+        """
+
+        return [_to_builtin(item) for item in self]
+
     @property
     def yaml(self):
         r"""Return a printable representation of this descriptor in yaml format.
@@ -196,7 +220,7 @@ class GenericListDescriptor(list):
         """
         import yaml
 
-        return yaml.dump(_to_builtin(self))
+        return yaml.dump(self.to_builtin())
 
 
 class QuantityDescriptor(GenericDescriptor):
@@ -314,8 +338,8 @@ def _to_builtin(descriptor):
 
     """
 
-    if isinstance(descriptor, GenericDescriptor):
-        return {key: _to_builtin(value) for key, value in descriptor._descriptor.items()}
+    if hasattr(descriptor, "to_builtin"):
+        return descriptor.to_builtin()
 
     if isinstance(descriptor, list):
         return [_to_builtin(item) for item in descriptor]
