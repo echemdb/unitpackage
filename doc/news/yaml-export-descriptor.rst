@@ -1,3 +1,7 @@
+**Added:**
+
+* Added shared `to_builtin()` methods on descriptor wrappers.
+
 **Fixed:**
 
-* Fixed `Descriptor` property `yaml` to correctly represent descriptors containing lists in YAML format.
+* Fixed YAML export for descriptors containing lists, including nested list structures.
