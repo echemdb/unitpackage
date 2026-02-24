@@ -17,6 +17,14 @@ kernelspec:
 [eLabFTW](https://www.elabftw.net/) is an open-source electronic lab notebook (ELN) that stores experiments and resources online.
 The `unitpackage.eln.elabftw` module provides a client to exchange unitpackage entries with an eLabFTW instance: entries can be fetched from eLabFTW as Python objects and uploaded back after analysis.
 
+## Entity Mapping
+
+eLabFTW organises data as *items* (resources) and *experiments*.
+The unitpackage integration works with **items** exclusively: each eLabFTW item corresponds to one unitpackage `Entry`.
+When an entry is uploaded, its tabular data is attached as a CSV file and the complete datapackage descriptor — including field units and metadata — is stored in the item's metadata field under the key `unitpackage`.
+Tags on the item can be used to group and filter entries.
+Only items that carry this `unitpackage` metadata key are recognised by the client; items created outside of unitpackage are ignored.
+
 ## Prerequisites
 
 The `elabapi-python` package is required.  Install it alongside unitpackage with:
