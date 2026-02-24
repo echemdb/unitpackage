@@ -258,7 +258,7 @@ class Entry:
             'df', 'echemdb', 'field_unit',
             'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
             'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
-            'rescale', 'resource', 'save', 'update_fields', 'yaml']
+            'rescale', 'resource', 'save', 'to_builtin', 'update_fields', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
