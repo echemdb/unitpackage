@@ -1,0 +1,18 @@
+{
+  "operation": "list_entities",
+  "method": "ItemsApi.read_items",
+  "response": {
+    "headers": {},
+    "status": 200,
+    "version": 11,
+    "version_string": "HTTP/1.1",
+    "reason": "OK",
+    "decode_content": true,
+    "chunked": true,
+    "enforce_content_length": true,
+    "auto_close": true,
+    "msg": null,
+    "chunk_left": null,
+    "length_remaining": null
+  }
+}

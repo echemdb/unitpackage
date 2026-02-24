@@ -1,0 +1,23 @@
+{
+  "operation": "list_uploads",
+  "method": "UploadsApi.read_uploads",
+  "response": [
+    {
+      "id": 15227,
+      "real_name": "fixture_test.csv",
+      "long_name": "20/206be6bc-54b9-49a1-8c9e-6d6001dc87e0.csv",
+      "comment": "Data uploaded from unitpackage",
+      "item_id": 435,
+      "userid": 1,
+      "type": "items",
+      "created_at": "2026-02-24 15:43:09",
+      "hash": "e2660b35fbdf08ca162947aa9fd72fd1d1c6f8e1bd4c6cdb1c52f3e4d87b35e7",
+      "hash_algorithm": "sha256",
+      "storage": 1,
+      "filesize": 59,
+      "state": 1,
+      "immutable": 0,
+      "fullname": "Test User"
+    }
+  ]
+}
