@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-elabftw = ["elabapi-python>=5.4.0"]
+elabftw = ["elabapi-python<5.4.0"]
 
 [project.scripts]
 unitpackage = "unitpackage.entrypoint:cli"
@@ -124,6 +124,9 @@ sphinx = "*"
 sphinx-design = "*"
 sphinx_rtd_theme = "*"
 plotly = ">=5,<6" # workaround for https://github.com/echemdb/unitpackage/issues/100
+
+[tool.pixi.feature.doc.pypi-dependencies]
+unitpackage = { path = ".", editable = true, extras = ["elabftw"] }
 
 [tool.pixi.feature.doc.tasks]
 doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"

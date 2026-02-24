@@ -3767,6 +3767,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-1.3.1-hb9d3cd8_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-ng-2.3.3-hceb46e0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
+      - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-20_gnu.conda
@@ -4108,6 +4109,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-1.3.1-h86ecc28_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-ng-2.3.3-ha7cb516_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-h85ac4a6_6.conda
+      - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -4445,6 +4447,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-1.3.1-hd23fc13_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-ng-2.3.3-h8bce59a_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h3eecb57_6.conda
+      - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -4783,6 +4786,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-1.3.1-h8359307_2.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-ng-2.3.3-hed4e4f5_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-hbf9d68e_6.conda
+      - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-20_gnu.conda
@@ -5114,6 +5118,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/zipp-3.23.0-pyhcf101f3_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zlib-ng-2.3.3-h0261ad2_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
+      - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: ./
   python-310:
     channels:
@@ -40732,7 +40737,7 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.12.0
-  sha256: c673584896d31ddb7feb72ef275f8d6e31c05d8e1d5fbb8d8f915f0275d0c175
+  sha256: 1d16d2ad55fda4279f1ec44b65c6d8cec9c7497d7e252b88ca1680c93d84d862
   requires_dist:
   - astropy>=5,<8
   - click>=8,<9
@@ -40742,7 +40747,7 @@ packages:
   - plotly>=5,<7
   - pybtex>=0.25,<0.26
   - tomli>=1.0 ; python_full_version < '3.11'
-  - elabapi-python>=5.4.0 ; extra == 'elabftw'
+  - elabapi-python<5.4.0 ; extra == 'elabftw'
   requires_python: '>=3.10'
 - conda: https://conda.anaconda.org/conda-forge/noarch/uri-template-1.3.0-pyhd8ed1ab_1.conda
   sha256: e0eb6c8daf892b3056f08416a96d68b0a358b7c46b99c8a50481b22631a4dfc0
