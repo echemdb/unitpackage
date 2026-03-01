@@ -155,6 +155,21 @@ else:
 
 cli.add_command(elabftw)
 
+if importlib.util.find_spec("kadi_apy") is None:
+
+    @click.command(name="kadi")
+    def kadi(**kwargs):
+        """
+        Interact with a Kadi4Mat instance (needs unitpackage[kadi]).
+
+        """
+        raise ImportError("Install `unitpackage[kadi]` to use this feature.")
+
+else:
+    from unitpackage.eln.kadi_cli import kadi
+
+cli.add_command(kadi)
+
 
 # Register command docstrings for doctesting.
 # Since commands are not functions anymore due to their decorator, their

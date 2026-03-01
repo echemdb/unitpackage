@@ -18,7 +18,7 @@ import pytest
 # ---------------------------------------------------------------------------
 
 sys.path.insert(0, str(Path(__file__).parent))
-from fixture_loader import get_versions, load_fixture, get_csv_bytes, make_mock_uploads  # noqa: E402
+from fixture_loader import get_versions, load_fixture, get_csv_bytes, make_field_dict, make_mock_uploads  # noqa: E402
 
 _BACKEND = "elabftw"
 _ELABFTW_VERSIONS = get_versions(_BACKEND)
@@ -569,11 +569,7 @@ class TestRoundTrip:
         result = client.fetch_entry(100)
 
         # Assert field units are faithfully preserved
-        field_dict = {
-            (f.to_dict() if hasattr(f, "to_dict") else f)["name"]:
-            (f.to_dict() if hasattr(f, "to_dict") else f)
-            for f in result.fields
-        }
+        field_dict = make_field_dict(result)
         assert field_dict["t"].get("unit") == "s"
         assert field_dict["E"].get("unit") == "V"
         assert field_dict["j"].get("unit") == "A / m2"
@@ -637,12 +633,7 @@ class TestFixtureVersions:
         """fetch_entry restores field units from the stored datapackage.json."""
         client, entity_id = self._wire_client(fixture_version)
         entry = client.fetch_entry(entity_id)
-        field_dict = {
-            (f.to_dict() if hasattr(f, "to_dict") else f)["name"]: (
-                f.to_dict() if hasattr(f, "to_dict") else f
-            )
-            for f in entry.fields
-        }
+        field_dict = make_field_dict(entry)
         assert field_dict["t"].get("unit") == "s"
         assert field_dict["E"].get("unit") == "V"
         assert field_dict["j"].get("unit") == "A / m2"

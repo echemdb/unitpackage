@@ -1,0 +1,211 @@
+{
+  "operation": "get_entity",
+  "method": "KadiManager.record",
+  "response": {
+    "_actions": {
+      "add_group_role": "https://kadi.example.org/api/v1/records/12/roles/groups",
+      "add_user_role": "https://kadi.example.org/api/v1/records/12/roles/users",
+      "delete": "https://kadi.example.org/api/v1/records/12",
+      "edit": "https://kadi.example.org/api/v1/records/12",
+      "link_collection": "https://kadi.example.org/api/v1/records/12/collections",
+      "link_record": "https://kadi.example.org/api/v1/records/12/records",
+      "new_upload": "https://kadi.example.org/api/v1/records/12/uploads"
+    },
+    "_links": {
+      "collections": "https://kadi.example.org/api/v1/records/12/collections",
+      "download_files": "https://kadi.example.org/api/v1/records/12/files/download",
+      "file_revisions": "https://kadi.example.org/api/v1/records/12/files/revisions",
+      "files": "https://kadi.example.org/api/v1/records/12/files",
+      "group_roles": "https://kadi.example.org/api/v1/records/12/roles/groups",
+      "records_from": "https://kadi.example.org/api/v1/records/12/records?direction=in",
+      "records_to": "https://kadi.example.org/api/v1/records/12/records?direction=out",
+      "revisions": "https://kadi.example.org/api/v1/records/12/revisions",
+      "self": "https://kadi.example.org/api/v1/records/12",
+      "uploads": "https://kadi.example.org/api/v1/records/12/uploads",
+      "user_roles": "https://kadi.example.org/api/v1/records/12/roles/users",
+      "view": "https://kadi.example.org/records/12"
+    },
+    "created_at": "2026-03-01T10:25:58.679802+00:00",
+    "creator": {
+      "_links": {
+        "collections": "https://kadi.example.org/api/v1/users/1/collections",
+        "groups": "https://kadi.example.org/api/v1/users/1/groups",
+        "identities": "https://kadi.example.org/api/v1/users/1/identities",
+        "records": "https://kadi.example.org/api/v1/users/1/records",
+        "self": "https://kadi.example.org/api/v1/users/1",
+        "templates": "https://kadi.example.org/api/v1/users/1/templates",
+        "view": "https://kadi.example.org/users/1"
+      },
+      "created_at": "2025-03-22T16:42:38.225687+00:00",
+      "displayname": "testuser",
+      "id": 1,
+      "identity": {
+        "email": "test@example.org",
+        "email_confirmed": false,
+        "type": "local",
+        "username": "testuser"
+      },
+      "is_sysadmin": true,
+      "orcid": null,
+      "state": "active",
+      "system_role": "member"
+    },
+    "description": "",
+    "extras": [
+      {
+        "key": "unitpackage",
+        "type": "dict",
+        "value": [
+          {
+            "key": "resources",
+            "type": "list",
+            "value": [
+              {
+                "type": "dict",
+                "value": [
+                  {
+                    "key": "name",
+                    "type": "str",
+                    "value": "fixture_test"
+                  },
+                  {
+                    "key": "type",
+                    "type": "str",
+                    "value": "table"
+                  },
+                  {
+                    "key": "path",
+                    "type": "str",
+                    "value": "fixture_test.csv"
+                  },
+                  {
+                    "key": "scheme",
+                    "type": "str",
+                    "value": "file"
+                  },
+                  {
+                    "key": "format",
+                    "type": "str",
+                    "value": "csv"
+                  },
+                  {
+                    "key": "mediatype",
+                    "type": "str",
+                    "value": "text/csv"
+                  },
+                  {
+                    "key": "schema",
+                    "type": "dict",
+                    "value": [
+                      {
+                        "key": "fields",
+                        "type": "list",
+                        "value": [
+                          {
+                            "type": "dict",
+                            "value": [
+                              {
+                                "key": "name",
+                                "type": "str",
+                                "value": "t"
+                              },
+                              {
+                                "key": "type",
+                                "type": "str",
+                                "value": "number"
+                              },
+                              {
+                                "key": "unit",
+                                "type": "str",
+                                "value": "s"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "dict",
+                            "value": [
+                              {
+                                "key": "name",
+                                "type": "str",
+                                "value": "E"
+                              },
+                              {
+                                "key": "type",
+                                "type": "str",
+                                "value": "number"
+                              },
+                              {
+                                "key": "unit",
+                                "type": "str",
+                                "value": "V"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "dict",
+                            "value": [
+                              {
+                                "key": "name",
+                                "type": "str",
+                                "value": "j"
+                              },
+                              {
+                                "key": "type",
+                                "type": "str",
+                                "value": "number"
+                              },
+                              {
+                                "key": "unit",
+                                "type": "str",
+                                "value": "A / m2"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "key": "metadata",
+                    "type": "dict",
+                    "value": [
+                      {
+                        "key": "echemdb",
+                        "type": "dict",
+                        "value": [
+                          {
+                            "key": "source",
+                            "type": "dict",
+                            "value": [
+                              {
+                                "key": "citationKey",
+                                "type": "str",
+                                "value": "fixture_test_2026"
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "id": 12,
+    "identifier": "unitpackage_fixture_test_d8fb0979",
+    "last_modified": "2026-03-01T10:26:00.158259+00:00",
+    "license": null,
+    "plain_description": "",
+    "state": "active",
+    "tags": [
+      "unitpackage-test"
+    ],
+    "title": "unitpackage_fixture_test_d8fb0979",
+    "type": null,
+    "visibility": "private"
+  }
+}

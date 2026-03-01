@@ -1,0 +1,12 @@
+{
+  "operation": "download_csv",
+  "method": "record.download_file",
+  "response": {
+    "args": [],
+    "kwargs": {
+      "file_id": "44606121-37a9-40dd-b35b-2c9390018f4b",
+      "file_path": "/tmp/tmpnovp5g89/fixture_test.csv"
+    },
+    "data_base64": "dCxFLGoKMC4wLC0wLjEwMyw0My4wMQowLjAxLC0wLjEwMiw1MS40MQowLjAyLC0wLjEwMSw0Mi44OQo="
+  }
+}

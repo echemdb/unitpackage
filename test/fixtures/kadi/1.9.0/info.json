@@ -1,0 +1,7 @@
+{
+  "operation": "info",
+  "method": "client.info",
+  "response": {
+    "version": "1.9.0"
+  }
+}

@@ -1,9 +1,9 @@
 """
-Utilities for loading recorded eLabFTW API fixtures into Mock objects.
+Utilities for loading recorded ELN API fixtures into Mock objects.
 
 Provides helper functions that read fixture JSON files produced by
 ``record_fixtures.py`` and construct ``unittest.mock.Mock`` objects
-for use in ``test_elabftw.py``.
+for use in ``test_elabftw.py`` and ``test_kadi.py``.
 
 Typical usage in tests::
 
@@ -158,3 +158,71 @@ def make_mock_uploads(backend="elabftw", version=None):
         mocks.append(upload)
 
     return mocks
+
+
+def make_mock_kadi_record(version, csv_bytes, backend="kadi"):
+    """
+    Build a ``Mock`` Kadi4Mat record from recorded fixture data.
+
+    Wires up ``get_filelist()`` from ``list_uploads.json`` and
+    ``download_file()`` to write *csv_bytes* to the requested path,
+    mirroring the behaviour of a real ``kadi_apy`` record object.
+
+    Parameters
+    ----------
+    version : str
+        The Kadi4Mat version string (directory name under the backend).
+    csv_bytes : bytes
+        Raw CSV content written by the ``download_file`` mock.
+    backend : str
+        The backend name (default ``"kadi"``).
+
+    Returns
+    -------
+    unittest.mock.Mock
+
+    """
+    entity_data = load_fixture(backend, version, "get_entity")
+    response = entity_data["response"]
+
+    uploads_data = load_fixture(backend, version, "list_uploads")
+    filelist_response = uploads_data["response"]
+
+    record = Mock()
+    record.id = response["id"]
+    record.title = response["title"]
+    record.identifier = response["identifier"]
+    record.meta = response
+
+    filelist_mock = Mock()
+    filelist_mock.json.return_value = filelist_response
+    record.get_filelist.return_value = filelist_mock
+
+    def _download(file_id, file_path):
+        with open(file_path, "wb") as fh:
+            fh.write(csv_bytes)
+
+    record.download_file = _download
+    return record
+
+
+def make_field_dict(entry):
+    """
+    Return a ``{name: field_descriptor}`` dict for an Entry's fields.
+
+    Works with both frictionless ``Field`` objects (which have
+    ``.to_dict()``) and plain dicts.
+
+    Parameters
+    ----------
+    entry : unitpackage.entry.Entry
+
+    Returns
+    -------
+    dict
+
+    """
+    def _as_dict(f):
+        return f.to_dict() if hasattr(f, "to_dict") else f
+
+    return {_as_dict(f)["name"]: _as_dict(f) for f in entry.fields}

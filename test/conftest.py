@@ -2,7 +2,7 @@
 Pytest configuration for ELN integration tests.
 
 Registers custom markers so tests can be selected/deselected
-via ``pytest -m elabftw``.
+via ``pytest -m elabftw`` or ``pytest -m kadi``.
 """
 
 import sys
@@ -15,6 +15,10 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers",
         "elabftw: marks tests for the eLabFTW integration module",
+    )
+    config.addinivalue_line(
+        "markers",
+        "kadi: marks tests for the Kadi4Mat integration module",
     )
 
 
@@ -36,3 +40,14 @@ _fake_elabapi.UploadsApi = MagicMock
 _fake_elabapi.__spec__ = MagicMock()
 
 sys.modules.setdefault("elabapi_python", _fake_elabapi)
+
+# ---------------------------------------------------------------------------
+# Provide a fake kadi_apy module so kadi tests can run without the real
+# package installed.
+# ---------------------------------------------------------------------------
+
+_fake_kadi_apy = MagicMock()
+_fake_kadi_apy.KadiManager = MagicMock
+_fake_kadi_apy.__spec__ = MagicMock()
+
+sys.modules.setdefault("kadi_apy", _fake_kadi_apy)

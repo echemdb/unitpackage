@@ -1,30 +1,33 @@
 #!/usr/bin/env python
 """
-Record API fixtures from a real eLabFTW instance for mock-based testing.
+Record API fixtures from a real ELN instance for mock-based testing.
 
-Connects to a live eLabFTW instance, performs the standard unitpackage
-operations (info, upload, fetch_entry, fetch_entries), and records the raw
-API responses as JSON fixture files.  Fixtures are saved in versioned
-directories so that API changes across eLabFTW releases can be tracked
-and tested against.
+Connects to a live ELN instance (eLabFTW or Kadi4Mat), performs the
+standard unitpackage operations (info, upload, fetch_entry, fetch_entries),
+and records the raw API responses as JSON fixture files.  Fixtures are
+saved in versioned directories so that API changes across ELN releases
+can be tracked and tested against.
 
 Usage::
 
-    # Version auto-detected from server info
+    # eLabFTW -- version auto-detected from server info
     python test/record_fixtures.py elabftw
 
-    # With explicit credentials
+    # eLabFTW -- with explicit credentials
     python test/record_fixtures.py elabftw --host https://eln.example.org --api-key KEY
+
+    # Kadi4Mat -- version auto-detected from server info
+    python test/record_fixtures.py kadi
+
+    # Kadi4Mat -- with explicit credentials
+    python test/record_fixtures.py kadi --host https://kadi4mat.example.edu --pat TOKEN
 
     # Keep the test entity on the server
     python test/record_fixtures.py elabftw --no-cleanup
 
-    # Custom output directory
-    python test/record_fixtures.py elabftw --outdir /tmp/my_fixtures
-
 Credentials are resolved in this order:
-  1. CLI options (--host, --api-key)
-  2. Environment variables (ELABFTW_HOST, ELABFTW_API_KEY)
+  1. CLI options (--host, --api-key / --pat)
+  2. Environment variables (ELABFTW_HOST/ELABFTW_API_KEY or KADI_HOST/KADI_PAT)
   3. Configuration file (~/.config/unitpackage/config.toml, via --profile)
 """
 
@@ -214,11 +217,193 @@ def _wrap_binary(obj, method_name, store, full_method_name):
 
 
 # ---------------------------------------------------------------------------
+# Base recorder
+# ---------------------------------------------------------------------------
+
+
+class BaseRecorder:
+    """Template for ELN fixture recorders.
+
+    Subclasses must set ``backend_name`` and implement:
+    ``extract_version``, ``get_redaction_replacements``,
+    ``_extract_additional_replacements``, ``create_test_entry``,
+    ``install_hooks``, ``cleanup_leftovers``, ``list_test_entities``,
+    and ``delete_entity``.
+    """
+
+    backend_name: str = ""
+
+    def extract_version(self, info_dict):
+        raise NotImplementedError
+
+    def get_redaction_replacements(self, client, info_dict):
+        return []
+
+    def _extract_additional_replacements(self, version_dir):
+        return []
+
+    def create_test_entry(self, client, version_dir, title):
+        raise NotImplementedError
+
+    def install_hooks(self, client, store):
+        raise NotImplementedError
+
+    def cleanup_leftovers(self, client):
+        """Delete leftover test entities from previous runs."""
+        try:
+            entities = self.list_test_entities(client)
+        except Exception as exc:
+            click.echo(f"  WARNING: Could not list leftover entities: {exc}", err=True)
+            return
+
+        for entity_id, title in entities:
+            if not TEST_TITLE_RE.match(title or ""):
+                click.echo(
+                    f"  Skipping entity {entity_id} ({title!r}): "
+                    "title does not match fixture pattern"
+                )
+                continue
+            try:
+                self.delete_entity(client, entity_id)
+                click.echo(f"  Deleted leftover entity {entity_id} ({title})")
+            except Exception as exc:
+                click.echo(
+                    f"  WARNING: Failed to delete entity {entity_id}: {exc}",
+                    err=True,
+                )
+
+    def list_test_entities(self, client):
+        raise NotImplementedError
+
+    def delete_entity(self, client, entity_id):
+        raise NotImplementedError
+
+    def record(self, client, outdir, cleanup=True, version_override=None):
+        """Run the full recording workflow."""
+        entity_id = None
+        captured = {}
+
+        # Phase 0: clean up leftovers from previous runs
+        click.echo("Cleaning up leftover test entities...")
+        self.cleanup_leftovers(client)
+
+        try:
+            # Phase 1: server info
+            click.echo("Recording server info...")
+            info_dict = client.info()
+            version = version_override or self.extract_version(info_dict)
+            version_dir = os.path.join(outdir, version)
+            _save_json(
+                {"operation": "info", "method": "client.info", "response": info_dict},
+                version_dir,
+                "info.json",
+            )
+            click.echo(f"  ELN version: {version}")
+
+            # Phase 2: create test entry using raw API calls (recorded per-step)
+            uid = uuid.uuid4().hex[:8]
+            title = f"{TEST_TITLE_PREFIX}_{uid}"
+            click.echo(f"Creating test entry via raw API ({title})...")
+            entity_id = self.create_test_entry(client, version_dir, title)
+            click.echo(f"  Created test entity: {entity_id}")
+
+            # Phase 3: install hooks and fetch entry back
+            click.echo("Fetching test entity with recording hooks...")
+            self.install_hooks(client, captured)
+            fetched = client.fetch_entry(entity_id)
+            assert fetched is not None, "fetch_entry returned None"
+
+            for op_name, data in captured.items():
+                _save_json(data, version_dir, f"{op_name}.json")
+            click.echo(f"  Recorded {len(captured)} API responses")
+
+            # Phase 4: fetch_entries
+            click.echo("Recording fetch_entries...")
+            captured_list = {}
+            self.install_hooks(client, captured_list)
+            entries = client.fetch_entries(tags=TEST_TAGS)
+            for op_name, data in captured_list.items():
+                _save_json(data, version_dir, f"list_{op_name}.json")
+
+            _save_json(
+                {
+                    "operation": "fetch_entries",
+                    "method": "client.fetch_entries",
+                    "response": {"count": len(entries)},
+                },
+                version_dir,
+                "fetch_entries.json",
+            )
+            click.echo(f"  Found {len(entries)} entries via fetch_entries")
+
+        except Exception:
+            logger.exception("Recording failed")
+            if entity_id is not None and cleanup:
+                self._try_cleanup(client, entity_id)
+            raise
+
+        else:
+            # Phase 5: cleanup
+            cleanup_performed = False
+            if cleanup and entity_id is not None:
+                cleanup_performed = self._try_cleanup(client, entity_id)
+            elif entity_id is not None:
+                click.echo(f"  Skipping cleanup (entity {entity_id} kept on server)")
+
+            # Write manifest
+            try:
+                from unitpackage import __version__ as up_version
+            except (ImportError, AttributeError):
+                up_version = "unknown"
+
+            manifest = {
+                "backend": self.backend_name,
+                "version": version,
+                "recorded_at": datetime.now(timezone.utc).isoformat(),
+                "unitpackage_version": up_version,
+                "entity_id": entity_id,
+                "cleanup_performed": cleanup_performed,
+                "test_data": {
+                    "csv_columns": ["t", "E", "j"],
+                    "field_units": {f["name"]: f["unit"] for f in TEST_FIELDS},
+                    "title": title,
+                },
+            }
+            _save_json(manifest, version_dir, "manifest.json")
+
+            # Redact sensitive information from all fixture files
+            replacements = self.get_redaction_replacements(client, info_dict)
+            replacements.extend(self._extract_additional_replacements(version_dir))
+            if replacements:
+                _redact_directory(version_dir, replacements)
+                click.echo(
+                    f"  Redacted {len(replacements)} sensitive value(s) "
+                    "from fixture files"
+                )
+
+            click.echo(f"Fixture recording complete: {version_dir}")
+
+    def _try_cleanup(self, client, entity_id):
+        """Best-effort cleanup of the test entity."""
+        try:
+            self.delete_entity(client, entity_id)
+            click.echo(f"  Cleaned up test entity {entity_id}")
+            return True
+        except Exception as exc:
+            click.echo(
+                f"  WARNING: Cleanup of entity {entity_id} failed: {exc}\n"
+                "  Manual cleanup required.",
+                err=True,
+            )
+            return False
+
+
+# ---------------------------------------------------------------------------
 # eLabFTW recorder
 # ---------------------------------------------------------------------------
 
 
-class ElabFTWRecorder:
+class ElabFTWRecorder(BaseRecorder):
     """Record API fixtures from a real eLabFTW instance."""
 
     backend_name = "elabftw"
@@ -361,24 +546,6 @@ class ElabFTWRecorder:
             "UploadsApi.read_upload",
         )
 
-    def cleanup_leftovers(self, client):
-        """Delete leftover test entities from previous runs."""
-        try:
-            entities = self.list_test_entities(client)
-        except Exception as exc:
-            click.echo(f"  WARNING: Could not list leftover entities: {exc}", err=True)
-            return
-
-        for entity_id, title in entities:
-            if not TEST_TITLE_RE.match(title or ""):
-                click.echo(f"  Skipping entity {entity_id} ({title!r}): title does not match fixture pattern")
-                continue
-            try:
-                self.delete_entity(client, entity_id)
-                click.echo(f"  Deleted leftover entity {entity_id} ({title})")
-            except Exception as exc:
-                click.echo(f"  WARNING: Failed to delete entity {entity_id}: {exc}", err=True)
-
     def list_test_entities(self, client):
         entities = client.items_client.read_items(tags=list(TEST_TAGS), limit=9999)
         return [(e.id, e.title) for e in entities]
@@ -386,125 +553,257 @@ class ElabFTWRecorder:
     def delete_entity(self, client, entity_id):
         client.items_client.delete_item(entity_id)
 
-    def record(self, client, outdir, cleanup=True, version_override=None):
-        """Run the full recording workflow against a real eLabFTW instance."""
-        entity_id = None
-        captured = {}
 
-        # Phase 0: clean up leftovers from previous runs
-        click.echo("Cleaning up leftover test entities...")
-        self.cleanup_leftovers(client)
+# ---------------------------------------------------------------------------
+# Kadi4Mat recorder
+# ---------------------------------------------------------------------------
 
-        try:
-            # Phase 1: server info
-            click.echo("Recording server info...")
-            info_dict = client.info()
-            version = version_override or self.extract_version(info_dict)
-            version_dir = os.path.join(outdir, version)
-            _save_json(
-                {"operation": "info", "method": "client.info", "response": info_dict},
-                version_dir,
-                "info.json",
+
+def _wrap_kadi_record(manager, store, full_method_name="KadiManager.record"):
+    """Hook ``manager.record()`` to capture the entity and sub-object calls.
+
+    After the real ``record()`` call returns, the wrapper:
+    1. Records ``record.meta`` as ``get_entity``.
+    2. Hooks ``record.get_filelist()`` to record ``list_uploads``.
+    3. Hooks ``record.download_file()`` to record ``download_csv``
+       (reads the file back to embed its content as base64).
+    """
+    _unwrap(manager, "record")
+    original = getattr(manager, "record")
+
+    @wraps(original)
+    def wrapper(*args, **kwargs):
+        record = original(*args, **kwargs)
+
+        meta = record.meta if isinstance(record.meta, dict) else {}
+        store["get_entity"] = {
+            "operation": "get_entity",
+            "method": full_method_name,
+            "response": meta,
+        }
+
+        # Hook get_filelist — serialize the .json() payload.
+        orig_filelist = record.get_filelist
+
+        @wraps(orig_filelist)
+        def wrapped_filelist(*a, **kw):
+            result = orig_filelist(*a, **kw)
+            if hasattr(result, "json"):
+                serialized = result.json()
+            else:
+                serialized = _serialize(result)
+            store["list_uploads"] = {
+                "operation": "list_uploads",
+                "method": "record.get_filelist",
+                "response": serialized,
+            }
+            return result
+
+        record.get_filelist = wrapped_filelist
+
+        # Hook download_file — reads the written file to embed CSV as base64.
+        orig_download = record.download_file
+
+        @wraps(orig_download)
+        def wrapped_download(*a, **kw):
+            result = orig_download(*a, **kw)
+            file_path = kw.get("file_path") or (a[1] if len(a) > 1 else None)
+            response = {
+                "args": [str(x) for x in a],
+                "kwargs": {k: str(v) for k, v in kw.items()},
+            }
+            if file_path and os.path.exists(str(file_path)):
+                with open(file_path, "rb") as fh:
+                    response["data_base64"] = base64.b64encode(fh.read()).decode("ascii")
+            store["download_csv"] = {
+                "operation": "download_csv",
+                "method": "record.download_file",
+                "response": response,
+            }
+            return result
+
+        record.download_file = wrapped_download
+
+        return record
+
+    wrapper._recording_original = original
+    setattr(manager, "record", wrapper)
+
+
+class KadiRecorder(BaseRecorder):
+    """Record API fixtures from a real Kadi4Mat instance."""
+
+    backend_name = "kadi"
+
+    def extract_version(self, info_dict):
+        version = info_dict.get("version") or info_dict.get("kadi_version")
+        if not version:
+            raise ValueError(
+                "Could not extract version from Kadi4Mat info response. "
+                "Use --version to specify it manually."
             )
-            click.echo(f"  ELN version: {version}")
+        return str(version)
 
-            # Phase 2: create test entry using raw API calls (recorded per-step)
-            uid = uuid.uuid4().hex[:8]
-            title = f"{TEST_TITLE_PREFIX}_{uid}"
-            click.echo(f"Creating test entry via raw API ({title})...")
-            entity_id = self.create_test_entry(client, version_dir, title)
-            click.echo(f"  Created test entity: {entity_id}")
+    def get_redaction_replacements(self, client, info_dict):
+        replacements = []
+        host = getattr(client, "_host", "")
+        if host:
+            replacements.append((host, "https://kadi.example.org"))
+        return replacements
 
-            # Phase 3: install hooks and fetch entry back
-            click.echo("Fetching test entity with recording hooks...")
-            self.install_hooks(client, captured)
-            fetched = client.fetch_entry(entity_id)
-            assert fetched is not None, "fetch_entry returned None"
+    def _extract_additional_replacements(self, version_dir):
+        """Extract user fields from the recorded get_entity response."""
+        replacements = []
+        entity_path = Path(version_dir) / "get_entity.json"
+        if not entity_path.exists():
+            return replacements
+        try:
+            with open(entity_path, encoding="utf-8") as fh:
+                data = json.load(fh)
+            resp = data.get("response", {})
+            creator = resp.get("creator", {})
+            displayname = creator.get("displayname", "")
+            if displayname:
+                replacements.append((displayname, "testuser"))
+            identity = creator.get("identity", {})
+            email = identity.get("email", "")
+            if email:
+                replacements.append((email, "test@example.org"))
+            username = identity.get("username", "")
+            if username and username != displayname:
+                replacements.append((username, "testuser"))
+        except Exception as exc:
+            logger.debug("Could not extract user fields from get_entity.json: %s", exc)
+        return replacements
 
-            for op_name, data in captured.items():
-                _save_json(data, version_dir, f"{op_name}.json")
-            click.echo(f"  Recorded {len(captured)} API responses")
+    def create_test_entry(self, client, version_dir, title):
+        """Create a test record on the Kadi4Mat instance."""
+        from unitpackage.eln import build_datapackage_descriptor
+        from unitpackage.eln.kadi import _dict_to_kadi_extras
 
-            # Phase 4: fetch_entries
-            click.echo("Recording fetch_entries...")
-            captured_list = {}
-            self.install_hooks(client, captured_list)
-            entries = client.fetch_entries(tags=TEST_TAGS)
-            for op_name, data in captured_list.items():
-                _save_json(data, version_dir, f"list_{op_name}.json")
+        identifier = re.sub(r"[^a-zA-Z0-9_-]", "_", title).lower().strip("_")
 
+        # Step 1: Create the record
+        record = client._manager.record(
+            identifier=identifier, title=title, create=True,
+        )
+        record_meta = record.meta if isinstance(record.meta, dict) else {}
+        record_id = record_meta.get("id")
+
+        _save_json(
+            {
+                "operation": "create_record",
+                "method": "KadiManager.record",
+                "request": {"identifier": identifier, "title": title, "create": True},
+                "response": _serialize(record_meta),
+            },
+            version_dir,
+            "create_record.json",
+        )
+        click.echo(f"    CREATE record -> {record_id}")
+
+        # Step 2: Upload CSV file
+        entry = _build_test_entry()
+        with tempfile.TemporaryDirectory() as tmpdir:
+            csv_path = os.path.join(tmpdir, f"{entry.identifier}.csv")
+            entry.df.to_csv(csv_path, index=False)
+            upload_result = record.upload_file(file_path=csv_path)
             _save_json(
                 {
-                    "operation": "fetch_entries",
-                    "method": "client.fetch_entries",
-                    "response": {"count": len(entries)},
+                    "operation": "upload_file_csv",
+                    "method": "record.upload_file",
+                    "request": {"file_path": f"{entry.identifier}.csv"},
+                    "response": _serialize(upload_result),
                 },
                 version_dir,
-                "fetch_entries.json",
+                "upload_file_csv.json",
             )
-            click.echo(f"  Found {len(entries)} entries via fetch_entries")
+            click.echo("    UPLOAD file (CSV)")
 
-        except Exception:
-            logger.exception("Recording failed")
-            if entity_id is not None and cleanup:
-                self._try_cleanup(client, entity_id)
-            raise
+        # Step 3: Store datapackage descriptor as Kadi extras metadatum
+        descriptor = build_datapackage_descriptor(entry)
+        metadatum = _dict_to_kadi_extras(descriptor, key="unitpackage")
+        add_result = record.add_metadatum(metadatum=metadatum)
+        _save_json(
+            {
+                "operation": "add_metadatum_datapackage",
+                "method": "record.add_metadatum",
+                "request": {"metadatum": metadatum},
+                "response": _serialize(add_result),
+            },
+            version_dir,
+            "add_metadatum_datapackage.json",
+        )
+        click.echo("    ADD metadatum (datapackage descriptor)")
 
+        # Step 4: Add tags
+        for tag in TEST_TAGS:
+            record.add_tag(tag)
+        click.echo(f"    ADD tags {TEST_TAGS}")
+
+        return record_id
+
+    def install_hooks(self, client, store):
+        # Hook manager.record() — this also hooks get_filelist and
+        # download_file on the returned record object.
+        _wrap_kadi_record(client._manager, store)
+
+        # Hook search.search_resources for fetch_entries (list_entities).
+        if hasattr(client._manager, "search"):
+            search = client._manager.search
+            _unwrap(search, "search_resources")
+            original_search = search.search_resources
+
+            @wraps(original_search)
+            def wrapped_search(*args, **kwargs):
+                result = original_search(*args, **kwargs)
+                if hasattr(result, "json"):
+                    serialized = result.json()
+                else:
+                    serialized = _serialize(result)
+                store["list_entities"] = {
+                    "operation": "list_entities",
+                    "method": "search.search_resources",
+                    "response": serialized,
+                }
+                return result
+
+            wrapped_search._recording_original = original_search
+            search.search_resources = wrapped_search
+
+    def list_test_entities(self, client):
+        response = client._manager.search.search_resources(
+            "record", tags=TEST_TAGS,
+        )
+        records = []
+        if hasattr(response, "json"):
+            data = response.json()
+            items = data.get("items", data) if isinstance(data, dict) else data
+        elif isinstance(response, list):
+            items = response
         else:
-            # Phase 5: cleanup
-            cleanup_performed = False
-            if cleanup and entity_id is not None:
-                cleanup_performed = self._try_cleanup(client, entity_id)
-            elif entity_id is not None:
-                click.echo(f"  Skipping cleanup (entity {entity_id} kept on server)")
+            items = []
 
-            # Write manifest
-            try:
-                from unitpackage import __version__ as up_version
-            except (ImportError, AttributeError):
-                up_version = "unknown"
-
-            manifest = {
-                "backend": self.backend_name,
-                "version": version,
-                "recorded_at": datetime.now(timezone.utc).isoformat(),
-                "unitpackage_version": up_version,
-                "entity_id": entity_id,
-                "cleanup_performed": cleanup_performed,
-                "test_data": {
-                    "csv_columns": ["t", "E", "j"],
-                    "field_units": {f["name"]: f["unit"] for f in TEST_FIELDS},
-                    "title": title,
-                },
-            }
-            _save_json(manifest, version_dir, "manifest.json")
-
-            # Redact sensitive information from all fixture files
-            replacements = self.get_redaction_replacements(client, info_dict)
-            replacements.extend(self._extract_additional_replacements(version_dir))
-            if replacements:
-                _redact_directory(version_dir, replacements)
-                click.echo(f"  Redacted {len(replacements)} sensitive value(s) from fixture files")
-
-            click.echo(f"Fixture recording complete: {version_dir}")
-
-    def _try_cleanup(self, client, entity_id):
-        """Best-effort cleanup of the test entity."""
-        try:
-            self.delete_entity(client, entity_id)
-            click.echo(f"  Cleaned up test entity {entity_id}")
-            return True
-        except Exception as exc:
-            click.echo(
-                f"  WARNING: Cleanup of entity {entity_id} failed: {exc}\n"
-                "  Manual cleanup required.",
-                err=True,
+        for item in items:
+            rec_id = (
+                item.get("id") if isinstance(item, dict)
+                else getattr(item, "id", None)
             )
-            return False
+            rec_title = (
+                item.get("title", "") if isinstance(item, dict)
+                else getattr(item, "title", "")
+            )
+            if rec_id is not None:
+                records.append((rec_id, rec_title))
+        return records
+
+    def delete_entity(self, client, entity_id):
+        record = client._manager.record(id=entity_id)
+        record.delete()
 
 
 # ---------------------------------------------------------------------------
-# Client resolution helper
+# Client resolution helpers
 # ---------------------------------------------------------------------------
 
 
@@ -539,12 +838,48 @@ def _resolve_elabftw_client(host, api_key, no_verify_ssl, profile):
     )
 
 
+def _resolve_kadi_client(host, pat, no_verify_ssl, profile):
+    from unitpackage.eln.kadi import KadiClient
+
+    if host and pat:
+        return KadiClient(
+            host=host, pat=pat,
+            verify_ssl=not no_verify_ssl,
+        )
+
+    from unitpackage.config import config_path, get_profile
+
+    settings = get_profile("kadi", profile=profile)
+    if not settings:
+        raise click.UsageError(
+            "Missing Kadi4Mat credentials. Provide --host and --pat, "
+            "set KADI_HOST/KADI_PAT environment variables, "
+            f"or add a [kadi.<name>] section to {config_path()}."
+        )
+
+    resolved_host = host or settings.get("host")
+    resolved_pat = pat or settings.get("pat")
+    if not resolved_host or not resolved_pat:
+        raise click.UsageError("Missing host or PAT in credentials.")
+
+    verify_ssl = not no_verify_ssl if no_verify_ssl else settings.get("verify_ssl", True)
+    return KadiClient(
+        host=resolved_host, pat=resolved_pat,
+        verify_ssl=verify_ssl,
+    )
+
+
 # ---------------------------------------------------------------------------
 # CLI
 # ---------------------------------------------------------------------------
 
 
-@click.command()
+@click.group()
+def cli():
+    """Record API fixtures from a real ELN instance for mock-based testing."""
+
+
+@cli.command()
 @click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging")
 @click.option("--host", envvar="ELABFTW_HOST", default=None, help="eLabFTW server URL")
 @click.option("--api-key", envvar="ELABFTW_API_KEY", default=None, help="eLabFTW API key")
@@ -553,22 +888,43 @@ def _resolve_elabftw_client(host, api_key, no_verify_ssl, profile):
 @click.option("--version", "version_override", default=None, help="Override detected version")
 @click.option("--no-cleanup", is_flag=True, default=False, help="Keep test entity on server")
 @click.option("--outdir", default=None, help="Output directory (default: test/fixtures/elabftw)")
-def cli(verbose, host, api_key, no_verify_ssl, profile, version_override, no_cleanup, outdir):
-    """Record API fixtures from a real eLabFTW instance for mock-based testing."""
+def elabftw(verbose, host, api_key, no_verify_ssl, profile, version_override, no_cleanup, outdir):
+    """Record API fixtures from a real eLabFTW instance."""
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
 
     client = _resolve_elabftw_client(host, api_key, no_verify_ssl, profile)
     outdir = outdir or str(FIXTURES_DIR / "elabftw")
     try:
-        ElabFTWRecorder().record(client, outdir, cleanup=not no_cleanup, version_override=version_override)
+        ElabFTWRecorder().record(
+            client, outdir, cleanup=not no_cleanup, version_override=version_override,
+        )
     finally:
-        # Explicitly shut down the thread pool so Python's atexit doesn't
-        # hit a closed file descriptor in ApiClient.__del__.
         pool = getattr(client._api_client, "pool", None)
         if pool is not None:
             pool.close()
             pool.join()
+
+
+@cli.command()
+@click.option("-v", "--verbose", is_flag=True, help="Enable verbose logging")
+@click.option("--host", envvar="KADI_HOST", default=None, help="Kadi4Mat server URL")
+@click.option("--pat", envvar="KADI_PAT", default=None, help="Kadi4Mat personal access token")
+@click.option("--no-verify-ssl", is_flag=True, default=False, help="Disable SSL verification")
+@click.option("--profile", default=None, help="Config profile name")
+@click.option("--version", "version_override", default=None, help="Override detected version")
+@click.option("--no-cleanup", is_flag=True, default=False, help="Keep test record on server")
+@click.option("--outdir", default=None, help="Output directory (default: test/fixtures/kadi)")
+def kadi(verbose, host, pat, no_verify_ssl, profile, version_override, no_cleanup, outdir):
+    """Record API fixtures from a real Kadi4Mat instance."""
+    level = logging.DEBUG if verbose else logging.INFO
+    logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
+
+    client = _resolve_kadi_client(host, pat, no_verify_ssl, profile)
+    outdir = outdir or str(FIXTURES_DIR / "kadi")
+    KadiRecorder().record(
+        client, outdir, cleanup=not no_cleanup, version_override=version_override,
+    )
 
 
 if __name__ == "__main__":

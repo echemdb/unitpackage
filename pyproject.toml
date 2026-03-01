@@ -21,7 +21,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-elabftw = ["elabapi-python<5.4.0"]
+elabftw = ["elabapi-python<5.4.0"] # workaround until 5.4.1 is released
+kadi = ["kadi-apy @ git+https://gitlab.com/iam-cms/kadi-apy.git@master"] # until v0.49 is released
 
 [project.scripts]
 unitpackage = "unitpackage.entrypoint:cli"
@@ -71,6 +72,10 @@ unitpackage = "unitpackage"
 [tool.pixi.pypi-dependencies]
 unitpackage = { path = ".", editable = true }
 
+[tool.pixi.pypi-options.dependency-overrides]
+xmlhelpy = { git = "https://gitlab.com/iam-cms/workflows/xmlhelpy.git", branch= "master" } # use until kadi-apy v0.49 is released
+lxml = ">=6.0.0,<7"  # use until kadi-apy v0.49 is released
+
 [tool.pixi.feature.python-310.dependencies]
 python = "3.10.*"
 
@@ -95,11 +100,14 @@ pytest-env = "*"
 
 [tool.pixi.feature.test.pypi-dependencies]
 elabapi-python = "<5.4.0" #workaround until 5.4.1 is released
+kadi-apy = { git = "https://gitlab.com/iam-cms/kadi-apy.git", branch = "master"} # until v0.49 is released
 
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
 test-elabftw = "pytest -m elabftw test/"
-record-elabftw = "python test/record_fixtures.py"
+test-kadi = "pytest -m kadi test/"
+record-elabftw = "python test/record_fixtures.py elabftw"
+record-kadi = "python test/record_fixtures.py kadi"
 
 [tool.pixi.feature.lint.dependencies]
 black = "*"
