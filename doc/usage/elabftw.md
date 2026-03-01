@@ -162,7 +162,7 @@ entry.save(outdir="my_data/")
 
 ### Fetching Multiple Entries
 
-`fetch_entries` retrieves all items that have unitpackage metadata.
+`fetch_entries` retrieves all items that carry the `unitpackage` metadata key.
 The optional `tags` parameter filters by eLabFTW tags (AND logic: all specified tags must be present).
 
 ```python

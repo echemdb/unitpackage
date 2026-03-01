@@ -41,5 +41,7 @@ api/loaders/eclab_fields.md
 :caption: "ELN Integration:"
 api/eln/elabftw.md
 api/eln/elabftw_cli.md
+api/eln/kadi.md
+api/eln/kadi_cli.md
 api/config.md
 ```
