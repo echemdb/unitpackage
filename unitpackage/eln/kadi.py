@@ -62,7 +62,11 @@ from pathlib import Path
 import pandas as pd
 from kadi_apy import KadiManager
 
-from unitpackage.eln import BaseELNClient, apply_datapackage_descriptor, build_datapackage_descriptor
+from unitpackage.eln import (
+    BaseELNClient,
+    apply_datapackage_descriptor,
+    build_datapackage_descriptor,
+)
 from unitpackage.entry import Entry
 
 logger = logging.getLogger("unitpackage")
@@ -97,7 +101,10 @@ def _kadi_extras_to_python(extra):
     """Convert a Kadi4Mat extras entry back to a plain Python value."""
     extra_type = extra.get("type")
     if extra_type == "dict":
-        return {child["key"]: _kadi_extras_to_python(child) for child in extra.get("value", [])}
+        return {
+            child["key"]: _kadi_extras_to_python(child)
+            for child in extra.get("value", [])
+        }
     if extra_type == "list":
         return [_kadi_extras_to_python(item) for item in extra.get("value", [])]
     if extra_type == "int":
@@ -249,7 +256,7 @@ class KadiClient(BaseELNClient):
             return response.json()
         return {"status": "connected"}
 
-    def fetch_entry(self, entity_id):
+    def fetch_entry(self, entity_id):  # pylint: disable=too-many-locals
         r"""
         Fetch a record from Kadi4Mat and return it as a unitpackage Entry.
 
@@ -267,7 +274,11 @@ class KadiClient(BaseELNClient):
         record = self._manager.record(id=entity_id)
 
         record_meta = record.meta if isinstance(record.meta, dict) else {}
-        title = record_meta.get("title") or record_meta.get("identifier") or f"record_{entity_id}"
+        title = (
+            record_meta.get("title")
+            or record_meta.get("identifier")
+            or f"record_{entity_id}"
+        )
         logger.info("Fetched record %d: %s", entity_id, title)
 
         # Only records created by unitpackage are supported.
@@ -289,11 +300,17 @@ class KadiClient(BaseELNClient):
             descriptor_dict = json.loads(unitpackage_extra.get("value", "{}"))
 
         if not isinstance(descriptor_dict, dict):
-            raise ValueError(f"Record {entity_id}: failed to decode 'unitpackage' metadatum.")
+            raise ValueError(
+                f"Record {entity_id}: failed to decode 'unitpackage' metadatum."
+            )
 
         resources = descriptor_dict.get("resources", [])
-        if not (isinstance(resources, list) and resources and isinstance(resources[0], dict)):
-            raise ValueError(f"Record {entity_id}: 'unitpackage' descriptor has no resources.")
+        if not (
+            isinstance(resources, list) and resources and isinstance(resources[0], dict)
+        ):
+            raise ValueError(
+                f"Record {entity_id}: 'unitpackage' descriptor has no resources."
+            )
 
         target_csv_name = Path(resources[0].get("path", "")).name
         if not target_csv_name:
@@ -372,8 +389,14 @@ class KadiClient(BaseELNClient):
 
         entries = []
         for rec in records:
-            rec_id = rec.get("id") if isinstance(rec, dict) else getattr(rec, "id", None)
-            rec_title = rec.get("title", "") if isinstance(rec, dict) else getattr(rec, "title", "")
+            rec_id = (
+                rec.get("id") if isinstance(rec, dict) else getattr(rec, "id", None)
+            )
+            rec_title = (
+                rec.get("title", "")
+                if isinstance(rec, dict)
+                else getattr(rec, "title", "")
+            )
             if rec_id is None:
                 continue
             try:
@@ -458,5 +481,3 @@ class KadiClient(BaseELNClient):
             logger.info("Added tags %s to record %s", tags, entity_id)
 
         return entity_id
-
-

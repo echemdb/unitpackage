@@ -113,7 +113,9 @@ def kadi(ctx, host, pat, no_verify_ssl, profile):
         resolved_pat = pat or settings.get("pat")
 
         if not resolved_host:
-            raise click.UsageError("Missing host URL (not in CLI, env, or config profile).")
+            raise click.UsageError(
+                "Missing host URL (not in CLI, env, or config profile)."
+            )
         if not resolved_pat:
             raise click.UsageError("Missing PAT (not in CLI, env, or config profile).")
 
@@ -123,7 +125,9 @@ def kadi(ctx, host, pat, no_verify_ssl, profile):
             verify_ssl = settings.get("verify_ssl", True)
 
         try:
-            client = KadiClient(host=resolved_host, pat=resolved_pat, verify_ssl=verify_ssl)
+            client = KadiClient(
+                host=resolved_host, pat=resolved_pat, verify_ssl=verify_ssl
+            )
         except Exception as e:
             raise click.ClickException(
                 f"Failed to create Kadi4Mat client from config: {e}"
@@ -268,7 +272,7 @@ def upload(ctx, file, title, tags):
 
     client = ctx.obj["client"]
 
-    try:
+    try:  # pylint: disable=duplicate-code
         entry = Entry.from_local(file)
     except Exception as e:
         raise click.ClickException(
@@ -276,7 +280,9 @@ def upload(ctx, file, title, tags):
         ) from e
 
     try:
-        record_id = client.upload_entry(entry, title=title, tags=list(tags) if tags else None)
+        record_id = client.upload_entry(
+            entry, title=title, tags=list(tags) if tags else None
+        )
     except Exception as e:
         raise click.ClickException(f"Failed to upload entry to Kadi4Mat: {e}") from e
 

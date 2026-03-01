@@ -61,10 +61,11 @@ def config():
 )
 @click.option(
     "--set-default/--no-set-default",
+    "set_as_default",
     default=False,
     help="Set this profile as the default",
 )
-def add(profile_name, host, api_key, verify_ssl, set_default):
+def add(profile_name, host, api_key, verify_ssl, set_as_default):
     r"""Add a new eLabFTW connection profile."""
     cfg = load_config()
     backend = cfg.setdefault(BACKEND, {})
@@ -83,7 +84,7 @@ def add(profile_name, host, api_key, verify_ssl, set_default):
 
     # If this is the first profile or --set-default was given, set as default.
     actual_profiles = [k for k in backend if k != "default_profile"]
-    if set_default or len(actual_profiles) == 1:
+    if set_as_default or len(actual_profiles) == 1:
         backend["default_profile"] = profile_name
 
     save_config(cfg)

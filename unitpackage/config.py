@@ -124,19 +124,17 @@ def load_config(path=None):
     else:
         try:
             import tomli as tomllib
-        except ImportError:
+        except ImportError as exc:
             raise ImportError(
                 "The 'tomli' package is required for config file support "
                 "on Python < 3.11. Install it with: pip install tomli"
-            )
+            ) from exc
 
     try:
         with open(path, "rb") as f:
             return tomllib.load(f)
     except Exception as exc:
-        raise ValueError(
-            f"Failed to parse configuration file {path}: {exc}"
-        ) from exc
+        raise ValueError(f"Failed to parse configuration file {path}: {exc}") from exc
 
 
 def get_profile(backend, profile=None, config=None):
@@ -184,8 +182,11 @@ def get_profile(backend, profile=None, config=None):
         return backend_section.get(default_name, {})
 
     # Auto-select when there is exactly one profile
-    profiles = [k for k, v in backend_section.items()
-                if k != "default_profile" and isinstance(v, dict)]
+    profiles = [
+        k
+        for k, v in backend_section.items()
+        if k != "default_profile" and isinstance(v, dict)
+    ]
     if len(profiles) == 1:
         return backend_section[profiles[0]]
 
@@ -210,10 +211,7 @@ def list_profiles(backend, config=None):
     """
     if config is None:
         config = load_config()
-    return [
-        k for k in config.get(backend, {})
-        if k != "default_profile"
-    ]
+    return [k for k in config.get(backend, {}) if k != "default_profile"]
 
 
 def _toml_value(value):

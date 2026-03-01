@@ -73,7 +73,6 @@ class BaseELNClient(abc.ABC):
         """Upload a unitpackage entry to the ELN and return the created entity ID."""
 
 
-
 def build_datapackage_descriptor(entry):
     r"""
     Build the frictionless datapackage descriptor dict for an Entry.

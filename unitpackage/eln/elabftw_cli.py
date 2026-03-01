@@ -56,6 +56,8 @@ import logging
 
 import click
 
+from unitpackage.eln.elabftw_config_cli import config
+
 logger = logging.getLogger("unitpackage")
 
 
@@ -119,7 +121,8 @@ def _resolve_client(ctx):
     if host and api_key:
         try:
             client = ElabFTWClient(
-                host=host, api_key=api_key,
+                host=host,
+                api_key=api_key,
                 verify_ssl=not no_verify_ssl,
             )
         except Exception as e:
@@ -144,15 +147,20 @@ def _resolve_client(ctx):
         resolved_api_key = api_key or settings.get("api_key")
 
         if not resolved_host:
-            raise click.UsageError("Missing host URL (not in CLI, env, or config profile).")
+            raise click.UsageError(
+                "Missing host URL (not in CLI, env, or config profile)."
+            )
         if not resolved_api_key:
-            raise click.UsageError("Missing API key (not in CLI, env, or config profile).")
+            raise click.UsageError(
+                "Missing API key (not in CLI, env, or config profile)."
+            )
 
         verify_ssl = False if no_verify_ssl else settings.get("verify_ssl", True)
 
         try:
             client = ElabFTWClient(
-                host=resolved_host, api_key=resolved_api_key,
+                host=resolved_host,
+                api_key=resolved_api_key,
                 verify_ssl=verify_ssl,
             )
         except Exception as e:
@@ -216,9 +224,7 @@ def fetch(ctx, entity_id, outdir):
     try:
         entry = client.fetch_entry(entity_id)
     except Exception as e:
-        raise click.ClickException(
-            f"Failed to fetch entry {entity_id}: {e}"
-        ) from e
+        raise click.ClickException(f"Failed to fetch entry {entity_id}: {e}") from e
 
     os.makedirs(outdir, exist_ok=True)
     entry.save(outdir=outdir)
@@ -304,7 +310,7 @@ def upload(ctx, file, title, tags):
 
     client = _resolve_client(ctx)
 
-    try:
+    try:  # pylint: disable=duplicate-code
         entry = Entry.from_local(file)
     except Exception as e:
         raise click.ClickException(
@@ -320,6 +326,4 @@ def upload(ctx, file, title, tags):
 
 
 # Register the config management subgroup.
-from unitpackage.eln.elabftw_config_cli import config  # noqa: E402
-
 elabftw.add_command(config)
