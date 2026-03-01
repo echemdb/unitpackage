@@ -1956,7 +1956,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/29/9c/47293c58cc91769130fbf85531280e8cc7868f7fbb6d92f4670071b9cb3e/lxml-6.0.2-cp314-cp314-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -2337,7 +2337,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/c8/20/a7760713e65888db79bbae4f6146a6ae5c04e4a204a3c48896c408cd6ed2/lxml-6.0.2-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -2713,7 +2713,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/c8/e8/c128e37589463668794d503afaeb003987373c5f94d667124ffd8078bbd9/lxml-6.0.2-cp314-cp314-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -3090,7 +3090,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/03/15/d4a377b385ab693ce97b472fe0c77c2b16ec79590e688b3ccc71fba19884/lxml-6.0.2-cp314-cp314-macosx_10_13_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -3460,7 +3460,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/e3/e0/c96cf13eccd20c9421ba910304dae0f619724dcf1702864fd59dd386404d/lxml-6.0.2-cp314-cp314-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
@@ -3818,6 +3818,16 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zlib-ng-2.3.3-hceb46e0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb78ec9c_6.conda
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+      - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: https://files.pythonhosted.org/packages/29/9c/47293c58cc91769130fbf85531280e8cc7868f7fbb6d92f4670071b9cb3e/lxml-6.0.2-cp314-cp314-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
+      - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
+      - pypi: https://files.pythonhosted.org/packages/10/c2/6604a71269e0c1bd75656d5a001432d16f2cc5b8c057140ec797155c295e/rdflib-7.6.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/45/f8/d200701b30e0f3a5feb86668b5fe0c5f440ac896195f731c0a5e3ceacb4a/urllib3_future-2.16.900-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/e3/d9/e81c8de18b3edd22e1884ed6b8cfc2ce260addb110fd519781ea54274e38/wassima-2.0.5-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/workflows/xmlhelpy.git#bad09b302a88df4ca2a36634578da9fd8ee0a471
       - pypi: ./
       linux-aarch64:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-20_gnu.conda
@@ -4160,6 +4170,16 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zlib-ng-2.3.3-ha7cb516_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/zstd-1.5.7-h85ac4a6_6.conda
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+      - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: https://files.pythonhosted.org/packages/3a/ea/a43ba9bb750d4ffdd885f2cd333572f5bb900cd2408b67fdda07e85978a0/lxml-6.0.2-cp314-cp314-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
+      - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
+      - pypi: https://files.pythonhosted.org/packages/10/c2/6604a71269e0c1bd75656d5a001432d16f2cc5b8c057140ec797155c295e/rdflib-7.6.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/45/f8/d200701b30e0f3a5feb86668b5fe0c5f440ac896195f731c0a5e3ceacb4a/urllib3_future-2.16.900-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/e3/d9/e81c8de18b3edd22e1884ed6b8cfc2ce260addb110fd519781ea54274e38/wassima-2.0.5-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/workflows/xmlhelpy.git#bad09b302a88df4ca2a36634578da9fd8ee0a471
       - pypi: ./
       osx-64:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -4498,6 +4518,16 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zlib-ng-2.3.3-h8bce59a_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/zstd-1.5.7-h3eecb57_6.conda
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
+      - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: https://files.pythonhosted.org/packages/c8/e8/c128e37589463668794d503afaeb003987373c5f94d667124ffd8078bbd9/lxml-6.0.2-cp314-cp314-macosx_10_13_x86_64.whl
+      - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
+      - pypi: https://files.pythonhosted.org/packages/10/c2/6604a71269e0c1bd75656d5a001432d16f2cc5b8c057140ec797155c295e/rdflib-7.6.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/45/f8/d200701b30e0f3a5feb86668b5fe0c5f440ac896195f731c0a5e3ceacb4a/urllib3_future-2.16.900-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/e3/d9/e81c8de18b3edd22e1884ed6b8cfc2ce260addb110fd519781ea54274e38/wassima-2.0.5-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/workflows/xmlhelpy.git#bad09b302a88df4ca2a36634578da9fd8ee0a471
       - pypi: ./
       osx-arm64:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/_openmp_mutex-4.5-7_kmp_llvm.conda
@@ -4837,6 +4867,16 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zlib-ng-2.3.3-hed4e4f5_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/zstd-1.5.7-hbf9d68e_6.conda
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
+      - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: https://files.pythonhosted.org/packages/03/15/d4a377b385ab693ce97b472fe0c77c2b16ec79590e688b3ccc71fba19884/lxml-6.0.2-cp314-cp314-macosx_10_13_universal2.whl
+      - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
+      - pypi: https://files.pythonhosted.org/packages/10/c2/6604a71269e0c1bd75656d5a001432d16f2cc5b8c057140ec797155c295e/rdflib-7.6.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/45/f8/d200701b30e0f3a5feb86668b5fe0c5f440ac896195f731c0a5e3ceacb4a/urllib3_future-2.16.900-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/e3/d9/e81c8de18b3edd22e1884ed6b8cfc2ce260addb110fd519781ea54274e38/wassima-2.0.5-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/workflows/xmlhelpy.git#bad09b302a88df4ca2a36634578da9fd8ee0a471
       - pypi: ./
       win-64:
       - conda: https://conda.anaconda.org/conda-forge/win-64/_openmp_mutex-4.5-20_gnu.conda
@@ -5169,6 +5209,16 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/zlib-ng-2.3.3-h0261ad2_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/zstd-1.5.7-h534d264_6.conda
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
+      - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: https://files.pythonhosted.org/packages/e3/e0/c96cf13eccd20c9421ba910304dae0f619724dcf1702864fd59dd386404d/lxml-6.0.2-cp314-cp314-win_amd64.whl
+      - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
+      - pypi: https://files.pythonhosted.org/packages/10/c2/6604a71269e0c1bd75656d5a001432d16f2cc5b8c057140ec797155c295e/rdflib-7.6.0-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/45/f8/d200701b30e0f3a5feb86668b5fe0c5f440ac896195f731c0a5e3ceacb4a/urllib3_future-2.16.900-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/e3/d9/e81c8de18b3edd22e1884ed6b8cfc2ce260addb110fd519781ea54274e38/wassima-2.0.5-py3-none-any.whl
+      - pypi: git+https://gitlab.com/iam-cms/workflows/xmlhelpy.git#bad09b302a88df4ca2a36634578da9fd8ee0a471
       - pypi: ./
   python-310:
     channels:
@@ -5411,7 +5461,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/20/cf/cab09478699b003857ed6ebfe95e9fb9fa3d3c25f1353b905c9b73cfb624/lxml-6.0.2-cp310-cp310-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -5653,7 +5703,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/62/38/3073cd7e3e8dfc3ba3c3a139e33bee3a82de2bfb0925714351ad3d255c13/lxml-6.0.2-cp310-cp310-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -5890,7 +5940,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/12/64/27bcd07ae17ff5e5536e8d88f4c7d581b48963817a13de11f3ac3329bfa2/lxml-6.0.2-cp310-cp310-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -6128,7 +6178,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/db/8a/f8192a08237ef2fb1b19733f709db88a4c43bc8ab8357f01cb41a27e7f6a/lxml-6.0.2-cp310-cp310-macosx_10_9_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -6370,7 +6420,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/d1/70/bd42491f0634aad41bdfc1e46f5cff98825fb6185688dc82baa35d509f1a/lxml-6.0.2-cp310-cp310-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
@@ -6714,7 +6764,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/b8/89/ea8f91594bc5dbb879734d35a6f2b0ad50605d7fb419de2b63d4211765cc/lxml-6.0.2-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -7050,7 +7100,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/15/ae/bd813e87d8941d52ad5b65071b1affb48da01c4ed3c9c99e40abb266fbff/lxml-6.0.2-cp311-cp311-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -7380,7 +7430,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/28/66/1ced58f12e804644426b85d0bb8a4478ca77bc1761455da310505f1a3526/lxml-6.0.2-cp311-cp311-macosx_10_9_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -7711,7 +7761,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/77/d5/becbe1e2569b474a23f0c672ead8a29ac50b2dc1d5b9de184831bda8d14c/lxml-6.0.2-cp311-cp311-macosx_10_9_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -8035,7 +8085,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/e2/7d/ca6fb13349b473d5732fb0ee3eec8f6c80fc0688e76b7d79c1008481bf1f/lxml-6.0.2-cp311-cp311-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
@@ -8382,7 +8432,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/c6/d1/232b3309a02d60f11e71857778bfcd4acbdb86c07db8260caf7d008b08f8/lxml-6.0.2-cp312-cp312-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -8721,7 +8771,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/c8/20/a7760713e65888db79bbae4f6146a6ae5c04e4a204a3c48896c408cd6ed2/lxml-6.0.2-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -9054,7 +9104,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/37/6f/9aae1008083bb501ef63284220ce81638332f9ccbfa53765b2b7502203cf/lxml-6.0.2-cp312-cp312-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -9388,7 +9438,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/f3/c8/8ff2bc6b920c84355146cd1ab7d181bc543b89241cfb1ebee824a7c81457/lxml-6.0.2-cp312-cp312-macosx_10_13_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -9715,7 +9765,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/f7/d7/0cdfb6c3e30893463fb3d1e52bc5f5f99684a03c29a0b6b605cfae879cd5/lxml-6.0.2-cp312-cp312-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
@@ -10059,7 +10109,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/d0/34/9e591954939276bb679b73773836c6684c22e56d05980e31d52a9a8deb18/lxml-6.0.2-cp313-cp313-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -10395,7 +10445,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/81/76/99de58d81fa702cc0ea7edae4f4640416c2062813a00ff24bd70ac1d9c9b/lxml-6.0.2-cp313-cp313-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -10727,7 +10777,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/5d/f4/2a94a3d3dfd6c6b433501b8d470a1960a20ecce93245cf2db1706adf6c19/lxml-6.0.2-cp313-cp313-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -11060,7 +11110,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/53/fd/4e8f0540608977aea078bf6d79f128e0e2c2bba8af1acf775c30baa70460/lxml-6.0.2-cp313-cp313-macosx_10_13_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -11386,7 +11436,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/fe/0a/4643ccc6bb8b143e9f9640aa54e38255f9d3b45feb2cbe7ae2ca47e8782e/lxml-6.0.2-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
@@ -11732,7 +11782,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/37/c9/75fdfd2ef673accba9b1ace28ffa2aaced23fba3209ac73521e441ae2265/jh2-5.0.10-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/29/9c/47293c58cc91769130fbf85531280e8cc7868f7fbb6d92f4670071b9cb3e/lxml-6.0.2-cp314-cp314-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/85/e9/364d72f7b5c33ed7fbd002aadc3d3da14dc32b0262d7069f197dabf942dc/qh3-1.6.0-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -12070,7 +12120,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/37/f3c59f62e771755b31b6d1ce9124d4ab40bc3a2206116bfd879a33c1b02f/jh2-5.0.10-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/3a/ea/a43ba9bb750d4ffdd885f2cd333572f5bb900cd2408b67fdda07e85978a0/lxml-6.0.2-cp314-cp314-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c8/d2/25007f01434ce128e833af337ae6c649aa592b0450b4aad5c5fecf6f868d/qh3-1.6.0-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl
@@ -12404,7 +12454,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/c8/e8/c128e37589463668794d503afaeb003987373c5f94d667124ffd8078bbd9/lxml-6.0.2-cp314-cp314-macosx_10_13_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -12739,7 +12789,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/63/8f/fe337b9104ab3a444a7b20baffc3dd54f3227a44f3037aba2a30bf36fefd/jh2-5.0.10-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/03/15/d4a377b385ab693ce97b472fe0c77c2b16ec79590e688b3ccc71fba19884/lxml-6.0.2-cp314-cp314-macosx_10_13_universal2.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ee/30/6c9689534eb6b47f1d56c67381f062c090e2fa6a38785b5c3e96e1d95be6/qh3-1.6.0-cp37-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl
@@ -13067,7 +13117,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/42/17/8ca6b197d45104fc7efb67a887a56f113059ebe26713235cf01158dc859c/elabapi_python-5.3.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/96/ac/92f97f07f748bdc9280c5d50e787773bef188c29c32f6804f2fc72cca725/jh2-5.0.10-cp37-abi3-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/ec/e1db9922bceb168197a558a2b8c03a7963f1afe93517ddd3cf99f202f996/jsonref-1.1.0-py3-none-any.whl
-      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+      - pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
       - pypi: https://files.pythonhosted.org/packages/e3/e0/c96cf13eccd20c9421ba910304dae0f619724dcf1702864fd59dd386404d/lxml-6.0.2-cp314-cp314-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/85/63/e13cff780ef2edbfcb81e3a714417822f4b967dac0bb0388ad3146f30a95/niquests-3.17.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/ba/32/9b2acecfacd214f9255fea86806964dd2b24ac9b661c735056106dea2b60/qh3-1.6.0-cp37-abi3-win_amd64.whl
@@ -23388,7 +23438,29 @@ packages:
   - pkg:pypi/jupytext?source=hash-mapping
   size: 113306
   timestamp: 1769455798581
-- pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?branch=master#cf072e07653b9a03e66db00286adcbd649024109
+- pypi: git+https://gitlab.com/iam-cms/kadi-apy.git#cf072e07653b9a03e66db00286adcbd649024109
+  name: kadi-apy
+  version: 0.48.1
+  requires_dist:
+  - click>=8.2.0,<8.4.0
+  - jsonref>=1.1.0,<2.0.0
+  - python-dateutil>=2.8.2,<3.0.0
+  - rdflib>=7.0.0,<8.0.0
+  - niquests>=3.13.0,<4.0.0
+  - xmlhelpy>=0.14.0,<0.15.0
+  - autoflake==2.3.1 ; extra == 'dev'
+  - black==25.1.0 ; extra == 'dev'
+  - build==1.2.2.post1 ; extra == 'dev'
+  - isort==6.0.1 ; extra == 'dev'
+  - myst-parser==3.0.1 ; extra == 'dev'
+  - pre-commit==4.0.1 ; extra == 'dev'
+  - pylint==3.3.7 ; extra == 'dev'
+  - sphinx==7.4.7 ; extra == 'dev'
+  - sphinx-click==6.0.0 ; extra == 'dev'
+  - sphinx-rtd-theme==3.0.2 ; extra == 'dev'
+  - twine==6.1.0 ; extra == 'dev'
+  requires_python: '>=3.9,<3.15'
+- pypi: git+https://gitlab.com/iam-cms/kadi-apy.git?rev=cf072e07653b9a03e66db00286adcbd649024109#cf072e07653b9a03e66db00286adcbd649024109
   name: kadi-apy
   version: 0.48.1
   requires_dist:
@@ -41386,7 +41458,7 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.12.0
-  sha256: c79dd87c947fe3417fbfa20376508323354011ef1c3272a02d045e8c9ce3283e
+  sha256: d17fb28b77f56a69901219956ec38bc17bda548b930251cc09aa1a764d7078a9
   requires_dist:
   - astropy>=5,<8
   - click>=8,<9
@@ -41397,7 +41469,7 @@ packages:
   - pybtex>=0.25,<0.26
   - tomli>=1.0 ; python_full_version < '3.11'
   - elabapi-python<5.4.0 ; extra == 'elabftw'
-  - kadi-apy @ git+https://gitlab.com/iam-cms/kadi-apy.git@master ; extra == 'kadi'
+  - kadi-apy @ git+https://gitlab.com/iam-cms/kadi-apy.git@cf072e07653b9a03e66db00286adcbd649024109 ; extra == 'kadi'
   requires_python: '>=3.10'
 - conda: https://conda.anaconda.org/conda-forge/noarch/uri-template-1.3.0-pyhd8ed1ab_1.conda
   sha256: e0eb6c8daf892b3056f08416a96d68b0a358b7c46b99c8a50481b22631a4dfc0

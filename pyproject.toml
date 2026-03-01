@@ -22,7 +22,7 @@ dependencies = [
 
 [project.optional-dependencies]
 elabftw = ["elabapi-python<5.4.0"] # workaround until 5.4.1 is released
-kadi = ["kadi-apy @ git+https://gitlab.com/iam-cms/kadi-apy.git@master"] # until v0.49 is released
+kadi = ["kadi-apy @ git+https://gitlab.com/iam-cms/kadi-apy.git@cf072e07653b9a03e66db00286adcbd649024109"] # until v0.49 is released
 
 [project.scripts]
 unitpackage = "unitpackage.entrypoint:cli"
@@ -73,7 +73,7 @@ unitpackage = "unitpackage"
 unitpackage = { path = ".", editable = true }
 
 [tool.pixi.pypi-options.dependency-overrides]
-xmlhelpy = { git = "https://gitlab.com/iam-cms/workflows/xmlhelpy.git", branch= "master" } # use until kadi-apy v0.49 is released
+xmlhelpy = { git = "https://gitlab.com/iam-cms/workflows/xmlhelpy.git", rev= "bad09b302a88df4ca2a36634578da9fd8ee0a471" } # use until kadi-apy v0.49 is released
 lxml = ">=6.0.0,<7"  # use until kadi-apy v0.49 is released
 
 [tool.pixi.feature.python-310.dependencies]
@@ -100,7 +100,7 @@ pytest-env = "*"
 
 [tool.pixi.feature.test.pypi-dependencies]
 elabapi-python = "<5.4.0" #workaround until 5.4.1 is released
-kadi-apy = { git = "https://gitlab.com/iam-cms/kadi-apy.git", branch = "master"} # until v0.49 is released
+kadi-apy = { git = "https://gitlab.com/iam-cms/kadi-apy.git", rev = "cf072e07653b9a03e66db00286adcbd649024109"} # until v0.49 is released
 
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
@@ -134,7 +134,7 @@ sphinx_rtd_theme = "*"
 plotly = ">=5,<6" # workaround for https://github.com/echemdb/unitpackage/issues/100
 
 [tool.pixi.feature.doc.pypi-dependencies]
-unitpackage = { path = ".", editable = true, extras = ["elabftw"] }
+unitpackage = { path = ".", editable = true, extras = ["elabftw", "kadi"] }
 
 [tool.pixi.feature.doc.tasks]
 doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"
