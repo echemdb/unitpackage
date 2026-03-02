@@ -64,7 +64,11 @@ from pathlib import Path
 import elabapi_python
 import pandas as pd
 
-from unitpackage.eln import BaseELNClient, apply_datapackage_descriptor, build_datapackage_descriptor
+from unitpackage.eln import (
+    BaseELNClient,
+    apply_datapackage_descriptor,
+    build_datapackage_descriptor,
+)
 from unitpackage.entry import Entry
 
 logger = logging.getLogger("unitpackage")
@@ -116,9 +120,7 @@ class ElabFTWClient(BaseELNClient):
 
         """
         if entity_type != "items":
-            raise ValueError(
-                f"Invalid entity_type '{entity_type}'. Must be 'items'."
-            )
+            raise ValueError(f"Invalid entity_type '{entity_type}'. Must be 'items'.")
         self._entity_type = entity_type
 
         configuration = elabapi_python.Configuration()
@@ -210,7 +212,9 @@ class ElabFTWClient(BaseELNClient):
 
         verify_ssl = settings.get("verify_ssl", True)
         entity_type = settings.get("entity_type", "items")
-        return cls(host=host, api_key=api_key, entity_type=entity_type, verify_ssl=verify_ssl)
+        return cls(
+            host=host, api_key=api_key, entity_type=entity_type, verify_ssl=verify_ssl
+        )
 
     def info(self):
         r"""
@@ -231,7 +235,7 @@ class ElabFTWClient(BaseELNClient):
         response = info_client.get_info()
         return response.to_dict()
 
-    def _get_api(self, entity_type):
+    def _get_api(self):
         r"""
         Return the appropriate API client for the given entity type.
 
@@ -282,7 +286,7 @@ class ElabFTWClient(BaseELNClient):
         """
         from types import SimpleNamespace
 
-        api = self._get_api(self._entity_type)
+        api = self._get_api()
         response = api.get_item(entity_id, _preload_content=False)
         data = json.loads(response.data)
         return SimpleNamespace(**data)
@@ -387,7 +391,7 @@ class ElabFTWClient(BaseELNClient):
 
         """
         entity_type = self._entity_type
-        api = self._get_api(entity_type)
+        api = self._get_api()
 
         # Build keyword arguments for the API call
         kwargs = {"limit": 9999}
@@ -443,7 +447,9 @@ class ElabFTWClient(BaseELNClient):
 
         return entries
 
-    def upload_entry(self, entry, title=None, tags=None):
+    def upload_entry(
+        self, entry, title=None, tags=None
+    ):  # pylint: disable=too-many-locals
         r"""
         Upload a unitpackage Entry to eLabFTW as a new resource (item).
 
@@ -464,7 +470,7 @@ class ElabFTWClient(BaseELNClient):
 
         """
         entity_type = self._entity_type
-        api = self._get_api(entity_type)
+        api = self._get_api()
 
         # Build the creation body
         body = {}
@@ -483,7 +489,7 @@ class ElabFTWClient(BaseELNClient):
         resource_path = descriptor["resources"][0]["path"]
 
         # Create the item
-        _, status_code, headers = api.post_item_with_http_info(body=body)
+        _, _, headers = api.post_item_with_http_info(body=body)
 
         location = headers.get("Location")
         entity_id = int(location.split("/").pop())
@@ -522,7 +528,7 @@ class ElabFTWClient(BaseELNClient):
                 entity_type,
                 entity_id,
             )
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             logger.warning(
                 "Upload failed, deleting partially created %s %d",
                 entity_type,
@@ -530,7 +536,7 @@ class ElabFTWClient(BaseELNClient):
             )
             try:
                 api.delete_item(entity_id)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 logger.error(
                     "Failed to clean up %s %d after upload error",
                     entity_type,
