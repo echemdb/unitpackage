@@ -36,3 +36,10 @@ api/loaders/eclabloader.md
 api/loaders/gamryloader.md
 api/loaders/eclab_fields.md
 ```
+
+```{toctree}
+:caption: "ELN Integration:"
+api/eln/elabftw.md
+api/eln/elabftw_cli.md
+api/config.md
+```

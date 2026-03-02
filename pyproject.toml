@@ -17,7 +17,11 @@ dependencies = [
     "pandas>=1.3,<4",
     "plotly>=5,<7",
     "pybtex>=0.25,<0.26",
+    "tomli>=1.0; python_version < '3.11'",
 ]
+
+[project.optional-dependencies]
+elabftw = ["elabapi-python<5.4.0"]
 
 [project.scripts]
 unitpackage = "unitpackage.entrypoint:cli"
@@ -27,6 +31,7 @@ packages = [
     "unitpackage",
     "unitpackage.database",
     "unitpackage.electrochemistry",
+    "unitpackage.eln",
     "unitpackage.loaders",
     "unitpackage.test",
 ]
@@ -47,9 +52,11 @@ release = ["release"]
 
 [tool.pixi.dependencies]
 astropy = "*"
+click = "*"
 frictionless = "*"
 matplotlib-base = "*"
 pandas = "*"
+plotly = "*"
 pybtex = "*"
 python = "*"
 pixi-kernel = "*"
@@ -86,8 +93,13 @@ pytest-doctestplus = "*"
 pytest-remotedata = "*"
 pytest-env = "*"
 
+[tool.pixi.feature.test.pypi-dependencies]
+elabapi-python = "<5.4.0" #workaround until 5.4.1 is released
+
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
+test-elabftw = "pytest -m elabftw test/"
+record-elabftw = "python test/record_fixtures.py"
 
 [tool.pixi.feature.lint.dependencies]
 black = "*"
@@ -95,7 +107,7 @@ isort = "*"
 pylint = "*"
 
 [tool.pixi.feature.dev.tasks]
-test = "pixi run doctest"
+test = { depends-on = ["doctest"] }
 
 [tool.pixi.feature.lint.tasks]
 pylint = "pylint unitpackage"
@@ -111,12 +123,13 @@ myst-nb = "*"
 sphinx = "*"
 sphinx-design = "*"
 sphinx_rtd_theme = "*"
-
-[tool.pixi.feature.doc.pypi-options.dependency-overrides]
 plotly = ">=5,<6" # workaround for https://github.com/echemdb/unitpackage/issues/100
 
+[tool.pixi.feature.doc.pypi-dependencies]
+unitpackage = { path = ".", editable = true, extras = ["elabftw"] }
+
 [tool.pixi.feature.doc.tasks]
-doc = "cd doc && make html SPHINXOPTS='-j auto -W -n --keep-going'"
+doc = "cd doc && make html SPHINXOPTS='-W -n --keep-going'"
 linkcheck = "cd doc && make linkcheck"
 
 [tool.pixi.feature.dev.dependencies]
