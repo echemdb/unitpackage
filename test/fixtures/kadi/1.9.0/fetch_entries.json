@@ -1,0 +1,7 @@
+{
+  "operation": "fetch_entries",
+  "method": "client.fetch_entries",
+  "response": {
+    "count": 1
+  }
+}

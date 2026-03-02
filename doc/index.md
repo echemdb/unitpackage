@@ -159,5 +159,7 @@ usage/echemdb_usage.md
 usage/load_and_save.md
 usage/create_unitpackage.md
 usage/loaders.md
+usage/elabftw.md
+usage/kadi.md
 api.md
 ```

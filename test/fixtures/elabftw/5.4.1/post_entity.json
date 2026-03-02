@@ -1,0 +1,17 @@
+{
+  "operation": "post_entity",
+  "method": "ItemsApi.post_item_with_http_info",
+  "request": {
+    "body": {
+      "title": "unitpackage_fixture_test_72e2d055",
+      "tags": [
+        "unitpackage-test"
+      ]
+    }
+  },
+  "response": {
+    "status_code": 201,
+    "location": "https://elabftw.example.org/api/v2/items/435",
+    "entity_id": 435
+  }
+}

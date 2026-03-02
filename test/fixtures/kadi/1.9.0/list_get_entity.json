@@ -1,0 +1,66 @@
+{
+  "operation": "get_entity",
+  "method": "KadiManager.record",
+  "response": {
+    "_actions": {
+      "add_group_role": "https://kadi.example.org/api/v1/records/1/roles/groups",
+      "add_user_role": "https://kadi.example.org/api/v1/records/1/roles/users",
+      "delete": "https://kadi.example.org/api/v1/records/1",
+      "edit": "https://kadi.example.org/api/v1/records/1",
+      "link_collection": "https://kadi.example.org/api/v1/records/1/collections",
+      "link_record": "https://kadi.example.org/api/v1/records/1/records",
+      "new_upload": "https://kadi.example.org/api/v1/records/1/uploads"
+    },
+    "_links": {
+      "collections": "https://kadi.example.org/api/v1/records/1/collections",
+      "download_files": "https://kadi.example.org/api/v1/records/1/files/download",
+      "file_revisions": "https://kadi.example.org/api/v1/records/1/files/revisions",
+      "files": "https://kadi.example.org/api/v1/records/1/files",
+      "group_roles": "https://kadi.example.org/api/v1/records/1/roles/groups",
+      "records_from": "https://kadi.example.org/api/v1/records/1/records?direction=in",
+      "records_to": "https://kadi.example.org/api/v1/records/1/records?direction=out",
+      "revisions": "https://kadi.example.org/api/v1/records/1/revisions",
+      "self": "https://kadi.example.org/api/v1/records/1",
+      "uploads": "https://kadi.example.org/api/v1/records/1/uploads",
+      "user_roles": "https://kadi.example.org/api/v1/records/1/roles/users",
+      "view": "https://kadi.example.org/records/1"
+    },
+    "created_at": "2025-03-22T16:45:38.843151+00:00",
+    "creator": {
+      "_links": {
+        "collections": "https://kadi.example.org/api/v1/users/1/collections",
+        "groups": "https://kadi.example.org/api/v1/users/1/groups",
+        "identities": "https://kadi.example.org/api/v1/users/1/identities",
+        "records": "https://kadi.example.org/api/v1/users/1/records",
+        "self": "https://kadi.example.org/api/v1/users/1",
+        "templates": "https://kadi.example.org/api/v1/users/1/templates",
+        "view": "https://kadi.example.org/users/1"
+      },
+      "created_at": "2025-03-22T16:42:38.225687+00:00",
+      "displayname": "testuser",
+      "id": 1,
+      "identity": {
+        "email": "test@example.org",
+        "email_confirmed": false,
+        "type": "local",
+        "username": "testuser"
+      },
+      "is_sysadmin": true,
+      "orcid": null,
+      "state": "active",
+      "system_role": "member"
+    },
+    "description": "Sources:\n\nKadi4Mat Release History\ncan one of the images in a record be displayed in listing of records?\nWeb Fetchhttps://kadi4mat.readthedocs.io/en/stable/HISTORY.html\nFetched from https://kadi4mat.readthedocs.io/en/stable/HISTORY.html\nWeb SearchKadi4Mat record listing preview image thumbnail cover image records overview site:kadi4mat.readthedocs.io OR site:github.com/kadi4mat\nOUT\nWeb search results for query: \"Kadi4Mat record listing preview image thumbnail cover image records overview site:kadi4mat.readthedocs.io OR site:github.com/kadi4mat\"\n\nLinks: [{\"title\":\"kadi.modules.records.previews — Kadi4Mat 0.33.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/previews.html\"},{\"title\":\"Modules — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/apiref/modules.html\"},{\"title\":\"kadi.modules.records.files — Kadi4Mat 1.7.2 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/files.html\"},{\"title\":\"Plugin specs — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/apiref/plugins.html\"},{\"title\":\"Welcome to Kadi4Mat’s documentation! — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/\"},{\"title\":\"Welcome to Kadi4Mat’s documentation! — Kadi4Mat 1.0.1 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/\"},{\"title\":\"Release history — Kadi4Mat 1.3.1 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/HISTORY.html\"},{\"title\":\"Plugins — Kadi4Mat 0.22.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/installation/plugins.html\"},{\"title\":\"Library — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/apiref/lib.html\"},{\"title\":\"kadi.modules.collections.forms — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/collections/forms.html\"}]\n\nI found search results related to Kadi4Mat. The results show information about the project from both the official documentation and related modules. Here's a summary of the relevant findings:\n\nKadi4Mat is a generic and open source virtual research environment originally developed in the context of materials science, and can be used for the management of any type of research data within different research disciplines and use cases.\n\nThe search results include documentation on several record-related features:\n\n1. **Preview functionality**: There is built-in preview data functionality for files, which includes support for various file types including CSV, Excel, HDF5, and image previews.\n\n2. **Thumbnail support**: The system has maximum width/height specifications for image thumbnails set to 1,024 pixels.\n\n3. **Record overview pages**: The system includes overview pages for resources including Records, Files, Collections, Templates and Groups.\n\n4. **Record listing and navigation**: The system includes navigation to quickly navigate between records of a collection, based on the default record ordering.\n\nThe documentation shows that Kadi4Mat has comprehensive support for managing various types of files and records with preview capabilities and thumbnail generation for visual content.\n\n\nREMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks.\nWeb Fetchhttps://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/previews.html\nFetched from https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/previews.html\nNo. Kadi4Mat's preview system is file-level only — individual files (images, CSV, PDF, etc.) can be previewed when you're already on the record's detail page, but there is no concept of a \"cover image\" or representative thumbnail that gets shown in the record listing/overview page.\n\nThe listing view shows only record metadata (title, identifier, type, tags, dates), not any visual preview from the attached files.\n\nSo even if you upload a plot PNG to a record, it would only be visible once a user clicks into that specific record.\n\nSources:\n\nkadi.modules.records.previews\nKadi4Mat Release History",
+    "extras": [],
+    "id": 1,
+    "identifier": "test",
+    "last_modified": "2026-02-20T21:13:32.506928+00:00",
+    "license": null,
+    "plain_description": "Sources: Kadi4Mat Release History can one of the images in a record be displayed in listing of records? Web Fetchhttps://kadi4mat.readthedocs.io/en/stable/HISTORY.html Fetched from https://kadi4mat.readthedocs.io/en/stable/HISTORY.html Web SearchKadi4Mat record listing preview image thumbnail cover image records overview site:kadi4mat.readthedocs.io OR site:github.com/kadi4mat OUT Web search results for query: \"Kadi4Mat record listing preview image thumbnail cover image records overview site:kadi4mat.readthedocs.io OR site:github.com/kadi4mat\" Links: [{\"title\":\"kadi.modules.records.previews — Kadi4Mat 0.33.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/previews.html\"},{\"title\":\"Modules — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/apiref/modules.html\"},{\"title\":\"kadi.modules.records.files — Kadi4Mat 1.7.2 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/files.html\"},{\"title\":\"Plugin specs — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/apiref/plugins.html\"},{\"title\":\"Welcome to Kadi4Mat’s documentation! — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/\"},{\"title\":\"Welcome to Kadi4Mat’s documentation! — Kadi4Mat 1.0.1 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/\"},{\"title\":\"Release history — Kadi4Mat 1.3.1 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/HISTORY.html\"},{\"title\":\"Plugins — Kadi4Mat 0.22.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/installation/plugins.html\"},{\"title\":\"Library — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/stable/apiref/lib.html\"},{\"title\":\"kadi.modules.collections.forms — Kadi4Mat 1.8.0 documentation\",\"url\":\"https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/collections/forms.html\"}] I found search results related to Kadi4Mat. The results show information about the project from both the official documentation and related modules. Here's a summary of the relevant findings: Kadi4Mat is a generic and open source virtual research environment originally developed in the context of materials science, and can be used for the management of any type of research data within different research disciplines and use cases. The search results include documentation on several record-related features: Preview functionality: There is built-in preview data functionality for files, which includes support for various file types including CSV, Excel, HDF5, and image previews. Thumbnail support: The system has maximum width/height specifications for image thumbnails set to 1,024 pixels. Record overview pages: The system includes overview pages for resources including Records, Files, Collections, Templates and Groups. Record listing and navigation: The system includes navigation to quickly navigate between records of a collection, based on the default record ordering. The documentation shows that Kadi4Mat has comprehensive support for managing various types of files and records with preview capabilities and thumbnail generation for visual content. REMINDER: You MUST include the sources above in your response to the user using markdown hyperlinks. Web Fetchhttps://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/previews.html Fetched from https://kadi4mat.readthedocs.io/en/latest/_modules/kadi/modules/records/previews.html No. Kadi4Mat's preview system is file-level only — individual files (images, CSV, PDF, etc.) can be previewed when you're already on the record's detail page, but there is no concept of a \"cover image\" or representative thumbnail that gets shown in the record listing/overview page. The listing view shows only record metadata (title, identifier, type, tags, dates), not any visual preview from the attached files. So even if you upload a plot PNG to a record, it would only be visible once a user clicks into that specific record. Sources: kadi.modules.records.previews Kadi4Mat Release History",
+    "state": "active",
+    "tags": [],
+    "title": "test",
+    "type": null,
+    "visibility": "private"
+  }
+}

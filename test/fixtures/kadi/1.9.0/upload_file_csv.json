@@ -1,0 +1,262 @@
+{
+  "operation": "upload_file_csv",
+  "method": "record.upload_file",
+  "request": {
+    "file_path": "fixture_test.csv"
+  },
+  "response": {
+    "status_code": 201,
+    "headers": {},
+    "trailers": {},
+    "raw": {
+      "headers": {},
+      "status": 201,
+      "version": 20,
+      "reason": "Created",
+      "decode_content": false,
+      "chunked": false,
+      "enforce_content_length": true,
+      "auto_close": true,
+      "msg": null,
+      "chunk_left": null,
+      "length_remaining": 0
+    },
+    "url": "https://kadi.example.org/api/v1/records/12/uploads/3cbcd403-eecc-492d-9c78-244bcc6d5f11",
+    "encoding": "utf-8",
+    "history": [],
+    "reason": "Created",
+    "cookies": {},
+    "elapsed": "0:00:00.170318",
+    "request": {
+      "method": "PUT",
+      "url": "https://kadi.example.org/api/v1/records/12/uploads/3cbcd403-eecc-492d-9c78-244bcc6d5f11",
+      "headers": {},
+      "body": {},
+      "hooks": {
+        "pre_request": [],
+        "pre_send": [],
+        "on_upload": [],
+        "early_response": [],
+        "response": []
+      },
+      "conn_info": {
+        "established_latency": "0:00:00",
+        "http_version": "HTTP/2.0",
+        "certificate_der": "MIIDlDCCAxugAwIBAgISBsxKl2QSKrZLkVliRFedCf53MAoGCCqGSM49BAMDMDIxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQswCQYDVQQDEwJFNzAeFw0yNjAxMTAwOTU3NTBaFw0yNjA0MTAwOTU3NDlaMBoxGDAWBgNVBAMTD2thZGkucGZhdXplbi5kZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABLIkoh36rJBHVy07J53AaXCu6XFxfiPk1QHvfzr1A9ptCiThq4tWgxhVqvLnZaPB8XOgqUBoOvSG4b5H1krW2T6jggInMIICIzAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFKV3fa7lJ9oFUj0h4VOWRVhCN3jeMB8GA1UdIwQYMBaAFK5IntyHHUSgb9qi5WB0BHjCnACAMDIGCCsGAQUFBwEBBCYwJDAiBggrBgEFBQcwAoYWaHR0cDovL2U3LmkubGVuY3Iub3JnLzAaBgNVHREEEzARgg9rYWRpLnBmYXV6ZW4uZGUwEwYDVR0gBAwwCjAIBgZngQwBAgEwLgYDVR0fBCcwJTAjoCGgH4YdaHR0cDovL2U3LmMubGVuY3Iub3JnLzEyMC5jcmwwggENBgorBgEEAdZ5AgQCBIH+BIH7APkAdgBkEcRspBLsp4kcogIuALyrTygH1B41J6vq/tUDyX3N8AAAAZunjMyaAAAEAwBHMEUCIAty0FZA5fetcArohq8bJsX2Ea2gxn1hni2T2SuMbBZcAiEAp8uZjGtRbWwMlDjoKl43+wEHPwBkeG3RmEG+sTMKb4kAfwBxfpXzwjiKbbHjhEk9MeFaqWIIdi1CAOAFDNBntaZh4gAAAZunjM08AAgAAAUABpBMLAQDAEgwRgIhAOHl51k6AlQHirwj1KD3F+Eujya8l3avRTMuxRoLstyUAiEA6lnLUgFR0AGSaRNZqQ4sepTaobP+FLq85ucL7Cm7DDwwCgYIKoZIzj0EAwMDZwAwZAIwR6OSXX3H791RSqCLsVIvlCCM2l91Q80dUxjiBbqr/z+SV5vbqyl3C/HIe5R0evpUAjA9e46d3EFD+XH6ZHsN7i0/H8dQ5BJ1gQ8qQIvTrUUw1Us3yqMdNa+PI5//7rYDq7o=",
+        "certificate_dict": {
+          "subject": [
+            [
+              [
+                "commonName",
+                "kadi.pfauzen.de"
+              ]
+            ]
+          ],
+          "issuer": [
+            [
+              [
+                "countryName",
+                "US"
+              ]
+            ],
+            [
+              [
+                "organizationName",
+                "Let's Encrypt"
+              ]
+            ],
+            [
+              [
+                "commonName",
+                "E7"
+              ]
+            ]
+          ],
+          "version": 3,
+          "serialNumber": "06CC4A9764122AB64B91596244579D09FE77",
+          "notBefore": "Jan 10 09:57:50 2026 GMT",
+          "notAfter": "Apr 10 09:57:49 2026 GMT",
+          "subjectAltName": [
+            [
+              "DNS",
+              "kadi.pfauzen.de"
+            ]
+          ],
+          "caIssuers": [
+            "http://e7.i.lencr.org/"
+          ],
+          "crlDistributionPoints": [
+            "http://e7.c.lencr.org/120.crl"
+          ]
+        },
+        "issuer_certificate_der": "MIIEVzCCAj+gAwIBAgIRAKp18eYrjwoiCWbTi7/UuqEwDQYJKoZIhvcNAQELBQAwTzELMAkGA1UEBhMCVVMxKTAnBgNVBAoTIEludGVybmV0IFNlY3VyaXR5IFJlc2VhcmNoIEdyb3VwMRUwEwYDVQQDEwxJU1JHIFJvb3QgWDEwHhcNMjQwMzEzMDAwMDAwWhcNMjcwMzEyMjM1OTU5WjAyMQswCQYDVQQGEwJVUzEWMBQGA1UEChMNTGV0J3MgRW5jcnlwdDELMAkGA1UEAxMCRTcwdjAQBgcqhkjOPQIBBgUrgQQAIgNiAARB6ASTCFh/vjcwDMCgQer+VtqEkz7JANurZxLP+U9TCeioL6sp5Z8VRvRbYk4P1INBmbefQHJFHCxcSjKmwtvGBWpl/9ra8HW0QDsUaJW2qOJqceJ0ZVFT3hbUHifBM/2jgfgwgfUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQWBBSuSJ7chx1EoG/aouVgdAR4wpwAgDAfBgNVHSMEGDAWgBR5tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcBAQQmMCQwIgYIKwYBBQUHMAKGFmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0gBAwwCjAIBgZngQwBAgEwJwYDVR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVuY3Iub3JnLzANBgkqhkiG9w0BAQsFAAOCAgEAjx66fDdLk5ywFn3CzA1w1qfylHUDaEf0QZpXcJseddJGSfbUUOvbNR9N/QQ16K1lXl4VFyhmGXDT5Kdfcr0RvIIVrNxFh4lqHtRRCP6RBRstqbZ2zURgqakn/Xip0iaQL0IdfHBZr396FgknniRYFckKORPGyM3QKnd66gtMst8I5nkRQlAg/Jb+Gc3egIvuGKWboE1G89NTsN9LTDD3PLj0dUMrOIuqVjLB8pEC6yk9enrlrqjXQgkLEYhXzq7dLafv5Vkig6Gl0nuuqjqfp0Q1bi1oyVNAlXe6aUXw92CcghC9bNsKEO1+M52YY5+ofIXlS/SEQbvVYYBLZ5yeiglV6t3SM6H+vTG0aP9YHzLn/KVOHzGQfXDP7qM5tkf+7diZe7o2fw6O7IvN6fsQXEQQj8TJUXJxv2/uJhcuy/tSDgXwHM8Uk34WNbRT7zGTGkQRX0gsbjAea/jYAoWv0ZvQRwpqPe79D/i7Cep8qWnA+7AE/3B3S/3dEEYmc0lpe1366A/6GEgk3ktr9PEoQrLChs6Itu3wnNLB2euC8IKGLQFpGtOO/2/hiAKjyajaBP25w1jF0Wl8Bbqne3uZ2q1GyPFJYRmT7/OXpmOH/FVLtwS+8ng1cAmpCujPwteJZNcDG0sF2n/sc0+SQf49fdyUK0ty+VUwFj9tmWxyR/M=",
+        "issuer_certificate_dict": {
+          "subject": [
+            [
+              [
+                "countryName",
+                "US"
+              ]
+            ],
+            [
+              [
+                "organizationName",
+                "Let's Encrypt"
+              ]
+            ],
+            [
+              [
+                "commonName",
+                "E7"
+              ]
+            ]
+          ],
+          "issuer": [
+            [
+              [
+                "countryName",
+                "US"
+              ]
+            ],
+            [
+              [
+                "organizationName",
+                "Internet Security Research Group"
+              ]
+            ],
+            [
+              [
+                "commonName",
+                "ISRG Root X1"
+              ]
+            ]
+          ],
+          "version": 3,
+          "serialNumber": "AA75F1E62B8F0A220966D38BBFD4BAA1",
+          "notBefore": "Mar 13 00:00:00 2024 GMT",
+          "notAfter": "Mar 12 23:59:59 2027 GMT",
+          "caIssuers": [
+            "http://x1.i.lencr.org/"
+          ],
+          "crlDistributionPoints": [
+            "http://x1.c.lencr.org/"
+          ]
+        },
+        "destination_address": [
+          "134.60.156.30",
+          443
+        ],
+        "cipher": "TLS_AES_256_GCM_SHA384",
+        "tls_version": 772,
+        "tls_handshake_latency": "0:00:00",
+        "resolution_latency": "0:00:00",
+        "request_sent_latency": "0:00:00.000183"
+      },
+      "ocsp_verified": true,
+      "upload_progress": {
+        "total": 59,
+        "content_length": null,
+        "is_completed": true,
+        "any_error": false
+      }
+    },
+    "download_progress": null,
+    "connection": {
+      "max_retries": {
+        "total": 0,
+        "connect": null,
+        "read": false,
+        "status": null,
+        "other": null,
+        "redirect": null,
+        "status_forcelist": "set()",
+        "allowed_methods": "frozenset({'OPTIONS', 'GET', 'TRACE', 'HEAD', 'PUT', 'DELETE'})",
+        "backoff_factor": 0,
+        "backoff_max": 120,
+        "raise_on_redirect": true,
+        "raise_on_status": true,
+        "history": [],
+        "respect_retry_after_header": true,
+        "remove_headers_on_redirect": "frozenset({'authorization', 'cookie', 'proxy-authorization'})",
+        "backoff_jitter": 0.0,
+        "retry_after_max": 21600
+      },
+      "config": {},
+      "proxy_manager": {},
+      "poolmanager": {
+        "headers": {},
+        "connection_pool_kw": {
+          "maxsize": 10,
+          "block": false,
+          "disabled_svn": "set()",
+          "source_address": null,
+          "socket_family": 0,
+          "happy_eyeballs": false,
+          "keepalive_delay": 3600.0,
+          "keepalive_idle_window": 60.0
+        },
+        "block": false,
+        "pools": {
+          "maxsize": 10,
+          "concurrency": true,
+          "strict_maxsize": true,
+          "parent": null
+        },
+        "pool_classes_by_scheme": {
+          "http": {
+            "scheme": "http",
+            "ConnectionCls": {
+              "scheme": "http",
+              "default_port": 80,
+              "host": "<property object at 0x7f77314b1800>",
+              "set_tunnel": {},
+              "connect": {},
+              "is_closed": "<property object at 0x7f77314b17b0>",
+              "is_connected": "<property object at 0x7f77314b1850>",
+              "has_connected_to_proxy": "<property object at 0x7f77314b18a0>",
+              "proxy_is_forwarding": "<property object at 0x7f77314b18f0>",
+              "proxy_is_tunneling": "<property object at 0x7f77314b1940>",
+              "close": {},
+              "putrequest": {},
+              "putheader": {},
+              "request": {},
+              "getresponse": {}
+            },
+            "is_idle": "<property object at 0x7f77314f12b0>",
+            "is_saturated": "<property object at 0x7f77314f3470>",
+            "get_response": {},
+            "close": {},
+            "is_same_host": {},
+            "urlopen": {}
+          },
+          "https": {
+            "scheme": "https",
+            "ConnectionCls": {
+              "scheme": "https",
+              "default_port": 443,
+              "cert_reqs": null,
+              "ca_certs": null,
+              "ca_cert_dir": null,
+              "ca_cert_data": null,
+              "ssl_version": null,
+              "ssl_minimum_version": null,
+              "ssl_maximum_version": null,
+              "assert_fingerprint": null,
+              "cert_file": null,
+              "key_file": null,
+              "key_password": null,
+              "cert_data": null,
+              "key_data": null,
+              "ciphers": null,
+              "connect": {}
+            }
+          }
+        },
+        "key_fn_by_scheme": {
+          "http": {},
+          "https": {}
+        }
+      }
+    }
+  }
+}
