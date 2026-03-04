@@ -584,8 +584,8 @@ class EchemdbEntry(Entry):
 
             >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
-            0  0.00  0.152942 -0.998277
-            1  0.02  0.153942 -0.981762
+            0  0.00 -0.359258 -0.998277
+            1  0.02 -0.358258 -0.981762
             ...
 
 

@@ -24,7 +24,7 @@ EXAMPLES::
     'temperature_dependence': []}
 
     >>> ref.shift(to="SHE", potential=0.55)
-    0.35300000000000004
+    0.7470000000000001
 
 """
 
@@ -104,12 +104,12 @@ class _ReferenceElectrode:
     Determine the shift between reference scales::
 
         >>> ref.shift("SHE", potential=0.42)
-        0.22299999999999998
+        0.617
 
     Conversion to and from RHE requires pH::
 
         >>> ref.shift(to="RHE", ph=5)
-        -0.4925
+        0.4925
 
     """
 
@@ -266,12 +266,12 @@ class _ReferenceElectrode:
             >>> from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.shift(to="SHE") # doctest: +NORMALIZE_WHITESPACE
-            -0.197
+            0.197
 
         The shift from a given potential of the reference electrode.::
 
             >>> ref.shift(to="SHE", potential=0.55)
-            0.35300000000000004
+            0.7470000000000001
 
         The pH has no effect on the shift.::
 
@@ -284,21 +284,21 @@ class _ReferenceElectrode:
 
             >>> ref = ReferenceElectrode('SHE')
             >>> ref.shift(to="RHE", ph=7)
-            -0.4137
+            0.4137
 
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.shift(to="RHE", ph=7)
-            -0.6107
+            0.6107
 
             >>> ref = ReferenceElectrode('SHE')
             >>> ref.shift(to="RHE", potential=0.55, ph=7)
-            0.13630000000000003
+            0.9637
 
         From the RHE scale::
 
             >>> ref = ReferenceElectrode('RHE')
             >>> ref.shift(to="SHE", ph=0)
-            0.0
+            -0.0
 
             >>> ref = ReferenceElectrode('RHE')
             >>> ref.shift(to="SHE", potential=0.55, ph=0)
@@ -306,11 +306,11 @@ class _ReferenceElectrode:
 
             >>> ref = ReferenceElectrode('RHE')
             >>> ref.shift(to="SHE", potential=0.55, ph=7)
-            0.9637
+            0.13630000000000003
 
             >>> ref = ReferenceElectrode('RHE')
             >>> ref.shift(to="Ag/AgCl-sat", potential=0.55, ph=7)
-            1.1607
+            -0.060699999999999976
 
         """
 
@@ -335,7 +335,7 @@ class _ReferenceElectrode:
                 return -0.0591 * ph
             return ReferenceElectrode(ref).standard_value
 
-        shift_value = get_value_vs_she(ref_to) - get_value_vs_she(self.name)
+        shift_value = get_value_vs_she(self.name) - get_value_vs_she(ref_to)
 
         if potential is None:
             return shift_value
