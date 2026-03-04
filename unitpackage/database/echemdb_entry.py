@@ -578,16 +578,31 @@ class EchemdbEntry(Entry):
             1  0.02 -0.102158 -0.981762
             ...
 
+        For the conversion from or to RHE the pH is required. If it is accessible from the metadata,
+        it is used automatically. Otherwise, it can be provided as an argument::
+
+            >>> entry.system.electrolyte.ph.value
+            1
+
             >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-sat')
             >>> rescaled_entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-sat'}
 
             >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
-            0  0.00  0.152942 -0.998277
-            1  0.02  0.153942 -0.981762
+            0  0.00 -0.359258 -0.998277
+            1  0.02 -0.358258 -0.981762
             ...
 
+        TESTS:
+
+        The shift vs. SHE should be about -0.59 mV at pH 1::
+
+            >>> entry.rescale_reference(new_reference='SHE').df.head() # doctest: +NORMALIZE_WHITESPACE
+                   t         E         j
+            0   0.00 -0.162258 -0.998277
+            1   0.02 -0.161258 -0.981762
+            ...
 
         """
         field_name = field_name or "E"
