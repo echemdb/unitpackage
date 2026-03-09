@@ -146,6 +146,18 @@ class GenericDescriptor:
         """
         return repr(self._descriptor)
 
+    def to_builtin(self):
+        r"""Return this descriptor converted to plain Python built-ins.
+
+        EXAMPLES::
+
+            >>> GenericDescriptor({'a': 0}).to_builtin()
+            {'a': 0}
+
+        """
+
+        return {key: _to_builtin(value) for key, value in self._descriptor.items()}
+
     @property
     def yaml(self):
         r"""Return a printable representation of this descriptor in yaml format.
@@ -156,10 +168,59 @@ class GenericDescriptor:
             >>> descriptor.yaml
             'a: 0\n'
 
+        A descriptor with nested dictionaries and lists is also properly represented::
+
+            >>> descriptor = GenericDescriptor({'first': 0, 'second': {'items': [1, 2]}})
+            >>> descriptor.yaml
+            'first: 0\nsecond:\n  items:\n  - 1\n  - 2\n'
+
         """
         import yaml
 
-        return yaml.dump(self._descriptor)
+        return yaml.dump(self.to_builtin())
+
+
+class GenericListDescriptor(list):
+    r"""
+    Wrapper for list descriptors to make descriptor handling more consistent.
+
+    EXAMPLES::
+
+        >>> descriptor = GenericListDescriptor([{"a": 0}, {"b": 1}])
+        >>> descriptor[0].a
+        0
+
+    """
+
+    def __init__(self, descriptor):
+        super().__init__(Descriptor(item) for item in descriptor)
+
+    def to_builtin(self):
+        r"""Return this descriptor converted to plain Python built-ins.
+
+        EXAMPLES::
+
+            >>> GenericListDescriptor([{"a": 0}, {"b": 1}]).to_builtin()
+            [{'a': 0}, {'b': 1}]
+
+        """
+
+        return [_to_builtin(item) for item in self]
+
+    @property
+    def yaml(self):
+        r"""Return a printable representation of this descriptor in yaml format.
+
+        EXAMPLES::
+
+            >>> descriptor = GenericListDescriptor([{"a": 0}, {"b": 1}])
+            >>> descriptor.yaml
+            '- a: 0\n- b: 1\n'
+
+        """
+        import yaml
+
+        return yaml.dump(self.to_builtin())
 
 
 class QuantityDescriptor(GenericDescriptor):
@@ -237,6 +298,12 @@ def Descriptor(descriptor):
         >>> descriptor[0].an_attribute
         13.37
 
+    Lists can also be represented in yaml format::
+
+        >>> print(descriptor.yaml)
+        - an attribute: 13.37
+        - {}
+
     Dictionaries encoding a unit and value are augmented with astropy
     convenience methods::
 
@@ -256,6 +323,28 @@ def Descriptor(descriptor):
         return GenericDescriptor(descriptor)
 
     if isinstance(descriptor, list):
-        return [Descriptor(item) for item in descriptor]
+        return GenericListDescriptor(descriptor)
+
+    return descriptor
+
+
+def _to_builtin(descriptor):
+    r"""Return descriptor converted to plain Python built-ins.
+
+    EXAMPLES::
+
+        >>> _to_builtin(GenericDescriptor({'a': [GenericDescriptor({'b': 1})]}))
+        {'a': [{'b': 1}]}
+
+    """
+
+    if hasattr(descriptor, "to_builtin"):
+        return descriptor.to_builtin()
+
+    if isinstance(descriptor, list):
+        return [_to_builtin(item) for item in descriptor]
+
+    if isinstance(descriptor, dict):
+        return {key: _to_builtin(value) for key, value in descriptor.items()}
 
     return descriptor
