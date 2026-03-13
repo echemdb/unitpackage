@@ -108,26 +108,27 @@ def convert(csv, device, outdir, metadata):
     import yaml
 
     fields = None
+    metadata_dict = None
 
     if metadata:
-        metadata = yaml.load(metadata, Loader=yaml.SafeLoader)
-        if "dataDescription" not in metadata:
+        metadata_dict = yaml.load(metadata, Loader=yaml.SafeLoader)
+        if metadata_dict is None:
+            metadata_dict = {}
+
+        if "dataDescription" not in metadata_dict:
             logger.warning(
                 "No 'dataDescription' key found in metadata; setting empty dataDescription."
             )
-            metadata["dataDescription"] = {"fields": []}
-        fields = metadata["dataDescription"].get("fields", [])
+            metadata_dict["dataDescription"] = {"fields": []}
+        fields = metadata_dict["dataDescription"].get("fields", [])
         if not fields:
             logger.warning("No units to the fields provided in the metadata")
 
     entry = Entry.from_df(df=loader.df, basename=Path(csv).stem)
 
     # load metadata
-    if metadata:
-        entry.load_metadata(metadata)
-        if not device:
-            entry.metadata.set_default("dataDescription", "")
-            entry.metadata["dataDescription"].get("fields", [])
+    if metadata_dict is not None:
+        entry.metadata.from_dict(metadata_dict)
         if fields:
             entry = entry.update_fields(fields=fields)
 
