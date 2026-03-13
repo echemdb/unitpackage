@@ -678,7 +678,17 @@ class Entry:
             >>> new_resource = entry._create_new_df_resource(df)
             >>> new_resource.name == entry.resource.name
             True
+
+        Metadata is copied without sharing references::
+
+            >>> entry = Entry.create_example()
+            >>> new_resource = entry._create_new_df_resource(entry.df.copy())
+            >>> new_resource.custom["metadata"]["echemdb"]["source"]["citationKey"] = "modified"
+            >>> entry.resource.custom["metadata"]["echemdb"]["source"]["citationKey"]
+            'alves_2011_electrochemistry_6010'
         """
+        import copy
+
         from frictionless import Resource, Schema
 
         new_resource = Resource(df)
@@ -703,7 +713,9 @@ class Entry:
             )
 
         # Copy metadata to new resource
-        new_resource.custom["metadata"] = self.resource.custom.get("metadata", {})
+        new_resource.custom["metadata"] = copy.deepcopy(
+            self.resource.custom.get("metadata", {})
+        )
 
         return new_resource
 
