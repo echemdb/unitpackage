@@ -394,8 +394,7 @@ def create_unitpackage(resource, metadata=None, fields=None):
         ...
 
     """
-    resource.custom.setdefault("metadata", {})
-    resource.custom["metadata"] = metadata
+    resource.custom["metadata"] = metadata if metadata is not None else {}
 
     if fields:
         # Use update_fields() for field updates with proper validation and logging
