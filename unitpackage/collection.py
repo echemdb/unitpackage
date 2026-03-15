@@ -174,16 +174,26 @@ class Collection:
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
 
         """
-        # Return the entries sorted by their identifier. There's a small cost
-        # associated with the sorting but we do not expect to be managing
-        # millions of identifiers and having them show in sorted order is very
-        # convenient, e.g., when doctesting.
         return iter(
             [
-                self.Entry(resource)
-                for resource in sorted(self.package.resources, key=lambda p: p.name)
+                self.Entry(self.package.get_resource(identifier))
+                for identifier in self._sorted_identifiers()
             ]
         )
+
+    def _sorted_identifiers(self):
+        """Return resource identifiers sorted alphabetically.
+
+        Positional access (iteration, integer indexing, slicing) uses this
+        canonical order for deterministic behavior.
+
+        Examples::
+
+            >>> collection = Collection.create_example()
+            >>> collection._sorted_identifiers()
+            ['alves_2011_electrochemistry_6010_f1a_solid', 'engstfeld_2018_polycrystalline_17743_f4b_1', 'no_bibliography']
+        """
+        return sorted(self.package.resource_names)
 
     def __len__(self):
         r"""
@@ -240,6 +250,9 @@ class Collection:
 
             >>> collection[0]
             Entry('alves_2011_electrochemistry_6010_f1a_solid')
+
+            >>> collection[0].identifier == next(iter(collection)).identifier
+            True
 
             >>> collection[-1]
             Traceback (most recent call last):
@@ -304,19 +317,19 @@ class Collection:
 
         # An integer or string returns an Entry object.
         if isinstance(key, int):
-            return self._get_entry_by_int(key, identifiers)
+            return self._get_entry_by_int(key, self._sorted_identifiers())
 
         if isinstance(key, str):
             return self._get_entry_by_str(key, identifiers)
 
         # If the key is a slice, a new Collection is returned with the selected entries.
         if isinstance(key, slice):
-            return self._get_collection_by_slice(key, identifiers)
+            return self._get_collection_by_slice(key, self._sorted_identifiers())
 
         # If the key is a list or tuple, a new Collection is returned with the selected entries.
         if isinstance(key, (list, tuple)):
             if all(isinstance(k, int) for k in key):
-                return self._get_collection_by_int_list(key, identifiers)
+                return self._get_collection_by_int_list(key, self._sorted_identifiers())
             if all(isinstance(k, str) for k in key):
                 return self._get_collection_by_str_list(key, identifiers)
 
