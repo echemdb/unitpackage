@@ -655,16 +655,26 @@ class BaseLoader:
             >>> csv.delimiter
             '\t'
 
+        Inconsistent field counts between column headers and data rows are
+        reported early::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b\n0,0\n1,1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.delimiter
+            Traceback (most recent call last):
+            ...
+            ValueError: Inconsistent number of fields detected in data line 2: expected 2 based on column headers but found 3.
+
         """
-        # TODO:: Validate that the number of delimiters in the data lines
-        # matches those in the column header line.
-        # This will otherwise likely lead to erroneous loading of pandas dataframes
-        # and requires setting the column names specifically.
         if self._delimiter is not None:
-            return self._delimiter
+            if self._validate_delimiter_consistency(self._delimiter):
+                return self._delimiter
 
         if len(self._candidate_delimiters) == 1:
-            return self._candidate_delimiters[0]
+            delimiter = self._candidate_delimiters[0]
+            if self._validate_delimiter_consistency(delimiter):
+                return delimiter
 
         import csv
         from io import StringIO
@@ -681,7 +691,57 @@ class BaseLoader:
         if not sample:
             raise ValueError("Delimiter could not be determined from an empty sample.")
 
-        return csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
+        delimiter = csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
+        if self._validate_delimiter_consistency(delimiter):
+            return delimiter
+
+    def _validate_delimiter_consistency(self, delimiter):
+        r"""Validate that sampled data rows have the same field count as the
+        column headers. Returns ``True`` if all sampled rows are consistent.
+
+        EXAMPLES::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b\n0,0\n1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv._validate_delimiter_consistency(',')
+            True
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b\n0,0\n1,1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv._validate_delimiter_consistency(',')
+            Traceback (most recent call last):
+            ...
+            ValueError: Inconsistent number of fields detected in data line 2: expected 2 based on column headers but found 3.
+
+        """
+        import csv
+
+        column_header_lines = self.column_headers.getvalue().splitlines()
+        if not column_header_lines:
+            return True
+
+        expected_fields = len(
+            next(csv.reader([column_header_lines[0]], delimiter=delimiter))
+        )
+
+        for line_number, line in enumerate(
+            self.data.getvalue().splitlines()[: self.DELIMITER_SNIFF_SAMPLE_LINES],
+            start=1,
+        ):
+            if not line.strip():
+                continue
+
+            actual_fields = len(next(csv.reader([line], delimiter=delimiter)))
+            if actual_fields != expected_fields:
+                raise ValueError(
+                    "Inconsistent number of fields detected in data line "
+                    f"{line_number}: expected {expected_fields} based on "
+                    f"column headers but found {actual_fields}."
+                )
+
+        return True
 
     @property
     def decimal(self):
