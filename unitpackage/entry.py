@@ -1106,6 +1106,9 @@ class Entry:
         A ``device`` can be specified to select a device-specific loader
         (e.g., ``'eclab'`` or ``'gamry'``).
 
+        ``candidate_delimiters`` can be used to restrict delimiter sniffing to
+        a known set of separators.
+
         EXAMPLES::
 
             >>> from unitpackage.entry import Entry
@@ -1135,6 +1138,18 @@ class Entry:
             >>> entry.fields # doctest: +NORMALIZE_WHITESPACE
             [{'name': 'E / V', 'type': 'integer'},
             {'name': 'j / A / cm2', 'type': 'integer'}]
+
+        Candidate delimiters can be provided explicitly when parsing a file::
+
+            >>> import os
+            >>> import tempfile
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     filename = os.path.join(tmpdir, 'candidate_delimiters.csv')
+            ...     with open(filename, 'w', encoding='utf-8') as handle:
+            ...         _ = handle.write('a\tb\n1\t2\n')
+            ...     entry = Entry.from_csv(csvname=filename, candidate_delimiters=[';', '\t'])
+            >>> entry.metadata['dsvDescription']['delimiter']
+            '\t'
 
         A device-specific loader can be used to parse instrument files::
 

@@ -95,9 +95,20 @@ class BaseLoader:
         0     2       0    0.1       0          0
         1     2       1    1.4       5          1
 
+    Candidate delimiters can be provided explicitly for autodetection.::
+
+        >>> from io import StringIO
+        >>> file = StringIO('''a\tb
+        ... 0\t0
+        ... 1\t1''')
+        >>> csv = BaseLoader(file, candidate_delimiters=[';', '\t'])
+        >>> csv.delimiter
+        '\t'
+
     """
 
     DEFAULT_CANDIDATE_DELIMITERS = ("\t", ";", ",")
+    _warned_default_candidate_delimiters = False
 
     def __init__(
         self,
@@ -151,6 +162,11 @@ class BaseLoader:
             return [delimiter]
 
         if candidate_delimiters is None:
+            if not BaseLoader._warned_default_candidate_delimiters:
+                logger.warning(
+                    "No delimiter or candidate_delimiters were provided; using default candidate delimiters for sniffing."
+                )
+                BaseLoader._warned_default_candidate_delimiters = True
             return list(BaseLoader.DEFAULT_CANDIDATE_DELIMITERS)
 
         if isinstance(candidate_delimiters, str):

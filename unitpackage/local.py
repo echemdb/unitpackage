@@ -78,6 +78,10 @@ def create_tabular_resource_from_csv(
         'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
                               {'name': 'j / A / cm2', 'type': 'integer'}]}}
 
+    Plain CSV files without explicit parsing hints are kept as frictionless CSV
+    resources, so standard files can round-trip without eagerly materializing a
+    pandas dataframe.
+
 
     """
     csv_basename = os.path.basename(csvname)
@@ -133,6 +137,13 @@ def create_df_resource_from_csv(
         'mediatype': 'application/pandas',
         'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
                               {'name': 'j / A / cm2', 'type': 'integer'}]}}
+
+    Candidate delimiters can be provided explicitly for delimiter sniffing::
+
+        >>> filename = 'examples/from_csv/from_csv.csv'
+        >>> resource = create_df_resource_from_csv(csvname=filename, candidate_delimiters=[';', ','])
+        >>> resource.data.iloc[0].tolist()
+        [1, 2]
 
     """
 
