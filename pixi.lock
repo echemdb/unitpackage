@@ -40788,8 +40788,8 @@ packages:
   timestamp: 1770909191618
 - pypi: ./
   name: unitpackage
-  version: 0.12.0
-  sha256: 590d10b5fcc466a4b517d27a53b712aafd6911f45ea1b307e7b40b5eaf1d6654
+  version: 0.13.0
+  sha256: 19da41a390e48c2b980c2e8470716f002928355a16fe28e8acbd3050f1389ff0
   requires_dist:
   - astropy>=5,<8
   - click>=8,<9

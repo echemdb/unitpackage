@@ -4,6 +4,31 @@ echemdb Change Log
 
 .. current developments
 
+v0.13.0
+====================
+
+**Added:**
+
+* Added shared `to_builtin()` methods on descriptor wrappers.
+
+**Changed:**
+
+* Changed upper bound for `pandas` dependency from 3 to 4.
+
+**Fixed:**
+
+* Fixed collection positional access to use deterministic alphabetical ordering, so iteration, integer indexing, and slicing follow the same identifier order.
+* Fixed CSV-to-dataframe reconstruction from tabular resources to honor frictionless descriptor dialect and encoding metadata, avoiding silent misparsing for non-default delimiters.
+* Fixed the CSV loader API by replacing the ambiguous `delimiters` argument with explicit `delimiter` and `candidate_delimiters` parameters.
+* Fixed calculation of reference electrode shift.
+* Fixed CLI metadata loading for the `unitpackage csv` command by applying parsed YAML metadata via `entry.metadata.from_dict(...)`.
+* Fixed `create_unitpackage(...)` to always store metadata as a dictionary when no metadata is provided.
+* Fixed metadata aliasing when creating derived resources by deep-copying metadata in `Entry._create_new_df_resource(...)`.
+* Fixed plotting with option `original` if the fields contain fields without units.
+* Fixed YAML export for descriptors containing lists, including nested list structures.
+
+
+
 v0.12.0
 ====================
 
