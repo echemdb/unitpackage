@@ -668,13 +668,13 @@ class BaseLoader:
 
         """
         if self._delimiter is not None:
-            if self._validate_delimiter_consistency(self._delimiter):
-                return self._delimiter
+            self._validate_delimiter_consistency(self._delimiter)
+            return self._delimiter
 
         if len(self._candidate_delimiters) == 1:
             delimiter = self._candidate_delimiters[0]
-            if self._validate_delimiter_consistency(delimiter):
-                return delimiter
+            self._validate_delimiter_consistency(delimiter)
+            return delimiter
 
         import csv
         from io import StringIO
@@ -692,8 +692,8 @@ class BaseLoader:
             raise ValueError("Delimiter could not be determined from an empty sample.")
 
         delimiter = csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
-        if self._validate_delimiter_consistency(delimiter):
-            return delimiter
+        self._validate_delimiter_consistency(delimiter)
+        return delimiter
 
     def _validate_delimiter_consistency(self, delimiter):
         r"""Validate that sampled data rows have the same field count as the

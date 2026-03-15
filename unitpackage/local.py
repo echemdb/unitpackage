@@ -30,7 +30,6 @@ import os
 import os.path
 from glob import glob
 
-import pandas as pd
 from frictionless import Package, Resource, Schema
 
 logger = logging.getLogger("unitpackage")
@@ -263,7 +262,9 @@ def create_df_resource_from_tabular_resource(resource):
     with open(
         descriptor_path,
         "r",
-        encoding=getattr(resource, "encoding", None) or descriptor.get("encoding") or "utf-8",
+        encoding=getattr(resource, "encoding", None)
+        or descriptor.get("encoding")
+        or "utf-8",
     ) as handle:
         csv = BaseLoader(
             handle,
