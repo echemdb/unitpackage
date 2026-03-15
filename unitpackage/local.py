@@ -230,23 +230,21 @@ def create_df_resource_from_tabular_resource(resource):
             1  2  5
             2  3  6
 
-    Stored dialect metadata is honored when reconstructing the dataframe::
+    Stored frictionless dialect metadata is honored when reconstructing the dataframe::
 
         >>> import tempfile
         >>> from frictionless import Resource
         >>> with tempfile.TemporaryDirectory() as tmpdir:
         ...     csv_path = os.path.join(tmpdir, 'dialect.csv')
         ...     with open(csv_path, 'w', encoding='utf-8') as handle:
-        ...         _ = handle.write('x;y\n1,5;2,5\n')
-        ...     resource = Resource(path='dialect.csv', basepath=tmpdir, encoding='utf-8')
-        ...     resource.custom['metadata'] = {
-        ...         'dsvDescription': {
-        ...             'headerLines': 0,
-        ...             'columnHeaderLines': 1,
-        ...             'delimiter': ';',
-        ...             'decimal': ',',
-        ...         }
-        ...     }
+        ...         _ = handle.write('x;y\n1.5;2.5\n')
+        ...     resource = Resource.from_descriptor({
+        ...         'name': 'dialect',
+        ...         'path': 'dialect.csv',
+        ...         'encoding': 'utf-8',
+        ...         'dialect': {'csv': {'delimiter': ';'}},
+        ...     })
+        ...     resource.basepath = tmpdir
         ...     create_df_resource_from_tabular_resource(resource).data.iloc[0].tolist()
         [1.5, 2.5]
 
@@ -258,19 +256,18 @@ def create_df_resource_from_tabular_resource(resource):
     else:
         descriptor_path = resource.path
 
-    dsv_description = resource.custom.get("metadata", {}).get("dsvDescription", {})
+    descriptor = resource.to_dict()
+    dialect = descriptor.get("dialect", {}) if isinstance(descriptor, dict) else {}
+    dialect_csv = dialect.get("csv", {}) if isinstance(dialect, dict) else {}
 
     with open(
         descriptor_path,
         "r",
-        encoding=getattr(resource, "encoding", None) or "utf-8",
+        encoding=getattr(resource, "encoding", None) or descriptor.get("encoding") or "utf-8",
     ) as handle:
         csv = BaseLoader(
             handle,
-            header_lines=dsv_description.get("headerLines"),
-            column_header_lines=dsv_description.get("columnHeaderLines"),
-            decimal=dsv_description.get("decimal"),
-            delimiter=dsv_description.get("delimiter"),
+            delimiter=dialect_csv.get("delimiter"),
         )
 
     return create_df_resource_from_df(csv.df)
