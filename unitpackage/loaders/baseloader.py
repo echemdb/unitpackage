@@ -48,6 +48,7 @@ TODO:: Add example
 
 
 import logging
+from collections.abc import Iterable
 
 logger = logging.getLogger("loader")
 
@@ -96,19 +97,71 @@ class BaseLoader:
 
     """
 
+    DEFAULT_CANDIDATE_DELIMITERS = ("\t", ";", ",")
+
     def __init__(
         self,
         file,
         header_lines=None,
         column_header_lines=None,
         decimal=None,
-        delimiters=None,
+        delimiter=None,
+        candidate_delimiters=None,
     ):  # pylint: disable=dangerous-default-value
         self._file = file.read()
         self._header_lines = header_lines
         self._column_header_lines = column_header_lines
         self._decimal = decimal
-        self.delimiters = delimiters or ["\t", ";", ","]
+        self._delimiter = delimiter
+        self._candidate_delimiters = self._normalize_delimiter_candidates(
+            delimiter=delimiter,
+            candidate_delimiters=candidate_delimiters,
+        )
+
+    @staticmethod
+    def _normalize_delimiter_candidates(delimiter=None, candidate_delimiters=None):
+        r"""Return delimiter candidates normalized to a list of strings.
+
+        The public API separates the explicit delimiter from sniffing candidates:
+
+        - ``delimiter=","`` fixes the delimiter to a single value.
+        - ``candidate_delimiters=["\t", ";", ","]`` provides candidates for sniffing.
+
+        If ``delimiter`` is provided, ``candidate_delimiters`` must not be provided.
+
+        EXAMPLES::
+
+            >>> BaseLoader._normalize_delimiter_candidates(delimiter=',')
+            [',']
+
+            >>> BaseLoader._normalize_delimiter_candidates(candidate_delimiters=['\t', ';'])
+            ['\t', ';']
+
+            >>> BaseLoader._normalize_delimiter_candidates(delimiter=',', candidate_delimiters=[';'])
+            Traceback (most recent call last):
+            ...
+            ValueError: Use either 'delimiter' or 'candidate_delimiters', not both.
+        """
+        if delimiter is not None and candidate_delimiters is not None:
+            raise ValueError(
+                "Use either 'delimiter' or 'candidate_delimiters', not both."
+            )
+
+        if delimiter is not None:
+            return [delimiter]
+
+        if candidate_delimiters is None:
+            return list(BaseLoader.DEFAULT_CANDIDATE_DELIMITERS)
+
+        if isinstance(candidate_delimiters, str):
+            return [candidate_delimiters]
+
+        if isinstance(candidate_delimiters, Iterable):
+            return list(candidate_delimiters)
+
+        raise TypeError(
+            "'candidate_delimiters' must be a string or an iterable of strings."
+        )
 
     @property
     def file(self):
@@ -581,15 +634,20 @@ class BaseLoader:
         # matches those in the column header line.
         # This will otherwise likely lead to erroneous loading of pandas dataframes
         # and requires setting the column names specifically.
-        if len(self.delimiters) == 1:
-            return self.delimiters[0]
+        if self._delimiter is not None:
+            return self._delimiter
+
+        if len(self._candidate_delimiters) == 1:
+            return self._candidate_delimiters[0]
 
         import csv
         from io import StringIO
 
         combined = StringIO(self.column_headers.getvalue() + self.data.getvalue())
 
-        return csv.Sniffer().sniff(combined.readline(), self.delimiters).delimiter
+        return csv.Sniffer().sniff(
+            combined.readline(), self._candidate_delimiters
+        ).delimiter
 
     @property
     def decimal(self):

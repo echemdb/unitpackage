@@ -1092,7 +1092,8 @@ class Entry:
         header_lines=None,
         column_header_lines=None,
         decimal=None,
-        delimiters=None,
+        delimiter=None,
+        candidate_delimiters=None,
         device=None,
     ):
         r"""
@@ -1149,6 +1150,7 @@ class Entry:
 
             >>> entry.metadata['dsvDescription']['loader']
             'ECLabLoader'
+
             >>> entry.metadata['dsvDescription']['delimiter']
             '\t'
 
@@ -1162,7 +1164,8 @@ class Entry:
             "header_lines": header_lines,
             "column_header_lines": column_header_lines,
             "decimal": decimal,
-            "delimiters": delimiters,
+            "delimiter": delimiter,
+            "candidate_delimiters": candidate_delimiters,
         }
 
         loader_cls = BaseLoader.create(device) if device else BaseLoader
