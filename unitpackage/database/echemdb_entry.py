@@ -324,10 +324,24 @@ class EchemdbEntry(Entry):
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
+        Unitless fields in ``figureDescription.fields`` (e.g., ``cycle``)
+        are skipped during rescaling (For testing purposes we add here a
+        field without units to the datapackage)::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.resource.custom["metadata"]["echemdb"]["figureDescription"]["fields"].append({"name": "cycle", "type": "number"})
+            >>> rescaled_entry = entry.rescale(units='original')
+            >>> rescaled_entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
+
         """
         if units == "original":
             units = {
-                field["name"]: field["unit"] for field in self.figureDescription.fields
+                field["name"]: field["unit"]
+                for field in self.figureDescription.fields
+                if hasattr(field, "unit")
             }
 
         return super().rescale(units)
