@@ -108,6 +108,7 @@ class BaseLoader:
     """
 
     DEFAULT_CANDIDATE_DELIMITERS = ("\t", ";", ",")
+    DELIMITER_SNIFF_SAMPLE_LINES = 25
     _warned_default_candidate_delimiters = False
 
     def __init__(
@@ -645,6 +646,15 @@ class BaseLoader:
             >>> csv.delimiter
             '\t'
 
+        Candidate delimiters are considered for sniffing even if the correct
+        delimiter is not the first candidate::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a\tb\n0\t0\n1\t1''')
+            >>> csv = BaseLoader(file, candidate_delimiters=[';', '\t', ','])
+            >>> csv.delimiter
+            '\t'
+
         """
         # TODO:: Validate that the number of delimiters in the data lines
         # matches those in the column header line.
@@ -660,10 +670,18 @@ class BaseLoader:
         from io import StringIO
 
         combined = StringIO(self.column_headers.getvalue() + self.data.getvalue())
+        sample_lines = []
+        for _ in range(self.DELIMITER_SNIFF_SAMPLE_LINES):
+            line = combined.readline()
+            if not line:
+                break
+            sample_lines.append(line)
 
-        return csv.Sniffer().sniff(
-            combined.readline(), self._candidate_delimiters
-        ).delimiter
+        sample = "".join(sample_lines)
+        if not sample:
+            raise ValueError("Delimiter could not be determined from an empty sample.")
+
+        return csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
 
     @property
     def decimal(self):
