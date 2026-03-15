@@ -218,6 +218,7 @@ def create_df_resource_from_tabular_resource(resource):
     TESTS::
 
         >>> data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
+        >>> import pandas as pd
         >>> df = pd.DataFrame(data)
         >>> from unitpackage.entry import Entry
         >>> entry = Entry.from_df(df, basename='test_parent_directory')
