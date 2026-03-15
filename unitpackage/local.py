@@ -447,9 +447,15 @@ def create_unitpackage(resource, metadata=None, fields=None):
         {'resources': [{'name':
         ...
 
+    When no metadata is provided the stored metadata is an empty dict, not ``None``::
+
+        >>> resource = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv")
+        >>> package = create_unitpackage(resource=resource)
+        >>> package.resources[0].custom["metadata"]
+        {}
+
     """
-    resource.custom.setdefault("metadata", {})
-    resource.custom["metadata"] = metadata
+    resource.custom["metadata"] = metadata if metadata is not None else {}
 
     if fields:
         # Use update_fields() for field updates with proper validation and logging
