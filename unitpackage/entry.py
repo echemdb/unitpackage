@@ -1104,7 +1104,8 @@ class Entry:
         header_lines=None,
         column_header_lines=None,
         decimal=None,
-        delimiters=None,
+        delimiter=None,
+        candidate_delimiters=None,
         device=None,
     ):
         r"""
@@ -1116,6 +1117,9 @@ class Entry:
 
         A ``device`` can be specified to select a device-specific loader
         (e.g., ``'eclab'`` or ``'gamry'``).
+
+        ``candidate_delimiters`` can be used to restrict delimiter sniffing to
+        a known set of separators.
 
         EXAMPLES::
 
@@ -1147,6 +1151,18 @@ class Entry:
             [{'name': 'E / V', 'type': 'integer'},
             {'name': 'j / A / cm2', 'type': 'integer'}]
 
+        Candidate delimiters can be provided explicitly when parsing a file::
+
+            >>> import os
+            >>> import tempfile
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     filename = os.path.join(tmpdir, 'candidate_delimiters.csv')
+            ...     with open(filename, 'w', encoding='utf-8') as handle:
+            ...         _ = handle.write('a\tb\n1\t2\n')
+            ...     entry = Entry.from_csv(csvname=filename, candidate_delimiters=[';', '\t'])
+            >>> entry.metadata['dsvDescription']['delimiter']
+            '\t'
+
         A device-specific loader can be used to parse instrument files::
 
             >>> entry = Entry.from_csv(csvname='test/loader_data/eclab_cv.mpt', device='eclab')
@@ -1161,6 +1177,7 @@ class Entry:
 
             >>> entry.metadata['dsvDescription']['loader']
             'ECLabLoader'
+
             >>> entry.metadata['dsvDescription']['delimiter']
             '\t'
 
@@ -1174,7 +1191,8 @@ class Entry:
             "header_lines": header_lines,
             "column_header_lines": column_header_lines,
             "decimal": decimal,
-            "delimiters": delimiters,
+            "delimiter": delimiter,
+            "candidate_delimiters": candidate_delimiters,
         }
 
         loader_cls = BaseLoader.create(device) if device else BaseLoader

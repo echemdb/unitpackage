@@ -73,10 +73,14 @@ Multiple column headers will be flattened.
 from unitpackage.loaders.baseloader import BaseLoader
 csv = BaseLoader(file, header_lines=6,
                  column_header_lines=2,
-                 delimiters=None,
+                 delimiter="\t",
+                 candidate_delimiters=None,
                  decimal=None)
 csv.df
 ```
+
+To pin a known delimiter, pass `delimiter='\t'` (or any other separator).
+To restrict autodetection, pass `candidate_delimiters=['\t', ';']`.
 
 All parts of the file are accessible from the API for further use. For example the extraction of metadata from the header.
 

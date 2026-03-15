@@ -48,6 +48,7 @@ TODO:: Add example
 
 
 import logging
+from collections.abc import Iterable
 
 logger = logging.getLogger("loader")
 
@@ -94,7 +95,21 @@ class BaseLoader:
         0     2       0    0.1       0          0
         1     2       1    1.4       5          1
 
+    Candidate delimiters can be provided explicitly for autodetection.::
+
+        >>> from io import StringIO
+        >>> file = StringIO('''a\tb
+        ... 0\t0
+        ... 1\t1''')
+        >>> csv = BaseLoader(file, candidate_delimiters=[';', '\t'])
+        >>> csv.delimiter
+        '\t'
+
     """
+
+    DEFAULT_CANDIDATE_DELIMITERS = ("\t", ";", ",")
+    DELIMITER_SNIFF_SAMPLE_LINES = 25
+    _warned_default_candidate_delimiters = False
 
     def __init__(
         self,
@@ -102,13 +117,68 @@ class BaseLoader:
         header_lines=None,
         column_header_lines=None,
         decimal=None,
-        delimiters=None,
+        delimiter=None,
+        candidate_delimiters=None,
     ):  # pylint: disable=dangerous-default-value
         self._file = file.read()
         self._header_lines = header_lines
         self._column_header_lines = column_header_lines
         self._decimal = decimal
-        self.delimiters = delimiters or ["\t", ";", ","]
+        self._delimiter = delimiter
+        self._candidate_delimiters = self._normalize_delimiter_candidates(
+            delimiter=delimiter,
+            candidate_delimiters=candidate_delimiters,
+        )
+
+    @staticmethod
+    def _normalize_delimiter_candidates(delimiter=None, candidate_delimiters=None):
+        r"""Return delimiter candidates normalized to a list of strings.
+
+        The public API separates the explicit delimiter from sniffing candidates:
+
+        - ``delimiter=","`` fixes the delimiter to a single value.
+        - ``candidate_delimiters=["\t", ";", ","]`` provides candidates for sniffing.
+
+        If ``delimiter`` is provided, ``candidate_delimiters`` must not be provided.
+
+        EXAMPLES::
+
+            >>> BaseLoader._normalize_delimiter_candidates(delimiter=',')
+            [',']
+
+            >>> BaseLoader._normalize_delimiter_candidates(candidate_delimiters=['\t', ';'])
+            ['\t', ';']
+
+            >>> BaseLoader._normalize_delimiter_candidates(delimiter=',', candidate_delimiters=[';'])
+            Traceback (most recent call last):
+            ...
+            ValueError: Use either 'delimiter' or 'candidate_delimiters', not both.
+        """
+        if delimiter is not None and candidate_delimiters is not None:
+            raise ValueError(
+                "Use either 'delimiter' or 'candidate_delimiters', not both."
+            )
+
+        if delimiter is not None:
+            return [delimiter]
+
+        if candidate_delimiters is None:
+            if not BaseLoader._warned_default_candidate_delimiters:
+                logger.warning(
+                    "No delimiter or candidate_delimiters were provided; using default candidate delimiters for sniffing."
+                )
+                BaseLoader._warned_default_candidate_delimiters = True
+            return list(BaseLoader.DEFAULT_CANDIDATE_DELIMITERS)
+
+        if isinstance(candidate_delimiters, str):
+            return [candidate_delimiters]
+
+        if isinstance(candidate_delimiters, Iterable):
+            return list(candidate_delimiters)
+
+        raise TypeError(
+            "'candidate_delimiters' must be a string or an iterable of strings."
+        )
 
     @property
     def file(self):
@@ -576,20 +646,102 @@ class BaseLoader:
             >>> csv.delimiter
             '\t'
 
+        Candidate delimiters are considered for sniffing even if the correct
+        delimiter is not the first candidate::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a\tb\n0\t0\n1\t1''')
+            >>> csv = BaseLoader(file, candidate_delimiters=[';', '\t', ','])
+            >>> csv.delimiter
+            '\t'
+
+        Inconsistent field counts between column headers and data rows are
+        reported early::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b\n0,0\n1,1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.delimiter
+            Traceback (most recent call last):
+            ...
+            ValueError: Inconsistent number of fields detected in data line 2: expected 2 based on column headers but found 3.
+
         """
-        # TODO:: Validate that the number of delimiters in the data lines
-        # matches those in the column header line.
-        # This will otherwise likely lead to erroneous loading of pandas dataframes
-        # and requires setting the column names specifically.
-        if len(self.delimiters) == 1:
-            return self.delimiters[0]
+        if self._delimiter is not None:
+            self._validate_delimiter_consistency(self._delimiter)
+            return self._delimiter
+
+        if len(self._candidate_delimiters) == 1:
+            delimiter = self._candidate_delimiters[0]
+            self._validate_delimiter_consistency(delimiter)
+            return delimiter
 
         import csv
         from io import StringIO
 
         combined = StringIO(self.column_headers.getvalue() + self.data.getvalue())
+        sample_lines = []
+        for _ in range(self.DELIMITER_SNIFF_SAMPLE_LINES):
+            line = combined.readline()
+            if not line:
+                break
+            sample_lines.append(line)
 
-        return csv.Sniffer().sniff(combined.readline(), self.delimiters).delimiter
+        sample = "".join(sample_lines)
+        if not sample:
+            raise ValueError("Delimiter could not be determined from an empty sample.")
+
+        delimiter = csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
+        self._validate_delimiter_consistency(delimiter)
+        return delimiter
+
+    def _validate_delimiter_consistency(self, delimiter):
+        r"""Validate that sampled data rows have the same field count as the
+        column headers. Returns ``True`` if all sampled rows are consistent.
+
+        EXAMPLES::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b\n0,0\n1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv._validate_delimiter_consistency(',')
+            True
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b\n0,0\n1,1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv._validate_delimiter_consistency(',')
+            Traceback (most recent call last):
+            ...
+            ValueError: Inconsistent number of fields detected in data line 2: expected 2 based on column headers but found 3.
+
+        """
+        import csv
+
+        column_header_lines = self.column_headers.getvalue().splitlines()
+        if not column_header_lines:
+            return True
+
+        expected_fields = len(
+            next(csv.reader([column_header_lines[0]], delimiter=delimiter))
+        )
+
+        for line_number, line in enumerate(
+            self.data.getvalue().splitlines()[: self.DELIMITER_SNIFF_SAMPLE_LINES],
+            start=1,
+        ):
+            if not line.strip():
+                continue
+
+            actual_fields = len(next(csv.reader([line], delimiter=delimiter)))
+            if actual_fields != expected_fields:
+                raise ValueError(
+                    "Inconsistent number of fields detected in data line "
+                    f"{line_number}: expected {expected_fields} based on "
+                    f"column headers but found {actual_fields}."
+                )
+
+        return True
 
     @property
     def decimal(self):
