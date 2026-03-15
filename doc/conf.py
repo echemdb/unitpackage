@@ -1,5 +1,5 @@
 project = 'unitpackage'
-copyright = '2022-2023, the unitpackage authors'
+copyright = '2022-2026, the unitpackage authors'
 author = 'the unitpackage authors'
 
 release = '0.12.0'
