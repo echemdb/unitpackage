@@ -2,7 +2,7 @@ project = 'unitpackage'
 copyright = '2022-2026, the unitpackage authors'
 author = 'the unitpackage authors'
 
-release = '0.13.0'
+release = '0.13.1'
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "myst_nb"]
 
