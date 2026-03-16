@@ -49,6 +49,8 @@ TODO:: Add example
 
 import logging
 from collections.abc import Iterable
+from functools import cached_property
+from itertools import zip_longest
 
 logger = logging.getLogger("loader")
 
@@ -480,12 +482,60 @@ class BaseLoader:
             for line in self.column_headers.getvalue().splitlines()
         ]
 
+        target_fields = self._field_count_profile["max_fields"]
+
         # If there's only one line, return it as is
         if len(headers) == 1:
-            return headers[0]
+            names = headers[0]
+            if len(names) < target_fields:
+                names = names + [""] * (target_fields - len(names))
+            return self._assign_unknown_column_names(names)
 
         # If there are multiple lines, combine them column-wise
-        return [" / ".join(items) for items in zip(*headers)]
+        names = [
+            " / ".join(item for item in items if item)
+            for items in zip_longest(*headers, fillvalue="")
+        ]
+        if len(names) < target_fields:
+            names = names + [""] * (target_fields - len(names))
+        return self._assign_unknown_column_names(names)
+
+    @staticmethod
+    def _assign_unknown_column_names(names):
+        r"""Replace blank column names with ``unknown N`` placeholders.
+
+        Placeholder names start at ``unknown 1`` and skip names that already
+        exist in non-empty headers.
+
+        EXAMPLES::
+
+            >>> BaseLoader._assign_unknown_column_names(['a', ''])
+            ['a', 'unknown 1']
+
+            >>> BaseLoader._assign_unknown_column_names(['unknown 1', '', ''])
+            ['unknown 1', 'unknown 2', 'unknown 3']
+
+        """
+        normalized = [
+            name.strip() if isinstance(name, str) else str(name).strip()
+            for name in names
+        ]
+        reserved = {name for name in normalized if name}
+
+        unknown_index = 1
+        for index, name in enumerate(normalized):
+            if name:
+                continue
+
+            while f"unknown {unknown_index}" in reserved:
+                unknown_index += 1
+
+            replacement = f"unknown {unknown_index}"
+            normalized[index] = replacement
+            reserved.add(replacement)
+            unknown_index += 1
+
+        return normalized
 
     @property
     def data(self):
@@ -552,6 +602,53 @@ class BaseLoader:
                a / m  b / s
             0      0      0
             1      1      1
+
+        When the header has more fields than data rows, missing values are
+        represented as ``NaN`` in the dataframe and trailing blank names are
+        auto-labeled::
+
+            >>> import logging
+            >>> logging.getLogger("loader").setLevel(logging.ERROR)
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b,
+            ... 1,2
+            ... 3,4''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.column_header_names
+            ['a', 'b', 'unknown 1']
+            >>> csv.df # doctest: +NORMALIZE_WHITESPACE
+               a  b  unknown 1
+            0  1  2        NaN
+            1  3  4        NaN
+
+        When data rows have more fields than the header, column names are
+        auto-labeled so the extra data column stays available::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b
+            ... 1,2,3
+            ... 4,5,6''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.column_header_names
+            ['a', 'b', 'unknown 1']
+            >>> csv.df # doctest: +NORMALIZE_WHITESPACE
+               a  b  unknown 1
+            0  1  2          3
+            1  4  5          6
+
+        The rows and columns can both have more fields than the header::
+
+            >>> from io import StringIO
+            >>> file = StringIO('''a,b,,
+            ... 1,2,3
+            ... 4,5,6''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.column_header_names
+            ['a', 'b', 'unknown 1', 'unknown 2']
+            >>> csv.df # doctest: +NORMALIZE_WHITESPACE
+               a  b  unknown 1  unknown 2
+            0  1  2          3        NaN
+            1  4  5          6        NaN
 
         """
         import pandas as pd
@@ -656,25 +753,15 @@ class BaseLoader:
             '\t'
 
         Inconsistent field counts between column headers and data rows are
-        reported early::
-
-            >>> from io import StringIO
-            >>> file = StringIO('''a,b\n0,0\n1,1,1''')
-            >>> csv = BaseLoader(file, delimiter=',')
-            >>> csv.delimiter
-            Traceback (most recent call last):
-            ...
-            ValueError: Inconsistent number of fields detected in data line 2: expected 2 based on column headers but found 3.
+        logged as warnings. Blank column names are auto-labeled so that
+        extra data fields remain accessible in the dataframe.
 
         """
         if self._delimiter is not None:
-            self._validate_delimiter_consistency(self._delimiter)
             return self._delimiter
 
         if len(self._candidate_delimiters) == 1:
-            delimiter = self._candidate_delimiters[0]
-            self._validate_delimiter_consistency(delimiter)
-            return delimiter
+            return self._candidate_delimiters[0]
 
         import csv
         from io import StringIO
@@ -691,40 +778,55 @@ class BaseLoader:
         if not sample:
             raise ValueError("Delimiter could not be determined from an empty sample.")
 
-        delimiter = csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
-        self._validate_delimiter_consistency(delimiter)
-        return delimiter
+        return csv.Sniffer().sniff(sample, self._candidate_delimiters).delimiter
 
-    def _validate_delimiter_consistency(self, delimiter):
-        r"""Validate that sampled data rows have the same field count as the
-        column headers. Returns ``True`` if all sampled rows are consistent.
+    @cached_property
+    def _field_count_profile(self):
+        r"""Sampled field-count profile for the resolved delimiter.
 
-        EXAMPLES::
+        Compares the number of fields in the column header line against
+        sampled data rows.  Emits a warning on first access when the
+        counts are inconsistent.
+
+        EXAMPLES:
+
+        Consistent field counts::
 
             >>> from io import StringIO
             >>> file = StringIO('''a,b\n0,0\n1,1''')
             >>> csv = BaseLoader(file, delimiter=',')
-            >>> csv._validate_delimiter_consistency(',')
-            True
+            >>> csv._field_count_profile
+            {'expected_fields': 2, 'max_fields': 2}
 
-            >>> from io import StringIO
-            >>> file = StringIO('''a,b\n0,0\n1,1,1''')
+        More data fields than header fields::
+
+            >>> file = StringIO('''a,b\n0,0,0\n1,1,1''')
             >>> csv = BaseLoader(file, delimiter=',')
-            >>> csv._validate_delimiter_consistency(',')
-            Traceback (most recent call last):
-            ...
-            ValueError: Inconsistent number of fields detected in data line 2: expected 2 based on column headers but found 3.
+            >>> csv._field_count_profile
+            {'expected_fields': 2, 'max_fields': 3}
+
+        More header fields than data fields::
+
+            >>> file = StringIO('''a,b,c\n0,0\n1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv._field_count_profile
+            {'expected_fields': 3, 'max_fields': 3}
 
         """
-        import csv
+        import csv as csv_mod
+
+        delimiter = self.delimiter
 
         column_header_lines = self.column_headers.getvalue().splitlines()
         if not column_header_lines:
-            return True
+            return {"expected_fields": 0, "max_fields": 0}
 
         expected_fields = len(
-            next(csv.reader([column_header_lines[0]], delimiter=delimiter))
+            next(csv_mod.reader([column_header_lines[0]], delimiter=delimiter))
         )
+        max_fields = expected_fields
+        mismatch_line_number = None
+        mismatch_actual_fields = None
 
         for line_number, line in enumerate(
             self.data.getvalue().splitlines()[: self.DELIMITER_SNIFF_SAMPLE_LINES],
@@ -733,15 +835,25 @@ class BaseLoader:
             if not line.strip():
                 continue
 
-            actual_fields = len(next(csv.reader([line], delimiter=delimiter)))
+            actual_fields = len(next(csv_mod.reader([line], delimiter=delimiter)))
+            max_fields = max(max_fields, actual_fields)
             if actual_fields != expected_fields:
-                raise ValueError(
-                    "Inconsistent number of fields detected in data line "
-                    f"{line_number}: expected {expected_fields} based on "
-                    f"column headers but found {actual_fields}."
-                )
+                if mismatch_line_number is None:
+                    mismatch_line_number = line_number
+                    mismatch_actual_fields = actual_fields
 
-        return True
+        if mismatch_line_number is not None:
+            logger.warning(
+                "Inconsistent number of fields detected in data line "
+                "%s: expected %s based on column headers but found %s. "
+                "Blank column names will be auto-labeled (unknown N) and "
+                "missing values will be represented as NaN.",
+                mismatch_line_number,
+                expected_fields,
+                mismatch_actual_fields,
+            )
+
+        return {"expected_fields": expected_fields, "max_fields": max_fields}
 
     @property
     def decimal(self):
