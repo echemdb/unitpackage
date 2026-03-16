@@ -1,36 +1,22 @@
 r"""
+Loader for CSV and other delimiter-separated value files.
 
-TODO:: Include module imports in each doctest.
-TODO:: Reword
-Loader for CSV files (https://datatracker.ietf.org/doc/html/rfc4180)
-which consist of a single header line containing the column (field)
-names and rows with comma separated values.
+The :class:`BaseLoader` reads files consisting of an optional header,
+one or more column-name lines, and data rows with a consistent delimiter.
+Delimiters and decimal separators are auto-detected when not specified
+explicitly.
 
-In pandas the names of the columns are referred to as `column_names`,
-whereas in a frictionless datapackage the column names are called `fields`.
-The datapackage contains information about, i.e.,
-the type of data, a title and a set of descriptors.
-
-The CSV object has the following properties:
-
-TODO:: Add examples for the following functions
-    * a DataFrame
-    * the column names
-    * the header contents
-    * the number of header lines
-
-Loaders for non standard CSV files can be called:
-
-TODO:: Add example
-
+Device-specific loaders (e.g. EC-Lab, Gamry) can be selected via
+:meth:`BaseLoader.create` to handle non-standard header layouts.
+See :meth:`BaseLoader.known_loaders` for supported devices.
 """
 
 # ********************************************************************
 #  This file is part of unitpackage.
 #
 #        Copyright (C) 2025-2026 Albert Engstfeld
-#        Copyright (C) 2025 Johannes Hermann
-#        Copyright (C) 2025 Julian Rüth
+#        Copyright (C)      2025 Johannes Hermann
+#        Copyright (C)      2025 Julian Rüth
 #
 #  unitpackage is free software: you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -63,6 +49,7 @@ class BaseLoader:
     EXAMPLES::
 
         >>> from io import StringIO
+        >>> from unitpackage.loaders.baseloader import BaseLoader
         >>> file = StringIO(r'''a,b
         ... 0,0
         ... 1,1''')
@@ -77,8 +64,9 @@ class BaseLoader:
         >>> csv.column_header_names
         ['a', 'b']
 
-    TODO: Link to device list in the documentation.
-    More specific loaders can be selected.::
+    More specific loaders can be selected via
+    :meth:`~BaseLoader.create` (see :meth:`~BaseLoader.known_loaders`
+    for supported devices)::
 
         >>> from io import StringIO
         >>> file = StringIO('''EC-Lab ASCII FILE
@@ -90,7 +78,6 @@ class BaseLoader:
         ... 2\t0\t0.1\t0\t0
         ... 2\t1\t1.4\t5\t1
         ... ''')
-        >>> from unitpackage.loaders.baseloader import BaseLoader
         >>> csv = BaseLoader.create('eclab')(file)
         >>> csv.df
            mode  time/s  Ewe/V  <I>/mA  control/V
@@ -145,6 +132,7 @@ class BaseLoader:
 
         EXAMPLES::
 
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> BaseLoader._normalize_delimiter_candidates(delimiter=',')
             [',']
 
@@ -189,6 +177,7 @@ class BaseLoader:
 
         EXAMPLES::
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -223,6 +212,7 @@ class BaseLoader:
 
         EXAMPLES::
 
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> BaseLoader.known_loaders()
             ['eclab', 'gamry']
 
@@ -237,6 +227,7 @@ class BaseLoader:
         EXAMPLES::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO('''EC-Lab ASCII FILE
             ... Nb header lines : 6
             ...
@@ -278,6 +269,7 @@ class BaseLoader:
         Files for the base loader do not have a header::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -311,6 +303,7 @@ class BaseLoader:
         EXAMPLES::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -344,6 +337,7 @@ class BaseLoader:
         EXAMPLES::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -381,6 +375,7 @@ class BaseLoader:
         A file with a single column header line::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -413,6 +408,7 @@ class BaseLoader:
         A file with a single column header line::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -455,6 +451,7 @@ class BaseLoader:
         A file with a single column header line::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -509,6 +506,7 @@ class BaseLoader:
 
         EXAMPLES::
 
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> BaseLoader._assign_unknown_column_names(['a', ''])
             ['a', 'unknown 1']
 
@@ -545,6 +543,7 @@ class BaseLoader:
         EXAMPLES::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -580,6 +579,7 @@ class BaseLoader:
         EXAMPLES::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO(r'''a,b
             ... 0,0
             ... 1,1''')
@@ -669,6 +669,7 @@ class BaseLoader:
         A CSV containing integers::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO('''a,b
             ... 0,0
             ... 1,1''')
@@ -793,6 +794,7 @@ class BaseLoader:
         Consistent field counts::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO('''a,b\n0,0\n1,1''')
             >>> csv = BaseLoader(file, delimiter=',')
             >>> csv._field_count_profile
@@ -865,6 +867,7 @@ class BaseLoader:
         A standard CVS containing floats with a single header line::
 
             >>> from io import StringIO
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> file = StringIO('''a,b
             ... 0.0,0.0
             ... 1.0,1.0''')
@@ -989,6 +992,7 @@ class BaseLoader:
         Examples::
 
 
+            >>> from unitpackage.loaders.baseloader import BaseLoader
             >>> BaseLoader._validate_digit('12,33', ',')
             True
 
