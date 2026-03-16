@@ -472,10 +472,23 @@ class BaseLoader:
             >>> csv.column_header_names
             ['T / K', 'v / m/s']
 
+        A file where header and data lines have a leading delimiter.
+        The leading empty field is preserved and auto-labeled::
+
+            >>> from io import StringIO
+            >>> file = StringIO(''',a,b
+            ... ,0,0
+            ... ,1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.column_header_names
+            ['unknown 1', 'a', 'b']
+
         """
 
+        import csv as csv_mod
+
         headers = [
-            line.strip().split(self.delimiter)
+            next(csv_mod.reader([line], delimiter=self.delimiter))
             for line in self.column_headers.getvalue().splitlines()
         ]
 
@@ -649,6 +662,23 @@ class BaseLoader:
                a  b  unknown 1  unknown 2
             0  1  2          3        NaN
             1  4  5          6        NaN
+
+        A file where header and data have a leading delimiter, but some
+        data rows have a value in that leading position::
+
+            >>> import logging
+            >>> logging.getLogger("loader").setLevel(logging.ERROR)
+            >>> from io import StringIO
+            >>> file = StringIO(''',a,b
+            ... ,0,0
+            ... X,1,1''')
+            >>> csv = BaseLoader(file, delimiter=',')
+            >>> csv.column_header_names
+            ['unknown 1', 'a', 'b']
+            >>> csv.df # doctest: +NORMALIZE_WHITESPACE
+              unknown 1  a  b
+            0       NaN  0  0
+            1         X  1  1
 
         """
         import pandas as pd

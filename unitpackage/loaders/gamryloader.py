@@ -177,3 +177,65 @@ class GamryLoader(BaseLoader):
 
         """
         return 2
+
+    @property
+    def column_headers(self):
+        r"""The column header lines of a Gamry DAT file.
+
+        Gamry files have a leading tab on each column header line which
+        is stripped as a formatting artifact.
+
+        EXAMPLES::
+
+            >>> from io import StringIO
+            >>> from unitpackage.loaders.gamryloader import GamryLoader
+            >>> file = StringIO('''EXPLAIN
+            ... TAG\tCV
+            ... TITLE\tLABEL\tCyclic Voltammetry\tTest &Identifier
+            ... CURVE\tTABLE\t3597
+            ... \tPt\tT\tVf\tIm\tVu\tSig\tAch\tIERange\tOver\tCycle\tTemp
+            ... \t#\ts\tV vs. Ref.\tA\tV\tV\tV\t#\tbits\t#\tdeg C
+            ... \t0\t0,06\t2,00054E-001\t1,72821E-005\t0,00000E+000\t2,00000E-001\t6,45222E-004\t9\t..........a\t0\t-327,75
+            ... \t1\t0,12\t1,97170E-001\t1,04547E-005\t0,00000E+000\t1,97000E-001\t-1,17889E-003\t9\t..........a\t0\t-327,75
+            ... ''')
+            >>> csv = GamryLoader(file)
+            >>> csv.column_headers.readlines()
+            ['Pt\tT\tVf\tIm\tVu\tSig\tAch\tIERange\tOver\tCycle\tTemp\n', '#\ts\tV vs. Ref.\tA\tV\tV\tV\t#\tbits\t#\tdeg C\n']
+
+        """
+        from io import StringIO
+
+        raw = super().column_headers.getvalue()
+        stripped = "\n".join(line.lstrip("\t") for line in raw.splitlines()) + "\n"
+        return StringIO(stripped)
+
+    @property
+    def data(self):
+        r"""The data lines of a Gamry DAT file.
+
+        Gamry files have a leading tab on each data line which
+        is stripped as a formatting artifact.
+
+        EXAMPLES::
+
+            >>> from io import StringIO
+            >>> from unitpackage.loaders.gamryloader import GamryLoader
+            >>> file = StringIO('''EXPLAIN
+            ... TAG\tCV
+            ... TITLE\tLABEL\tCyclic Voltammetry\tTest &Identifier
+            ... CURVE\tTABLE\t3597
+            ... \tPt\tT\tVf\tIm\tVu\tSig\tAch\tIERange\tOver\tCycle\tTemp
+            ... \t#\ts\tV vs. Ref.\tA\tV\tV\tV\t#\tbits\t#\tdeg C
+            ... \t0\t0,06\t2,00054E-001\t1,72821E-005\t0,00000E+000\t2,00000E-001\t6,45222E-004\t9\t..........a\t0\t-327,75
+            ... \t1\t0,12\t1,97170E-001\t1,04547E-005\t0,00000E+000\t1,97000E-001\t-1,17889E-003\t9\t..........a\t0\t-327,75
+            ... ''')
+            >>> csv = GamryLoader(file)
+            >>> csv.data.readlines()
+            ['0\t0,06\t2,00054E-001\t1,72821E-005\t0,00000E+000\t2,00000E-001\t6,45222E-004\t9\t..........a\t0\t-327,75\n', '1\t0,12\t1,97170E-001\t1,04547E-005\t0,00000E+000\t1,97000E-001\t-1,17889E-003\t9\t..........a\t0\t-327,75\n']
+
+        """
+        from io import StringIO
+
+        raw = super().data.getvalue()
+        stripped = "\n".join(line.lstrip("\t") for line in raw.splitlines()) + "\n"
+        return StringIO(stripped)
