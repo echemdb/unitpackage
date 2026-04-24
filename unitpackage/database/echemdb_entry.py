@@ -209,7 +209,9 @@ class EchemdbEntry(Entry):
         r"""
         Return a formatted reference for the entry's bibliography such as:
 
-        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+        O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing
+        CO-saturated electrolyte-reactive and inert adlayer phases.
+        Physical Chemistry Chemical Physics, 13(13):6010-6021, 2011
 
         Rendering default is plain text 'text', but can be changed to any format
         supported by pybtex, such as markdown 'md', 'latex' or 'html'.
