@@ -21,10 +21,11 @@ Typical usage in tests::
 
 import base64
 import json
+import os
 from pathlib import Path
 from unittest.mock import Mock
 
-FIXTURES_DIR = Path(__file__).parent / "fixtures"
+FIXTURES_DIR = Path(os.environ["PIXI_PROJECT_ROOT"]) / "test" / "fixtures"
 
 
 def get_versions(backend="elabftw"):

@@ -53,7 +53,7 @@ from unitpackage.entry import Entry  # noqa: E402
 
 logger = logging.getLogger("unitpackage.record_fixtures")
 
-FIXTURES_DIR = Path(__file__).parent / "fixtures"
+FIXTURES_DIR = Path(os.environ["PIXI_PROJECT_ROOT"]) / "test" / "fixtures"
 
 # ---------------------------------------------------------------------------
 # Standard test data

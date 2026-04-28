@@ -99,8 +99,8 @@ elabapi-python = ">=5.5.0"
 
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
-test-elabftw = "pytest -m elabftw test/"
-record-elabftw = "python test/record_fixtures.py"
+test-elabftw = "pytest -m elabftw unitpackage/test/elabftw/"
+record-elabftw = "python unitpackage/test/elabftw/record_fixtures.py"
 
 [tool.pixi.feature.lint.dependencies]
 black = "*"

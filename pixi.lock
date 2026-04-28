@@ -40955,7 +40955,7 @@ packages:
 - pypi: ./
   name: unitpackage
   version: 0.13.1
-  sha256: 277b031fb99b8a8e9cac88dab26c7530bfdb72c04004d86cf20e7c1fd303a121
+  sha256: 3bb7ceb60ee37be8e7953b11c91c672f8a26743d09111841333a652b492798d2
   requires_dist:
   - astropy>=5,<8
   - click>=8,<9
