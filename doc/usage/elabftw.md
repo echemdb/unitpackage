@@ -25,7 +25,7 @@ When an entry is uploaded, its tabular data is attached as a CSV file and the co
 Tags on the item can be used to group and filter entries.
 Only items that carry this `unitpackage` metadata key are recognised by the client; items created outside of unitpackage are ignored.
 
-## Prerequisites
+## Requirements
 
 The `elabapi-python` package is required.  Install it alongside unitpackage with:
 
