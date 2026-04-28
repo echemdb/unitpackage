@@ -54,6 +54,7 @@ Upload an Entry to eLabFTW::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import inspect
 import io
 import json
 import logging
@@ -233,7 +234,7 @@ class ElabFTWClient(BaseELNClient):
         """
         info_client = elabapi_python.InfoApi(self._api_client)
         response = info_client.get_info()
-        return response.to_dict()
+        return response
 
     def _get_api(self):
         r"""
@@ -522,7 +523,7 @@ class ElabFTWClient(BaseELNClient):
                 "unitpackage": descriptor,
             }
             metadata_json = json.dumps(metadata, default=str)
-            api.patch_item(entity_id, body={"metadata": metadata_json})
+            api.patch_item({"metadata": metadata_json}, entity_id)
             logger.info(
                 "Stored datapackage descriptor in metadata for %s %d",
                 entity_type,

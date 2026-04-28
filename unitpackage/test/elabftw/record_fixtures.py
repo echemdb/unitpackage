@@ -328,7 +328,7 @@ class ElabFTWRecorder:
         descriptor = build_datapackage_descriptor(entry)
         metadata = {"unitpackage": descriptor}
         metadata_json = json.dumps(metadata, default=str)
-        patch_result = api.patch_item(entity_id, body={"metadata": metadata_json})
+        patch_result = api.patch_item({"metadata": metadata_json}, entity_id)
 
         _save_json(
             {
@@ -392,8 +392,9 @@ class ElabFTWRecorder:
         captured = {}
 
         # Phase 0: clean up leftovers from previous runs
-        click.echo("Cleaning up leftover test entities...")
-        self.cleanup_leftovers(client)
+        if cleanup:
+            click.echo("Cleaning up leftover test entities...")
+            self.cleanup_leftovers(client)
 
         try:
             # Phase 1: server info
