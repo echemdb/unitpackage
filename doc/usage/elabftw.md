@@ -42,7 +42,7 @@ The client resolves credentials in the following priority order:
 
 1. Explicit arguments passed to the constructor
 2. Environment variables (`ELABFTW_HOST`, `ELABFTW_API_KEY`)
-3. Configuration file (`~/.config/unitpackage/config.toml`)
+3. Configuration file (`~/.config/unitpackage/config.toml` on Linux/macOS, `%APPDATA%\unitpackage\config.toml` on Windows)
 
 ### Environment Variables
 
