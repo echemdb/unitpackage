@@ -21,7 +21,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-elabftw = ["elabapi-python<5.4.0"]
+elabftw = ["elabapi-python>=5.5.0"]
 
 [project.scripts]
 unitpackage = "unitpackage.entrypoint:cli"
@@ -64,6 +64,7 @@ ipykernel = "*"
 pip = "*"
 jupyterlab = "*"
 jupytext = "*"
+urllib3 = "*"
 
 [tool.pixi.tasks]
 unitpackage = "unitpackage"
@@ -94,7 +95,7 @@ pytest-remotedata = "*"
 pytest-env = "*"
 
 [tool.pixi.feature.test.pypi-dependencies]
-elabapi-python = "<5.4.0" #workaround until 5.4.1 is released
+elabapi-python = ">=5.5.0"
 
 [tool.pixi.feature.test.tasks]
 doctest = "pytest -n auto --doctest-modules unitpackage"
@@ -107,7 +108,7 @@ isort = "*"
 pylint = "*"
 
 [tool.pixi.feature.dev.tasks]
-test = { depends-on = ["doctest"] }
+test = { depends-on = ["doctest", "test-elabftw"] }
 
 [tool.pixi.feature.lint.tasks]
 pylint = "pylint unitpackage"
