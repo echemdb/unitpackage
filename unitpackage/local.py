@@ -30,7 +30,6 @@ import os
 import os.path
 from glob import glob
 
-import pandas as pd
 from frictionless import Package, Resource, Schema
 
 logger = logging.getLogger("unitpackage")
@@ -42,7 +41,8 @@ def create_tabular_resource_from_csv(
     header_lines=None,
     column_header_lines=None,
     decimal=None,
-    delimiters=None,
+    delimiter=None,
+    candidate_delimiters=None,
 ):
     r"""
     Return a resource built from a provided CSV.
@@ -77,11 +77,21 @@ def create_tabular_resource_from_csv(
         'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
                               {'name': 'j / A / cm2', 'type': 'integer'}]}}
 
+    Plain CSV files without explicit parsing hints are kept as frictionless CSV
+    resources, so standard files can round-trip without eagerly materializing a
+    pandas dataframe.
+
 
     """
     csv_basename = os.path.basename(csvname)
 
-    if not header_lines and not column_header_lines and not decimal and not delimiters:
+    if (
+        not header_lines
+        and not column_header_lines
+        and not decimal
+        and delimiter is None
+        and candidate_delimiters is None
+    ):
         resource = Resource(
             path=csv_basename,
             basepath=os.path.dirname(csvname) or ".",
@@ -96,7 +106,8 @@ def create_tabular_resource_from_csv(
         header_lines=header_lines,
         column_header_lines=column_header_lines,
         decimal=decimal,
-        delimiters=delimiters,
+        delimiter=delimiter,
+        candidate_delimiters=candidate_delimiters,
     )
 
 
@@ -106,7 +117,8 @@ def create_df_resource_from_csv(
     header_lines=None,
     column_header_lines=None,
     decimal=None,
-    delimiters=None,
+    delimiter=None,
+    candidate_delimiters=None,
 ):
     r"""
     Create a pandas dataframe resource from a CSV file.
@@ -125,6 +137,13 @@ def create_df_resource_from_csv(
         'schema': {'fields': [{'name': 'E / V', 'type': 'integer'},
                               {'name': 'j / A / cm2', 'type': 'integer'}]}}
 
+    Candidate delimiters can be provided explicitly for delimiter sniffing::
+
+        >>> filename = 'examples/from_csv/from_csv.csv'
+        >>> resource = create_df_resource_from_csv(csvname=filename, candidate_delimiters=[';', ','])
+        >>> resource.data.iloc[0].tolist()
+        [1, 2]
+
     """
 
     from unitpackage.loaders.baseloader import BaseLoader
@@ -135,7 +154,8 @@ def create_df_resource_from_csv(
             header_lines=header_lines,
             column_header_lines=column_header_lines,
             decimal=decimal,
-            delimiters=delimiters,
+            delimiter=delimiter,
+            candidate_delimiters=candidate_delimiters,
         )
 
     return create_df_resource_from_df(csv.df)
@@ -198,6 +218,7 @@ def create_df_resource_from_tabular_resource(resource):
     TESTS::
 
         >>> data = {'x': [1, 2, 3], 'y': [4, 5, 6]}
+        >>> import pandas as pd
         >>> df = pd.DataFrame(data)
         >>> from unitpackage.entry import Entry
         >>> entry = Entry.from_df(df, basename='test_parent_directory')
@@ -209,16 +230,49 @@ def create_df_resource_from_tabular_resource(resource):
             1  2  5
             2  3  6
 
+    Stored frictionless dialect metadata is honored when reconstructing the dataframe::
+
+        >>> import tempfile
+        >>> from frictionless import Resource
+        >>> with tempfile.TemporaryDirectory() as tmpdir:
+        ...     csv_path = os.path.join(tmpdir, 'dialect.csv')
+        ...     with open(csv_path, 'w', encoding='utf-8') as handle:
+        ...         _ = handle.write('x;y\n1.5;2.5\n')
+        ...     resource = Resource.from_descriptor({
+        ...         'name': 'dialect',
+        ...         'path': 'dialect.csv',
+        ...         'encoding': 'utf-8',
+        ...         'dialect': {'csv': {'delimiter': ';'}},
+        ...     })
+        ...     resource.basepath = tmpdir
+        ...     create_df_resource_from_tabular_resource(resource).data.iloc[0].tolist()
+        [1.5, 2.5]
+
     """
-    descriptor_path = (
-        resource.basepath + "/" + resource.path if resource.basepath else resource.path
-    )
+    from unitpackage.loaders.baseloader import BaseLoader
 
-    df = pd.read_csv(descriptor_path)
-    df_resource = Resource(df)
-    df_resource.infer()
+    if resource.basepath:
+        descriptor_path = os.path.join(resource.basepath, resource.path)
+    else:
+        descriptor_path = resource.path
 
-    return df_resource
+    descriptor = resource.to_dict()
+    dialect = descriptor.get("dialect", {}) if isinstance(descriptor, dict) else {}
+    dialect_csv = dialect.get("csv", {}) if isinstance(dialect, dict) else {}
+
+    with open(
+        descriptor_path,
+        "r",
+        encoding=getattr(resource, "encoding", None)
+        or descriptor.get("encoding")
+        or "utf-8",
+    ) as handle:
+        csv = BaseLoader(
+            handle,
+            delimiter=dialect_csv.get("delimiter"),
+        )
+
+    return create_df_resource_from_df(csv.df)
 
 
 def collect_resources(datapackages):
@@ -393,9 +447,15 @@ def create_unitpackage(resource, metadata=None, fields=None):
         {'resources': [{'name':
         ...
 
+    When no metadata is provided the stored metadata is an empty dict, not ``None``::
+
+        >>> resource = create_tabular_resource_from_csv("./examples/from_csv/from_csv.csv")
+        >>> package = create_unitpackage(resource=resource)
+        >>> package.resources[0].custom["metadata"]
+        {}
+
     """
-    resource.custom.setdefault("metadata", {})
-    resource.custom["metadata"] = metadata
+    resource.custom["metadata"] = metadata if metadata is not None else {}
 
     if fields:
         # Use update_fields() for field updates with proper validation and logging

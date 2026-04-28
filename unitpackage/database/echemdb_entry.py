@@ -324,10 +324,24 @@ class EchemdbEntry(Entry):
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
             {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
 
+        Unitless fields in ``figureDescription.fields`` (e.g., ``cycle``)
+        are skipped during rescaling (For testing purposes we add here a
+        field without units to the datapackage)::
+
+            >>> entry = EchemdbEntry.create_example()
+            >>> entry.resource.custom["metadata"]["echemdb"]["figureDescription"]["fields"].append({"name": "cycle", "type": "number"})
+            >>> rescaled_entry = entry.rescale(units='original')
+            >>> rescaled_entry.fields # doctest: +NORMALIZE_WHITESPACE
+            [{'name': 't', 'type': 'number', 'unit': 's'},
+            {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'RHE'},
+            {'name': 'j', 'type': 'number', 'unit': 'mA / cm2'}]
+
         """
         if units == "original":
             units = {
-                field["name"]: field["unit"] for field in self.figureDescription.fields
+                field["name"]: field["unit"]
+                for field in self.figureDescription.fields
+                if hasattr(field, "unit")
             }
 
         return super().rescale(units)
@@ -578,16 +592,31 @@ class EchemdbEntry(Entry):
             1  0.02 -0.102158 -0.981762
             ...
 
+        For the conversion from or to RHE the pH is required. If it is accessible from the metadata,
+        it is used automatically. Otherwise, it can be provided as an argument::
+
+            >>> entry.system.electrolyte.ph.value
+            1
+
             >>> rescaled_entry = entry.rescale_reference(new_reference='Ag/AgCl-sat')
             >>> rescaled_entry.resource.schema.get_field('E') # doctest: +NORMALIZE_WHITESPACE
             {'name': 'E', 'type': 'number', 'unit': 'V', 'reference': 'Ag/AgCl-sat'}
 
             >>> rescaled_entry.df.head() # doctest: +NORMALIZE_WHITESPACE
                   t         E         j
-            0  0.00  0.152942 -0.998277
-            1  0.02  0.153942 -0.981762
+            0  0.00 -0.359258 -0.998277
+            1  0.02 -0.358258 -0.981762
             ...
 
+        TESTS:
+
+        The shift vs. SHE should be about -0.59 mV at pH 1::
+
+            >>> entry.rescale_reference(new_reference='SHE').df.head() # doctest: +NORMALIZE_WHITESPACE
+                   t         E         j
+            0   0.00 -0.162258 -0.998277
+            1   0.02 -0.161258 -0.981762
+            ...
 
         """
         field_name = field_name or "E"

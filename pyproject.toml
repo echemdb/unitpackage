@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "unitpackage"
-version = "0.12.0"
+version = "0.13.1"
 license = "GPL-3.0-or-later"
 description = "a Python library to interact with a collection of frictionless datapackages"
 readme = "README.md"
@@ -16,7 +16,7 @@ dependencies = [
     "matplotlib>=3.5.0,<4",
     "pandas>=1.3,<4",
     "plotly>=5,<7",
-    "pybtex>=0.25,<0.26",
+    "pybtex>=0.25,<0.27",
     "tomli>=1.0; python_version < '3.11'",
 ]
 

@@ -258,7 +258,7 @@ class Entry:
             'df', 'echemdb', 'field_unit',
             'fields', 'from_csv', 'from_df', 'from_local', 'identifier', 'load_metadata',
             'metadata', 'plot', 'remove_column', 'remove_columns', 'rename_field', 'rename_fields',
-            'rescale', 'resource', 'save', 'update_fields', 'yaml']
+            'rescale', 'resource', 'save', 'to_builtin', 'update_fields', 'yaml']
 
         """
         return list(set(dir(self._descriptor) + object.__dir__(self)))
@@ -678,7 +678,17 @@ class Entry:
             >>> new_resource = entry._create_new_df_resource(df)
             >>> new_resource.name == entry.resource.name
             True
+
+        Metadata is copied without sharing references::
+
+            >>> entry = Entry.create_example()
+            >>> new_resource = entry._create_new_df_resource(entry.df.copy())
+            >>> new_resource.custom["metadata"]["echemdb"]["source"]["citationKey"] = "modified"
+            >>> entry.resource.custom["metadata"]["echemdb"]["source"]["citationKey"]
+            'alves_2011_electrochemistry_6010'
         """
+        import copy
+
         from frictionless import Resource, Schema
 
         new_resource = Resource(df)
@@ -703,7 +713,9 @@ class Entry:
             )
 
         # Copy metadata to new resource
-        new_resource.custom["metadata"] = self.resource.custom.get("metadata", {})
+        new_resource.custom["metadata"] = copy.deepcopy(
+            self.resource.custom.get("metadata", {})
+        )
 
         return new_resource
 
@@ -1092,7 +1104,8 @@ class Entry:
         header_lines=None,
         column_header_lines=None,
         decimal=None,
-        delimiters=None,
+        delimiter=None,
+        candidate_delimiters=None,
         device=None,
     ):
         r"""
@@ -1104,6 +1117,9 @@ class Entry:
 
         A ``device`` can be specified to select a device-specific loader
         (e.g., ``'eclab'`` or ``'gamry'``).
+
+        ``candidate_delimiters`` can be used to restrict delimiter sniffing to
+        a known set of separators.
 
         EXAMPLES::
 
@@ -1135,6 +1151,18 @@ class Entry:
             [{'name': 'E / V', 'type': 'integer'},
             {'name': 'j / A / cm2', 'type': 'integer'}]
 
+        Candidate delimiters can be provided explicitly when parsing a file::
+
+            >>> import os
+            >>> import tempfile
+            >>> with tempfile.TemporaryDirectory() as tmpdir:
+            ...     filename = os.path.join(tmpdir, 'candidate_delimiters.csv')
+            ...     with open(filename, 'w', encoding='utf-8') as handle:
+            ...         _ = handle.write('a\tb\n1\t2\n')
+            ...     entry = Entry.from_csv(csvname=filename, candidate_delimiters=[';', '\t'])
+            >>> entry.metadata['dsvDescription']['delimiter']
+            '\t'
+
         A device-specific loader can be used to parse instrument files::
 
             >>> entry = Entry.from_csv(csvname='test/loader_data/eclab_cv.mpt', device='eclab')
@@ -1149,6 +1177,7 @@ class Entry:
 
             >>> entry.metadata['dsvDescription']['loader']
             'ECLabLoader'
+
             >>> entry.metadata['dsvDescription']['delimiter']
             '\t'
 
@@ -1162,7 +1191,8 @@ class Entry:
             "header_lines": header_lines,
             "column_header_lines": column_header_lines,
             "decimal": decimal,
-            "delimiters": delimiters,
+            "delimiter": delimiter,
+            "candidate_delimiters": candidate_delimiters,
         }
 
         loader_cls = BaseLoader.create(device) if device else BaseLoader

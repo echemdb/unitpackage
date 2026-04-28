@@ -1,8 +1,8 @@
 project = 'unitpackage'
-copyright = '2022-2023, the unitpackage authors'
+copyright = '2022-2026, the unitpackage authors'
 author = 'the unitpackage authors'
 
-release = '0.12.0'
+release = '0.13.1'
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "myst_nb"]
 
@@ -43,6 +43,10 @@ html_context = {
 
 # Ignore the link to the GNU General Public License v3.0
 # This is because checking results in a timeout.
+# Zenodo badge and record URLs are excluded because Zenodo's servers
+# block automated link checkers with 403 responses.
 linkcheck_ignore = [
     "https://www.gnu.org/licenses/gpl-3.0.html*",
+    "https://zenodo.org/badge/*",
+    "https://zenodo.org/records/*",
 ]

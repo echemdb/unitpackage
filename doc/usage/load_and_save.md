@@ -97,7 +97,8 @@ For CSV files with more complex structures, additional arguments can be provided
 - `header_lines` — number of header lines to skip before the data
 - `column_header_lines` — number of lines containing column headers (multiple lines are flattened and separated by ` / `)
 - `decimal` — decimal separator (e.g., `','` for European-style numbers)
-- `delimiters` — column delimiter (auto-detected if not specified)
+- `delimiter` — explicit column delimiter
+- `candidate_delimiters` — candidate delimiters used during autodetection
 - `encoding` — file encoding
 
 For example, a CSV with multiple header lines:
@@ -129,7 +130,7 @@ The loader automatically detects headers and delimiters. The resulting entry con
 entry.fields
 ```
 
-Information on the file structure is stored in the entry's metadata under `dsvDescription`:
+Information on detected file structure is available in entry metadata (for example under `dsvDescription`):
 
 ```{code-cell} ipython3
 entry.metadata['dsvDescription']['loader']
