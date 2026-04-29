@@ -205,24 +205,32 @@ class EchemdbEntry(Entry):
         bibliography = parse_string(citation, "bibtex")
         return bibliography.entries[self.source.citationKey]
 
-    def citation(self, backend="text"):
+    def citation(self, backend="text", include_web_refs=False):
         r"""
         Return a formatted reference for the entry's bibliography such as:
 
-        J. Doe, et al., Journal Name, volume (YEAR) page, "Title"
+        O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing
+        CO-saturated electrolyte-reactive and inert adlayer phases.
+        Physical Chemistry Chemical Physics, 13(13):6010-6021, 2011
 
         Rendering default is plain text 'text', but can be changed to any format
         supported by pybtex, such as markdown 'md', 'latex' or 'html'.
+
+        Web references (URL/DOI/eprint fields) are suppressed by default because
+        many consumers already link the whole citation externally.
 
         EXAMPLES::
 
             >>> entry = EchemdbEntry.create_example()
             >>> entry.citation(backend='text')
-            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011.'
+            'O. B. Alves et al. Electrochemistry at Ru(0001) in a flowing CO-saturated electrolyte—reactive and inert adlayer phases. Physical Chemistry Chemical Physics, 13(13):6010–6021, 2011'
             >>> print(entry.citation(backend='md'))
             O\. B\. Alves *et al\.*
             *Electrochemistry at Ru\(0001\) in a flowing CO\-saturated electrolyte—reactive and inert adlayer phases*\.
-            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011\.
+            *Physical Chemistry Chemical Physics*, 13\(13\):6010–6021, 2011
+
+            >>> "URL:" in entry.citation(backend='text') or "doi:" in entry.citation(backend='text').lower()
+            False
 
         """
         from pybtex.style.formatting.unsrt import Style
@@ -270,11 +278,31 @@ class EchemdbEntry(Entry):
                 title = tag("i")[field(which_field)]
                 return sentence[title] if as_sentence else title
 
-        return (
+            def format_web_refs(self, e):
+                if include_web_refs:
+                    return super().format_web_refs(e)
+
+                from pybtex.style.template import sentence
+
+                # Suppress URL/DOI/pubmed/eprint block.
+                # pylint: disable=no-value-for-parameter
+                return sentence[""]
+
+        citation = (
             EchemdbStyle(abbreviate_names=True)
             .format_entry("unused", self.bibliography)
             .text.render_as(backend)
         )
+
+        citation = citation.rstrip()
+
+        if citation.endswith("\\."):
+            return citation[:-2]
+
+        if citation.endswith("."):
+            return citation[:-1]
+
+        return citation
 
     def get_electrode(self, name):
         r"""
