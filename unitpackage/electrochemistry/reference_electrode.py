@@ -19,7 +19,7 @@ EXAMPLES::
     >>> ref = ReferenceElectrode("Ag/AgCl-sat")
     >>> ref # doctest: +NORMALIZE_WHITESPACE
     {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
-    'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
+    'alias': [], 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
     'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}],
     'temperature_dependence': []}
 
@@ -123,7 +123,15 @@ class _ReferenceElectrode:
     ):
         self.name = name
         self.full_name = full_name
-        self.alias = alias
+        # Normalize alias to a list
+        if alias is None:
+            self.alias = []
+        elif isinstance(alias, str):
+            self.alias = [alias]
+        elif isinstance(alias, list):
+            self.alias = alias
+        else:
+            self.alias = list(alias) if alias else []
         self.entries = entries if entries is not None else []
         self.temperature_dependence = (
             temperature_dependence if temperature_dependence is not None else []
@@ -138,7 +146,7 @@ class _ReferenceElectrode:
         >>> ref = ReferenceElectrode("Ag/AgCl-sat") # doctest: +NORMALIZE_WHITESPACE
         >>> ref # doctest: +NORMALIZE_WHITESPACE
         {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
-        'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026',
+        'alias': [], 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026',
         'approach': 'experimental', 'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'},
         'choice': None, 'uncertainty': None}], 'temperature_dependence': []}
 
@@ -155,7 +163,7 @@ class _ReferenceElectrode:
         >>> import json
         >>> json.loads(ref.to_json()) # doctest: +NORMALIZE_WHITESPACE
         {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
-        'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
+        'alias': [], 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
         'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}],
         'temperature_dependence': []}
 
@@ -194,7 +202,7 @@ class _ReferenceElectrode:
             >>> ref = ReferenceElectrode('Ag/AgCl-sat')
             >>> ref.data # doctest: +NORMALIZE_WHITESPACE
             {'name': 'Ag/AgCl-sat', 'full_name': 'KCl Saturated silver / silver chloride electrode',
-            'alias': None, 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
+            'alias': [], 'entries': [{'value': 0.197, 'standard': 'ECHEMDB-2026', 'approach': 'experimental',
             'unit': 'V', 'vs': 'SHE', 'source': {'isbn': '978-1119334064'}, 'choice': None, 'uncertainty': None}],
             'temperature_dependence': []}
 
@@ -246,12 +254,7 @@ class _ReferenceElectrode:
 
         return entry
 
-    def shift(
-        self,
-        to=None,
-        potential=None,
-        ph=None,
-    ):
+    def shift(self, to=None, potential=None, ph=None):
         """
         Determine the shift in potential between the reference electrode
         and another reference electrode.
@@ -358,6 +361,11 @@ def ReferenceElectrode(reference):
         >>> ReferenceElectrode(ref) is ref
         True
 
+        >>> # Load by alias
+        >>> ref = ReferenceElectrode("SCE")
+        >>> ref.name
+        'CE-sat'
+
         >>> ReferenceElectrode('custom') # doctest: +NORMALIZE_WHITESPACE
         Traceback (most recent call last):
         ...
@@ -367,10 +375,21 @@ def ReferenceElectrode(reference):
         'Hg/HgO-0.5M-KOH', 'Hg/HgO-1M-KOH', 'MSE-sat', 'MSE-0.5M', 'RHE'])."
 
     """
+    import logging
+
+    logger = logging.getLogger("unitpackage")
+
     if isinstance(reference, _ReferenceElectrode):
         return reference
 
     if reference not in _reference_electrodes:
+        # Try to find by alias
+        for ref_obj in _reference_electrodes.values():
+            if reference in ref_obj.alias:
+                logger.warning(
+                    f"Loading reference electrode by alias '{reference}' instead of primary name '{ref_obj.name}'. Consider using the primary name for clarity."
+                )
+                return ref_obj
         raise KeyError(
             f"Reference electrode '{reference}' not found in available reference electrodes ({list(_reference_electrodes.keys())})."
         )
@@ -452,7 +471,7 @@ _reference_electrodes = {
     "CE-sat": _ReferenceElectrode(
         name="CE-sat",
         full_name="Saturated calomel electrode",
-        alias="SCE",
+        alias=["SCE"],
         entries=[
             _ReferenceElectrodeEntry(
                 value=0.26796,
