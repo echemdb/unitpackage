@@ -2,7 +2,7 @@ project = 'unitpackage'
 copyright = '2022-2026, the unitpackage authors'
 author = 'the unitpackage authors'
 
-release = '0.13.1'
+release = '0.13.2'
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.todo", "myst_nb"]
 
@@ -45,8 +45,10 @@ html_context = {
 # This is because checking results in a timeout.
 # Zenodo badge and record URLs are excluded because Zenodo's servers
 # block automated link checkers with 403 responses.
+# ignore the DOI link to the codata article which regularly times out during link checking.
 linkcheck_ignore = [
     "https://www.gnu.org/licenses/gpl-3.0.html*",
     "https://zenodo.org/badge/*",
     "https://zenodo.org/records/*",
+    "https://doi.org/10.5334/dsj-2025-013*"
 ]

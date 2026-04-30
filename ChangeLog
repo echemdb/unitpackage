@@ -4,6 +4,19 @@ echemdb Change Log
 
 .. current developments
 
+v0.13.2
+====================
+
+**Added:**
+
+* Added shifting and loading of reference electrodes from aliases in `ReferenceElectrode.shift` and `ReferenceElectrode.load` methods.
+
+**Changed:**
+
+* Changed citation output format for `EchemdbEntry.citation()`, removing url, doi from the output .
+
+
+
 v0.13.1
 ====================
 
