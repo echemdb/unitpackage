@@ -149,24 +149,22 @@ class Echemdb(Collection):
             ''
 
         """
-        from pybtex.database import BibliographyData
+        from pybtex.database import BibliographyData, parse_string
 
-        bib_data = BibliographyData(
-            {
-                entry.bibliography.key: entry.bibliography
-                for entry in self
-                if entry.bibliography
-            }
-        )
+        # Parse each unique bibdata string only once; many entries share a publication.
+        seen_citations = {}
+        for entry in self:
+            citation = entry._default_metadata.get("source", {}).get("bibdata", "")
+            if citation and citation not in seen_citations:
+                seen_citations[citation] = parse_string(citation, "bibtex")
 
-        if isinstance(bib_data, str):
-            return bib_data
+        if not seen_citations:
+            return ""
 
-        # Remove duplicates from the bibliography
         bib_data_ = BibliographyData()
-
-        for key, entry in bib_data.entries.items():
-            if key not in bib_data_.entries:
-                bib_data_.add_entry(key, entry)
+        for parsed in seen_citations.values():
+            for key, bib_entry in parsed.entries.items():
+                if key not in bib_data_.entries:
+                    bib_data_.add_entry(key, bib_entry)
 
         return bib_data_
