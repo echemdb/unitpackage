@@ -267,9 +267,8 @@ class TestInfo:
         """info() delegates to InfoApi.get_info and returns a dict."""
         client = _make_client()
 
-        mock_info = Mock()
-        mock_info.to_dict.return_value = {
-            "elabftw_version": "5.1.0",
+        mock_info = {
+            "elabftw_version": "5.5.9",
             "teams_count": 3,
             "all_users_count": 25,
         }
@@ -281,7 +280,7 @@ class TestInfo:
             result = client.info()
 
         assert isinstance(result, dict)
-        assert result["elabftw_version"] == "5.1.0"
+        assert result["elabftw_version"] == "5.5.9"
 
 
 # ===================================================================
@@ -468,8 +467,8 @@ class TestUploadEntry:
         assert client.uploads_client.post_upload.call_count == 1  # CSV only
         client.items_client.patch_item.assert_called_once()
         # Verify metadata contains the unitpackage descriptor
-        patch_kwargs = client.items_client.patch_item.call_args
-        body = patch_kwargs.kwargs.get("body") or patch_kwargs[1].get("body", {})
+        patch_args = client.items_client.patch_item.call_args
+        body = patch_args.args[0]
         metadata = json.loads(body["metadata"])
         assert "unitpackage" in metadata
         assert result == 100
@@ -502,8 +501,8 @@ class TestUploadEntry:
 
         client.upload_entry(sample_entry)
 
-        patch_kwargs = client.items_client.patch_item.call_args
-        body = patch_kwargs.kwargs.get("body") or patch_kwargs[1].get("body", {})
+        patch_args = client.items_client.patch_item.call_args
+        body = patch_args.args[0]
         metadata = json.loads(body["metadata"])
         assert "unitpackage" in metadata
         assert "resources" in metadata["unitpackage"]
@@ -549,8 +548,8 @@ class TestRoundTrip:
         client.upload_entry(sample_entry)
 
         # Capture the metadata that was patched onto the entity
-        patch_kwargs = client.items_client.patch_item.call_args
-        body = patch_kwargs.kwargs.get("body") or patch_kwargs[1].get("body", {})
+        patch_args = client.items_client.patch_item.call_args
+        body = patch_args.args[0]
         stored_metadata_json = body["metadata"]
 
         # --- Fetch phase ---

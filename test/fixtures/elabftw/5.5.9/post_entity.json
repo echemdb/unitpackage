@@ -3,7 +3,7 @@
   "method": "ItemsApi.post_item_with_http_info",
   "request": {
     "body": {
-      "title": "unitpackage_fixture_test_6f81b5ec",
+      "title": "unitpackage_fixture_test_a85fe41b",
       "tags": [
         "unitpackage-test"
       ]
@@ -11,7 +11,7 @@
   },
   "response": {
     "status_code": 201,
-    "location": "https://elabftw.example.org/api/v2/items/467",
-    "entity_id": 467
+    "location": "https://elabftw.example.org/api/v2/items/471",
+    "entity_id": 471
   }
 }

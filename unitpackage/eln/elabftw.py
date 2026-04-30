@@ -54,13 +54,13 @@ Upload an Entry to eLabFTW::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
-import inspect
 import io
 import json
 import logging
 import os
 import tempfile
 from pathlib import Path
+from types import SimpleNamespace
 
 import elabapi_python
 import pandas as pd
@@ -229,7 +229,7 @@ class ElabFTWClient(BaseELNClient):
             # client = ElabFTWClient.from_env()
             # info = client.info()
             # info["version"]
-            # '5.1.0'
+            # '5.5.9'
 
         """
         info_client = elabapi_python.InfoApi(self._api_client)
@@ -285,8 +285,6 @@ class ElabFTWClient(BaseELNClient):
         to get the raw JSON and wraps it in a ``SimpleNamespace`` so that
         the ``metadata`` field is preserved as a raw JSON string.
         """
-        from types import SimpleNamespace
-
         api = self._get_api()
         response = api.get_item(entity_id, _preload_content=False)
         data = json.loads(response.data)
@@ -404,8 +402,6 @@ class ElabFTWClient(BaseELNClient):
 
         # Fetch with _preload_content=False to preserve raw metadata JSON
         # (the elabapi_python Metadata model drops unknown keys).
-        from types import SimpleNamespace
-
         response = api.read_items(**kwargs, _preload_content=False)
         entities = [SimpleNamespace(**item) for item in json.loads(response.data)]
 
