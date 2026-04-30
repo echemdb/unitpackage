@@ -154,7 +154,10 @@ class Echemdb(Collection):
         # Parse each unique bibdata string only once; many entries share a publication.
         seen_citations = {}
         for entry in self:
-            citation = entry._default_metadata.get("source", {}).get("bibdata", "")
+            try:
+                citation = entry.source.bibdata
+            except AttributeError:
+                citation = ""
             if citation and citation not in seen_citations:
                 seen_citations[citation] = parse_string(citation, "bibtex")
 
