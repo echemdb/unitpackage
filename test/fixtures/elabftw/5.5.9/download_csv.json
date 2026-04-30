@@ -1,0 +1,7 @@
+{
+  "operation": "download_csv",
+  "method": "UploadsApi.read_upload",
+  "response": {
+    "data_base64": "dCxFLGoKMC4wLC0wLjEwMyw0My4wMQowLjAxLC0wLjEwMiw1MS40MQowLjAyLC0wLjEwMSw0Mi44OQo="
+  }
+}

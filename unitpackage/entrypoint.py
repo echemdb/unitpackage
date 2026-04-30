@@ -4,7 +4,7 @@ The unitpackage suite.
 EXAMPLES::
 
     >>> from unitpackage.test.cli import invoke
-    >>> invoke(cli, "--help")  # doctest: +NORMALIZE_WHITESPACE
+    >>> invoke(cli, "--help")  # doctest: +NORMALIZE_WHITESPACE +ELLIPSIS
     Usage: cli [OPTIONS] COMMAND [ARGS]...
 
       The unitpackage suite
@@ -12,8 +12,9 @@ EXAMPLES::
     Options:
       --help  Show this message and exit.
     Commands:
-      csv  Convert a file containing CSV data into a datapackage.
-      ec   Convert an electrochemistry file into an echemdb datapackage.
+      csv      Convert a file containing CSV data into a datapackage.
+      ec       Convert an electrochemistry file into an echemdb datapackage.
+      elabftw  Interact with an eLabFTW ...
 
 """
 
@@ -37,6 +38,7 @@ EXAMPLES::
 #  You should have received a copy of the GNU General Public License
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
+import importlib
 import logging
 from pathlib import Path
 
@@ -138,6 +140,21 @@ def convert(csv, device, outdir, metadata):
 
 
 cli.add_command(convert)
+
+if importlib.util.find_spec("elabapi_python") is None:
+
+    @click.command(name="elabftw")
+    def elabftw(**kwargs):
+        """
+        Interact with an eLabFTW instance (needs unitpackage[elabftw]).
+
+        """
+        raise ImportError("Install `unitpackage[elabftw]` to use this feature.")
+
+else:
+    from unitpackage.eln.elabftw_cli import elabftw
+
+cli.add_command(elabftw)
 
 
 # Register command docstrings for doctesting.

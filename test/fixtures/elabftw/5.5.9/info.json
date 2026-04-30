@@ -1,0 +1,20 @@
+{
+  "operation": "info",
+  "method": "client.info",
+  "response": {
+    "elabftw_version": "5.5.9",
+    "elabftw_version_int": 50509,
+    "ts_balance": 0,
+    "ts_limit": 0,
+    "uploads_filesize_sum": 12340485437,
+    "uploads_filesize_sum_formatted": "11.49 GiB",
+    "all_users_count": 193,
+    "active_users_count": 192,
+    "items_count": 470,
+    "teams_count": 24,
+    "compounds_count": 9,
+    "experiments_count": 1330,
+    "experiments_timestamped_count": 3,
+    "entities_timestamped_count_last_30_days": 0
+  }
+}

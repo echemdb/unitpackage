@@ -1,0 +1,21 @@
+{
+  "backend": "elabftw",
+  "version": "5.5.9",
+  "recorded_at": "2026-04-30T06:41:14.972125+00:00",
+  "unitpackage_version": "unknown",
+  "entity_id": 471,
+  "cleanup_performed": true,
+  "test_data": {
+    "csv_columns": [
+      "t",
+      "E",
+      "j"
+    ],
+    "field_units": {
+      "t": "s",
+      "E": "V",
+      "j": "A / m2"
+    },
+    "title": "unitpackage_fixture_test_a85fe41b"
+  }
+}
