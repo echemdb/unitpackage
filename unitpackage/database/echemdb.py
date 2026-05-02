@@ -167,7 +167,6 @@ class Echemdb(Collection):
         bib_data_ = BibliographyData()
         for parsed in seen_citations.values():
             for key, bib_entry in parsed.entries.items():
-                if key not in bib_data_.entries:
-                    bib_data_.add_entry(key, bib_entry)
+                bib_data_.add_entry(key, bib_entry)
 
         return bib_data_
