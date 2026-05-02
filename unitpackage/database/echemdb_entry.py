@@ -65,6 +65,7 @@ where ``I`` or. ``j`` is plotted vs. ``U`` or. ``E``::
 #  along with unitpackage. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************
 import logging
+from functools import cached_property
 
 from unitpackage.entry import Entry
 
@@ -174,7 +175,7 @@ class EchemdbEntry(Entry):
 
         return entry
 
-    @property
+    @cached_property
     def bibliography(self):
         r"""
         Return a pybtex bibliography object associated with this entry.
