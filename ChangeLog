@@ -4,6 +4,15 @@ echemdb Change Log
 
 .. current developments
 
+v0.13.3
+====================
+
+**Performance:**
+
+* Improved speed to return the echemdb description by caching the bibliography data.
+
+
+
 v0.13.2
 ====================
 
