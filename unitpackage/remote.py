@@ -27,14 +27,25 @@ Utilities to work with remote Data Packages.
 import os.path
 from functools import cache
 
-ECHEMDB_DATABASE_URL = os.environ.get(
-    "ECHEMDB_DATABASE_URL",
-    "https://github.com/echemdb/electrochemistry-data/releases/download/0.5.0/data-0.5.0.zip",
-)
+ECHEMDB_DATABASE_VERSION = "0.5.0"
+
+
+def get_echemdb_database_url(version=ECHEMDB_DATABASE_VERSION):
+    r"""
+    Return the URL of the database to retrieve data packages from.
+
+    By default, this is the URL of the ZIP file containing the data packages currently available on `echemdb <https://www.echemdb.org/cv>`_
+    which are retrieved from `the echemdb electrochemistry-data repository <https://github.com/echemdb/electrochemistry-data>`_.
+
+    """
+    return os.environ.get(
+        "ECHEMDB_DATABASE_URL",
+        f"https://github.com/echemdb/electrochemistry-data/releases/download/{version}/data-{version}.zip",
+    )
 
 
 @cache
-def collect_zipfile_from_url(url=ECHEMDB_DATABASE_URL):
+def collect_zipfile_from_url(url=None):
     r"""
     Download a ZIP file from ``url`` and return it as a temporary object to
     extract contents from.
@@ -49,7 +60,7 @@ def collect_zipfile_from_url(url=ECHEMDB_DATABASE_URL):
 
 
 @cache
-def collect_datapackages(data=None, url=ECHEMDB_DATABASE_URL, outdir=None):
+def collect_datapackages(url=None, outdir=None, data=None):
     r"""
     Return a list of data packages defined in a remote location.
 
@@ -64,6 +75,9 @@ def collect_datapackages(data=None, url=ECHEMDB_DATABASE_URL, outdir=None):
         >>> packages = collect_datapackages()  # doctest: +REMOTE_DATA
 
     """
+    if url is None:
+        url = get_echemdb_database_url()
+
     if outdir is None:
         import atexit
         import shutil

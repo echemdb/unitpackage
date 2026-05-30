@@ -25,7 +25,7 @@ The website shows a collection of electrochemical data stored following in the [
 ## Examples
 
 A collection of [entries can be generated](usage/load_and_save.md) from local files or from a remote repository, such as [echemdb.org](https://www.echemdb.org). To illustrate the usage of `unitpackage`,
-we collect the data to [echemdb.org](https://www.echemdb.org/cv) from the data repository, which is downloaded by default when the method `from_remote()` does not receive a URL argument.
+we collect the data to [echemdb.org](https://www.echemdb.org/cv) from the data repository, which is downloaded by default when the method `from_remote()` does not receive any arguments. A specific version can be selected with `Echemdb.from_remote(version="0.8.2")`.
 
 ```{note}
 For simplicity, we denote the collection as `db` (database), even though it is not a database in that sense.

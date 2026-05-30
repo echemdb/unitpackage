@@ -72,6 +72,34 @@ class Echemdb(Collection):
 
     Entry = EchemdbEntry
 
+    @classmethod
+    def from_remote(cls, url=None, outdir=None, data=None, version=None):
+        r"""
+        Create an Echemdb collection from the echemdb data repository.
+
+        EXAMPLES::
+
+            >>> from unitpackage.database.echemdb import Echemdb
+            >>> collection = Echemdb.from_remote()  # doctest: +REMOTE_DATA
+            >>> collection.filter(lambda entry: entry.source.url == 'https://doi.org/10.1039/C0CP01001D')  # doctest: +REMOTE_DATA
+            [Echemdb('alves_2011_electrochemistry_6010_f1a_solid'), ...
+
+        A specific version of the database can be retrieved with the ``version`` argument::
+
+            >>> collection = Echemdb.from_remote(version='0.5.0')  # doctest: +REMOTE_DATA
+
+        """
+        from unitpackage.remote import (
+            ECHEMDB_DATABASE_VERSION,
+            get_echemdb_database_url,
+        )
+
+        if url is None:
+            if version is None:
+                version = ECHEMDB_DATABASE_VERSION
+            url = get_echemdb_database_url(version=version)
+        return super().from_remote(url=url, data=data, outdir=outdir)
+
     def materials(self):
         r"""
         Return the substrate materials in the collection.
