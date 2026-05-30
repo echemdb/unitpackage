@@ -66,7 +66,7 @@ A parameter `data` allows specifying the folder within the ZIP containing the da
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
 
-db = Collection.from_remote(data='data', outdir='generated/from_url')
+db = Collection.from_remote(outdir='generated/from_url', data='data')
 ```
 
 ## Load entries

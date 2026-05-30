@@ -22,6 +22,12 @@ db = Echemdb.from_remote()
 type(db)
 ```
 
+A specific version of the database can be downloaded by providing a `version` argument.
+
+```{code-cell} ipython3
+db = Echemdb.from_remote(version='0.8.4')
+```
+
 ## Collection
 
 In contrast to the `Collection` object described in the [usage section](unitpackage_usage.md), `Echemdb` provides data specific functionality.
