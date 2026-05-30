@@ -545,7 +545,7 @@ class Collection:
         return cls(package=package)
 
     @classmethod
-    def from_remote(cls, url=None, data=None, outdir=None):
+    def from_remote(cls, url=None, outdir=None, data=None):
         r"""
         Create a collection from a url containing a zip.
 
@@ -560,24 +560,18 @@ class Collection:
             >>> collection.filter(lambda entry: entry.echemdb.source.url == 'https://doi.org/10.1039/C0CP01001D')   # doctest: +REMOTE_DATA
             [Entry('alves_2011_electrochemistry_6010_f1a_solid'), Entry('alves_2011_electrochemistry_6010_f2_red')]
 
-        The folder containing the data in the zip can be specified with the :param data:.
         An output directory for the extracted data can be specified with the :param outdir:.
+        The folder containing the data in the zip can be specified with the :param data:.
         """
         import unitpackage.local
         import unitpackage.remote
 
-        package = Package()
-
         if url is None:
-            data_packages = unitpackage.remote.collect_datapackages(
-                data=data, outdir=outdir
-            )
-            resources = unitpackage.local.collect_resources(data_packages)
+            url = unitpackage.remote.get_echemdb_database_url()
 
-            for resource in resources:
-                package.add_resource(resource)
+        logger.info("Downloading data from '%s'.", url)
 
-            return cls(package=package)
+        package = Package()
 
         data_packages = unitpackage.remote.collect_datapackages(
             url=url, data=data, outdir=outdir
