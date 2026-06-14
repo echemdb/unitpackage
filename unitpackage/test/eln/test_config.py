@@ -536,5 +536,3 @@ class TestKadiFromConfig:
         with patch("unitpackage.config.load_config", return_value=bad_config):
             with pytest.raises(ValueError, match="Missing 'pat'"):
                 KadiClient.from_config("broken")
-
-

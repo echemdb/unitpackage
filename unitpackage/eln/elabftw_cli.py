@@ -70,9 +70,7 @@ from unitpackage.eln._config_cli import make_config_group
 logger = logging.getLogger("unitpackage")
 
 
-def _create_client(
-    host, secret, verify_ssl, _settings
-):
+def _create_client(host, secret, verify_ssl, _settings):
     """Create an ElabFTWClient (imported lazily so the optional dependency is
     only required when the eLabFTW CLI is actually used)."""
     from unitpackage.eln.elabftw import ElabFTWClient

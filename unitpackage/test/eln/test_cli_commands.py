@@ -214,9 +214,7 @@ def test_cli_profile_loads_config(backend, tmp_path):
     with (
         patch(backend["sdk_patch"]),
         patch("unitpackage.config.get_profile", return_value=backend["profile_creds"]),
-        patch(
-            "unitpackage.config.config_path", return_value=tmp_path / "config.toml"
-        ),
+        patch("unitpackage.config.config_path", return_value=tmp_path / "config.toml"),
     ):
         result = CliRunner().invoke(
             backend["group_obj"], ["--profile", "production", "info"]

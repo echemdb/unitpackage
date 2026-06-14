@@ -12,7 +12,6 @@ this private module directly.
 
 """
 
-
 # ********************************************************************
 #  This file is part of unitpackage.
 #

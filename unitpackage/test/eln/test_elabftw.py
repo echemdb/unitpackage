@@ -6,6 +6,8 @@ Run with:  pytest -m elabftw
 """
 
 # pylint: disable=redefined-outer-name,protected-access,too-few-public-methods
+# Parallel per-backend test suites share structurally similar assertions.
+# pylint: disable=duplicate-code
 
 import io
 import json
@@ -693,7 +695,7 @@ class TestFixtureVersions:
 
     def test_fetch_entries_from_fixture(self, fixture_version):
         """fetch_entries returns entries using recorded fixture data."""
-        client, entity_id = self._wire_client(fixture_version)
+        client, _entity_id = self._wire_client(fixture_version)
 
         # Build listing response from the same entity data source.
         patch_data = load_fixture(_BACKEND, fixture_version, "patch_metadata")

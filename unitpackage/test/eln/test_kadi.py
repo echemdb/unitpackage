@@ -6,6 +6,8 @@ Run with:  pytest -m kadi
 """
 
 # pylint: disable=redefined-outer-name,protected-access,too-few-public-methods
+# Parallel per-backend test suites share structurally similar assertions.
+# pylint: disable=duplicate-code
 
 import io
 import json
@@ -642,9 +644,9 @@ class TestFixtureVersions:
     def test_upload_entry_from_fixture(self, fixture_version, sample_entry):
         """upload_entry succeeds with real recorded response shapes."""
         client = _make_client()
-        create_data = load_fixture(
-            _BACKEND, fixture_version, "create_record"
-        )["response"]
+        create_data = load_fixture(_BACKEND, fixture_version, "create_record")[
+            "response"
+        ]
 
         mock_record = Mock()
         mock_record.meta = create_data
@@ -656,11 +658,11 @@ class TestFixtureVersions:
 
     def test_fetch_entries_from_fixture(self, fixture_version):
         """fetch_entries returns entries using recorded fixture data."""
-        client, record = self._wire_client(fixture_version)
+        client, _record = self._wire_client(fixture_version)
 
-        list_data = load_fixture(
-            _BACKEND, fixture_version, "list_list_entities"
-        )["response"]
+        list_data = load_fixture(_BACKEND, fixture_version, "list_list_entities")[
+            "response"
+        ]
 
         search_response = Mock()
         search_response.json.return_value = list_data
@@ -736,9 +738,9 @@ class TestFixtureVersions:
     def test_fixture_consistency(self, fixture_version):
         """get_entity.json and list_get_entity.json describe the same entity."""
         single = load_fixture(_BACKEND, fixture_version, "get_entity")["response"]
-        list_ver = load_fixture(
-            _BACKEND, fixture_version, "list_get_entity"
-        )["response"]
+        list_ver = load_fixture(_BACKEND, fixture_version, "list_get_entity")[
+            "response"
+        ]
         assert single["id"] == list_ver["id"]
         assert single["title"] == list_ver["title"]
         assert single["identifier"] == list_ver["identifier"]

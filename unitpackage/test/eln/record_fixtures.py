@@ -638,8 +638,14 @@ def _wrap_kadi_record(manager, store, full_method_name="KadiManager.record"):
             "response": meta,
         }
 
-        _wrap(record, "get_filelist", store, "list_uploads",
-              "record.get_filelist", serializer=_serialize_json_response)
+        _wrap(
+            record,
+            "get_filelist",
+            store,
+            "list_uploads",
+            "record.get_filelist",
+            serializer=_serialize_json_response,
+        )
 
         # Hook download_file — reads the written file to embed CSV as base64.
         orig_download = record.download_file
@@ -795,9 +801,14 @@ class KadiRecorder(BaseRecorder):
 
         # Hook search.search_resources for fetch_entries (list_entities).
         if hasattr(client._manager, "search"):
-            _wrap(client._manager.search, "search_resources", store,
-                  "list_entities", "search.search_resources",
-                  serializer=_serialize_json_response)
+            _wrap(
+                client._manager.search,
+                "search_resources",
+                store,
+                "list_entities",
+                "search.search_resources",
+                serializer=_serialize_json_response,
+            )
 
     def list_test_entities(self, client):
         response = client._manager.search.search_resources(
@@ -899,20 +910,29 @@ def _common_options(f):
     """Shared Click options for recorder subcommands."""
     f = click.option("--outdir", default=None, help="Output directory")(f)
     f = click.option(
-        "--no-cleanup", is_flag=True, default=False,
+        "--no-cleanup",
+        is_flag=True,
+        default=False,
         help="Keep test entity on server",
     )(f)
     f = click.option(
-        "--version", "version_override", default=None,
+        "--version",
+        "version_override",
+        default=None,
         help="Override detected version",
     )(f)
     f = click.option("--profile", default=None, help="Config profile name")(f)
     f = click.option(
-        "--no-verify-ssl", is_flag=True, default=False,
+        "--no-verify-ssl",
+        is_flag=True,
+        default=False,
         help="Disable SSL verification",
     )(f)
     f = click.option(
-        "-v", "--verbose", is_flag=True, help="Enable verbose logging",
+        "-v",
+        "--verbose",
+        is_flag=True,
+        help="Enable verbose logging",
     )(f)
     return f
 
@@ -928,8 +948,9 @@ def cli():
 @click.option(
     "--api-key", envvar="ELABFTW_API_KEY", default=None, help="eLabFTW API key"
 )
-def elabftw(verbose, host, api_key, no_verify_ssl, profile, version_override,
-            no_cleanup, outdir):
+def elabftw(
+    verbose, host, api_key, no_verify_ssl, profile, version_override, no_cleanup, outdir
+):
     """Record API fixtures from a real eLabFTW instance."""
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
@@ -958,8 +979,9 @@ def elabftw(verbose, host, api_key, no_verify_ssl, profile, version_override,
 @click.option(
     "--pat", envvar="KADI_PAT", default=None, help="Kadi4Mat personal access token"
 )
-def kadi(verbose, host, pat, no_verify_ssl, profile, version_override,
-         no_cleanup, outdir):
+def kadi(
+    verbose, host, pat, no_verify_ssl, profile, version_override, no_cleanup, outdir
+):
     """Record API fixtures from a real Kadi4Mat instance."""
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
