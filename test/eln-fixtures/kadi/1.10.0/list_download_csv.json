@@ -1,0 +1,12 @@
+{
+  "operation": "download_csv",
+  "method": "record.download_file",
+  "response": {
+    "args": [],
+    "kwargs": {
+      "file_id": "4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988",
+      "file_path": "/tmp/tmpa_fakiae/fixture_test.csv"
+    },
+    "data_base64": "dCxFLGoKMC4wLC0wLjEwMyw0My4wMQowLjAxLC0wLjEwMiw1MS40MQowLjAyLC0wLjEwMSw0Mi44OQo="
+  }
+}

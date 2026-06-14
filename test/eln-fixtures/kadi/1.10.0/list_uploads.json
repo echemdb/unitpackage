@@ -1,0 +1,65 @@
+{
+  "operation": "list_uploads",
+  "method": "record.get_filelist",
+  "response": {
+    "_pagination": {
+      "_links": {
+        "self": "https://kadi.example.org/api/v1/records/16/files?page=1&per_page=10&filter=&sort=-last_modified"
+      },
+      "page": 1,
+      "per_page": 10,
+      "total_items": 1,
+      "total_pages": 1
+    },
+    "items": [
+      {
+        "_actions": {
+          "delete": "https://kadi.example.org/api/v1/records/16/files/4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988",
+          "edit_data": "https://kadi.example.org/api/v1/records/16/files/4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988",
+          "edit_metadata": "https://kadi.example.org/api/v1/records/16/files/4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988"
+        },
+        "_links": {
+          "download": "https://kadi.example.org/api/v1/records/16/files/4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988/download",
+          "record": "https://kadi.example.org/api/v1/records/16",
+          "self": "https://kadi.example.org/api/v1/records/16/files/4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988",
+          "view": "https://kadi.example.org/records/16/files/4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988"
+        },
+        "checksum": "cb7194421998a8808747d8f2adb2fd5e",
+        "created_at": "2026-06-14T17:25:32.856071+00:00",
+        "creator": {
+          "_links": {
+            "collections": "https://kadi.example.org/api/v1/users/1/collections",
+            "groups": "https://kadi.example.org/api/v1/users/1/groups",
+            "identities": "https://kadi.example.org/api/v1/users/1/identities",
+            "records": "https://kadi.example.org/api/v1/users/1/records",
+            "self": "https://kadi.example.org/api/v1/users/1",
+            "templates": "https://kadi.example.org/api/v1/users/1/templates",
+            "view": "https://kadi.example.org/users/1"
+          },
+          "created_at": "2025-03-22T16:42:38.225687+00:00",
+          "displayname": "testuser",
+          "id": 1,
+          "identity": {
+            "email": "test@example.org",
+            "email_confirmed": false,
+            "type": "local",
+            "username": "testuser"
+          },
+          "is_sysadmin": true,
+          "orcid": null,
+          "state": "active",
+          "system_role": "member"
+        },
+        "description": "",
+        "id": "4eac53c9-3b53-4fb1-96b5-7d9cbeeb1988",
+        "last_modified": "2026-06-14T17:25:32.919731+00:00",
+        "magic_mimetype": "text/csv",
+        "mimetype": "text/csv",
+        "name": "fixture_test.csv",
+        "size": 59,
+        "state": "active",
+        "storage_type": "local"
+      }
+    ]
+  }
+}

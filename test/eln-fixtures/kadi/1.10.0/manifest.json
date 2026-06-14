@@ -1,0 +1,21 @@
+{
+  "backend": "kadi",
+  "version": "1.10.0",
+  "recorded_at": "2026-06-14T17:25:34.154873+00:00",
+  "unitpackage_version": "unknown",
+  "entity_id": 16,
+  "cleanup_performed": true,
+  "test_data": {
+    "csv_columns": [
+      "t",
+      "E",
+      "j"
+    ],
+    "field_units": {
+      "t": "s",
+      "E": "V",
+      "j": "A / m2"
+    },
+    "title": "unitpackage_fixture_test_ac6ed411"
+  }
+}
