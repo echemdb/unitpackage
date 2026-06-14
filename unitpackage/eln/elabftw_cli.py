@@ -8,7 +8,7 @@ collections, and uploading local datapackages.
 Only the eLabFTW ``items`` entity type is supported at the moment; eLabFTW
 *experiments* are not yet supported.
 
-The command group itself is built by :func:`unitpackage.eln._cli.make_eln_group`,
+The command group itself is built by ``unitpackage.eln._cli.make_eln_group``,
 which is shared with the Kadi4Mat CLI; only the eLabFTW-specific wiring (the
 ``--api-key`` option, the client class, and how server info is printed) lives
 here.

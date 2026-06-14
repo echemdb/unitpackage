@@ -54,14 +54,14 @@ All backends share the same configuration file at
 `~/.config/unitpackage/config.toml` (Linux/macOS) or
 `%APPDATA%\unitpackage\config.toml` (Windows).
 
-Each backend has its own section, and each section can hold multiple named **connection profiles**
-(shown here for `<eln>` = `elabftw` or `kadi`):
+Each backend has its own section, and each section can hold multiple named **connection profiles**.
+The example below uses the `elabftw` section; replace it with `kadi` for the Kadi4Mat backend:
 
 ```toml
-[<eln>]
+[elabftw]
 default_profile = "production"
 
-[<eln>.production]
+[elabftw.production]
 host = "https://eln.example.org"
 api_key = "abc123"          # elabftw: api_key, kadi: pat
 verify_ssl = true

@@ -5,7 +5,7 @@ Provides commands to interact with a Kadi4Mat electronic lab notebook instance,
 including fetching records as datapackages, exporting collections, and uploading
 local datapackages.
 
-The command group itself is built by :func:`unitpackage.eln._cli.make_eln_group`,
+The command group itself is built by ``unitpackage.eln._cli.make_eln_group``,
 which is shared with the eLabFTW CLI; only the Kadi4Mat-specific wiring (the
 ``--pat`` option, the client class, and how instance info is printed) lives
 here.
