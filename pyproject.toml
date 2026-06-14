@@ -16,7 +16,7 @@ dependencies = [
     "matplotlib>=3.5.0,<4",
     "pandas>=1.3,<4",
     "plotly>=5,<7",
-    "pybtex>=0.25,<0.26",
+    "pybtex>=0.25,<0.27",
 ]
 
 [project.scripts]
