@@ -1,7 +1,30 @@
-"""Configure tests"""
+"""
+Root-level pytest configuration.
 
+Skips doctest collection for optional ELN backend modules whose
+dependencies are not installed.  ``unitpackage/test/eln/conftest.py``
+provides mock modules and markers for the unit tests in
+``unitpackage/test/``.
+"""
+import importlib
 import os
+
 import pandas as pd
+
+# ---------------------------------------------------------------------------
+# Skip doctest collection for optional ELN modules whose dependencies
+# are not installed (they cannot be imported by --doctest-modules).
+# ---------------------------------------------------------------------------
+
+collect_ignore_glob = []
+
+if importlib.util.find_spec("elabapi_python") is None:
+    # elabftw.py imports elabapi_python at module level.
+    collect_ignore_glob.append("unitpackage/eln/elabftw.py")
+
+if importlib.util.find_spec("kadi_apy") is None:
+    # kadi.py imports kadi_apy at module level.
+    collect_ignore_glob.append("unitpackage/eln/kadi.py")
 
 
 def pytest_configure():

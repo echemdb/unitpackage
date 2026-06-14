@@ -1,0 +1,17 @@
+{
+  "operation": "get_entity",
+  "method": "ItemsApi.get_item",
+  "response": {
+    "headers": {},
+    "status": 200,
+    "version": 11,
+    "reason": "OK",
+    "decode_content": true,
+    "chunked": true,
+    "enforce_content_length": true,
+    "auto_close": true,
+    "msg": null,
+    "chunk_left": null,
+    "length_remaining": null
+  }
+}
