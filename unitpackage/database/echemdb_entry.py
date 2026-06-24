@@ -355,7 +355,7 @@ class EchemdbEntry(Entry):
 
         Unitless fields in ``figureDescription.fields`` (e.g., ``cycle``)
         are skipped during rescaling (For testing purposes we add here a
-        field without units to the datapackage)::
+        field without units to the Data Package)::
 
             >>> entry = EchemdbEntry.create_example()
             >>> entry.resource.custom["metadata"]["echemdb"]["figureDescription"]["fields"].append({"name": "cycle", "type": "number"})
@@ -469,7 +469,7 @@ class EchemdbEntry(Entry):
 
     def _normalize_field_name(self, field_name):
         r"""
-        Return the name of a field name of the `unitpackage` resource.
+        Return the name of a field name of the ``unitpackage`` resource.
 
         If 'j' is requested but is not present in the resource,
         'I' is returned instead.

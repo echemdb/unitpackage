@@ -12,14 +12,14 @@ kernelspec:
   name: pixi-kernel-python3
 ---
 
-# Creating Unitpackages
+# Creating Unit Packages
 
-[Unitpackages](unitpackage.md) (frictionless Data Packages with unit-annotated fields and additional metadata describing the data) can be created from CSV files or pandas DataFrames.
-After creation, metadata and field descriptions (including units) can be added to produce a complete, self-describing data package.
+[Unit Packages](unitpackage.md) (frictionless Data Packages with unit-annotated fields and additional metadata describing the data) can be created from CSV files or pandas DataFrames.
+After creation, metadata and field descriptions (including units) can be added to produce a complete, self-describing Data Package.
 
 ## Quick start
 
-A typical workflow to create a complete unitpackage from a CSV file involves:
+A typical workflow to create a complete Unit Package from a CSV file involves:
 
 1. Creating an entry from the [CSV](#from-a-csv-file) or [pandas DataFrame](#from-a-pandas-dataframe)
 2. [Adding metadata](#adding-metadata)
@@ -135,7 +135,7 @@ entry.metadata
 
 A `key` can be specified to store the loaded metadata under a specific key.
 This is useful when metadata should be organized according to a certain schema, keeping different metadata sources separated.
-See the [unitpackage structure description](unitpackage.md) for more details on how metadata schemas are organized within a resource.
+See the [Unit Package structure description](unitpackage.md) for more details on how metadata schemas are organized within a resource.
 
 ```{code-cell} ipython3
 entry = Entry.from_csv(csvname="../files/demo_package.csv")

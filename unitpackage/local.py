@@ -1,6 +1,6 @@
 r"""
 Utilities to work with local frictionless Data Packages such as
-collecting Data Packages and creating unitpackages.
+collecting Data Packages and creating Unit Packages.
 """
 
 # ********************************************************************
@@ -297,7 +297,7 @@ def collect_resources(datapackages):
 
 def collect_datapackages(data):
     r"""
-    Return a list of data packages defined in the directory `data` and its
+    Return a list of Data Packages defined in the directory `data` and its
     subdirectories.
 
     EXAMPLES::

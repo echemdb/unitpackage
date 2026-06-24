@@ -32,9 +32,9 @@ ECHEMDB_DATABASE_VERSION = "0.5.0"
 
 def get_echemdb_database_url(version=ECHEMDB_DATABASE_VERSION):
     r"""
-    Return the URL of the database to retrieve data packages from.
+    Return the URL of the database to retrieve Data Packages from.
 
-    By default, this is the URL of the ZIP file containing the data packages currently available on `echemdb <https://www.echemdb.org/cv>`_
+    By default, this is the URL of the ZIP file containing the Data Packages currently available on `echemdb <https://www.echemdb.org/cv>`_
     which are retrieved from `the echemdb electrochemistry-data repository <https://github.com/echemdb/electrochemistry-data>`_.
 
     """
@@ -62,7 +62,7 @@ def collect_zipfile_from_url(url=None):
 @cache
 def collect_datapackages(url=None, outdir=None, data=None):
     r"""
-    Return a list of data packages defined in a remote location.
+    Return a list of Data Packages defined in a remote location.
 
     The default is to download the packages currently available on `echemdb <https://www.echemdb.org/cv>`_
     which are retrieved from `the echemdb electrochemistry-data repository <https://github.com/echemdb/electrochemistry-data>`_

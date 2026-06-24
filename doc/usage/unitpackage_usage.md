@@ -113,7 +113,7 @@ For more details on rescaling individual entries, see the [data](#data) section 
 
 ## Entry
 
-Each entry consists of descriptors describing the data in the resource of the datapackage.
+Each entry consists of descriptors describing the data in the resource of the Data Package.
 The entry also has additional methods for descriptor representation, data manipulation, and data visualization.
 
 Entries can be selected by their identifier from a collection. For our example database, such identifiers can directly be inferred from [echemdb.org/cv](https://www.echemdb.org/cv) for each entry.
@@ -134,7 +134,7 @@ Other approaches to create entries from CSV or pandas dataframes directly are de
 
 ### Metadata
 
-The metadata associated with a unitpackage entry is accessible via `entry.metadata`.
+The metadata associated with a `unitpackage` entry is accessible via `entry.metadata`.
 From an `entry` such information can be retrieved by `entry['key']`,
 where `key` is the respective top-level descriptor in the metadata.
 Nested descriptors can be accessed with chained bracket or attribute-style access.
@@ -148,7 +148,7 @@ entry['echemdb']['source']['citationKey']
 entry.echemdb.source.citationKey
 ```
 
-`entry.metadata` provides a full list of available descriptors. See [Creating Unitpackages](create_unitpackage.md) for details on how to load and modify metadata.
+`entry.metadata` provides a full list of available descriptors. See [Creating Unit Packages](create_unitpackage.md) for details on how to load and modify metadata.
 
 +++
 

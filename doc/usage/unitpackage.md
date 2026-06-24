@@ -12,24 +12,24 @@ kernelspec:
   name: pixi-kernel-python3
 ---
 
-# Unitpackage Structure
+# Unit Package Structure
 
 The `unitpackage` extends the Python API of the [frictionless framework](https://framework.frictionlessdata.io/),
 allowing for exploring frictionless resources extracted from frictionless Data Packages.
-To create a `unitpackage` entry or a `unitpackage` collection, frictionless resources must have a specific structure or follow a certain schema. We briefly illustrate the structure of the frictionless Data Packages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the datapackage for use with `unitpackage`.
+To create a `unitpackage` entry or a `unitpackage` collection, frictionless resources must have a specific structure or follow a certain schema. We briefly illustrate the structure of the frictionless Data Packages, describe which changes were necessary to adopt the schema to scientific data, and describe the structure of the Unit Package for use with `unitpackage`.
 
-## Frictionless Datapackage
+## Frictionless Data Package
 
 The frictionless Data Package description is based on examples from the [frictionless documentation](https://specs.frictionlessdata.io/tabular-data-package/#language).
 
-A minimal datapackage in your file system consists of two files:
+A minimal Data Package in your file system consists of two files:
 
 ```sh .noeval
 data.csv
 datapackage.json
 ```
 
-The CSV file contains some data. For the unitpackage we focus on CSV files containing only numbers.
+The CSV file contains some data. For the Unit Package we focus on CSV files containing only numbers.
 Such data is usually found in natural sciences.
 
 ```sh .noeval
@@ -249,7 +249,7 @@ entry.genericSchema1.curation
 entry.metadata['genericSchema2']
 ```
 
-## Unitpackage Interface
+## `unitpackage` Interface
 
 A Collection consists of entries, which are resources collected from Data Packages.
 The fields of the resource's schema describe the columns in the CSV, including their units.

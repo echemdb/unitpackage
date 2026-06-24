@@ -52,7 +52,7 @@ class Echemdb(Collection):
     r"""
     A collection of `frictionless Data Packages <https://github.com/frictionlessdata/frictionless-py>`__.
 
-    Essentially this is just a list of data packages with some additional
+    Essentially this is just a list of Data Packages with some additional
     convenience wrap for use in the `echemdb data repository <https://github.com/echemdb/electrochemistry-data>`_
     displayed on the `echemdb website <https://www.echemdb.org/cv>`_.
 

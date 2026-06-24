@@ -1,19 +1,19 @@
 Installation
 ============
 
-The recommended way to install the unitpackage is to use your package manager,
+The recommended way to install `unitpackage` is to use your package manager,
 (e.g., `apt-get` on Debian or Ubuntu, `pacman` on Arch Linux, `brew` on macOS.)
 
 You can consult [repology](https://repology.org/project/python:unitpackage/packages)
-to see if the unitpackage is available for your package manager.
+to see if `unitpackage` is available for your package manager.
 
-Alternatively, the unitpackage can be installed by one of the following
+Alternatively, `unitpackage` can be installed by one of the following
 approaches.
 
 Install with pip from PyPI
 --------------------------
 
-The latest stable version of the unitpackage is available on
+The latest stable version of `unitpackage` is available on
 [PyPI](https://pypi.org/project/unitpackage/) for all platforms and can be
 installed if you have Python and pip installed already:
 
@@ -21,17 +21,17 @@ installed if you have Python and pip installed already:
 pip install unitpackage
 ```
 
-This command downloads and installs the unitpackage and its dependencies into
+This command downloads and installs `unitpackage` and its dependencies into
 your local Python installation.
 
 If the above command fails because you do not have permission to modify your
-Python installation, you can install the unitpackage into your user account:
+Python installation, you can install `unitpackage` into your user account:
 
 ```sh
 pip install --user unitpackage
 ```
 
-You can instead also install the latest unreleased version of the unitpackage
+You can instead also install the latest unreleased version of `unitpackage`
 from our [GitHub Repository](https://github.com/echemdb/unitpackage) with
 
 ```sh
@@ -41,7 +41,7 @@ pip install git+https://github.com/echemdb/unitpackage@main
 Install with conda from conda-forge
 -----------------------------------
 
-The unitpackage is [available on
+`unitpackage` is [available on
 conda-forge](https://github.com/conda-forge/unitpackage-feedstock) for all
 platforms.
 
@@ -53,19 +53,19 @@ release of conda installed, make sure the conda-forge channel is
 [configured correctly](https://conda-forge.org/docs/user/introduction/#how-can-i-install-packages-from-conda-forge)
 
 Once your conda setup is ready, create a new `unitpackage` environment with
-the latest stable version of the unitpackage:
+the latest stable version of `unitpackage`:
 
 ```sh
 conda create -n unitpackage unitpackage
 ```
 
-To use the unitpackage, activate the `unitpackage` environment:
+To use `unitpackage`, activate the `unitpackage` environment:
 
 ```sh
 conda activate unitpackage
 ```
 
-To install the unitpackage into an existing environment, activate that environment and then
+To install `unitpackage` into an existing environment, activate that environment and then
 
 ```sh
 conda install unitpackage
@@ -74,7 +74,7 @@ conda install unitpackage
 Install with pixi for development
 --------------------------------
 
-We recommend [pixi](https://pixi.prefix.dev) for developers of unitpackage to use a
+We recommend [pixi](https://pixi.prefix.dev) for developers of `unitpackage` to use a
 curated list of dependencies that are tested to work on all platforms. These
 are also exactly the dependencies that are used in our CI, which makes it
 easier to test things locally.
@@ -82,7 +82,7 @@ easier to test things locally.
 If you don't have pixi yet, follow the [pixi installation
 instructions](https://pixi.prefix.dev/latest/getting_started/).
 
-Once pixi is installed, get a copy of the latest unitpackage and install the
+Once pixi is installed, get a copy of the latest `unitpackage` and install the
 dependencies:
 
 ```sh
@@ -147,7 +147,7 @@ pixi run linkcheck
 
 ### Interactive development
 
-You can explore unitpackage in an interactive IPython session:
+You can explore `unitpackage` in an interactive IPython session:
 
 ```sh
 pixi run -e dev ipython
@@ -166,7 +166,7 @@ available:
 pixi shell -e dev
 ```
 
-Note that any changes you make to the files in your local copy of unitpackage
+Note that any changes you make to the files in your local copy of `unitpackage`
 should be immediately available when you restart your Python kernel.
 
-We would love to see your contribution to unitpackage.
+We would love to see your contribution to `unitpackage`.
