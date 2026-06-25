@@ -1,5 +1,5 @@
 r"""
-Metadata management for unitpackage entries.
+Metadata management for ``unitpackage`` entries.
 
 This module provides the MetadataDescriptor class that manages metadata
 for Entry objects, supporting both dict and attribute access, and providing

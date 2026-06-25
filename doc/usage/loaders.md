@@ -19,7 +19,7 @@ Key issues of these files are, for example, lengthy header lines containing vari
 the use of `,` as a decimal separator in some world regions,
 or files containing multiple data tables, etc.
 
-`unitpackage.loaders` provides modules to parse non-standard files and load the data directly as a `pandas` Data Frame, which are used by unitpackage to create frictionless Data Packages (or [unitpackages](https://github.com/echemdb/) supporting the use of units).
+`unitpackage.loaders` provides modules to parse non-standard files and load the data directly as a `pandas` Data Frame, which are used by `unitpackage` to create frictionless Data Packages (or [Unit Packages](https://github.com/echemdb/) supporting the use of units).
 The CLI allows conversion of data directly into such Data Packages for seamless integration in existing workflows.
 
 Our approach aims at providing a single interface to load data into a certain format independent of the data source.

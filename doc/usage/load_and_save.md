@@ -14,13 +14,13 @@ kernelspec:
 
 # Load and Save
 
-`unitpackage` Entries and Collections can be loaded from different sources and stored as datapackages (CSV and JSON) to a specified output directory.
+`unitpackage` Entries and Collections can be loaded from different sources and stored as Data Packages (CSV and JSON) to a specified output directory.
 
 ## Load collections
 
 ### From local files
 
-A local collection of datapackages can be created by collecting datapackages recursively, which are stored in a specific folder in the file system.
+A local collection of Data Packages can be created by collecting Data Packages recursively, which are stored in a specific folder in the file system.
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
@@ -46,7 +46,7 @@ Without providing any argument to the `Collection` class, the data from [echemdb
 
 ### From URL
 
-A collection of datapackages can be created by collecting datapackages recursively from a url to a ZIP file. The data is extracted to a temporary directory.
+A collection of Data Packages can be created by collecting Data Packages recursively from a url to a ZIP file. The data is extracted to a temporary directory.
 
 ```{note}
 Without providing the argument `url` to the `from_remote` method, the data shown on [echemdb.org](https://www.echemdb.org/cv) will be downloaded from the
@@ -61,7 +61,7 @@ db
 ```
 
 Providing an output directory with the parameter `outdir` allows saving the packages in a specific output directory.
-A parameter `data` allows specifying the folder within the ZIP containing the datapackages.
+A parameter `data` allows specifying the folder within the ZIP containing the Data Packages.
 
 ```{code-cell} ipython3
 from unitpackage.collection import Collection
@@ -71,7 +71,7 @@ db = Collection.from_remote(outdir='generated/from_url', data='data')
 
 ## Load entries
 
-An individual entry can be loaded from a local datapackage.
+An individual entry can be loaded from a local Data Package.
 
 ```{code-cell} ipython3
 from unitpackage.entry import Entry
@@ -167,7 +167,7 @@ df_entry = Entry.from_df(df, basename='df_data')
 df_entry
 ```
 
-For more details on adding metadata and field descriptions, see [Creating Unitpackages](create_unitpackage.md).
+For more details on adding metadata and field descriptions, see [Creating Unit Packages](create_unitpackage.md).
 
 ## Save entries
 

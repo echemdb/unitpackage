@@ -3,12 +3,12 @@
 
 # unitpackage
 
-A Python library to create, interact with, and store collections of [frictionless Data Packages](https://frictionlessdata.io/) whose tabular resources carry **unit-aware field metadata**. Each data package pairs a CSV file with a JSON descriptor containing schema information (column names, types, units) and arbitrary nested metadata.
+A Python library to create, interact with, and store collections of [frictionless Data Packages](https://frictionlessdata.io/) whose tabular resources carry **unit-aware field metadata**. Each Data Package pairs a CSV file with a JSON descriptor containing schema information (column names, types, units) and arbitrary nested metadata.
 
 ## Key features
 
 - **Unit-aware fields** — columns carry unit metadata (e.g. `V`, `A / m2`, `s`) and can be rescaled to compatible units.
-- **Collections** — load, filter, slice, and iterate over sets of data packages from local directories or remote sources.
+- **Collections** — load, filter, slice, and iterate over sets of Data Packages from local directories or remote sources.
 - **Metadata access** — nested metadata is accessible via attribute-style or dict-style access.
 - **Plotting** — built-in 2D plotting with plotly.
 - **Domain extensions** — subclass `Collection` and `Entry` for domain-specific features (e.g. electrochemistry via `Echemdb`).

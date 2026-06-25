@@ -19,7 +19,7 @@ kernelspec:
 
 Annotation of scientific data plays a crucial role in research data management workflows to ensure that the data is stored according to the FAIR principles. A simple CSV file recorded during an experiment usually does, for example, not provide any information on the units of the values within the CSV, nor does it provide information on what system has been investigated or who performed the experiment. Such information can be stored in [frictionless Data Packages](https://frictionlessdata.io/), which consist of a CSV (data) file which is annotated with a JSON (metadata) file.
 The `unitpackage` module provides a Python library to interact with such Data Packages, which have a very [specific structure](usage/unitpackage.md).
-An example of using a collection of datapackages containing several entries along with the `unitpackage` Python library is found on [echemdb.org](https://www.echemdb.org/cv).
+An example of using a collection of Data Packages containing several entries along with the `unitpackage` Python library is found on [echemdb.org](https://www.echemdb.org/cv).
 The website shows a collection of electrochemical data stored following in the [electrochemistry-data repository](https://github.com/echemdb/electrochemistry-data/) according to [echemdb's metadata schema](https://github.com/echemdb/metadata-schema).
 
 ## Examples
@@ -91,10 +91,10 @@ db_filtered.describe()
 The filtering method is also available to the base class `Collection`.
 ```
 
-## Creating Unitpackages
+## Creating Unit Packages
 
-Unitpackages can also be [created from scratch](usage/create_unitpackage.md) using CSV files or pandas DataFrames.
-Metadata and unit descriptions for the fields can be added to produce self-describing data packages.
+Unit Packages can also be [created from scratch](usage/create_unitpackage.md) using CSV files or pandas DataFrames.
+Metadata and unit descriptions for the fields can be added to produce self-describing Data Packages.
 
 ```{code-cell} ipython3
 from unitpackage.entry import Entry
@@ -105,14 +105,14 @@ entry = entry.update_fields(fields=[{'name': 't', 'unit': 's'}, {'name': 'j', 'u
 entry.save(outdir="generated/files/csv_entry/")
 ```
 
-See [Creating Unitpackages](usage/create_unitpackage.md) for more details on adding metadata from YAML, JSON, or Python dictionaries.
+See [Creating Unit Packages](usage/create_unitpackage.md) for more details on adding metadata from YAML, JSON, or Python dictionaries.
 
 ## Further Usage
 
-Frictionless Data Packages or unitpackges are perfectly machine-readable, making the underlying data and metadata reusable in many ways.
+Frictionless Data Packages or Unit Packages are perfectly machine-readable, making the underlying data and metadata reusable in many ways.
 
 * The `unitpackage` API can be used to filter collections of similar data for certain properties, thus allowing for simple comparison of different data sets. For example, you could think of comparing local files recorded in the laboratory with data published in a repository.
-* The content of datapackages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on [echemdb.org](https://www.echemdb.org/cv). The datapackages could also be published with the [frictionless Livemark](https://livemark.frictionlessdata.io/) data presentation framework.
+* The content of Data Packages can be included in other applications or the generation of a website. The latter has been demonstrated for electrochemical data on [echemdb.org](https://www.echemdb.org/cv). The Data Packages could also be published with the [frictionless Livemark](https://livemark.frictionlessdata.io/) data presentation framework.
 
 ## Installation
 

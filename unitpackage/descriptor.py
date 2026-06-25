@@ -5,7 +5,7 @@ property of a resource.
 These wrappers are automatically applied to all metadata of each :class:`~unitpackage.entry.Entry`
 in our :class:`Collection`.
 
-Metadata in data packages is stored as a JSON object. In Python, such a nested
+Metadata in Data Packages is stored as a JSON object. In Python, such a nested
 JSON object gets turned into a hierarchy of dictionaries and lists. Such raw
 data structures can be a bit tedious to work with, so the descriptors in this
 module provide some convenience wrappers for it, e.g., better tab-completion
@@ -13,7 +13,7 @@ when working in an interactive session.
 
 EXAMPLES:
 
-To add convenience methods to a data package's descriptor, run it through the
+To add convenience methods to a Data Package's descriptor, run it through the
 :func:`Descriptor` factory function::
 
     >>> descriptor = {'some': {'nested': 'metadata'}}
@@ -67,7 +67,7 @@ Extra methods are added if the descriptor satisfies a certain interface::
 
 class GenericDescriptor:
     r"""
-    Wrapper for a data package's descriptor to make searching in metadata easier.
+    Wrapper for a Data Package's descriptor to make searching in metadata easier.
 
     EXAMPLES::
 

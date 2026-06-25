@@ -209,7 +209,7 @@ For conversion to and from the RHE scale, the pH is required.
 ref.shift(to='RHE', potential = 0.564, ph=13)
 ```
 
-#### unitpackage implementation
+#### `unitpackage` implementation
 
 If the reference scale is given for a certain entry, the potentials can directly be shifted
 

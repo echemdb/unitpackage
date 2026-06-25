@@ -962,7 +962,7 @@ class Entry:
         r"""
         Return an example entry for use in automated tests.
 
-        The examples are created from Data Packages in the unitpackage's examples directory.
+        The examples are created from Data Packages in the ``unitpackage``'s examples directory.
         These are only available from the development environment.
 
         EXAMPLES::
