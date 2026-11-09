@@ -514,6 +514,16 @@ class Collection:
             Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
             Entry('no_bibliography')]
 
+        TESTS:
+
+        Absolute paths with forward slashes work on all platforms::
+
+            >>> import os
+            >>> Collection.from_local(os.path.abspath('./examples/local/').replace(os.sep, '/'))  # doctest: +NORMALIZE_WHITESPACE
+            [Entry('alves_2011_electrochemistry_6010_f1a_solid'),
+            Entry('engstfeld_2018_polycrystalline_17743_f4b_1'),
+            Entry('no_bibliography')]
+
         """
         import unitpackage.local
 
@@ -538,9 +548,18 @@ class Collection:
             >>> collection  # doctest: +NORMALIZE_WHITESPACE
             [Entry('engstfeld_2018_polycrystalline_17743_f4b_1')]
 
-        """
+        TESTS:
 
-        package = Package(filename)
+        Absolute paths with forward slashes work on all platforms::
+
+            >>> import os
+            >>> Collection.from_local_file(os.path.abspath('./examples/local/no_bibliography/no_bibliography.json').replace(os.sep, '/'))
+            [Entry('no_bibliography')]
+
+        """
+        from unitpackage.local import normalize_local_path
+
+        package = Package(normalize_local_path(filename))
 
         return cls(package=package)
 
