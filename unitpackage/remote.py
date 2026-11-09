@@ -27,7 +27,7 @@ Utilities to work with remote Data Packages.
 import os.path
 from functools import cache
 
-ECHEMDB_DATABASE_VERSION = "0.5.0"
+ECHEMDB_DATABASE_VERSION = "0.10.0"
 
 
 def get_echemdb_database_url(version=ECHEMDB_DATABASE_VERSION):
