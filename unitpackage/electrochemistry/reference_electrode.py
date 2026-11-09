@@ -370,7 +370,7 @@ def ReferenceElectrode(reference):
         Traceback (most recent call last):
         ...
         KeyError: "Reference electrode 'custom' not found in available reference electrodes
-        (['SHE', 'Ag/AgCl', 'Ag/AgCl-sat', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M', 'CE-0.1M',
+        (['SHE', 'Ag/AgCl', 'Ag/AgCl-sat', 'Ag/AgCl-3M', 'Ag/AgCl-1M', 'CE-sat', 'CE-1M', 'CE-0.1M',
         'Hg/HgO-0.1M-NaOH', 'Hg/HgO-0.5M-NaOH', 'Hg/HgO-1M-NaOH', 'Hg/HgO-0.1M-KOH',
         'Hg/HgO-0.5M-KOH', 'Hg/HgO-1M-KOH', 'MSE-sat', 'MSE-0.5M', 'RHE'])."
 
@@ -437,6 +437,20 @@ _reference_electrodes = {
                 unit="V",
                 vs="SHE",
                 source={"isbn": "978-1119334064"},
+            )
+        ],
+    ),
+    "Ag/AgCl-3M": _ReferenceElectrode(
+        name="Ag/AgCl-3M",
+        full_name="3 M KCl silver / silver chloride electrode",
+        entries=[
+            _ReferenceElectrodeEntry(
+                value=0.207,
+                standard="ECHEMDB-2026",
+                approach="experimental",
+                unit="V",
+                vs="SHE",
+                source={"doi": "https://doi.org/10.1016/S0022-0728(80)80421-9"},
             )
         ],
     ),
