@@ -4,6 +4,33 @@ echemdb Change Log
 
 .. current developments
 
+v0.14.0
+====================
+
+**Added:**
+
+* Added the reference electrode ``Ag/AgCl-3M`` (3 M KCl silver / silver chloride electrode, 0.207 V vs SHE) to the reference electrode database (#162).
+
+**Changed:**
+
+* Changed the default version of the echemdb database retrieved by ``Echemdb.from_remote()`` and ``Collection.from_remote()`` from 0.5.0 to 0.10.0 of the `electrochemistry-data <https://github.com/echemdb/electrochemistry-data>`_ repository.
+* Changed raised maximum version of pybtex.
+* Changed the minimum versions of dependencies to the first releases that support Python 3.11: astropy 5.0.5, matplotlib 3.6, and pandas 1.5.
+* Changed the supported astropy versions to include astropy 8, in line with svgdigitizer.
+* Changed wording across the documentation and docstrings to use consistent terminology: ``Data Package`` for a generic frictionless Data Package, ``Unit Package`` for a unit-aware Data Package, and ``unitpackage`` for the Python module.
+* Changed the API documentation to no longer show the ``TESTS:`` sections of docstrings, which contain doctests that only serve as tests.
+
+**Removed:**
+
+* Removed support for Python 3.10, which reached its end of life in October 2026. unitpackage now requires Python 3.11 or later.
+
+**Fixed:**
+
+* Fixed loading local Data Packages with `Collection.from_local()`, `Collection.from_local_file()` and `Entry.from_local()` from absolute Windows paths with forward slashes such as `D:/data/`, which frictionless treated as URLs.
+* Fixed zenodo filename for automatic creation of zenodo content.
+
+
+
 v0.13.4
 ====================
 
