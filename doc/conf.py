@@ -22,6 +22,24 @@ nb_execution_timeout = 90
 
 html_static_path = []
 
+
+def strip_tests_section(app, what, name, obj, options, lines):
+    r"""
+    Remove the ``TESTS:`` section of docstrings from the API documentation.
+
+    Docstrings contain doctests that are relevant to users under ``EXAMPLES:``
+    and further doctests that only serve as tests under ``TESTS:``. The
+    ``TESTS:`` section is always the last section of a docstring.
+    """
+    for i, line in enumerate(lines):
+        if line.strip() in ("TESTS:", "TESTS::"):
+            del lines[i:]
+            break
+
+
+def setup(app):
+    app.connect("autodoc-process-docstring", strip_tests_section)
+
 myst_heading_anchors = 2
 
 # a warning is raised which is treated as an error when plotly plots are rendered.

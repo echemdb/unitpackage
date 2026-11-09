@@ -295,6 +295,31 @@ def collect_resources(datapackages):
     ]
 
 
+def normalize_local_path(path):
+    r"""
+    Return `path` (a string or path-like object) as a normalized string
+    suitable for loading a local file with frictionless.
+
+    frictionless treats any path with a URL scheme as remote, except for
+    Windows drive letters followed by a backslash. An absolute Windows path
+    with forward slashes such as ``D:/data/package.json`` would therefore be
+    fetched as a URL. Normalizing the path converts the separators on Windows.
+    On other platforms this only collapses redundant separators and up-level
+    references.
+
+    EXAMPLES::
+
+        >>> normalize_local_path("./examples/local/") == os.path.join("examples", "local")
+        True
+
+        >>> from pathlib import Path
+        >>> normalize_local_path(Path("examples") / "local") == os.path.join("examples", "local")
+        True
+
+    """
+    return os.path.normpath(os.fspath(path))
+
+
 def collect_datapackages(data):
     r"""
     Return a list of Data Packages defined in the directory `data` and its
@@ -307,10 +332,19 @@ def collect_datapackages(data):
         {'resources': [{'name':
         ...
 
+    TESTS:
+
+    Absolute paths with forward slashes work on all platforms::
+
+        >>> packages = collect_datapackages(os.path.abspath("./examples/local").replace(os.sep, "/"))
+        >>> len(packages)
+        3
+
     """
+    data = normalize_local_path(data)
     packages = sorted(glob(os.path.join(data, "**", "*.json"), recursive=True))
 
-    return [Package(package) for package in packages]
+    return [Package(normalize_local_path(package)) for package in packages]
 
 
 def update_fields(original_fields, new_fields):

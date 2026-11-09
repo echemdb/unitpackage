@@ -1388,10 +1388,20 @@ class Entry:
             >>> entry
             Entry('no_bibliography')
 
+        TESTS:
+
+        Absolute paths with forward slashes work on all platforms::
+
+            >>> import os
+            >>> Entry.from_local(os.path.abspath('./examples/local/no_bibliography/no_bibliography.json').replace(os.sep, '/'))
+            Entry('no_bibliography')
+
         """
         from frictionless import Package
 
-        package = Package(filename)
+        from unitpackage.local import normalize_local_path
+
+        package = Package(normalize_local_path(filename))
 
         if len(package.resources) == 0:
             raise ValueError(f"No resource available in '{filename}'")
