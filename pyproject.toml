@@ -8,13 +8,13 @@ version = "0.13.4"
 license = "GPL-3.0-or-later"
 description = "a Python library to interact with a collection of frictionless Data Packages"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 dependencies = [
-    "astropy>=5,<8",
+    "astropy>=5.0.5,<9",
     "click>=8,<9",
     "frictionless>=5.8.3,<6",
-    "matplotlib>=3.5.0,<4",
-    "pandas>=1.3,<4",
+    "matplotlib>=3.6,<4",
+    "pandas>=1.5,<4",
     "plotly>=5,<7",
     "pybtex>=0.25,<0.27",
 ]
@@ -36,7 +36,6 @@ channels = ["conda-forge"]
 platforms = ["linux-64", "linux-aarch64", "osx-64", "osx-arm64", "win-64"]
 
 [tool.pixi.environments]
-python-310 = ["test", "python-310"]
 python-311 = ["test", "python-311"]
 python-312 = ["test", "python-312"]
 python-313 = ["test", "python-313"]
@@ -51,7 +50,7 @@ frictionless = "*"
 matplotlib-base = "*"
 pandas = "*"
 pybtex = "*"
-python = "*"
+python = ">=3.11"
 pixi-kernel = "*"
 ipykernel = "*"
 pip = "*"
@@ -63,9 +62,6 @@ unitpackage = "unitpackage"
 
 [tool.pixi.pypi-dependencies]
 unitpackage = { path = ".", editable = true }
-
-[tool.pixi.feature.python-310.dependencies]
-python = "3.10.*"
 
 [tool.pixi.feature.python-311.dependencies]
 python = "3.11.*"

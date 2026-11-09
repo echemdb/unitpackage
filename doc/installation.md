@@ -112,8 +112,8 @@ To run the tests against a specific Python version, use one of the
 pixi run -e python-312 doctest
 ```
 
-Available test environments are: `python-310`, `python-311`, `python-312`,
-`python-313`, and `python-314`.
+Available test environments are: `python-311`, `python-312`, `python-313`,
+and `python-314`.
 
 ### Linting
 
