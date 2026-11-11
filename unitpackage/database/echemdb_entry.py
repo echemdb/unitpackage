@@ -647,6 +647,31 @@ class EchemdbEntry(Entry):
             1   0.02 -0.161258 -0.981762
             ...
 
+        The pH can be provided as a plain number::
+
+            >>> entry.rescale_reference(new_reference='SHE', ph=1).df.head() # doctest: +NORMALIZE_WHITESPACE
+                   t         E         j
+            0   0.00 -0.162258 -0.998277
+            1   0.02 -0.161258 -0.981762
+            ...
+
+        No pH is required when neither reference is RHE::
+
+            >>> agcl_entry = entry.rescale_reference(new_reference='Ag/AgCl-sat')
+            >>> del agcl_entry.resource.custom['metadata']['echemdb']['system']['electrolyte']['ph']
+            >>> agcl_entry.rescale_reference(new_reference='SHE').df.head() # doctest: +NORMALIZE_WHITESPACE
+                   t         E         j
+            0   0.00 -0.162258 -0.998277
+            1   0.02 -0.161258 -0.981762
+            ...
+
+        Without a pH, conversion to RHE is not possible::
+
+            >>> agcl_entry.rescale_reference(new_reference='RHE')
+            Traceback (most recent call last):
+            ...
+            ValueError: pH must be provided for RHE conversion.
+
         """
         field_name = field_name or "E"
 
@@ -668,13 +693,17 @@ class EchemdbEntry(Entry):
             ):
                 ph = self.system.electrolyte.ph
 
+        # The pH might be a descriptor such as {'value': 1, 'uncertainty': ...}
+        if hasattr(ph, "value"):
+            ph = ph.value
+
         # TODO:: The class should be implemented in an external EC tools module.
         # For now, we need a simple approach for reference scale conversion.
         from unitpackage.electrochemistry.reference_electrode import ReferenceElectrode
 
         # The potential difference is returned in V
         potential_difference_value = ReferenceElectrode(old_reference).shift(
-            to=new_reference, ph=ph.value
+            to=new_reference, ph=ph
         )
 
         # create an astropy quantity
